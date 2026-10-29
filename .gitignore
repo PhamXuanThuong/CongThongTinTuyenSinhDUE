@@ -1,0 +1,65 @@
+# ==========================================
+# Môi trường ảo (Virtual Environments)
+# ==========================================
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==========================================
+# Biến môi trường & Bí mật (Environment files)
+# ==========================================
+.env
+.env.*
+!.env.example
+*.local
+
+# ==========================================
+# Dữ liệu & Database (SQLite, Dump, Backup)
+# ==========================================
+*.sqlite3
+*.db
+db.sqlite3
+*.sqlite3-journal
+# ==========================================
+# Python bytecode & cache
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ==========================================
+# Django (Media uploads, static gom tụ, logs)
+# ==========================================
+local_settings.py
+media/
+staticfiles/
+*.log
+
+# ==========================================
+# IDE & Code Editor (PyCharm, VS Code, v.v.)
+# ==========================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# ==========================================
+# Hệ điều hành (Windows, macOS)
+# ==========================================
+Thumbs.db
+Desktop.ini
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
