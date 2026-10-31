@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Khoa & Đơn Vị Đào Tạo - Trường Đại học Kinh tế, ĐH Đà Nẵng (DUE)</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+{% extends "base.html" %}
 
-  <style>
+{% block title %}Khoa & Đơn Vị Đào Tạo - Trường Đại học Kinh tế, ĐH Đà Nẵng (DUE){% endblock %}
+
+{% block nav_khoa %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block extra_head %}
+<style>
     body, button, input, select, textarea {
       font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
@@ -58,90 +53,10 @@
       animation: pulseSoft 2.5s infinite ease-in-out;
     }
   </style>
+{% endblock %}
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "error": "#ba1a1a",
-            "tertiary-container": "#003655",
-            "inverse-primary": "#a7c8ff",
-            "secondary": "#9d4300",
-            "secondary-container": "#fd761a",
-            "primary-container": "#003366",
-            "background": "#faf8ff",
-            "primary": "#001e40",
-            "surface": "#faf8ff",
-            "surface-container-high": "#e2e7ff",
-            "surface-container-low": "#f2f3ff",
-            "surface-container-lowest": "#ffffff",
-            "on-surface": "#131b2e",
-            "on-surface-variant": "#43474f",
-            "on-primary": "#ffffff",
-            "outline": "#737780",
-            "outline-variant": "#c3c6d1",
-          },
-          fontFamily: {
-            sans: ['"Be Vietnam Pro"', 'sans-serif'],
-            "label-lg": ['"Be Vietnam Pro"', 'sans-serif'],
-            "display-hero": ['"Be Vietnam Pro"', 'sans-serif'],
-            "headline-lg": ['"Be Vietnam Pro"', 'sans-serif'],
-            "label-md": ['"Be Vietnam Pro"', 'sans-serif'],
-            "body-lg": ['"Be Vietnam Pro"', 'sans-serif'],
-            "body-sm": ['"Be Vietnam Pro"', 'sans-serif'],
-            "body-md": ['"Be Vietnam Pro"', 'sans-serif']
-          }
-        }
-      }
-    };
-  </script>
-</head>
-<body class="bg-slate-50/60 font-sans text-on-surface antialiased min-h-screen flex flex-col justify-between relative">
-
-  <!-- Header -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-100 shadow-[0_1px_8px_rgba(0,0,0,0.03)]">
-    <div class="flex flex-col justify-between max-w-7xl mx-auto px-6 lg:px-12">
-      <div class="flex items-center justify-between min-h-[5rem] py-2">
-        <a href="/" class="flex items-center gap-3">
-          <img alt="DUE Logo" class="h-16 sm:h-20 w-auto object-contain py-1 drop-shadow-sm transition-all hover:opacity-95" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0SZKiA3qgvDQxaYkxsR3w1ej_sMxTuegQNml68FZ966VgfiyacVxxCVBp1S46Q8ZfFcj89zJFmRbki2mFVxwDK3mA_1FmeZlpvSq9GsILj2z2HzeolTI-1aztUgTZFmj50c5hiIbGUH4ETZRF2d42e6mKwe70Fwob0_OrZ8Y8qXAT69PRCagSk7LI9OJze_odv3CZfAw5_B28JRczw9Dj1w2HYnD-Z0VxQ9a8E-IZYEvv1QN0wLCekQ">
-        </a>
-        <div class="flex items-center gap-4">
-          <div class="relative hidden md:block w-72">
-            <input id="quickSearchInput" class="w-full pl-10 pr-4 py-2 bg-slate-100 text-on-surface rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" placeholder="Tìm kiếm khoa, phòng ban..." type="text">
-            <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">search</span>
-          </div>
-          <a class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors" href="/admin/">
-            <span class="material-symbols-outlined text-[18px]">login</span>
-            <span>Đăng nhập</span>
-          </a>
-          <a href="#" class="w-10 h-10 rounded-full bg-[#f0f4f9] hover:bg-[#e4ebf5] border border-slate-200/80 flex items-center justify-center transition-all shadow-sm" title="Tài khoản cá nhân">
-            <svg class="w-[24px] h-[24px] text-[#505763]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="9.5"></circle>
-              <circle cx="12" cy="9.5" r="3.2"></circle>
-              <path d="M6.5 17.6a6.6 6.6 0 0 1 11 0"></path>
-            </svg>
-          </a>
-        </div>
-      </div>
-      <div class="h-12 flex items-center justify-between overflow-x-auto">
-        <nav class="flex items-center gap-6 h-full text-sm uppercase">
-          <a class="h-full flex items-center font-semibold text-slate-600 hover:text-primary-container transition-colors whitespace-nowrap" href="/">TRANG CHỦ</a>
-          <a class="h-full flex items-center font-semibold text-slate-600 hover:text-primary-container transition-colors whitespace-nowrap" href="/#gioi-thieu">GIỚI THIỆU</a>
-          <a class="h-full flex items-center font-semibold text-slate-600 hover:text-primary-container transition-colors whitespace-nowrap" href="/#tin-tuc">THÔNG TIN TUYỂN SINH</a>
-          <a class="h-full flex items-center font-bold text-secondary-container border-b-2 border-secondary-container whitespace-nowrap" href="/khoa/">KHOA</a>
-          <a class="h-full flex items-center font-semibold text-slate-600 hover:text-primary-container transition-colors whitespace-nowrap" href="/hoc-phi/">HỌC PHÍ</a>
-          <a class="h-full flex items-center font-semibold text-slate-600 hover:text-primary-container transition-colors whitespace-nowrap" href="#">DÀNH CHO SINH VIÊN</a>
-          <a class="h-full flex items-center font-semibold text-slate-600 hover:text-primary-container transition-colors whitespace-nowrap" href="#">TƯ VẤN CHỌN NGÀNH</a>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="w-full pt-36 sm:pt-40 pb-20 flex-1">
+{% block content %}
+<main class="w-full pt-36 sm:pt-40 pb-20 flex-1">
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
 
       <!-- Breadcrumb & Header Hero -->
@@ -256,6 +171,7 @@
 
     </div>
   </main>
+
 
   <!-- MODAL CHI TIẾT THÔNG TIN KHOA / PHÒNG BAN -->
   <div id="infoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
@@ -397,58 +313,11 @@
     </a>
   </div>
 
-  <!-- Footer -->
-  <footer class="w-full bg-[#ecf2f4] text-on-surface mt-16 border-t border-slate-200/60">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
-        <div class="flex flex-col gap-4">
-          <img alt="Đại học Đà Nẵng - Trường Đại học Kinh tế" class="h-12 w-auto object-contain self-start" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCO-sFEetr8emQqqsYaLmosqozUnl9MmLOQL3O8C6nLwNTCGwkBEvHHro7NovxnwjqKxqoQ1SAybFP484PzZJ_a0ZvmNeotxK241NnYG7laj3HbKCol13J9V2QNIArmLUOYtyLimXeSEPePujSjKxJAOLW3JA9JQBerqcvEnSWowiVkzcNdXP8NLq311SsKwv40ejY1RhtY9Y0YEUKea2E_JvuT-h8juEUMUeHxF9vUjhryfLWR3nVhQ">
-          <div class="flex flex-col gap-1.5 mt-1">
-            <p class="font-semibold text-primary-container leading-snug">71 Ngũ Hành Sơn, Bắc Mỹ An, Ngũ Hành Sơn, Đà Nẵng</p>
-            <p class="font-bold text-primary-container">SĐT: 0236 3836 169</p>
-          </div>
-        </div>
+  
+{% endblock %}
 
-        <div class="flex flex-col gap-3">
-          <h4 class="font-bold text-on-surface text-[16px]">Tìm hiểu về chúng tôi</h4>
-          <ul class="flex flex-col gap-2 text-on-surface-variant text-sm">
-            <li class="hover:text-primary-container transition-colors"><a href="/#tin-tuc">Thông tin tuyển sinh</a></li>
-            <li class="hover:text-primary-container transition-colors"><a href="/khoa/" class="font-semibold text-secondary-container">Danh sách các khoa đào tạo</a></li>
-          </ul>
-        </div>
+{% block extra_js %}
 
-        <div class="flex flex-col gap-3">
-          <h4 class="font-bold text-on-surface text-[16px]">Các liên kết khác</h4>
-          <ul class="flex flex-col gap-2 text-on-surface-variant text-sm">
-            <li class="hover:text-primary-container transition-colors"><a href="https://due.udn.vn" target="_blank">E-learning</a></li>
-            <li class="hover:text-primary-container transition-colors"><a href="https://lib.due.udn.vn" target="_blank">Thư viện số DUE</a></li>
-          </ul>
-        </div>
-
-        <div class="flex flex-col gap-3">
-          <h4 class="font-bold text-on-surface text-[16px]">Kết nối Fanpage chính thức</h4>
-          <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-on-surface-variant">
-            <a class="flex items-center gap-2 hover:opacity-80 transition-opacity font-semibold text-[#1877F2]" href="https://facebook.com/FaceDue" target="_blank">
-              <svg class="w-5 h-5 text-[#1877F2] shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
-              <span>Facebook DUE</span>
-            </a>
-            <a class="flex items-center gap-2 hover:opacity-80 transition-opacity" href="https://youtube.com/@DUEChannel" target="_blank">
-              <svg class="w-5 h-5 text-[#FF0000] shrink-0" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" fill="none" r="11" stroke="currentColor" stroke-width="1.5"></circle><path d="M15.5 12l-4.5-2.6v5.2L15.5 12z"></path></svg>
-              <span>Youtube</span>
-            </a>
-            <a class="flex items-center gap-2 hover:opacity-80 transition-opacity" href="#" target="_blank">
-              <svg class="w-5 h-5 text-[#000000] shrink-0" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" fill="none" r="11" stroke="currentColor" stroke-width="1.5"></circle><path d="M14.5 9.2c.5.4 1.1.6 1.8.7V8.3c-.6-.1-1.1-.3-1.6-.7v3.9c0 1.2-1 2.2-2.2 2.2s-2.2-1-2.2-2.2 1-2.2 2.2-2.2c.2 0 .4 0 .6.1V11c-.2-.1-.4-.1-.6-.1-.7 0-1.2.5-1.2 1.2s.5 1.2 1.2 1.2 1.2-.5 1.2-1.2V6.5h1.4v2.7z"></path></svg>
-              <span>TikTok</span>
-            </a>
-            <a class="flex items-center gap-2 hover:opacity-80 transition-opacity" href="https://m.me/FaceDue" target="_blank">
-              <svg class="w-5 h-5 text-[#0084FF] shrink-0 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
-              <span>Messenger</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <!-- DỮ LIỆU ĐỘNG TỪ BACKEND DATABASE VÀ KỊCH BẢN XỬ LÝ MODAL -->
   <script>
@@ -611,5 +480,5 @@
     }
   </script>
 
-</body>
-</html>
+
+{% endblock %}
