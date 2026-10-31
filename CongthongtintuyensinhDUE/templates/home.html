@@ -183,7 +183,8 @@
               <svg id="nav-ttts-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
-          <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="khoa" href="#">KHOA</a>
+          <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="khoa" href="/khoa/">KHOA</a>
+          <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="hoc-phi" href="/hoc-phi/">HỌC PHÍ</a>
           <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="danh-cho-sinh-vien" href="#">DÀNH CHO SINH VIÊN</a>
           <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="tu-van-chon-nganh" href="/career-advisory/">TƯ VẤN CHỌN NGÀNH</a>
           <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="chat-ai" href="/chatbot/">CHAT VỚI DUE</a>
@@ -247,14 +248,18 @@
               </p>
 
               <!-- CTA Buttons -->
-              <div class="flex flex-wrap items-center gap-4 pt-2 w-full sm:w-auto">
+              <div class="flex flex-wrap items-center gap-3 pt-2 w-full sm:w-auto">
+                <a href="/khoa/" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-secondary-container hover:bg-[#e0610f] text-white font-label-lg shadow-lg shadow-secondary-container/25 hover:shadow-xl transition-all duration-200 font-semibold">
+                  <span class="material-symbols-outlined text-[20px]">school</span>
+                  <span>Khám phá các Khoa</span>
+                </a>
                 <a href="#tin-tuc" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary-container hover:bg-primary text-on-primary font-label-lg shadow-lg shadow-primary-container/20 hover:shadow-xl transition-all duration-200">
-                  <span>Khám phá tin tuyển sinh</span>
+                  <span>Tin tuyển sinh</span>
                   <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
                 </a>
-                <a href="tel:02363836169" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-surface-container-high hover:bg-surface-container text-on-surface font-label-lg border border-outline-variant/60 transition-all duration-200">
+                <a href="tel:02363836169" class="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-surface-container-high hover:bg-surface-container text-on-surface font-label-lg border border-outline-variant/60 transition-all duration-200">
                   <span class="material-symbols-outlined text-[20px] text-secondary-container">call</span>
-                  <span>Hotline: 0236 3836 169</span>
+                  <span>0236 3836 169</span>
                 </a>
               </div>
 
@@ -318,6 +323,89 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION: CÁC KHOA ĐÀO TẠO TIÊU BIỂU -->
+        <section class="max-w-7xl mx-auto px-6 lg:px-12 py-10">
+          <div class="bg-gradient-to-br from-slate-50 to-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+              <div>
+                <span class="font-label-md text-label-md text-secondary-container uppercase tracking-wider block mb-1 font-bold">Chuyên môn & Đào tạo</span>
+                <h2 class="font-headline-lg text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary-container text-[28px]">account_balance</span>
+                  Các Khoa Đào Tạo DUE
+                </h2>
+                <p class="text-slate-600 text-sm mt-1">12 khoa đào tạo chuyên sâu đạt chuẩn quốc tế AUN-QA cùng hệ sinh thái hỗ trợ sinh viên toàn diện.</p>
+              </div>
+              <a href="/khoa/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-container hover:bg-primary text-white text-sm font-semibold transition-all shadow-md shrink-0">
+                <span>Xem tất cả 12 Khoa & Phòng ban</span>
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </a>
+            </div>
+
+            <!-- Grid 6 Khoa nổi bật trên trang chủ -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <a href="/khoa/" class="p-4 rounded-2xl border border-slate-200/70 bg-white hover:border-secondary-container/40 hover:shadow-md transition-all flex items-center justify-between gap-3 group">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-red-500 bg-red-50 border border-red-100 group-hover:bg-red-500 group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">campaign</span>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm group-hover:text-slate-900">Khoa Marketing</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400 group-hover:text-secondary-container text-[18px] transition-colors">chevron_right</span>
+              </a>
+
+              <a href="/khoa/" class="p-4 rounded-2xl border border-slate-200/70 bg-white hover:border-secondary-container/40 hover:shadow-md transition-all flex items-center justify-between gap-3 group">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-blue-500 bg-blue-50 border border-blue-100 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">account_balance</span>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm group-hover:text-slate-900">Khoa Ngân hàng</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400 group-hover:text-secondary-container text-[18px] transition-colors">chevron_right</span>
+              </a>
+
+              <a href="/khoa/" class="p-4 rounded-2xl border border-slate-200/70 bg-white hover:border-secondary-container/40 hover:shadow-md transition-all flex items-center justify-between gap-3 group">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-green-500 bg-green-50 border border-green-100 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">corporate_fare</span>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm group-hover:text-slate-900">Khoa Quản trị kinh doanh</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400 group-hover:text-secondary-container text-[18px] transition-colors">chevron_right</span>
+              </a>
+
+              <a href="/khoa/" class="p-4 rounded-2xl border border-slate-200/70 bg-white hover:border-secondary-container/40 hover:shadow-md transition-all flex items-center justify-between gap-3 group">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-orange-500 bg-orange-50 border border-orange-100 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">query_stats</span>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm group-hover:text-slate-900">Khoa Thống kê - Tin học</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400 group-hover:text-secondary-container text-[18px] transition-colors">chevron_right</span>
+              </a>
+
+              <a href="/khoa/" class="p-4 rounded-2xl border border-slate-200/70 bg-white hover:border-secondary-container/40 hover:shadow-md transition-all flex items-center justify-between gap-3 group">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-teal-500 bg-teal-50 border border-teal-100 group-hover:bg-teal-500 group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">storefront</span>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm group-hover:text-slate-900">Khoa Thương mại điện tử</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400 group-hover:text-secondary-container text-[18px] transition-colors">chevron_right</span>
+              </a>
+
+              <a href="/khoa/" class="p-4 rounded-2xl border border-slate-200/70 bg-white hover:border-secondary-container/40 hover:shadow-md transition-all flex items-center justify-between gap-3 group">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-blue-600 bg-blue-50 border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">public</span>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm group-hover:text-slate-900">Khoa Kinh doanh quốc tế</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400 group-hover:text-secondary-container text-[18px] transition-colors">chevron_right</span>
+              </a>
             </div>
           </div>
         </section>
@@ -435,7 +523,7 @@
           <h4 class="font-bold text-on-surface text-[16px]">Tìm hiểu về chúng tôi</h4>
           <ul class="flex flex-col gap-2 text-on-surface-variant font-body-sm">
             <li class="hover:text-primary-container transition-colors"><a data-path="thong-tin-tuyen-sinh" href="#" class="">Thông tin tuyển sinh</a></li>
-            <li class="hover:text-primary-container transition-colors"><a data-path="khoa" href="#" class="">Các chương trình đào tạo</a></li>
+            <li class="hover:text-primary-container transition-colors"><a data-path="khoa" href="/khoa/" class="">Các chương trình đào tạo</a></li>
           </ul>
         </div>
 
