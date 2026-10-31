@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+
+{% block title %}Khoa & Đơn Vị Đào Tạo - Trường Đại học Kinh tế, ĐH Đà Nẵng (DUE){% endblock %}
+
+{% block nav_khoa %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block extra_head %}
+<style>
+  @keyframes pulseSoft {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  .pulse-animation {
+    animation: pulseSoft 2.5s infinite ease-in-out;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="w-full pt-36 sm:pt-40 pb-20 flex-1">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+
+      <!-- Breadcrumb & Header Hero -->
+      <div class="mb-8">
+        <nav class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+          <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+          <span>/</span>
+          <span class="text-slate-800 font-semibold">Khoa & Phòng ban</span>
+        </nav>
+        
+        <div class="bg-gradient-to-r from-primary-container via-primary to-[#004b73] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+          <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+          <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-semibold mb-4 backdrop-blur-sm">
+              <span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span>
+              Trường Đại học Kinh tế - Đại học Đà Nẵng
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-bold font-headline-lg tracking-tight mb-3">
+              Khoa Đào Tạo & Phòng Ban Chức Năng
+            </h1>
+            <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6">
+              Khám phá 12 khoa chuyên ngành đạt chuẩn quốc tế AUN-QA. Bạn có thể <strong>bấm vào từng khoa</strong> để xem thông tin chi tiết các ngành học và <strong>nhắn tin trực tiếp với Fanpage của Khoa</strong> để được tư vấn tuyển sinh 24/7!
+            </p>
+            <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium">
+              <a href="https://www.facebook.com/FaceDue" target="_blank" class="flex items-center gap-2 bg-[#1877F2] hover:bg-[#166fe5] text-white px-4 py-2 rounded-full shadow-md transition-all">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+                <span>Fanpage DUE Tuyển sinh</span>
+              </a>
+              <div class="flex items-center gap-2 bg-white/10 px-3.5 py-2 rounded-full border border-white/10">
+                <span class="font-bold text-amber-300">12</span> Khoa Chuyên Ngành
+              </div>
+              <div class="flex items-center gap-2 bg-white/10 px-3.5 py-2 rounded-full border border-white/10">
+                <span class="font-bold text-green-300">✓</span> Hỗ trợ chat Messenger
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hint banner -->
+      <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-blue-50 border border-blue-200/80 rounded-2xl px-5 py-3.5 text-blue-900 text-xs sm:text-sm shadow-sm">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+          </div>
+          <span><strong>Tư vấn trực tuyến:</strong> Bấm vào bất kỳ Khoa nào bên dưới để xem chi tiết các ngành và <strong>bấm nút nhắn tin Fanpage</strong> để chat trực tiếp với thầy cô và anh chị sinh viên tư vấn!</span>
+        </div>
+      </div>
+
+      <!-- Danh sách Khoa & Phòng ban (Giữ nguyên cấu trúc HTML người dùng cung cấp và thêm tính năng liên kết fanpage) -->
+      <div class="space-y-10" id="khoaContainer">
+        <!-- KHỐI 1: DANH SÁCH KHOA -->
+        <div>
+          <h3 class="text-lg md:text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap text-primary" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg> 
+            Danh sách Khoa
+          </h3>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+            {% for item in khoa_list %}
+            <div data-item-id="{{ item.code }}" class="faculty-card group p-3 md:p-4 rounded-2xl border border-slate-100 bg-white hover:border-primary/30 shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center justify-between gap-3 h-full">
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shrink-0 border shadow-sm text-white {{ item.color }} group-hover:scale-105">
+                  <span class="material-symbols-outlined text-[20px]">{{ item.icon }}</span>
+                </div>
+                <div class="min-w-0">
+                  <span class="faculty-name font-semibold text-slate-700 text-sm md:text-base group-hover:text-slate-900 transition-colors leading-tight line-clamp-2 block">{{ item.name }}</span>
+                  <span class="text-[11px] text-blue-600 font-medium flex items-center gap-1 mt-0.5">
+                    <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+                    Nhắn tin Fanpage
+                  </span>
+                </div>
+              </div>
+              <div class="w-7 h-7 rounded-full bg-slate-50 group-hover:bg-primary group-hover:text-white border border-transparent shadow-sm flex items-center justify-center shrink-0 transition-all group-hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right text-slate-400 group-hover:text-white transition-colors" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- KHỐI 2: PHÒNG BAN & TRUNG TÂM -->
+        <div>
+          <h3 class="text-lg md:text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user text-secondary" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg> 
+            Phòng Ban &amp; Trung tâm
+          </h3>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+            {% for item in phongban_list %}
+            <div data-item-id="{{ item.code }}" class="faculty-card group p-3 md:p-4 rounded-2xl border border-slate-100 bg-white hover:border-primary/30 shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center justify-between gap-3 h-full">
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors shrink-0 border shadow-sm {{ item.color }} group-hover:scale-105">
+                  <span class="material-symbols-outlined text-[20px]">{{ item.icon }}</span>
+                </div>
+                <div class="min-w-0">
+                  <span class="faculty-name font-semibold text-slate-700 text-sm md:text-base group-hover:text-slate-900 transition-colors leading-tight line-clamp-2 block">{{ item.name }}</span>
+                  {% if item.tagline %}
+                  <span class="text-[11px] text-blue-600 font-medium flex items-center gap-1 mt-0.5">
+                    <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+                    {{ item.tagline }}
+                  </span>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="w-7 h-7 rounded-full bg-slate-50 group-hover:bg-primary border border-transparent group-hover:border-primary/20 shadow-sm flex items-center justify-center shrink-0 transition-all group-hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right text-slate-400 group-hover:text-white transition-colors" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- MODAL CHI TIẾT THÔNG TIN KHOA / PHÒNG BAN -->
+  <div id="infoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden relative transform transition-all duration-300 scale-95" id="modalCard">
+      
+      <!-- Modal Header -->
+      <div class="relative px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+        <div class="flex items-center gap-3">
+          <div id="modalIconContainer" class="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-bold shadow-md">
+            <!-- Icon rendered via JS -->
+          </div>
+          <div>
+            <span id="modalCategoryBadge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-primary/10 text-primary inline-block mb-1">Khoa Đào Tạo</span>
+            <h2 id="modalTitle" class="text-lg sm:text-xl font-bold text-slate-800 leading-tight">Tên Khoa</h2>
+          </div>
+        </div>
+        <button id="modalCloseBtn" type="button" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-6 overflow-y-auto space-y-6 text-slate-600 text-sm leading-relaxed" id="modalBody">
+        
+        <!-- Khối CTA Nhắn tin Fanpage Nổi bật -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-600 to-[#1877F2] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-blue-500/20">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-base leading-tight">Liên hệ trực tiếp qua Fanpage</h4>
+              <p class="text-blue-100 text-xs mt-0.5">Nhắn tin Messenger để được thầy cô & sinh viên tư vấn ngay</p>
+            </div>
+          </div>
+          <a id="modalFanpageBtn" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white text-blue-600 font-bold text-xs sm:text-sm shadow-md hover:bg-blue-50 transition-all shrink-0 hover:scale-105">
+            <span>Nhắn tin Fanpage</span>
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+          </a>
+        </div>
+
+        <!-- Sứ mệnh / Khẩu hiệu -->
+        <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/60 text-amber-900">
+          <div class="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-amber-700 mb-1">
+            <span class="material-symbols-outlined text-[16px]">verified</span>
+            Định hướng & Tiêu chuẩn
+          </div>
+          <p id="modalTagline" class="font-medium text-slate-800">Khẩu hiệu định hướng phát triển của đơn vị.</p>
+        </div>
+
+        <!-- Giới thiệu chung -->
+        <div>
+          <h4 class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[20px]">info</span>
+            Tổng quan giới thiệu
+          </h4>
+          <p id="modalDesc" class="text-slate-600 leading-relaxed">
+            Mô tả chi tiết về lịch sử hình thành, đội ngũ giảng viên học hàm Giáo sư, Phó Giáo sư, Tiến sĩ và năng lực đào tạo của khoa.
+          </p>
+        </div>
+
+        <!-- Các chuyên ngành đào tạo (Đối với Khoa) -->
+        <div id="modalMajorsSection">
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="font-bold text-slate-900 text-base flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary-container text-[20px]">school</span>
+              Các ngành & chuyên ngành đào tạo
+            </h4>
+            <span class="text-xs text-slate-500">Bấm để chat tư vấn ngành</span>
+          </div>
+          <div id="modalMajorsList" class="space-y-2.5">
+            <!-- Render via JS -->
+          </div>
+        </div>
+
+        <!-- Cơ hội việc làm / Chức năng chính -->
+        <div>
+          <h4 id="modalCareerTitle" class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-600 text-[20px]">work</span>
+            Cơ hội nghề nghiệp & Đầu ra
+          </h4>
+          <p id="modalCareerDesc" class="text-slate-600 leading-relaxed">
+            Sinh viên tốt nghiệp có thể đảm nhận các vị trí chuyên môn tại các tập đoàn đa quốc gia, ngân hàng, cơ quan nhà nước và doanh nghiệp lớn.
+          </p>
+        </div>
+
+        <!-- Thông tin liên hệ -->
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+          <h4 class="font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-slate-600 text-[18px]">contact_support</span>
+            Thông tin liên hệ trực tiếp
+          </h4>
+          <div class="grid sm:grid-cols-2 gap-3 text-xs">
+            <div class="flex items-center gap-2 text-slate-700">
+              <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span>
+              <span id="modalContactLocation">Tòa nhà E / F, Trường ĐH Kinh tế - ĐH Đà Nẵng</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-700">
+              <span class="material-symbols-outlined text-[16px] text-slate-400">call</span>
+              <span id="modalContactPhone">0236 3836 169</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-700 sm:col-span-2">
+              <span class="material-symbols-outlined text-[16px] text-slate-400">mail</span>
+              <span id="modalContactEmail">contact@due.edu.vn</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex flex-wrap items-center justify-between gap-3">
+        <span class="text-xs text-slate-500">Mã trường DUE: <strong>DDQ / DDK</strong></span>
+        <div class="flex items-center gap-2.5">
+          <button id="modalCloseFooterBtn" type="button" class="px-4 py-2 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-200/70 font-semibold text-xs transition-colors">
+            Đóng
+          </button>
+          <a id="modalChatNowBtn" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-full bg-[#1877F2] hover:bg-blue-700 text-white font-semibold text-xs shadow-md transition-all flex items-center gap-2">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+            <span>Nhắn tin qua Fanpage</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FLOATING QUICK CHAT WIDGET (Tham khảo phong cách tansinhvien.id.vn) -->
+  <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
+    <!-- Nút chat Messenger nổi -->
+    <a href="https://m.me/FaceDue" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-3 bg-white pl-4 pr-3 py-2.5 rounded-full shadow-2xl border border-blue-100 hover:border-blue-400 hover:shadow-blue-500/20 transition-all duration-300 hover:-translate-y-1">
+      <div class="flex flex-col text-right">
+        <span class="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors">Nhắn tin Tuyển sinh DUE</span>
+        <span class="text-[11px] text-slate-500">Hỗ trợ trực tuyến 24/7</span>
+      </div>
+      <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-sky-400 text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform pulse-animation">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+      </div>
+    </a>
+  </div>
+
+  
+{% endblock %}
+
+{% block extra_js %}
+
+
+  <!-- DỮ LIỆU ĐỘNG TỪ BACKEND DATABASE VÀ KỊCH BẢN XỬ LÝ MODAL -->
+  <script>
+    const dataKhoa = {{ data_khoa_json|safe }};
+
+
+    // DOM Elements
+    const infoModal = document.getElementById('infoModal');
+    const modalCard = document.getElementById('modalCard');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalCloseFooterBtn = document.getElementById('modalCloseFooterBtn');
+    const modalIconContainer = document.getElementById('modalIconContainer');
+    const modalCategoryBadge = document.getElementById('modalCategoryBadge');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalTagline = document.getElementById('modalTagline');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalMajorsSection = document.getElementById('modalMajorsSection');
+    const modalMajorsList = document.getElementById('modalMajorsList');
+    const modalCareerTitle = document.getElementById('modalCareerTitle');
+    const modalCareerDesc = document.getElementById('modalCareerDesc');
+    const modalContactLocation = document.getElementById('modalContactLocation');
+    const modalContactPhone = document.getElementById('modalContactPhone');
+    const modalContactEmail = document.getElementById('modalContactEmail');
+    const modalFanpageBtn = document.getElementById('modalFanpageBtn');
+    const modalChatNowBtn = document.getElementById('modalChatNowBtn');
+    const quickSearchInput = document.getElementById('quickSearchInput');
+
+    // Mở modal hiển thị thông tin
+    function showInfoModal(id) {
+      const item = dataKhoa[id];
+      if (!item) return;
+
+      modalCategoryBadge.textContent = item.category;
+      modalTitle.textContent = item.title;
+      modalTagline.textContent = item.tagline;
+      modalDesc.textContent = item.desc;
+      modalCareerDesc.textContent = item.careers;
+      modalContactLocation.textContent = item.location;
+      modalContactPhone.textContent = item.phone;
+      modalContactEmail.textContent = item.email;
+
+      // Link Fanpage & Messenger
+      const targetFanpage = item.fanpage || "https://www.facebook.com/FaceDue";
+      const targetMessenger = item.messenger || "https://m.me/FaceDue";
+      modalFanpageBtn.href = targetMessenger;
+      modalChatNowBtn.href = targetMessenger;
+
+      // Icon & Color
+      modalIconContainer.className = `w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-bold shadow-md ${item.color}`;
+      modalIconContainer.innerHTML = `<span class="material-symbols-outlined text-[24px]">${item.icon}</span>`;
+
+      // Render danh sách ngành học (Kèm nút Nhắn tin tư vấn ngành)
+      if (item.category === "Khoa Đào Tạo") {
+        modalMajorsSection.classList.remove('hidden');
+        modalCareerTitle.innerHTML = `<span class="material-symbols-outlined text-emerald-600 text-[20px]">work</span> Cơ hội nghề nghiệp & Đầu ra`;
+        let majorsHtml = '';
+        item.majors.forEach(major => {
+          majorsHtml += `
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-blue-300 hover:bg-blue-50/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div class="flex flex-col">
+                <span class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+                  ${major.name}
+                </span>
+                <span class="text-[11px] text-slate-500 mt-0.5 ml-3.5">${major.note}</span>
+              </div>
+              <a href="${targetMessenger}" target="_blank" rel="noopener noreferrer" class="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-all hover:scale-105 shrink-0">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+                <span>Chat tư vấn</span>
+              </a>
+            </div>
+          `;
+        });
+        modalMajorsList.innerHTML = majorsHtml;
+      } else {
+        modalMajorsSection.classList.remove('hidden');
+        modalCareerTitle.innerHTML = `<span class="material-symbols-outlined text-emerald-600 text-[20px]">task_alt</span> Lợi ích mang lại cho sinh viên`;
+        let dutiesHtml = '';
+        item.majors.forEach(duty => {
+          dutiesHtml += `
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div class="flex flex-col">
+                <span class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                  ${duty.name}
+                </span>
+                <span class="text-[11px] text-slate-500 mt-0.5 ml-3.5">${duty.note}</span>
+              </div>
+              <a href="${targetMessenger}" target="_blank" rel="noopener noreferrer" class="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-200 hover:bg-blue-600 hover:text-white text-slate-700 text-xs font-semibold transition-all shrink-0">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+                <span>Hỏi đáp</span>
+              </a>
+            </div>
+          `;
+        });
+        modalMajorsList.innerHTML = dutiesHtml;
+      }
+
+      // Show modal với animation mượt mà
+      infoModal.classList.remove('hidden');
+      setTimeout(() => {
+        infoModal.classList.remove('opacity-0');
+        modalCard.classList.remove('scale-95');
+        modalCard.classList.add('scale-100');
+      }, 10);
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Đóng modal
+    function hideInfoModal() {
+      infoModal.classList.add('opacity-0');
+      modalCard.classList.remove('scale-100');
+      modalCard.classList.add('scale-95');
+      setTimeout(() => {
+        infoModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 200);
+    }
+
+    // Gán sự kiện click cho từng thẻ khoa / phòng ban
+    document.querySelectorAll('.faculty-card').forEach(card => {
+      card.addEventListener('click', function() {
+        const itemId = this.getAttribute('data-item-id');
+        if (itemId) {
+          showInfoModal(itemId);
+        }
+      });
+    });
+
+    // Các sự kiện đóng modal
+    modalCloseBtn.addEventListener('click', hideInfoModal);
+    modalCloseFooterBtn.addEventListener('click', hideInfoModal);
+    infoModal.addEventListener('click', function(e) {
+      if (e.target === infoModal) {
+        hideInfoModal();
+      }
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !infoModal.classList.contains('hidden')) {
+        hideInfoModal();
+      }
+    });
+
+    // Tìm kiếm nhanh khoa và phòng ban
+    if (quickSearchInput) {
+      quickSearchInput.addEventListener('input', function(e) {
+        const filter = e.target.value.toLowerCase().trim();
+        document.querySelectorAll('.faculty-card').forEach(card => {
+          const nameEl = card.querySelector('.faculty-name');
+          if (nameEl) {
+            const text = nameEl.textContent.toLowerCase();
+            if (text.includes(filter)) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          }
+        });
+      });
+    }
+  </script>
+
+
+{% endblock %}
