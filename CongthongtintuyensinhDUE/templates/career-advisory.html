@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="web_standard" name="shell-type">
+  <title>Tư vấn chọn ngành học - Trường Đại học Kinh tế, ĐH Đà Nẵng (DUE)</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        scroll-behavior: smooth;
+        font-family: 'Be Vietnam Pro', sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+      }
+      h1, h2, h3, h4, .font-heading {
+        font-family: 'Space Grotesk', sans-serif;
+      }
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: marquee 25s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+    /* Option card active effect */
+    .holland-option-card input:checked + .holland-option-content {
+      border-color: #00A859 !important;
+      background: #f0faf4 !important;
+      box-shadow: 0 0 0 1.5px #00A859 !important;
+    }
+    .holland-option-card input:checked + .holland-option-content .holland-badge {
+      background: #00A859 !important;
+      color: #ffffff !important;
+    }
+    /* Sharp Toast styling */
+    #toast-notification {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+    #toast-notification.hide-toast {
+      transform: translateX(120%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #toast-notification.show-toast {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @keyframes toast-progress {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+    .toast-progress-active {
+      animation: toast-progress 3.5s linear forwards;
+    }
+  </style>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "due-blue": "#0072BC",
+            "due-blue-dark": "#003366",
+            "due-orange": "#F37021",
+            "due-green": "#00A859",
+            "secondary-container": "#F37021",
+            "primary-container": "#003366",
+            "background": "#faf8ff",
+            "surface": "#f8fafc",
+            "on-surface": "#131b2e",
+            "on-surface-variant": "#43474f",
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk", "sans-serif"],
+            "body": ["Be Vietnam Pro", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col font-['Be_Vietnam_Pro']">
+
+  <!-- ====================================================
+       TOAST THÔNG BÁO
+       ==================================================== -->
+  <div
+    id="toast-notification"
+    class="hide-toast fixed top-24 right-4 sm:right-8 z-[10000] w-[90vw] max-w-[390px] bg-white border border-slate-200 border-l-[6px] border-l-[#00A859] shadow-2xl rounded-none overflow-hidden"
+    role="alert"
+    aria-live="assertive"
+  >
+    <div class="p-4 flex items-start gap-3.5">
+      <!-- Icon check -->
+      <div class="w-9 h-9 rounded-none bg-emerald-50 text-[#00A859] flex items-center justify-center flex-shrink-0 border border-emerald-200">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+
+      <!-- Text Content -->
+      <div class="flex-1 pr-2">
+        <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-sm tracking-tight leading-snug">
+          GỬI HỆ THỐNG THÀNH CÔNG!
+        </h4>
+        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+          Hồ sơ của bạn đã được lưu và hiển thị chi tiết tại mục <strong>1. Tóm tắt hồ sơ</strong>.
+        </p>
+      </div>
+
+      <!-- Close button (Sharp) -->
+      <button
+        onclick="hideToast()"
+        class="w-7 h-7 rounded-none bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors flex-shrink-0 border border-slate-200"
+        aria-label="Đóng"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Linear Progress Bar (Sharp, 3.5s countdown) -->
+    <div class="w-full bg-slate-100 h-1">
+      <div id="toast-progress-bar" class="h-full bg-[#00A859] w-full"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-b border-slate-100">
+    <div class="flex flex-col justify-between max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="flex items-center justify-between min-h-[5rem] py-2">
+        <a href="/" class="flex items-center gap-4">
+          <img alt="DUE Logo" class="h-16 sm:h-20 w-auto object-contain py-1 drop-shadow-sm transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0SZKiA3qgvDQxaYkxsR3w1ej_sMxTuegQNml68FZ966VgfiyacVxxCVBp1S46Q8ZfFcj89zJFmRbki2mFVxwDK3mA_1FmeZlpvSq9GsILj2z2HzeolTI-1aztUgTZFmj50c5hiIbGUH4ETZRF2d42e6mKwe70Fwob0_OrZ8Y8qXAT69PRCagSk7LI9OJze_odv3CZfAw5_B28JRczw9Dj1w2HYnD-Z0VxQ9a8E-IZYEvv1QN0wLCekQ">
+        </a>
+        <div class="flex items-center gap-4">
+          <div class="relative hidden md:block w-72">
+            <input class="w-full pl-10 pr-4 py-2 bg-slate-100 text-slate-800 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] transition-all" placeholder="Tìm kiếm ngành học..." type="text">
+            <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">search</span>
+          </div>
+          <a class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors" href="#">
+            <span class="material-symbols-outlined text-[18px]">login</span>
+            <span>Đăng nhập</span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-[#f0f4f9] hover:bg-[#e4ebf5] border border-slate-200/80 flex items-center justify-center transition-all shadow-sm" title="Tài khoản cá nhân">
+            <svg class="w-[26px] h-[26px] text-[#505763]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9.5"></circle>
+              <circle cx="12" cy="9.5" r="3.2"></circle>
+              <path d="M6.5 17.6a6.6 6.6 0 0 1 11 0"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="h-12 flex items-center justify-between overflow-x-auto" style="overflow: visible;">
+        <nav class="flex items-center gap-6 h-full font-['Be_Vietnam_Pro']">
+          <a class="h-full flex items-center text-sm font-semibold text-slate-600 hover:text-[#0072BC] transition-colors uppercase whitespace-nowrap" href="/">TRANG CHỦ</a>
+          <a class="h-full flex items-center text-sm font-semibold text-slate-600 hover:text-[#0072BC] transition-colors uppercase whitespace-nowrap" href="#">GIỚI THIỆU</a>
+          <!-- THÔNG TIN TUYỂN SINH - Dropdown -->
+          <div class="relative h-full flex items-center" id="nav-ttts">
+            <button
+              class="h-full flex items-center gap-1 text-sm font-semibold text-slate-600 hover:text-[#0072BC] transition-colors uppercase whitespace-nowrap focus:outline-none"
+              aria-haspopup="true"
+              aria-expanded="false"
+              id="nav-ttts-btn"
+            >
+              THÔNG TIN TUYỂN SINH
+              <svg id="nav-ttts-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
+          <a class="h-full flex items-center text-sm font-semibold text-slate-600 hover:text-[#0072BC] transition-colors uppercase whitespace-nowrap" href="#">KHOA</a>
+          <a class="h-full flex items-center text-sm font-semibold text-slate-600 hover:text-[#0072BC] transition-colors uppercase whitespace-nowrap" href="#">DÀNH CHO SINH VIÊN</a>
+          <a class="h-full flex items-center text-sm font-bold text-[#F37021] border-b-2 border-[#F37021] uppercase whitespace-nowrap" href="/career-advisory/">TƯ VẤN CHỌN NGÀNH</a>
+          <a class="h-full flex items-center text-sm font-semibold text-slate-600 hover:text-[#0072BC] transition-colors uppercase whitespace-nowrap" href="/chatbot/">CHAT VỚI DUE</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dropdown panel for THÔNG TIN TUYỂN SINH -->
+    <!-- Dropdown panel for THÔNG TIN TUYỂN SINH (2 Tùy chọn, KHÔNG CÓ ICON ĐẦU TÊN) -->
+  <div
+    id="nav-ttts-dropdown"
+    style="position:fixed;display:none;z-index:9999;width:245px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12);border:1px solid #e2e8f0;padding:6px 0;"
+    role="menu"
+  >
+    <button
+      onclick="openHuongDanModal()"
+      style="width:100%;display:block;padding:10px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
+      onmouseout="this.style.background='';this.style.color='#334155'"
+      role="menuitem"
+    >
+      Hướng dẫn nhập học
+    </button>
+    <div style="height:1px;background:#f1f5f9;margin:3px 0;"></div>
+    <button
+      onclick="openLichTrinhModal()"
+      style="width:100%;display:block;padding:10px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
+      onmouseout="this.style.background='';this.style.color='#334155'"
+      role="menuitem"
+    >
+      Lịch trình của Tân sinh viên
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <main class="w-full pt-32 sm:pt-36 flex-1 bg-gradient-to-b from-slate-50 via-white to-slate-50">
+
+    <!-- 2. Hero Section Header (Font Space Grotesk) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pt-8 pb-6 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0072BC] text-xs font-bold tracking-wider uppercase mb-3">
+        <span class="w-2 h-2 rounded-full bg-[#00A859]"></span>
+        AI DUE CAREER ADVISORY
+      </div>
+      <h1 class="font-['Space_Grotesk'] text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
+        HỆ THỐNG TƯ VẤN <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC]">CHỌN NGÀNH HỌC</span>
+      </h1>
+      <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+        Nhập thông tin cá nhân và hoàn thành bài kiểm tra nghề nghiệp Holland để nhận định hướng chuyên sâu, tìm ra ngành học phù hợp nhất tại <strong>Trường Đại học Kinh tế - ĐH Đà Nẵng</strong>.
+      </p>
+
+      <!-- Tri-color indicator bar -->
+      <div class="flex items-center justify-center gap-2 mt-4">
+        <div class="h-1.5 w-12 rounded-full bg-[#F37021]"></div>
+        <div class="h-1.5 w-12 rounded-full bg-[#00A859]"></div>
+        <div class="h-1.5 w-12 rounded-full bg-[#0072BC]"></div>
+      </div>
+    </section>
+
+    <!-- 3. Main Form & Result Grid -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pb-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- ==============================================
+             LEFT COLUMN: Form nhập thông tin học sinh
+             ============================================== -->
+        <div class="lg:col-span-7 bg-white rounded-3xl shadow-lg border border-slate-200/80 overflow-hidden">
+          
+          <!-- Card Top Accent Gradient (Cam - Xanh lá - Xanh dương) -->
+          <div class="h-2 w-full bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC]"></div>
+
+          <div class="p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+              <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-[#F37021] font-bold">
+                <span class="material-symbols-outlined text-[24px]">assignment_ind</span>
+              </div>
+              <div>
+                <h2 class="font-['Space_Grotesk'] text-lg sm:text-xl font-bold text-slate-900">Nhập thông tin học sinh</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Điền đầy đủ thông tin để hệ thống phân tích và đề xuất ngành học phù hợp nhất.</p>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <form id="advisory-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+              
+              <!-- 1. THÔNG TIN CÁ NHÂN -->
+              <div>
+                <h3 class="font-['Space_Grotesk'] text-xs font-bold text-[#0072BC] uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                  <span class="w-1.5 h-3.5 rounded bg-[#0072BC]"></span>
+                  1. Thông tin cá nhân
+                </h3>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <!-- Họ và tên -->
+                  <div class="sm:col-span-2">
+                    <label for="full_name" class="block text-xs font-semibold text-slate-700 mb-1">Họ và tên <span class="text-red-500">*</span></label>
+                    <input type="text" id="full_name" name="full_name" required minlength="2" maxlength="255" placeholder="Ví dụ: Nguyễn Văn An"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
+                  </div>
+
+                  <!-- Giới tính -->
+                  <div>
+                    <label for="gender" class="block text-xs font-semibold text-slate-700 mb-1">Giới tính <span class="text-red-500">*</span></label>
+                    <select id="gender" name="gender" required
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
+                      <option value="Nam">Nam</option>
+                      <option value="Nữ">Nữ</option>
+                      <option value="Khác">Khác</option>
+                    </select>
+                  </div>
+
+                  <!-- Ngày sinh -->
+                  <div>
+                    <label for="date_of_birth" class="block text-xs font-semibold text-slate-700 mb-1">Ngày sinh <span class="text-red-500">*</span></label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" required
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
+                  </div>
+
+                  <!-- Số điện thoại -->
+                  <div>
+                    <label for="phone_number" class="block text-xs font-semibold text-slate-700 mb-1">Số điện thoại <span class="text-red-500">*</span></label>
+                    <input type="tel" id="phone_number" name="phone_number" required pattern="0[0-9]{9}" minlength="10" maxlength="10" placeholder="0987654321"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
+                  </div>
+
+                  <!-- Email -->
+                  <div>
+                    <label for="email" class="block text-xs font-semibold text-slate-700 mb-1">Email <span class="text-red-500">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="hocsinh@gmail.com"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
+                  </div>
+
+                  <!-- Trường THPT -->
+                  <div>
+                    <label for="high_school" class="block text-xs font-semibold text-slate-700 mb-1">Trường THPT <span class="text-red-500">*</span></label>
+                    <input type="text" id="high_school" name="high_school" required minlength="3" maxlength="255" placeholder="THPT Phan Châu Trinh"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
+                  </div>
+
+                  <!-- Tỉnh / Thành phố -->
+                  <div>
+                    <label for="province" class="block text-xs font-semibold text-slate-700 mb-1">Tỉnh / Thành phố <span class="text-red-500">*</span></label>
+                    <select id="province" name="province" required
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
+                      <option value="" disabled selected>Chọn tỉnh/thành</option>
+                      <option value="Đà Nẵng">Đà Nẵng</option>
+                      <option value="Quảng Nam">Quảng Nam</option>
+                      <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
+                      <option value="Quảng Ngãi">Quảng Ngãi</option>
+                      <option value="Bình Định">Bình Định</option>
+                      <option value="Hà Nội">Hà Nội</option>
+                      <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                      <option value="Quảng Trị">Quảng Trị</option>
+                      <option value="Quảng Bình">Quảng Bình</option>
+                      <option value="Hà Tĩnh">Hà Tĩnh</option>
+                      <option value="Nghệ An">Nghệ An</option>
+                      <option value="Thanh Hóa">Thanh Hóa</option>
+                      <option value="Phú Yên">Phú Yên</option>
+                      <option value="Khánh Hòa">Khánh Hòa</option>
+                      <option value="Ninh Thuận">Ninh Thuận</option>
+                      <option value="Bình Thuận">Bình Thuận</option>
+                      <option value="Kon Tum">Kon Tum</option>
+                      <option value="Gia Lai">Gia Lai</option>
+                      <option value="Đắk Lắk">Đắk Lắk</option>
+                      <option value="Đắk Nông">Đắk Nông</option>
+                      <option value="Lâm Đồng">Lâm Đồng</option>
+                      <option value="Bình Phước">Bình Phước</option>
+                      <option value="Tây Ninh">Tây Ninh</option>
+                      <option value="Bình Dương">Bình Dương</option>
+                      <option value="Đồng Nai">Đồng Nai</option>
+                      <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+                      <option value="Long An">Long An</option>
+                      <option value="Tiền Giang">Tiền Giang</option>
+                      <option value="Bến Tre">Bến Tre</option>
+                      <option value="Trà Vinh">Trà Vinh</option>
+                      <option value="Vĩnh Long">Vĩnh Long</option>
+                      <option value="Đồng Tháp">Đồng Tháp</option>
+                      <option value="An Giang">An Giang</option>
+                      <option value="Kiên Giang">Kiên Giang</option>
+                      <option value="Cần Thơ">Cần Thơ</option>
+                      <option value="Hậu Giang">Hậu Giang</option>
+                      <option value="Sóc Trăng">Sóc Trăng</option>
+                      <option value="Bạc Liêu">Bạc Liêu</option>
+                      <option value="Cà Mau">Cà Mau</option>
+                      <option value="Vĩnh Phúc">Vĩnh Phúc</option>
+                      <option value="Bắc Ninh">Bắc Ninh</option>
+                      <option value="Quảng Ninh">Quảng Ninh</option>
+                      <option value="Hải Dương">Hải Dương</option>
+                      <option value="Hải Phòng">Hải Phòng</option>
+                      <option value="Hưng Yên">Hưng Yên</option>
+                      <option value="Thái Bình">Thái Bình</option>
+                      <option value="Hà Nam">Hà Nam</option>
+                      <option value="Nam Định">Nam Định</option>
+                      <option value="Ninh Bình">Ninh Bình</option>
+                      <option value="Hà Giang">Hà Giang</option>
+                      <option value="Cao Bằng">Cao Bằng</option>
+                      <option value="Bắc Kạn">Bắc Kạn</option>
+                      <option value="Tuyên Quang">Tuyên Quang</option>
+                      <option value="Lào Cai">Lào Cai</option>
+                      <option value="Yên Bái">Yên Bái</option>
+                      <option value="Thái Nguyên">Thái Nguyên</option>
+                      <option value="Lạng Sơn">Lạng Sơn</option>
+                      <option value="Bắc Giang">Bắc Giang</option>
+                      <option value="Phú Thọ">Phú Thọ</option>
+                      <option value="Điện Biên">Điện Biên</option>
+                      <option value="Lai Châu">Lai Châu</option>
+                      <option value="Sơn La">Sơn La</option>
+                      <option value="Hòa Bình">Hòa Bình</option>
+                    </select>
+                  </div>
+
+                  <!-- Địa chỉ -->
+                  <div class="sm:col-span-2">
+                    <label for="address" class="block text-xs font-semibold text-slate-700 mb-1">Địa chỉ chi tiết <span class="text-red-500">*</span></label>
+                    <input type="text" id="address" name="address" required minlength="3" maxlength="255" placeholder="Số nhà, tên đường, phường/xã, quận/huyện"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. TRẮC NGHIỆM NGHỀ NGHIỆP HOLLAND (KHÔNG CHỌN SẴN, ĐÁP ÁN A, B, C, D, E, F) -->
+              <div class="pt-4 border-t border-slate-100">
+                <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 sm:p-5 mb-5">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#00A859]"></span>
+                    <h3 class="font-['Space_Grotesk'] text-sm sm:text-base font-bold text-[#00A859]">Trắc nghiệm nghề nghiệp Holland (RIASEC)</h3>
+                  </div>
+                  <p class="text-xs text-slate-600">Chọn <strong>đúng 01 đáp án</strong> ở mỗi câu hỏi phản ánh chính xác nhất tính cách và sở thích của bạn (chưa có lựa chọn mặc định):</p>
+                </div>
+
+                <!-- Holland Questions Container -->
+                <div class="space-y-6">
+
+                  <!-- Câu 1 -->
+                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
+                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                      <span class="text-[#0072BC]">Câu 1:</span> Nếu được chọn một hoạt động cho buổi ngoại khóa, bạn sẽ thích:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q1" value="R" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
+                          <span>Tham gia lắp ráp, làm thí nghiệm hoặc hoạt động ngoài trời.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q1" value="I" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
+                          <span>Tìm hiểu một chủ đề mới và giải thích lại cho người khác.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q1" value="A" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
+                          <span>Làm poster, quay video hoặc sáng tạo nội dung.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q1" value="S" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
+                          <span>Tham gia hoạt động tình nguyện, hỗ trợ mọi người.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q1" value="E" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
+                          <span>Tổ chức trò chơi và điều phối cả nhóm.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q1" value="C" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
+                          <span>Lên danh sách, sắp xếp công việc cho mọi người.</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Câu 2 -->
+                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
+                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                      <span class="text-[#0072BC]">Câu 2:</span> Khi làm bài tập nhóm, bạn thường:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q2" value="R" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
+                          <span>Làm phần thực hành hoặc phần cần làm cụ thể.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q2" value="I" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
+                          <span>Phân tích đề và tìm cách giải quyết.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q2" value="A" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
+                          <span>Nghĩ ý tưởng mới cho nhóm.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q2" value="S" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
+                          <span>Kết nối mọi người để nhóm làm việc vui vẻ.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q2" value="E" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
+                          <span>Đứng ra phân chia nhiệm vụ và thúc đẩy tiến độ.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q2" value="C" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
+                          <span>Ghi chép và kiểm tra lại để tránh sai sót.</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Câu 3 -->
+                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
+                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                      <span class="text-[#0072BC]">Câu 3:</span> Bạn cảm thấy vui nhất khi:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q3" value="R" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
+                          <span>Tự tay làm ra một sản phẩm cụ thể.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q3" value="I" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
+                          <span>Giải được một câu hỏi/bài tập khó.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q3" value="A" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
+                          <span>Được thể hiện cá tính và ý tưởng của mình.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q3" value="S" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
+                          <span>Giúp ai đó giải quyết vấn đề.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q3" value="E" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
+                          <span>Đạt thành tích hoặc dẫn đầu.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q3" value="C" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
+                          <span>Hoàn thành công việc gọn gàng, đúng kế hoạch.</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Câu 4 -->
+                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
+                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                      <span class="text-[#0072BC]">Câu 4:</span> Nếu có một vấn đề xảy ra, bạn thường:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q4" value="R" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
+                          <span>Thử làm ngay để xem cách nào hiệu quả.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q4" value="I" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
+                          <span>Nghĩ kỹ xem vì sao nó xảy ra.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q4" value="A" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
+                          <span>Tìm cách làm khác đi cho sáng tạo hơn.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q4" value="S" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
+                          <span>Hỏi ý kiến mọi người rồi cùng xử lý.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q4" value="E" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
+                          <span>Quyết định nhanh và bắt tay thực hiện.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q4" value="C" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
+                          <span>Viết ra từng bước để giải quyết.</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Câu 5 -->
+                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
+                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                      <span class="text-[#0072BC]">Câu 5:</span> Bạn thích môi trường học tập/làm việc:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q5" value="R" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
+                          <span>Năng động, có hoạt động thực tế.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q5" value="I" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
+                          <span>Yên tĩnh để tập trung suy nghĩ.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q5" value="A" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
+                          <span>Tự do, không quá gò bó.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q5" value="S" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
+                          <span>Có nhiều người để trò chuyện, hợp tác.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q5" value="E" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
+                          <span>Có mục tiêu rõ ràng và thử thách cao.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q5" value="C" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
+                          <span>Có kế hoạch cụ thể và mọi thứ rõ ràng.</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Câu 6 -->
+                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
+                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                      <span class="text-[#0072BC]">Câu 6:</span> Bạn bè thường nhận xét bạn là người:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q6" value="R" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
+                          <span>Thực tế, làm được việc.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q6" value="I" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
+                          <span>Suy nghĩ logic, hay đặt câu hỏi "vì sao".</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q6" value="A" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
+                          <span>Sáng tạo, nhiều ý tưởng lạ.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q6" value="S" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
+                          <span>Dễ gần, biết lắng nghe.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q6" value="E" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
+                          <span>Năng nổ, thích dẫn dắt.</span>
+                        </div>
+                      </label>
+                      <label class="holland-option-card relative cursor-pointer">
+                        <input type="radio" name="holland_q6" value="C" class="hidden">
+                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
+                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
+                          <span>Cẩn thận, làm việc có tổ chức.</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- 3. ĐỊNH HƯỚNG & NĂNG LỰC CÁ NHÂN -->
+              <div class="pt-4 border-t border-slate-100 space-y-4">
+                <h3 class="font-['Space_Grotesk'] text-xs font-bold text-[#F37021] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <span class="w-1.5 h-3.5 rounded bg-[#F37021]"></span>
+                  3. Định hướng & Năng lực
+                </h3>
+
+                <!-- Sở thích -->
+                <div>
+                  <label for="interests" class="block text-xs font-semibold text-slate-700 mb-1">
+                    Sở thích cá nhân của bạn là gì? <span class="text-red-500">*</span>
+                  </label>
+                  <textarea id="interests" name="interests" required minlength="5" maxlength="1000" rows="3"
+                    placeholder="Ví dụ: Thích công nghệ, kinh doanh trực tuyến, thiết kế, giao tiếp và ngoại ngữ..."
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all"></textarea>
+                </div>
+
+                <!-- Năng lực / Điểm mạnh -->
+                <div>
+                  <label for="strengths" class="block text-xs font-semibold text-slate-700 mb-1">
+                    Năng lực, điểm mạnh của bạn là gì? <span class="text-red-500">*</span>
+                  </label>
+                  <textarea id="strengths" name="strengths" required minlength="5" maxlength="1000" rows="3"
+                    placeholder="Ví dụ: Tư duy logic toán học, khả năng thuyết trình trước đám đông, biết lắng nghe và làm việc nhóm..."
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all"></textarea>
+                </div>
+
+                <!-- Định hướng lĩnh vực -->
+                <div>
+                  <label for="career_goals" class="block text-xs font-semibold text-slate-700 mb-1">
+                    Bạn có định hướng muốn làm việc ở lĩnh vực nào không? <span class="text-red-500">*</span>
+                  </label>
+                  <textarea id="career_goals" name="career_goals" required minlength="5" maxlength="1000" rows="3"
+                    placeholder="Ví dụ: Muốn làm việc trong lĩnh vực Tài chính số, Trí tuệ nhân tạo, Marketing, Logistics..."
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all"></textarea>
+                </div>
+              </div>
+
+              <!-- Submit button -->
+              <div class="pt-4 border-t border-slate-100 flex flex-col items-center">
+                <button type="submit"
+                  class="font-['Space_Grotesk'] w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC] hover:opacity-95 text-white font-bold text-base shadow-xl shadow-orange-500/20 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-[20px]">send</span>
+                  <span>GỬI HỆ THỐNG</span>
+                </button>
+                <p class="text-xs text-slate-400 mt-2 text-center">Hệ thống sẽ tổng hợp hồ sơ và xuất kết quả tư vấn ngay sau khi bạn nhấn gửi.</p>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- ==============================================
+             RIGHT COLUMN: Kết quả phân tích & Tư vấn
+             ============================================== -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- 1. TÓM TẮT HỒ SƠ -->
+          <div class="bg-white rounded-3xl shadow-lg border border-slate-200/80 overflow-hidden">
+            <div class="h-1.5 w-full bg-[#0072BC]"></div>
+            
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#0072BC] font-bold flex items-center justify-center text-sm font-['Space_Grotesk']">1</div>
+                  <h2 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base sm:text-lg">Tóm tắt hồ sơ</h2>
+                </div>
+                <span id="profile-status-badge" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-500 text-xs font-semibold">Chưa có dữ liệu</span>
+              </div>
+
+              <!-- EMPTY STATE (trước khi gửi) -->
+              <div id="profile-empty-state" class="py-12 px-4 text-center">
+                <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
+                  <span class="material-symbols-outlined text-[32px]">folder_open</span>
+                </div>
+                <h4 class="font-['Space_Grotesk'] font-bold text-slate-700 text-sm mb-1">Chưa có thông tin hồ sơ</h4>
+                <p class="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+                  Vui lòng điền đầy đủ các thông tin ở biểu mẫu bên trái và nhấn <strong class="text-[#F37021]">Gửi hệ thống</strong> để lưu lại và xem tóm tắt hồ sơ của bạn.
+                </p>
+              </div>
+
+              <!-- FILLED STATE (sau khi gửi) -->
+              <div id="profile-filled-state" class="hidden space-y-4">
+                
+                <!-- Info Grid -->
+                <div class="bg-slate-50 rounded-2xl p-4 text-xs space-y-2 border border-slate-100 font-medium">
+                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
+                    <span class="text-slate-500">Họ và tên:</span>
+                    <span id="res-full-name" class="font-bold text-slate-800 text-right">-</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
+                    <span class="text-slate-500">Giới tính:</span>
+                    <span id="res-gender" class="font-semibold text-slate-800 text-right">-</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
+                    <span class="text-slate-500">Ngày sinh:</span>
+                    <span id="res-dob" class="font-semibold text-slate-800 text-right">-</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
+                    <span class="text-slate-500">Số điện thoại:</span>
+                    <span id="res-phone" class="font-semibold text-slate-800 text-right">-</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
+                    <span class="text-slate-500">Email:</span>
+                    <span id="res-email" class="font-semibold text-slate-800 text-right break-all">-</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
+                    <span class="text-slate-500">Trường THPT:</span>
+                    <span id="res-school" class="font-semibold text-slate-800 text-right">-</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
+                    <span class="text-slate-500">Tỉnh / Thành phố:</span>
+                    <span id="res-province" class="font-semibold text-slate-800 text-right">-</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Địa chỉ:</span>
+                    <span id="res-address" class="font-semibold text-slate-800 text-right">-</span>
+                  </div>
+                </div>
+
+                <!-- Interests & Goals -->
+                <div class="space-y-2 text-xs">
+                  <div class="p-3 bg-orange-50/60 border border-orange-100 rounded-xl">
+                    <span class="font-['Space_Grotesk'] font-bold text-[#F37021] block mb-0.5">Sở thích cá nhân:</span>
+                    <p id="res-interests" class="text-slate-700 leading-relaxed">-</p>
+                  </div>
+                  <div class="p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl">
+                    <span class="font-['Space_Grotesk'] font-bold text-[#00A859] block mb-0.5">Năng lực, điểm mạnh:</span>
+                    <p id="res-strengths" class="text-slate-700 leading-relaxed">-</p>
+                  </div>
+                  <div class="p-3 bg-blue-50/60 border border-blue-100 rounded-xl">
+                    <span class="font-['Space_Grotesk'] font-bold text-[#0072BC] block mb-0.5">Định hướng nghề nghiệp:</span>
+                    <p id="res-goals" class="text-slate-700 leading-relaxed">-</p>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 2. NGÀNH PHÙ HỢP TẠI CÁC TRƯỜNG -->
+          <div class="bg-white rounded-3xl shadow-lg border border-slate-200/80 overflow-hidden">
+            <div class="h-1.5 w-full bg-[#00A859]"></div>
+
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-[#00A859] font-bold flex items-center justify-center text-sm font-['Space_Grotesk']">2</div>
+                  <h2 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base sm:text-lg">Ngành phù hợp tại các trường</h2>
+                </div>
+                <span class="px-2.5 py-1 rounded-none bg-emerald-100 text-[#00A859] text-[11px] font-bold">Mô hình Holland</span>
+              </div>
+
+              <!-- Holland Score Pills -->
+              <div class="mb-4">
+                <div class="text-xs text-slate-500 mb-2 font-semibold">Kết quả phân tích RIASEC của bạn:</div>
+                <div class="flex flex-wrap gap-2 text-xs">
+                  <span id="pill-code" class="px-3 py-1.5 rounded-none bg-[#0072BC] text-white font-bold font-['Space_Grotesk']">Mã Holland: -</span>
+                  <span id="pill-r" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">R: 0</span>
+                  <span id="pill-i" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">I: 0</span>
+                  <span id="pill-a" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">A: 0</span>
+                  <span id="pill-s" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">S: 0</span>
+                  <span id="pill-e" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">E: 0</span>
+                  <span id="pill-c" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">C: 0</span>
+                </div>
+              </div>
+
+              <!-- Personality Description -->
+              <div class="space-y-3 mb-4">
+                <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
+                  <h4 class="font-['Space_Grotesk'] font-bold text-[#0072BC] mb-1">Nhóm Thực tế - Kỹ thuật (R)</h4>
+                  <p class="text-slate-600 leading-relaxed">Thực tế, ưa hành động cụ thể, tỉ mỉ, thích khám phá và thao tác với hệ thống công việc rõ ràng.</p>
+                </div>
+                <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
+                  <h4 class="font-['Space_Grotesk'] font-bold text-[#00A859] mb-1">Nhóm Xã hội (S)</h4>
+                  <p class="text-slate-600 leading-relaxed">Quảng giao, biết lắng nghe, kiên nhẫn, thích tương tác, hỗ trợ và làm việc cùng đồng đội.</p>
+                </div>
+                <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
+                  <h4 class="font-['Space_Grotesk'] font-bold text-[#F37021] mb-1">Nhóm Nghệ thuật (A)</h4>
+                  <p class="text-slate-600 leading-relaxed">Sáng tạo, giàu cảm xúc, linh hoạt và luôn dồi dào ý tưởng mới lạ trong công việc.</p>
+                </div>
+              </div>
+
+              <!-- Phù hợp khối công việc -->
+              <div class="mb-4">
+                <h4 class="font-['Space_Grotesk'] text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Khối công việc phù hợp:</h4>
+                <div class="flex flex-wrap gap-1.5 text-[11px]">
+                  <span class="px-2.5 py-1 rounded-none bg-blue-50 text-[#0072BC] font-semibold border border-blue-100">Kinh tế & Quản trị kinh doanh</span>
+                  <span class="px-2.5 py-1 rounded-none bg-orange-50 text-[#F37021] font-semibold border border-orange-100">Marketing & Truyền thông</span>
+                  <span class="px-2.5 py-1 rounded-none bg-emerald-50 text-[#00A859] font-semibold border border-emerald-100">Công nghệ & Trí tuệ nhân tạo</span>
+                  <span class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">Tài chính - Ngân hàng số</span>
+                </div>
+              </div>
+
+              <!-- Các trường phù hợp -->
+              <div>
+                <h4 class="font-['Space_Grotesk'] text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Các trường đại học phù hợp:</h4>
+                <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+                  <li><strong class="text-[#0072BC]">Trường Đại học Kinh tế - ĐH Đà Nẵng (DUE)</strong></li>
+                  <li>Trường Đại học Kinh tế Quốc dân (NEU)</li>
+                  <li>Trường Đại học Ngoại thương (FTU)</li>
+                  <li>Trường Đại học Kinh tế TP. Hồ Chí Minh (UEH)</li>
+                  <li>Trường Đại học Bách khoa - ĐH Đà Nẵng</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 3. TOP 3 NGÀNH PHÙ HỢP TẠI DUE -->
+          <div class="bg-gradient-to-br from-white to-blue-50/50 rounded-3xl shadow-lg border border-blue-200/80 overflow-hidden">
+            <div class="h-1.5 w-full bg-gradient-to-r from-[#F37021] to-[#0072BC]"></div>
+
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-blue-100">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F37021] to-[#0072BC] text-white font-bold flex items-center justify-center text-sm font-['Space_Grotesk']">3</div>
+                  <h2 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base sm:text-lg">Top 3 ngành phù hợp tại DUE</h2>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                
+                <!-- Ngành 1 -->
+                <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-orange-100 text-[#F37021] flex items-center justify-center font-bold flex-shrink-0 text-sm font-['Space_Grotesk']">#1</div>
+                  <div>
+                    <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-sm">Marketing & Thương mại điện tử</h4>
+                    <p class="text-xs text-slate-500 mt-0.5">Phù hợp tính cách sáng tạo, thích giao tiếp và năng động dẫn đầu.</p>
+                    <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-emerald-50 text-[#00A859] text-[10px] font-bold">Chuẩn Quốc tế AUN-QA</span>
+                  </div>
+                </div>
+
+                <!-- Ngành 2 -->
+                <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-blue-100 text-[#0072BC] flex items-center justify-center font-bold flex-shrink-0 text-sm font-['Space_Grotesk']">#2</div>
+                  <div>
+                    <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-sm">Khoa học dữ liệu & Kinh tế số</h4>
+                    <p class="text-xs text-slate-500 mt-0.5">Dành cho bạn đam mê kỹ thuật thực hành, tư duy logic và ứng dụng công nghệ 4.0.</p>
+                    <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-blue-50 text-[#0072BC] text-[10px] font-bold">Ngành mũi nhọn 2026</span>
+                  </div>
+                </div>
+
+                <!-- Ngành 3 -->
+                <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-emerald-100 text-[#00A859] flex items-center justify-center font-bold flex-shrink-0 text-sm font-['Space_Grotesk']">#3</div>
+                  <div>
+                    <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-sm">Kinh doanh quốc tế</h4>
+                    <p class="text-xs text-slate-500 mt-0.5">Môi trường toàn cầu, giao thoa văn hóa, phát triển kỹ năng đàm phán và lãnh đạo.</p>
+                    <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-orange-50 text-[#F37021] text-[10px] font-bold">98.5% Việc làm</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 4. THÔNG TIN CHI TIẾT TẠI DUE -->
+          <div class="bg-white rounded-3xl shadow-lg border border-slate-200/80 p-6">
+            <div class="flex items-center gap-2.5 mb-4 pb-3 border-b border-slate-100">
+              <div class="w-8 h-8 rounded-lg bg-orange-100 text-[#F37021] font-bold flex items-center justify-center text-sm font-['Space_Grotesk']">4</div>
+              <h2 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base sm:text-lg">Kênh thông tin tuyển sinh DUE</h2>
+            </div>
+            
+            <div class="space-y-3 text-xs">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-none bg-blue-50 text-[#1877F2] flex items-center justify-center flex-shrink-0 border border-blue-100">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.52-.14-2.858-.14C11.83 2 10 3.69 10 6.64v2.86H7v4h3V22h4v-8.5z"/></svg>
+                </span>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Fanpage tuyển sinh:</span>
+                  <a href="https://facebook.com/FaceDue" target="_blank" class="font-bold text-[#0072BC] hover:underline">facebook.com/FaceDue</a>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-none bg-emerald-50 text-[#00A859] flex items-center justify-center flex-shrink-0 border border-emerald-100">
+                  <span class="material-symbols-outlined text-[16px]">language</span>
+                </span>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Cổng thông tin tuyển sinh:</span>
+                  <a href="https://tuyensinh.due.udn.vn" target="_blank" class="font-bold text-[#00A859] hover:underline">tuyensinh.due.udn.vn</a>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-none bg-orange-50 text-[#F37021] flex items-center justify-center flex-shrink-0 border border-orange-100">
+                  <span class="material-symbols-outlined text-[16px]">call</span>
+                </span>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Hotline tư vấn tuyển sinh:</span>
+                  <a href="tel:02363836169" class="font-bold text-[#F37021]">0236 3836 169 - 0236 3847 139</a>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-none bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0 border border-purple-100">
+                  <span class="material-symbols-outlined text-[16px]">mail</span>
+                </span>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Email hỗ trợ:</span>
+                  <a href="mailto:tuyensinh@due.edu.vn" class="font-bold text-slate-700 hover:underline">tuyensinh@due.edu.vn</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full bg-[#ecf2f4] text-slate-700">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
+        <div class="flex flex-col gap-4">
+          <img alt="Đại học Đà Nẵng - Trường Đại học Kinh tế" class="h-12 w-auto object-contain self-start" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCO-sFEetr8emQqqsYaLmosqozUnl9MmLOQL3O8C6nLwNTCGwkBEvHHro7NovxnwjqKxqoQ1SAybFP484PzZJ_a0ZvmNeotxK241NnYG7laj3HbKCol13J9V2QNIArmLUOYtyLimXeSEPePujSjKxJAOLW3JA9JQBerqcvEnSWowiVkzcNdXP8NLq311SsKwv40ejY1RhtY9Y0YEUKea2E_JvuT-h8juEUMUeHxF9vUjhryfLWR3nVhQ">
+          <div class="flex flex-col gap-1.5 mt-1 text-sm">
+            <p class="font-semibold text-[#003366]">71 Ngũ Hành Sơn, Bắc Mỹ An, Ngũ Hành Sơn, Đà Nẵng</p>
+            <p class="font-bold text-[#003366]">SĐT: 0236 3836 169</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base">Tìm hiểu về chúng tôi</h4>
+          <ul class="flex flex-col gap-2 text-sm text-slate-600">
+            <li class="hover:text-[#0072BC] transition-colors"><a href="/">Thông tin tuyển sinh</a></li>
+            <li class="hover:text-[#0072BC] transition-colors"><a href="#">Các chương trình đào tạo</a></li>
+          </ul>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base">Các liên kết khác</h4>
+          <ul class="flex flex-col gap-2 text-sm text-slate-600">
+            <li class="hover:text-[#0072BC] transition-colors"><a href="https://due.udn.vn" target="_blank">E-learning DUE</a></li>
+            <li class="hover:text-[#0072BC] transition-colors"><a href="https://lib.due.udn.vn" target="_blank">Thư viện số DUE</a></li>
+          </ul>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base">Kết nối với DUE</h4>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-slate-600">
+            <a class="flex items-center gap-2 hover:opacity-80 transition-opacity" href="https://facebook.com/FaceDue" target="_blank">
+              <svg class="w-5 h-5 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.52-.14-2.858-.14C11.83 2 10 3.69 10 6.64v2.86H7v4h3V22h4v-8.5z"/></svg>
+              <span>Facebook</span>
+            </a>
+            <a class="flex items-center gap-2 hover:opacity-80 transition-opacity" href="#" target="_blank">
+              <svg class="w-5 h-5 text-[#FF0000]" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+              <span>Youtube</span>
+            </a>
+            <a class="flex items-center gap-2 hover:opacity-80 transition-opacity" href="#" target="_blank">
+              <svg class="w-5 h-5 text-[#0A66C2]" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              <span>LinkedIn</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <!-- ================================================
+       MODAL 1: HƯỚNG DẪN NHẬP HỌC
+       ================================================ -->
+  <div
+    id="huong-dan-modal-backdrop"
+    style="position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:8px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);"
+    aria-modal="true"
+    role="dialog"
+    aria-labelledby="huong-dan-modal-title"
+  >
+    <div
+      id="huong-dan-modal"
+      style="position:relative;width:100%;max-width:1020px;max-height:94vh;height:94vh;background:#fff;border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,0.18);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:scale(0.97) translateY(12px);transition:opacity .22s ease,transform .22s ease;"
+    >
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #f1f5f9;background:#fff;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:#dbeafe;display:flex;align-items:center;justify-content:center;color:#0072BC;flex-shrink:0;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div>
+            <h3 id="huong-dan-modal-title" style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#1e293b;font-size:17px;line-height:1.3;">Hướng dẫn nhập học</h3>
+            <p style="margin:3px 0 0;font-size:12px;color:#94a3b8;">Tân sinh viên Khóa 52K – Tuyển sinh năm 2026</p>
+          </div>
+        </div>
+        <button
+          onclick="closeHuongDanModal()"
+          style="width:36px;height:36px;border-radius:50%;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;color:#94a3b8;cursor:pointer;transition:all .15s;flex-shrink:0;"
+          onmouseover="this.style.background='#fef2f2';this.style.borderColor='#fca5a5';this.style.color='#ef4444'"
+          onmouseout="this.style.background='#f8fafc';this.style.borderColor='#e2e8f0';this.style.color='#94a3b8'"
+          aria-label="Đóng"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div style="flex:1;overflow-y:auto;background:#f8fafc;">
+        <div style="max-width:900px;margin:0 auto;padding:24px 20px 40px;">
+          <div style="background:#fff;border-radius:16px;box-shadow:0 1px 6px rgba(0,0,0,0.06);border:1px solid #f1f5f9;padding:28px 24px;">
+            {% include 'enrollment-guide.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================
+       MODAL 2: LỊCH TRÌNH CỦA TÂN SINH VIÊN
+       ================================================ -->
+  <div
+    id="lich-trinh-modal-backdrop"
+    style="position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:8px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);"
+    aria-modal="true"
+    role="dialog"
+    aria-labelledby="lich-trinh-modal-title"
+  >
+    <div
+      id="lich-trinh-modal"
+      style="position:relative;width:100%;max-width:1020px;max-height:94vh;height:94vh;background:#fff;border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,0.18);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:scale(0.97) translateY(12px);transition:opacity .22s ease,transform .22s ease;"
+    >
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #f1f5f9;background:#fff;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:#fef3c7;display:flex;align-items:center;justify-content:center;color:#d97706;flex-shrink:0;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div>
+            <h3 id="lich-trinh-modal-title" style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#1e293b;font-size:17px;line-height:1.3;">Lịch trình của Tân sinh viên</h3>
+            <p style="margin:3px 0 0;font-size:12px;color:#94a3b8;">Khóa 52K – Tuyển sinh năm 2026</p>
+          </div>
+        </div>
+        <button
+          onclick="closeLichTrinhModal()"
+          style="width:36px;height:36px;border-radius:50%;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;color:#94a3b8;cursor:pointer;transition:all .15s;flex-shrink:0;"
+          onmouseover="this.style.background='#fef2f2';this.style.borderColor='#fca5a5';this.style.color='#ef4444'"
+          onmouseout="this.style.background='#f8fafc';this.style.borderColor='#e2e8f0';this.style.color='#94a3b8'"
+          aria-label="Đóng"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div style="flex:1;overflow-y:auto;background:#f8fafc;">
+        <div style="max-width:900px;margin:0 auto;padding:24px 20px 40px;">
+          <div style="background:#fff;border-radius:16px;box-shadow:0 1px 6px rgba(0,0,0,0.06);border:1px solid #f1f5f9;padding:28px 24px;">
+            {% include 'freshman-schedule.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================
+       SCRIPTS: Form Handling + Modal + Dropdown + Toast
+       ================================================ -->
+  <script>
+    /* ---- Toast logic (Không bo góc) ---- */
+    var toastTimeout = null;
+
+    function showToast() {
+      var toast = document.getElementById('toast-notification');
+      var progressBar = document.getElementById('toast-progress-bar');
+      
+      if (toastTimeout) {
+        clearTimeout(toastTimeout);
+      }
+
+      // Reset animation on bar
+      progressBar.classList.remove('toast-progress-active');
+      void progressBar.offsetWidth; // trigger reflow
+      progressBar.classList.add('toast-progress-active');
+
+      toast.classList.remove('hide-toast');
+      toast.classList.add('show-toast');
+
+      toastTimeout = setTimeout(function () {
+        hideToast();
+      }, 3500);
+    }
+
+    function hideToast() {
+      var toast = document.getElementById('toast-notification');
+      toast.classList.remove('show-toast');
+      toast.classList.add('hide-toast');
+      if (toastTimeout) clearTimeout(toastTimeout);
+    }
+
+    /* ---- Dropdown Nav ---- */
+    (function () {
+      var btn      = document.getElementById('nav-ttts-btn');
+      var dropdown = document.getElementById('nav-ttts-dropdown');
+      var chevron  = document.getElementById('nav-ttts-chevron');
+      var isOpen   = false;
+
+      function positionDropdown() {
+        var rect = btn.getBoundingClientRect();
+        dropdown.style.top  = (rect.bottom + 6) + 'px';
+        dropdown.style.left = rect.left + 'px';
+      }
+
+      function openDropdown() {
+        positionDropdown();
+        isOpen = true;
+        dropdown.style.display = 'block';
+        chevron.style.transform = 'rotate(180deg)';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      function closeDropdown() {
+        isOpen = false;
+        dropdown.style.display = 'none';
+        chevron.style.transform = '';
+        btn.setAttribute('aria-expanded', 'false');
+      }
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        isOpen ? closeDropdown() : openDropdown();
+      });
+      document.addEventListener('click', function (e) {
+        if (!dropdown.contains(e.target) && e.target !== btn) closeDropdown();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeDropdown();
+      });
+    })();
+
+    /* ---- Modal Hướng dẫn nhập học ---- */
+        /* ---- Modal 1: Hướng dẫn nhập học ---- */
+    var _hdBackdrop = document.getElementById('huong-dan-modal-backdrop');
+    var _hdModal    = document.getElementById('huong-dan-modal');
+
+    function openHuongDanModal() {
+      document.getElementById('nav-ttts-dropdown').style.display = 'none';
+      _hdBackdrop.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          _hdModal.style.opacity   = '1';
+          _hdModal.style.transform = 'scale(1) translateY(0)';
+        });
+      });
+    }
+
+    function closeHuongDanModal() {
+      _hdModal.style.opacity   = '0';
+      _hdModal.style.transform = 'scale(0.97) translateY(12px)';
+      setTimeout(function () {
+        _hdBackdrop.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 220);
+    }
+
+    if (_hdBackdrop) {
+      _hdBackdrop.addEventListener('click', function (e) {
+        if (e.target === _hdBackdrop) closeHuongDanModal();
+      });
+    }
+
+    /* ---- Modal 2: Lịch trình của Tân sinh viên ---- */
+    var _ltBackdrop = document.getElementById('lich-trinh-modal-backdrop');
+    var _ltModal    = document.getElementById('lich-trinh-modal');
+
+    function openLichTrinhModal() {
+      document.getElementById('nav-ttts-dropdown').style.display = 'none';
+      _ltBackdrop.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          _ltModal.style.opacity   = '1';
+          _ltModal.style.transform = 'scale(1) translateY(0)';
+        });
+      });
+    }
+
+    function closeLichTrinhModal() {
+      _ltModal.style.opacity   = '0';
+      _ltModal.style.transform = 'scale(0.97) translateY(12px)';
+      setTimeout(function () {
+        _ltBackdrop.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 220);
+    }
+
+    if (_ltBackdrop) {
+      _ltBackdrop.addEventListener('click', function (e) {
+        if (e.target === _ltBackdrop) closeLichTrinhModal();
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        if (_hdBackdrop && _hdBackdrop.style.display === 'flex') closeHuongDanModal();
+        if (_ltBackdrop && _ltBackdrop.style.display === 'flex') closeLichTrinhModal();
+      }
+    });
+
+    /* ---- FORM SUBMIT & HOLLAND SCORING ---- */
+    function handleFormSubmit(event) {
+      event.preventDefault();
+
+      // Collect form values
+      var fullName   = document.getElementById('full_name').value.trim();
+      var gender     = document.getElementById('gender').value;
+      var dob        = document.getElementById('date_of_birth').value;
+      var phone      = document.getElementById('phone_number').value.trim();
+      var email      = document.getElementById('email').value.trim();
+      var school     = document.getElementById('high_school').value.trim();
+      var province   = document.getElementById('province').value;
+      var address    = document.getElementById('address').value.trim();
+      var interests  = document.getElementById('interests').value.trim();
+      var strengths  = document.getElementById('strengths').value.trim();
+      var goals      = document.getElementById('career_goals').value.trim();
+
+      // Format date
+      var formattedDob = dob;
+      if (dob) {
+        var parts = dob.split('-');
+        if (parts.length === 3) formattedDob = parts[2] + '/' + parts[1] + '/' + parts[0];
+      }
+
+      // Populate right card 1 (Tóm tắt hồ sơ)
+      document.getElementById('res-full-name').textContent = fullName;
+      document.getElementById('res-gender').textContent    = gender;
+      document.getElementById('res-dob').textContent       = formattedDob;
+      document.getElementById('res-phone').textContent     = phone;
+      document.getElementById('res-email').textContent     = email;
+      document.getElementById('res-school').textContent    = school;
+      document.getElementById('res-province').textContent  = province;
+      document.getElementById('res-address').textContent   = address;
+      document.getElementById('res-interests').textContent = interests;
+      document.getElementById('res-strengths').textContent = strengths;
+      document.getElementById('res-goals').textContent     = goals;
+
+      // Calculate Holland RIASEC Scores
+      var scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+      var answeredCount = 0;
+      for (var i = 1; i <= 6; i++) {
+        var selected = document.querySelector('input[name="holland_q' + i + '"]:checked');
+        if (selected && selected.value) {
+          scores[selected.value] = (scores[selected.value] || 0) + 1;
+          answeredCount++;
+        }
+      }
+
+      // Update RIASEC Pills
+      document.getElementById('pill-r').textContent = 'R: ' + scores.R;
+      document.getElementById('pill-i').textContent = 'I: ' + scores.I;
+      document.getElementById('pill-a').textContent = 'A: ' + scores.A;
+      document.getElementById('pill-s').textContent = 'S: ' + scores.S;
+      document.getElementById('pill-e').textContent = 'E: ' + scores.E;
+      document.getElementById('pill-c').textContent = 'C: ' + scores.C;
+
+      // Find top 3 Holland letters if any answered
+      if (answeredCount > 0) {
+        var sortedKeys = Object.keys(scores).sort(function(a, b) {
+          return scores[b] - scores[a];
+        });
+        var hollandCode = sortedKeys.slice(0, 3).join('');
+        document.getElementById('pill-code').textContent = 'Mã Holland: ' + hollandCode;
+      } else {
+        document.getElementById('pill-code').textContent = 'Mã Holland: Chưa làm trắc nghiệm';
+      }
+
+      // Switch state from Empty to Filled
+      document.getElementById('profile-empty-state').classList.add('hidden');
+      document.getElementById('profile-filled-state').classList.remove('hidden');
+      
+      var badge = document.getElementById('profile-status-badge');
+      badge.textContent = 'Đã lưu hồ sơ';
+      badge.className = 'px-2.5 py-1 rounded-none bg-emerald-100 text-[#00A859] text-xs font-bold';
+
+      // Smooth scroll to results on mobile
+      if (window.innerWidth < 1024) {
+        document.getElementById('profile-filled-state').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Trigger modern Sharp Toast notification
+      showToast();
+    }
+  </script>
+
+
+  <!-- ====================================================
+       FLOATING AI CHATBOT BUBBLE WIDGET
+       ==================================================== -->
+  <div class="fixed bottom-6 right-6 z-50 flex items-center justify-center group">
+    <div class="absolute right-full mr-4 bg-white px-4 py-2.5 rounded-2xl shadow-xl shadow-blue-900/10 border border-slate-100 flex-col items-end w-max pointer-events-none hidden md:flex transition-transform duration-200" style="transform: translateX(10px);">
+      <span class="text-xs font-semibold text-slate-500 mb-0.5">Bạn cần hỗ trợ tuyển sinh?</span>
+      <span class="text-sm font-extrabold text-[#0072BC] tracking-tight flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-[#00A859] animate-pulse"></span>
+        Chat ngay với DUE
+      </span>
+      <div class="absolute top-1/2 -right-1.5 -translate-y-1/2 border-y-[6px] border-y-transparent border-l-[6px] border-l-white drop-shadow-sm"></div>
+    </div>
+    <a href="/chatbot/" class="group relative flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-[#003366] via-[#0072BC] to-[#F37021] text-white rounded-full shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 hover:scale-105 transition-all" tabindex="0" title="Chat với AI Tuyển sinh DUE">
+      <div class="absolute inset-0 bg-[#0072BC] rounded-full animate-ping opacity-35 pointer-events-none"></div>
+      <div class="relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full">
+        <span class="material-symbols-outlined text-[26px]">smart_toy</span>
+        <span class="text-[9px] font-extrabold tracking-tighter uppercase -mt-0.5">AI DUE</span>
+      </div>
+    </a>
+  </div>
+
+</body>
+</html>
