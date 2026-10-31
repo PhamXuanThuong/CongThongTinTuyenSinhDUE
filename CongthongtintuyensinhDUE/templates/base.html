@@ -363,13 +363,8 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div style="flex:1;overflow:hidden;position:relative;">
-        <iframe
-          src="/enrollment-guide/"
-          style="width:100%;height:100%;border:none;display:block;"
-          title="Nội dung Hướng dẫn nhập học"
-          loading="lazy"
-        ></iframe>
+      <div style="flex:1;overflow-y:auto;padding:24px 28px;background:#fff;" class="custom-modal-scroll">
+        {% include "enrollment-guide.html" %}
       </div>
     </div>
   </div>
@@ -408,13 +403,8 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div style="flex:1;overflow:hidden;position:relative;">
-        <iframe
-          src="/freshman-schedule/"
-          style="width:100%;height:100%;border:none;display:block;"
-          title="Nội dung Lịch trình Tân sinh viên"
-          loading="lazy"
-        ></iframe>
+      <div style="flex:1;overflow-y:auto;padding:24px 28px;background:#fff;" class="custom-modal-scroll">
+        {% include "freshman-schedule.html" %}
       </div>
     </div>
   </div>
@@ -568,3 +558,4 @@
   {% block extra_js %}{% endblock %}
 </body>
 </html>
+
