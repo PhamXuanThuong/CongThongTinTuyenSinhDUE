@@ -6,78 +6,39 @@
 
 {% block extra_head %}
 <style>
-    @layer base {
-      html, body {
-        margin: 0;
-        padding: 0;
-        scroll-behavior: smooth;
-        font-family: 'Be Vietnam Pro', sans-serif;
-      }
-      body {
-        overscroll-behavior: none;
-      }
-      h1, h2, h3, h4, .font-heading {
-        font-family: 'Space Grotesk', sans-serif;
-      }
-    }
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-    @keyframes marquee {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-50%); }
-    }
-    .marquee-track {
-      display: inline-flex;
-      white-space: nowrap;
-      animation: marquee 25s linear infinite;
-    }
-    .marquee-track:hover {
-      animation-play-state: paused;
-    }
-    /* Option card active effect */
-    .holland-option-card input:checked + .holland-option-content {
-      border-color: #00A859 !important;
-      background: #f0faf4 !important;
-      box-shadow: 0 0 0 1.5px #00A859 !important;
-    }
-    .holland-option-card input:checked + .holland-option-content .holland-badge {
-      background: #00A859 !important;
-      color: #ffffff !important;
-    }
-    /* Sharp Toast styling */
-    #toast-notification {
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-    }
-    #toast-notification.hide-toast {
-      transform: translateX(120%);
-      opacity: 0;
-      pointer-events: none;
-    }
-    #toast-notification.show-toast {
-      transform: translateX(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-    @keyframes toast-progress {
-      from { width: 100%; }
-      to { width: 0%; }
-    }
-    .toast-progress-active {
-      animation: toast-progress 3.5s linear forwards;
-    }
-  </style>
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: marquee 25s linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+  /* Option card active effect */
+  .holland-option-card input:checked + .holland-option-content {
+    border-color: #00A859 !important;
+    background: #f0faf4 !important;
+    box-shadow: 0 0 0 1.5px #00A859 !important;
+  }
+  .holland-option-card input:checked + .holland-option-content .holland-badge {
+    background: #00A859 !important;
+    color: #ffffff !important;
+  }
+  /* Sharp Toast styling */
+  #toast-notification {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #toast-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
