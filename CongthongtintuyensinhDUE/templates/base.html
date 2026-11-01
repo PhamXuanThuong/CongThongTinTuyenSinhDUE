@@ -111,6 +111,25 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+        /* Nút chấm tròn (Bullet dot) dùng chung cho tất cả Dropdown menu: Bình thường xám, rơ chuột vào cam */
+    .due-nav-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #94a3b8; /* Bình thường màu xám */
+      display: inline-block;
+      flex-shrink: 0;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .due-dropdown-link:hover .due-nav-bullet,
+    .nav-khoa-item:hover .due-nav-bullet,
+    .dcsv-item:hover .due-nav-bullet,
+    a:hover > .due-nav-bullet,
+    button:hover > .due-nav-bullet {
+      background-color: #fd761a !important; /* Khi rơ chuột vào là màu cam */
+      transform: scale(1.25);
+    }
+
     /* Style cho Dropdown KHOA */
     .nav-khoa-panel {
       position: fixed;
@@ -299,23 +318,133 @@
             <input class="w-full pl-10 pr-4 py-2 bg-surface-container-low text-on-surface rounded-full font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" placeholder="Tìm kiếm..." type="text">
             <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
           </div>
-          <a class="flex items-center gap-space-xs px-4 py-2 rounded-full bg-surface-container-high hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors" data-path="login" href="#">
-            <span class="material-symbols-outlined text-[18px]">login</span>
-            <span>Đăng nhập</span>
-          </a>
-          <a href="#" class="w-10 h-10 rounded-full bg-[#f0f4f9] hover:bg-[#e4ebf5] border border-slate-200/80 flex items-center justify-center transition-all shadow-sm" title="Tài khoản cá nhân">
-            <svg class="w-[26px] h-[26px] text-[#505763]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="9.5"></circle>
-              <circle cx="12" cy="9.5" r="3.2"></circle>
-              <path d="M6.5 17.6a6.6 6.6 0 0 1 11 0"></path>
-            </svg>
-          </a>
+          {% if user.is_authenticated %}
+          <div class="relative group">
+            <button class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-container text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-primary transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[18px]">account_circle</span>
+              <span>{{ user.first_name|default:user.username }}</span>
+              <span class="material-symbols-outlined text-[16px]">expand_more</span>
+            </button>
+            <div class="absolute right-0 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 min-w-[200px]">
+              <div class="bg-white rounded-2xl shadow-xl border border-slate-200 py-2 overflow-hidden">
+                <div class="px-4 py-2 border-b border-slate-100 text-[11px] text-slate-500">
+                  Đăng nhập: <strong class="text-slate-800">{{ user.username }}</strong>
+                </div>
+                {% if user.is_staff %}
+                <a href="/admin/" class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors font-semibold">
+                  <span class="material-symbols-outlined text-[18px] text-blue-600">dashboard</span>
+                  <span>Trang quản trị Admin</span>
+                </a>
+                {% endif %}
+                <a href="{% url 'tuyensinh:dang_xuat' %}" class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-red-600 hover:bg-red-50 transition-colors font-semibold">
+                  <span class="material-symbols-outlined text-[18px]">logout</span>
+                  <span>Đăng xuất</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <!-- Authentication & Login Popover Dropdown -->
+          <div class="relative" id="dueLoginContainer">
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <button type="button" onclick="toggleDueLoginPopover(event)" class="text-[#0056b3] hover:text-[#003d82] text-xs sm:text-sm font-semibold transition-colors cursor-pointer py-1 px-1">
+                Đăng nhập
+              </button>
+              <button type="button" onclick="toggleDueLoginPopover(event)" id="dueAvatarBtn" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-300 flex items-center justify-center transition-all shadow-sm cursor-pointer relative" title="Đăng nhập tài khoản">
+                <svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-5.5-2.2c.3-1.6 1.8-2.8 3.5-2.8h4c1.7 0 3.2 1.2 3.5 2.8A8 8 0 0 1 12 20z"></path>
+                  <circle cx="12" cy="9" r="3.2"></circle>
+                </svg>
+              </button>
+            </div>
+
+            <!-- THE EXACT POPOVER CARD AS IN SCREENSHOT -->
+            <div id="dueLoginPopover" class="hidden absolute right-0 top-full mt-2 w-[285px] sm:w-[310px] max-w-[calc(100vw-24px)] bg-white rounded-md shadow-[0_10px_25px_-5px_rgba(0,0,0,0.25),0_8px_10px_-6px_rgba(0,0,0,0.15)] border border-slate-200 z-[120] text-slate-800 transition-all select-none">
+              
+              <!-- Upward Caret Pointer pointing directly up to the avatar -->
+              <div class="absolute -top-[7px] right-[13px] sm:right-[15px] w-3.5 h-3.5 bg-white border-t border-l border-slate-200 transform rotate-45 z-20"></div>
+
+              <div class="relative z-10 pt-4 px-4 pb-0">
+                <!-- Feedback Alert inside Popover -->
+                <div id="popoverAlert" class="hidden mb-3 p-2 rounded text-xs leading-normal"></div>
+
+                <form id="dueLoginForm" onsubmit="handleDueLoginSubmit(event)">
+                  <!-- Tên đăng nhập -->
+                  <div class="relative mb-3">
+                    <input type="text" id="p_username" name="username" placeholder="Tên đăng nhập" required autocomplete="username"
+                           class="w-full px-3 py-2 pr-9 text-xs sm:text-sm text-slate-800 bg-white border border-[#ced4da] rounded focus:outline-none focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3] placeholder:text-slate-400 transition-colors">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-slate-400">
+                      <!-- User silhouette icon like the screenshot -->
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </div>
+
+                  <!-- Mật khẩu -->
+                  <div class="relative mb-3">
+                    <input type="password" id="p_password" name="password" placeholder="Mật khẩu" required autocomplete="current-password"
+                           class="w-full px-3 py-2 pr-9 text-xs sm:text-sm text-slate-800 bg-white border border-[#ced4da] rounded focus:outline-none focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3] placeholder:text-slate-400 transition-colors">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-slate-400">
+                      <!-- Lock icon like the screenshot -->
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </div>
+
+                  <!-- Ghi nhớ tài khoản -->
+                  <div class="flex items-center mb-3">
+                    <input id="p_remember" name="remember" type="checkbox" class="w-4 h-4 text-[#0056b3] border-slate-300 rounded focus:ring-[#0056b3] cursor-pointer">
+                    <label for="p_remember" class="ml-2 text-xs text-slate-700 cursor-pointer select-none">Ghi nhớ tài khoản</label>
+                  </div>
+
+                  <!-- Demo accounts shortcut -->
+                  <div class="flex items-center justify-between text-[11px] text-slate-500 mb-3 bg-[#f8f9fa] px-2 py-1 rounded border border-slate-200/70">
+                    <span class="text-slate-400">Tài khoản mẫu:</span>
+                    <div class="space-x-1 font-medium">
+                      <button type="button" onclick="quickFillCreds('thisinh2026','thisinh123')" class="text-[#0056b3] hover:underline cursor-pointer">Thí sinh</button>
+                      <span class="text-slate-300">|</span>
+                      <button type="button" onclick="quickFillCreds('canbo','canbo123')" class="text-[#0056b3] hover:underline cursor-pointer">Cán bộ</button>
+                      <span class="text-slate-300">|</span>
+                      <button type="button" onclick="quickFillCreds('admin','admin123')" class="text-[#0056b3] hover:underline cursor-pointer">Admin</button>
+                    </div>
+                  </div>
+
+                  <!-- LOGIN button (solid blue like screenshot) -->
+                  <button type="submit" id="p_submit_btn" class="w-full py-2 px-4 bg-[#0056b3] hover:bg-[#004494] active:bg-[#003366] text-white font-bold text-sm rounded shadow-sm transition-colors cursor-pointer text-center">
+                    Đăng nhập
+                  </button>
+                </form>
+              </div>
+
+              <!-- Quên mật khẩu footer section (exact as screenshot) -->
+              <div class="bg-[#f8f9fa] px-4 py-2.5 border-t border-slate-200 mt-3 rounded-b-md text-left">
+                <a href="javascript:void(0)" onclick="alert('Quý thí sinh hoặc cán bộ vui lòng liên hệ Ban Đào tạo & Tuyển sinh DUE qua Hotline (0236) 3836 169 để được hỗ trợ cấp lại mật khẩu.')" class="text-xs text-[#0056b3] hover:underline font-normal">
+                  Quên mật khẩu?
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
       <div class="h-12 flex items-center justify-between overflow-x-auto" style="overflow: visible;">
         <nav class="flex items-center gap-space-lg h-full" data-active-classes="text-secondary-container font-headline-sm border-b-2 border-secondary-container">
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap font-bold {% block nav_home %}text-on-surface-variant hover:text-primary-container{% endblock %}" data-path="trang-chu" href="/">TRANG CHỦ</a>
-          <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="gioi-thieu" href="#">GIỚI THIỆU</a>
+          <!-- GIỚI THIỆU - Dropdown -->
+          <div class="relative h-full flex items-center" id="nav-gioithieu">
+            <button
+              class="h-full flex items-center gap-1 font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap focus:outline-none cursor-pointer"
+              aria-haspopup="true"
+              aria-expanded="false"
+              id="nav-gioithieu-btn"
+              type="button"
+            >
+              GIỚI THIỆU
+              <svg id="nav-gioithieu-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
           <!-- THÔNG TIN TUYỂN SINH - Dropdown -->
           <div class="relative h-full flex items-center" id="nav-ttts">
             <button
@@ -362,31 +491,110 @@
     </div>
   </header>
 
-  <!-- Dropdown panel for THÔNG TIN TUYỂN SINH -->
+      <!-- Dropdown panel for GIỚI THIỆU -->
   <div
-    id="nav-ttts-dropdown"
+    id="nav-gioithieu-dropdown"
     style="position:fixed;display:none;z-index:9999;width:245px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12);border:1px solid #e2e8f0;padding:6px 0;"
     role="menu"
   >
-    <button
-      onclick="openHuongDanModal()"
-      style="width:100%;display:block;padding:10px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+    <a
+      href="/lich-su-phat-trien/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      Hướng dẫn nhập học
-    </button>
+      <span class="due-nav-bullet"></span>
+      <span>Lịch sử phát triển</span>
+    </a>
     <div style="height:1px;background:#f1f5f9;margin:3px 0;"></div>
-    <button
-      onclick="openLichTrinhModal()"
-      style="width:100%;display:block;padding:10px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+    <a
+      href="/su-mang-tam-nhin/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      Lịch trình của Tân sinh viên
-    </button>
+      <span class="due-nav-bullet"></span>
+      <span>Sứ mạng, tầm nhìn</span>
+    </a>
+  </div>
+
+  <!-- Dropdown panel for THÔNG TIN TUYỂN SINH -->
+  <div
+    id="nav-ttts-dropdown"
+    style="position:fixed;display:none;z-index:9999;width:260px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12);border:1px solid #e2e8f0;padding:6px 0;"
+    role="menu"
+  >
+    <a
+      href="/phuong-thuc-xet-tuyen/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
+      onmouseout="this.style.background='';this.style.color='#334155'"
+      role="menuitem"
+    >
+      <span class="due-nav-bullet"></span>
+      <span>Phương thức xét tuyển</span>
+    </a>
+    <a
+      href="/diem-chuan-cac-nam/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
+      onmouseout="this.style.background='';this.style.color='#334155'"
+      role="menuitem"
+    >
+      <span class="due-nav-bullet"></span>
+      <span>Điểm chuẩn các năm</span>
+    </a>
+    <a
+      href="/chi-tieu-tuyen-sinh/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
+      onmouseout="this.style.background='';this.style.color='#334155'"
+      role="menuitem"
+    >
+      <span class="due-nav-bullet"></span>
+      <span>Chỉ tiêu tuyển sinh</span>
+    </a>
+    <a
+      href="/loai-hinh-dao-tao/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
+      onmouseout="this.style.background='';this.style.color='#334155'"
+      role="menuitem"
+    >
+      <span class="due-nav-bullet"></span>
+      <span>Loại hình đào tạo</span>
+    </a>
+    <div style="height:1px;background:#f1f5f9;margin:4px 0;"></div>
+    <a
+      href="/huong-dan-nhap-hoc/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
+      onmouseout="this.style.background='';this.style.color='#334155'"
+      role="menuitem"
+    >
+      <span class="due-nav-bullet"></span>
+      <span>Hướng dẫn nhập học</span>
+    </a>
+    <a
+      href="/lich-trinh-tan-sinh-vien/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
+      onmouseout="this.style.background='';this.style.color='#334155'"
+      role="menuitem"
+    >
+      <span class="due-nav-bullet"></span>
+      <span>Lịch trình của Tân sinh viên</span>
+    </a>
   </div>
 
   <!-- Dropdown panel for KHOA (8 Khoa + 1 Viện Đào tạo Quốc tế) -->
@@ -402,76 +610,84 @@
     </div>
     
     <a href="/khoa/tcnh/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#dbeafe;color:#1d4ed8;">
         <span class="material-symbols-outlined" style="font-size:20px;">account_balance</span>
       </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Tài chính - Ngân hàng</span>
-        <span class="nav-khoa-sub">Tài chính, Ngân hàng, Công nghệ tài chính (Fintech)</span>
+        <span class="nav-khoa-sub">Tài chính, Ngân hàng, Fintech</span>
       </div>
     </a>
 
     <a href="/khoa/dlkdqt/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#d1fae5;color:#047857;">
         <span class="material-symbols-outlined" style="font-size:20px;">travel_explore</span>
       </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Du lịch &amp; Kinh doanh quốc tế</span>
-        <span class="nav-khoa-sub">Kinh doanh quốc tế, Ngoại thương, Du lịch &amp; Khách sạn</span>
+        <span class="nav-khoa-sub">Kinh doanh quốc tế, Ngoại thương, Du lịch</span>
       </div>
     </a>
 
     <a href="/khoa/tmdt_mkt_cns/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#ffedd5;color:#c2410c;">
         <span class="material-symbols-outlined" style="font-size:20px;">hub</span>
       </span>
       <div class="nav-khoa-text">
-        <span class="nav-khoa-name">Khoa TMĐT - Marketing &amp; Công nghệ số</span>
-        <span class="nav-khoa-sub">Marketing số, TMĐT, Kinh tế số, TT Marketing</span>
+        <span class="nav-khoa-name">Khoa TMĐT - Marketing &amp; CNS</span>
+        <span class="nav-khoa-sub">Marketing số, TMĐT, Kinh tế số</span>
       </div>
     </a>
 
     <a href="/khoa/kt/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#e0e7ff;color:#4338ca;">
         <span class="material-symbols-outlined" style="font-size:20px;">trending_up</span>
       </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Kinh tế</span>
-        <span class="nav-khoa-sub">Kinh tế đầu tư, Kinh tế phát triển, Thống kê dữ liệu</span>
+        <span class="nav-khoa-sub">Kinh tế đầu tư, Kinh tế phát triển</span>
       </div>
     </a>
 
     <a href="/khoa/qtkd/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#fef3c7;color:#b45309;">
         <span class="material-symbols-outlined" style="font-size:20px;">corporate_fare</span>
       </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Quản trị kinh doanh</span>
-        <span class="nav-khoa-sub">Quản trị kinh doanh, Quản trị nhân lực, Chuỗi cung ứng</span>
+        <span class="nav-khoa-sub">Quản trị kinh doanh, Quản trị nhân lực</span>
       </div>
     </a>
 
     <a href="/khoa/ketoan/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#ccfbf1;color:#0f766e;">
         <span class="material-symbols-outlined" style="font-size:20px;">calculate</span>
       </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Kế toán</span>
-        <span class="nav-khoa-sub">Kế toán doanh nghiệp, Kiểm toán chuẩn ACCA quốc tế</span>
+        <span class="nav-khoa-sub">Kế toán doanh nghiệp, Kiểm toán ACCA</span>
       </div>
     </a>
 
     <a href="/khoa/llct/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#ffe4e6;color:#be123c;">
         <span class="material-symbols-outlined" style="font-size:20px;">menu_book</span>
       </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Lý luận chính trị</span>
-        <span class="nav-khoa-sub">Quản lý nhà nước, Kinh tế chính trị, Chính sách công</span>
+        <span class="nav-khoa-sub">Quản lý nhà nước, Kinh tế chính trị</span>
       </div>
     </a>
 
     <a href="/khoa/luat/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#f3e8ff;color:#7e22ce;">
         <span class="material-symbols-outlined" style="font-size:20px;">gavel</span>
       </span>
@@ -482,41 +698,45 @@
     </a>
 
     <a href="/khoa/vdtqt/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#cffafe;color:#0e7490;">
         <span class="material-symbols-outlined" style="font-size:20px;">public</span>
       </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Viện Đào tạo Quốc tế</span>
-        <span class="nav-khoa-sub">Chương trình liên kết Anh, Mỹ, Úc; Cử nhân quốc tế</span>
+        <span class="nav-khoa-sub">Cử nhân quốc tế, Liên kết Anh, Mỹ, Úc</span>
       </div>
     </a>
 
     <div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:6px;">
-      <a href="/khoa/" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:10px;background:#f8fafc;color:#003366;font-size:12.5px;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#e0f2fe';this.style.color='#0284c7';" onmouseout="this.style.background='#f8fafc';this.style.color='#003366';">
-        <span>Xem tất cả 9 Khoa &amp; Phòng ban</span>
+      <a href="/khoa/" class="due-dropdown-link" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:10px;background:#f8fafc;color:#003366;font-size:12.5px;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#e0f2fe';this.style.color='#0284c7';" onmouseout="this.style.background='#f8fafc';this.style.color='#003366';">
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="due-nav-bullet"></span>
+          <span>Xem tất cả 9 Khoa &amp; Phòng ban</span>
+        </span>
         <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
       </a>
     </div>
   </div>
 
-  <!-- Dropdown panel for DÀNH CHO SINH VIÊN (Chỉ giữ lại: Ký túc xá, Câu lạc bộ, Hoạt động Đoàn) -->
+  <!-- Dropdown panel for DÀNH CHO SINH VIÊN -->
   <div
     id="nav-dcsv-dropdown"
-    class="dcsv-dropdown-panel"
+    style="position:fixed;display:none;z-index:9999;width:245px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12);border:1px solid #e2e8f0;padding:6px 0;"
     role="menu"
     aria-label="Danh mục Dành cho sinh viên"
   >
-    <a href="/ky-tuc-xa/" class="dcsv-item" role="menuitem">
-      <span class="dcsv-bullet">&#9642;</span>
-      <span class="dcsv-text">Ký túc xá</span>
+    <a href="/ky-tuc-xa/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet"></span>
+      <span>Ký túc xá</span>
     </a>
-    <a href="/clb/" class="dcsv-item" role="menuitem">
-      <span class="dcsv-bullet">&#9642;</span>
-      <span class="dcsv-text">Câu lạc bộ</span>
+    <a href="/clb/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet"></span>
+      <span>Câu lạc bộ</span>
     </a>
-    <a href="/hoat-dong-doan/" class="dcsv-item" style="border-bottom:none;" role="menuitem">
-      <span class="dcsv-bullet">&#9642;</span>
-      <span class="dcsv-text">Hoạt động Đoàn</span>
+    <a href="/hoat-dong-doan/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet"></span>
+      <span>Hoạt động Đoàn</span>
     </a>
   </div>
 
@@ -720,6 +940,176 @@
   </div>
 
   <script>
+        /* ---- Dropdown Navbar: GIỚI THIỆU ---- */
+    var _gtBtn     = document.getElementById('nav-gioithieu-btn');
+    var _gtDrop    = document.getElementById('nav-gioithieu-dropdown');
+    var _gtChevron = document.getElementById('nav-gioithieu-chevron');
+
+    function positionGtDropdown() {
+      if (!_gtBtn || !_gtDrop) return;
+      var rect = _gtBtn.getBoundingClientRect();
+      _gtDrop.style.top  = (rect.bottom + 6) + 'px';
+      _gtDrop.style.left = rect.left + 'px';
+    }
+
+    function toggleGtDropdown(e) {
+      if (e) e.stopPropagation();
+      if (!_gtDrop) return;
+      var isOpen = _gtDrop.style.display === 'block';
+      if (isOpen) {
+        closeGtDropdown();
+      } else {
+        closeDropdown();
+        closeKhoaDropdown();
+        closeDcsvDropdown();
+        positionGtDropdown();
+        _gtDrop.style.display = 'block';
+        if (_gtChevron) _gtChevron.style.transform = 'rotate(180deg)';
+        _gtBtn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function closeGtDropdown() {
+      if (!_gtDrop) return;
+      _gtDrop.style.display = 'none';
+      if (_gtChevron) _gtChevron.style.transform = '';
+      if (_gtBtn) _gtBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    if (_gtBtn) {
+      _gtBtn.addEventListener('click', toggleGtDropdown);
+      _gtBtn.addEventListener('mouseenter', function() {
+        closeDropdown();
+        closeKhoaDropdown();
+        closeDcsvDropdown();
+        positionGtDropdown();
+        _gtDrop.style.display = 'block';
+        if (_gtChevron) _gtChevron.style.transform = 'rotate(180deg)';
+      });
+      _gtBtn.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_gtDrop.matches(':hover') && !_gtBtn.matches(':hover')) closeGtDropdown();
+        }, 220);
+      });
+    }
+    if (_gtDrop) {
+      _gtDrop.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_gtDrop.matches(':hover') && !_gtBtn.matches(':hover')) closeGtDropdown();
+        }, 220);
+      });
+    }
+
+    /* ---- Login Popover Controller ---- */
+    function toggleDueLoginPopover(e) {
+      if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      const popover = document.getElementById('dueLoginPopover');
+      if (!popover) return;
+      const isHidden = popover.classList.contains('hidden');
+      if (isHidden) {
+        popover.classList.remove('hidden');
+        setTimeout(() => {
+          const u = document.getElementById('p_username');
+          if (u) u.focus();
+        }, 80);
+      } else {
+        popover.classList.add('hidden');
+      }
+    }
+
+    function closeDueLoginPopover() {
+      const popover = document.getElementById('dueLoginPopover');
+      if (popover) popover.classList.add('hidden');
+    }
+
+    window.openLoginModal = toggleDueLoginPopover;
+    window.closeLoginModal = closeDueLoginPopover;
+
+    function quickFillCreds(u, p) {
+      const userInp = document.getElementById('p_username');
+      const passInp = document.getElementById('p_password');
+      if (userInp && passInp) {
+        userInp.value = u;
+        passInp.value = p;
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      const popover = document.getElementById('dueLoginPopover');
+      if (!popover || popover.classList.contains('hidden')) return;
+      const container = document.getElementById('dueLoginContainer');
+      if (container && !container.contains(e.target)) {
+        closeDueLoginPopover();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDueLoginPopover();
+    });
+
+    function handleDueLoginSubmit(e) {
+      e.preventDefault();
+      const u = document.getElementById('p_username').value.trim();
+      const p = document.getElementById('p_password').value.trim();
+      const alertBox = document.getElementById('popoverAlert');
+      const submitBtn = document.getElementById('p_submit_btn');
+
+      if (!u || !p) {
+        alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-red-50 text-red-700 border border-red-200 block";
+        alertBox.textContent = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Đăng nhập";
+
+      let csrfToken = '';
+      const cookieMatch = document.cookie.match(/csrftoken=([^;]+)/);
+      if (cookieMatch) csrfToken = cookieMatch[1];
+
+      const formData = new FormData();
+      formData.append('username', u);
+      formData.append('password', p);
+      formData.append('is_ajax', '1');
+
+      fetch('/dang-nhap/', {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': csrfToken
+        },
+        body: formData
+      })
+      .then(res => res.json().then(data => ({ status: res.status, ok: res.ok, body: data })))
+      .then(({ status, ok, body }) => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Đăng nhập";
+        if (ok && body.status === 'success') {
+          alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-green-50 text-green-700 border border-green-200 block";
+          alertBox.textContent = body.message || "Đăng nhập thành công!";
+          setTimeout(() => {
+            if (body.redirect_url) {
+              window.location.href = body.redirect_url;
+            } else {
+              window.location.reload();
+            }
+          }, 600);
+        } else {
+          alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-red-50 text-red-700 border border-red-200 block";
+          alertBox.textContent = body.message || "Tên đăng nhập hoặc mật khẩu không chính xác.";
+        }
+      })
+      .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Đăng nhập";
+        alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-red-50 text-red-700 border border-red-200 block";
+        alertBox.textContent = "Đã xảy ra lỗi kết nối. Vui lòng thử lại!";
+      });
+    }
+
     /* ---- Dropdown Navbar: THÔNG TIN TUYỂN SINH ---- */
     var _btn     = document.getElementById('nav-ttts-btn');
     var _drop    = document.getElementById('nav-ttts-dropdown');
@@ -794,6 +1184,7 @@
 
     function openKhoaDropdown() {
       closeDropdown();
+      closeGtDropdown();
       closeDcsvDropdown();
       if (!_khoaDrop) return;
       positionKhoaDropdown();
@@ -859,6 +1250,8 @@
 
     function openDcsvDropdown() {
       closeDropdown();
+      closeGtDropdown();
+      closeKhoaDropdown();
       closeKhoaDropdown();
       if (!_dcsvDrop) return;
       positionDcsvDropdown();

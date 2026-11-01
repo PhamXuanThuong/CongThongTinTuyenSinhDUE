@@ -770,7 +770,7 @@
                 </div>
               </div>
 
-              <div class="space-y-3">
+              <div id="due-top-majors-container" class="space-y-3">
                 
                 <!-- Ngành 1 -->
                 <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
@@ -1086,6 +1086,59 @@
       if (window.innerWidth < 1024) {
         document.getElementById('profile-filled-state').scrollIntoView({ behavior: 'smooth' });
       }
+
+      // Gui du lieu len Backend API Django
+      fetch('/api/tu-van-huong-nghiep/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+          full_name: fullName,
+          gender: gender,
+          date_of_birth: dob,
+          phone_number: phone,
+          email: email,
+          high_school: school,
+          province: province,
+          address: address,
+          interests: interests,
+          strengths: strengths,
+          career_goals: goals,
+          score_r: scores.R,
+          score_i: scores.I,
+          score_a: scores.A,
+          score_s: scores.S,
+          score_e: scores.E,
+          score_c: scores.C
+        })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && data.status === 'success' && data.data && data.data.suggested_majors) {
+          var majors = data.data.suggested_majors;
+          var container = document.getElementById('due-top-majors-container');
+          if (container && majors.length > 0) {
+            var html = '';
+            majors.slice(0, 3).forEach(function(m, idx) {
+              var colors = ['bg-orange-100 text-[#F37021]', 'bg-blue-100 text-[#0072BC]', 'bg-emerald-100 text-[#00A859]'];
+              var colorClass = colors[idx % 3];
+              html += '<div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">' +
+                      '<div class="w-8 h-8 rounded-xl ' + colorClass + ' flex items-center justify-center font-bold flex-shrink-0 text-sm font-[\'Space_Grotesk\']">#' + (idx + 1) + '</div>' +
+                      '<div class="flex-1 min-w-0">' +
+                      '<h4 class="font-[\'Space_Grotesk\'] font-bold text-slate-900 text-sm">' + m.ten + '</h4>' +
+                      '<p class="text-xs text-slate-500 mt-0.5">' + m.khoa + ' • Mã: ' + m.ma + '</p>' +
+                      '<span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-blue-50 text-[#0072BC] text-[10px] font-bold">Điểm chuẩn: ' + m.diem + 'đ</span>' +
+                      '</div></div>';
+            });
+            container.innerHTML = html;
+          }
+        }
+      })
+      .catch(function(err) {
+        console.warn('API sync notice:', err);
+      });
 
       // Trigger modern Sharp Toast notification
       showToast();

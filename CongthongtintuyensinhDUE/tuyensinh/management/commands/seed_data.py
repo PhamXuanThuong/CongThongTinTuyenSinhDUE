@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
-from tuyensinh.models import KhoaPhongBan, ChuyenNganh, BangHocPhi, CauHoiHocPhi, ChinhSachHocBong
+from tuyensinh.models import KhoaPhongBan, ChuyenNganh, BangHocPhi, CauHoiHocPhi, ChinhSachHocBong, CauLacBo, HuongDanNhapHoc, LichTrinhTanSinhVien, CauHoiThuongGap
+import os, json, csv
+from django.conf import settings
 
 class Command(BaseCommand):
     help = 'Khởi tạo dữ liệu mẫu cho Khoa, Phòng Ban, Học Phí và FAQ'
@@ -553,4 +555,87 @@ class Command(BaseCommand):
                 )
 
         self.stdout.write(self.style.SUCCESS(f"Loaded {len(items_data)} faculties and departments."))
+                # 4. CÂU LẠC BỘ (CLB)
+        clb_path = os.path.join(settings.BASE_DIR, 'data', 'clb.json')
+        if os.path.exists(clb_path):
+            with open(clb_path, 'r', encoding='utf-8') as f:
+                clubs = json.load(f)
+            for idx, c in enumerate(clubs):
+                slug = c.get('id')
+                if slug:
+                    CauLacBo.objects.update_or_create(
+                        slug=slug,
+                        defaults={
+                            'name': c.get('name', ''),
+                            'aliases': c.get('aliases', []),
+                            'level': c.get('level', 'Trường (trực thuộc Hội SV)'),
+                            'faculty_id': c.get('faculty_id'),
+                            'category': c.get('category', 'Kỹ năng & Khởi nghiệp'),
+                            'founded': c.get('founded', ''),
+                            'slogan': c.get('slogan', ''),
+                            'description': c.get('description', ''),
+                            'intro': c.get('intro', ''),
+                            'mission': c.get('mission', ''),
+                            'vision': c.get('vision', ''),
+                            'departments': c.get('departments', []),
+                            'contact': c.get('contact', {}),
+                            'leaders': c.get('leaders', ''),
+                            'advisors': c.get('advisors', ''),
+                            'achievements': c.get('achievements', []),
+                            'recruitment': c.get('recruitment', 'Mở đơn định kỳ tháng 8 - tháng 10'),
+                            'recruitment_steps': c.get('recruitment_steps', []),
+                            'benefits': c.get('benefits', []),
+                            'followers': c.get('followers', '10K+'),
+                            'logo': c.get('logo', ''),
+                            'cover': c.get('cover', ''),
+                            'gallery': c.get('gallery', []),
+                            'highlights': c.get('highlights', []),
+                            'recent_activities': c.get('recent_activities', []),
+                            'order': idx + 1,
+                            'is_active': True,
+                        }
+                    )
+            self.stdout.write(self.style.SUCCESS(f"Loaded {len(clubs)} clubs."))
+
+        # 5. CẨM NANG NHẬP HỌC & CHATBOT FAQ
+        csv_path = os.path.join(settings.BASE_DIR, 'data', 'huong_dan_nhap_hoc_tsv.csv')
+        if os.path.exists(csv_path):
+            with open(csv_path, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                guide_count = 0
+                for idx, row in enumerate(reader):
+                    m_id = row.get('id', f'HD_{idx+1}')
+                    chu_de = row.get('chu_de', 'Tổng quan nhập học')
+                    cau_hoi = row.get('cau_hoi_mau', '')
+                    noi_dung = row.get('cau_tra_loi_chi_tiet', '')
+                    tu_khoa = row.get('tu_khoa', '')
+                    link = row.get('link_tai_lieu_hotline', '')
+
+                    HuongDanNhapHoc.objects.update_or_create(
+                        ma_huong_dan=m_id,
+                        defaults={
+                            'chu_de': chu_de,
+                            'cau_hoi': cau_hoi,
+                            'noi_dung': noi_dung,
+                            'tu_khoa': tu_khoa,
+                            'link_tai_lieu': link,
+                            'thu_tu': idx + 1,
+                            'kich_hoat': True
+                        }
+                    )
+                    CauHoiThuongGap.objects.update_or_create(
+                        ma_cau_hoi=f"FAQ_NH_{m_id}",
+                        defaults={
+                            'chu_de': f"[{chu_de}] {cau_hoi[:80]}",
+                            'phan_loai': 'Khac',
+                            'cau_hoi_mau': cau_hoi,
+                            'cau_tra_loi': noi_dung,
+                            'tu_khoa': tu_khoa,
+                            'nguon_tham_khao': link or 'http://nhaphoc.due.udn.vn',
+                            'kich_hoat': True
+                        }
+                    )
+                    guide_count += 1
+            self.stdout.write(self.style.SUCCESS(f"Loaded {guide_count} freshman guides & chatbot FAQs."))
+
         self.stdout.write(self.style.SUCCESS("SEED DATA COMPLETED SUCCESSFULLY!"))
