@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Hướng Dẫn Nhập Học - Cổng thông tin tuyển sinh DUE{% endblock %}
+
+{% block nav_hdnh %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block content %}
+<main class="w-full pt-36 sm:pt-40 pb-20 flex-1">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+
+      <!-- Breadcrumb & Header Hero -->
+      <div class="mb-8">
+        <nav class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+          <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+          <span>/</span>
+          <span class="text-slate-800 font-semibold">Hướng dẫn nhập học</span>
+        </nav>
+        
+        <div class="bg-gradient-to-r from-primary-container via-primary to-[#004b73] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+          <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+          <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-semibold mb-4 backdrop-blur-sm">
+              <span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span>
+              Khóa 52K - Tuyển sinh năm 2026
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-bold font-headline-lg tracking-tight mb-3">
+              Hướng Dẫn Thủ Tục Nhập Học Năm 2026
+            </h1>
+            <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6">
+              Chào mừng bạn gia nhập đại gia đình Trường Đại học Kinh tế - Đại học Đà Nẵng! Dưới đây là thông tin chi tiết từng bước xác nhận nhập học trực tuyến, chuẩn bị hồ sơ và lịch trình tuần sinh hoạt đầu khóa.
+            </p>
+            <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium">
+              <a href="http://nhaphoc.due.udn.vn/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-[#F37021] hover:bg-[#e05e10] text-white px-4 py-2 rounded-full shadow-md transition-all font-semibold">
+                <span>Cổng Nhập Học Trực Tuyến</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="/freshman-schedule/" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3.5 py-2 rounded-full border border-white/15 text-white transition-all">
+                <span class="font-bold text-amber-300">📅</span>
+                <span>Xem Lịch trình Tân sinh viên</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Khung Nội Dung Chính -->
+      <section class="bg-white rounded-3xl shadow-sm border border-slate-200/90 p-6 sm:p-10 mb-12">
+        {% include "enrollment-guide.html" %}
+      </section>
+
+    </div>
+</main>
+{% endblock %}

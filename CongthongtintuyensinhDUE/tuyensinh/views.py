@@ -2,7 +2,10 @@ import json
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.db.models import Q
-from .models import KhoaPhongBan, BangHocPhi, CauHoiHocPhi, ChinhSachHocBong
+from .models import (
+    KhoaPhongBan, BangHocPhi, CauHoiHocPhi, ChinhSachHocBong,
+    DotNhapHoc, KhoanThuNhapHoc, HoSoNhapHoc, BieuMauNhapHoc, MocLichTrinhTsv
+)
 
 def home_view(request):
     """Trang chủ cổng thông tin tuyển sinh"""
@@ -105,3 +108,42 @@ def tinh_hoc_phi_api(request):
             })
 
     return JsonResponse({'status': 'error', 'message': 'Không tìm thấy thông tin chương trình'}, status=400)
+
+
+def enrollment_guide_view(request):
+    """
+    Trang Hướng dẫn nhập học dành cho Tân sinh viên.
+    Lấy thông tin đợt nhập học, danh mục khoản thu, hồ sơ cần nộp và các biểu mẫu đính kèm từ Database.
+    """
+    dot = DotNhapHoc.objects.filter(is_active=True).first()
+    fees_mandatory = KhoanThuNhapHoc.objects.filter(category='bat_buoc').order_by('order', 'item_order')
+    fees_optional = KhoanThuNhapHoc.objects.filter(category='theo_nhu_cau').order_by('order', 'item_order')
+    docs_personal = HoSoNhapHoc.objects.filter(category='ca_nhan').order_by('order', 'item_order')
+    docs_admission = HoSoNhapHoc.objects.filter(category='xet_tuyen').order_by('order', 'item_order')
+    forms = BieuMauNhapHoc.objects.filter(is_active=True).order_by('order', 'id')
+
+    context = {
+        'dot': dot,
+        'fees_mandatory': fees_mandatory,
+        'fees_optional': fees_optional,
+        'docs_personal': docs_personal,
+        'docs_admission': docs_admission,
+        'forms': forms,
+    }
+    return render(request, 'enrollment-guide-page.html', context)
+
+
+def freshman_schedule_view(request):
+    """
+    Trang Lịch trình của Tân sinh viên (5 Mốc sự kiện quan trọng).
+    Dữ liệu được lấy trực tiếp từ Database để Ban Đào tạo dễ dàng điều chỉnh ngày giờ.
+    """
+    dot = DotNhapHoc.objects.filter(is_active=True).first()
+    milestones = MocLichTrinhTsv.objects.filter(is_active=True).order_by('order', 'milestone_number')
+
+    context = {
+        'dot': dot,
+        'milestones': milestones,
+        'total_milestones': milestones.count(),
+    }
+    return render(request, 'freshman-schedule-page.html', context)

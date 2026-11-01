@@ -201,16 +201,26 @@
         <nav class="flex items-center gap-space-lg h-full" data-active-classes="text-secondary-container font-headline-sm border-b-2 border-secondary-container">
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap font-bold {% block nav_home %}text-on-surface-variant hover:text-primary-container{% endblock %}" data-path="trang-chu" href="/">TRANG CHỦ</a>
           <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="gioi-thieu" href="#">GIỚI THIỆU</a>
-          <!-- THÔNG TIN TUYỂN SINH - Dropdown -->
-          <div class="relative h-full flex items-center" id="nav-ttts">
+          <!-- THÔNG TIN TUYỂN SINH - Tab thường -->
+          <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_ttts %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="thong-tin-tuyen-sinh" href="#">THÔNG TIN TUYỂN SINH</a>
+
+          <!-- HƯỚNG DẪN NHẬP HỌC - Dropdown Tab lớn -->
+          <div class="relative h-full flex items-center gap-1" id="nav-hdnh">
+            <a
+              href="/enrollment-guide/"
+              class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_hdnh %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}"
+              id="nav-hdnh-link"
+            >
+              HƯỚNG DẪN NHẬP HỌC
+            </a>
             <button
-              class="h-full flex items-center gap-1 font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap focus:outline-none"
+              class="h-full flex items-center text-on-surface-variant hover:text-primary-container transition-colors focus:outline-none"
               aria-haspopup="true"
               aria-expanded="false"
-              id="nav-ttts-btn"
+              id="nav-hdnh-btn"
+              title="Lịch trình của Tân sinh viên"
             >
-              THÔNG TIN TUYỂN SINH
-              <svg id="nav-ttts-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
+              <svg id="nav-hdnh-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_khoa %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="khoa" href="/khoa/">KHOA</a>
@@ -223,31 +233,31 @@
     </div>
   </header>
 
-  <!-- Dropdown panel for THÔNG TIN TUYỂN SINH -->
+  <!-- Dropdown panel for HƯỚNG DẪN NHẬP HỌC -->
   <div
-    id="nav-ttts-dropdown"
+    id="nav-hdnh-dropdown"
     style="position:fixed;display:none;z-index:9999;width:245px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12);border:1px solid #e2e8f0;padding:6px 0;"
     role="menu"
   >
-    <button
-      onclick="openHuongDanModal()"
-      style="width:100%;display:block;padding:10px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+    <a
+      href="/enrollment-guide/"
+      style="width:100%;display:block;padding:10px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;text-decoration:none;box-sizing:border-box;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
       Hướng dẫn nhập học
-    </button>
+    </a>
     <div style="height:1px;background:#f1f5f9;margin:3px 0;"></div>
-    <button
-      onclick="openLichTrinhModal()"
-      style="width:100%;display:block;padding:10px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+    <a
+      href="/freshman-schedule/"
+      style="width:100%;display:block;padding:10px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;text-decoration:none;box-sizing:border-box;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
       Lịch trình của Tân sinh viên
-    </button>
+    </a>
   </div>
 
   <!-- Main Content Block -->
@@ -329,95 +339,16 @@
     </div>
   </footer>
 
-  <!-- ================================================
-       MODAL 1: HƯỚNG DẪN NHẬP HỌC
-       ================================================ -->
-  <div
-    id="huong-dan-modal-backdrop"
-    style="position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:8px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);"
-    aria-modal="true"
-    role="dialog"
-    aria-labelledby="huong-dan-modal-title"
-  >
-    <div
-      id="huong-dan-modal"
-      style="position:relative;width:100%;max-width:1020px;max-height:94vh;height:94vh;background:#fff;border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,0.18);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:scale(0.97) translateY(12px);transition:opacity .22s ease,transform .22s ease;"
-    >
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #f1f5f9;background:#fff;flex-shrink:0;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:10px;background:#dbeafe;display:flex;align-items:center;justify-content:center;color:#0072BC;flex-shrink:0;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          </div>
-          <div>
-            <h3 id="huong-dan-modal-title" style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#1e293b;font-size:17px;line-height:1.3;">Hướng dẫn nhập học</h3>
-            <p style="margin:3px 0 0;font-size:12px;color:#94a3b8;">Tân sinh viên Khóa 52K – Tuyển sinh năm 2026</p>
-          </div>
-        </div>
-        <button
-          onclick="closeHuongDanModal()"
-          style="width:36px;height:36px;border-radius:50%;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;color:#94a3b8;cursor:pointer;transition:all .15s;flex-shrink:0;"
-          onmouseover="this.style.background='#fef2f2';this.style.borderColor='#fca5a5';this.style.color='#ef4444'"
-          onmouseout="this.style.background='#f8fafc';this.style.borderColor='#e2e8f0';this.style.color='#94a3b8'"
-          aria-label="Đóng"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div style="flex:1;overflow-y:auto;padding:24px 28px;background:#fff;" class="custom-modal-scroll">
-        {% include "enrollment-guide.html" %}
-      </div>
-    </div>
-  </div>
-
-  <!-- ================================================
-       MODAL 2: LỊCH TRÌNH CỦA TÂN SINH VIÊN
-       ================================================ -->
-  <div
-    id="lich-trinh-modal-backdrop"
-    style="position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:8px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);"
-    aria-modal="true"
-    role="dialog"
-    aria-labelledby="lich-trinh-modal-title"
-  >
-    <div
-      id="lich-trinh-modal"
-      style="position:relative;width:100%;max-width:1020px;max-height:94vh;height:94vh;background:#fff;border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,0.18);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:scale(0.97) translateY(12px);transition:opacity .22s ease,transform .22s ease;"
-    >
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #f1f5f9;background:#fff;flex-shrink:0;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:10px;background:#fef3c7;display:flex;align-items:center;justify-content:center;color:#d97706;flex-shrink:0;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <div>
-            <h3 id="lich-trinh-modal-title" style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#1e293b;font-size:17px;line-height:1.3;">Lịch trình của Tân sinh viên</h3>
-            <p style="margin:3px 0 0;font-size:12px;color:#94a3b8;">Thời gian biểu & các mốc sự kiện quan trọng – K52K (2026)</p>
-          </div>
-        </div>
-        <button
-          onclick="closeLichTrinhModal()"
-          style="width:36px;height:36px;border-radius:50%;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;color:#94a3b8;cursor:pointer;transition:all .15s;flex-shrink:0;"
-          onmouseover="this.style.background='#fef2f2';this.style.borderColor='#fca5a5';this.style.color='#ef4444'"
-          onmouseout="this.style.background='#f8fafc';this.style.borderColor='#e2e8f0';this.style.color='#94a3b8'"
-          aria-label="Đóng"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div style="flex:1;overflow-y:auto;padding:24px 28px;background:#fff;" class="custom-modal-scroll">
-        {% include "freshman-schedule.html" %}
-      </div>
-    </div>
-  </div>
-
-  <script>
-    /* ---- Dropdown Navbar: THÔNG TIN TUYỂN SINH ---- */
-    var _btn     = document.getElementById('nav-ttts-btn');
-    var _drop    = document.getElementById('nav-ttts-dropdown');
-    var _chevron = document.getElementById('nav-ttts-chevron');
+    <script>
+    /* ---- Dropdown Navbar: HƯỚNG DẪN NHẬP HỌC ---- */
+    var _btn     = document.getElementById('nav-hdnh-btn');
+    var _wrap    = document.getElementById('nav-hdnh');
+    var _drop    = document.getElementById('nav-hdnh-dropdown');
+    var _chevron = document.getElementById('nav-hdnh-chevron');
 
     function positionDropdown() {
-      if (!_btn || !_drop) return;
-      var rect = _btn.getBoundingClientRect();
+      if (!_wrap || !_drop) return;
+      var rect = _wrap.getBoundingClientRect();
       _drop.style.top  = (rect.bottom + 6) + 'px';
       _drop.style.left = rect.left + 'px';
     }
@@ -432,7 +363,7 @@
         positionDropdown();
         _drop.style.display = 'block';
         if (_chevron) _chevron.style.transform = 'rotate(180deg)';
-        _btn.setAttribute('aria-expanded', 'true');
+        if (_btn) _btn.setAttribute('aria-expanded', 'true');
       }
     }
 
@@ -446,7 +377,7 @@
     if (_btn) _btn.addEventListener('click', toggleDropdown);
 
     document.addEventListener('click', function (e) {
-      if (_btn && !_btn.contains(e.target) && _drop && !_drop.contains(e.target)) {
+      if (_wrap && !_wrap.contains(e.target) && _drop && !_drop.contains(e.target)) {
         closeDropdown();
       }
     });
@@ -458,78 +389,6 @@
       if (_drop && _drop.style.display === 'block') positionDropdown();
     }, { passive: true });
 
-    /* ---- Modal 1: Hướng dẫn nhập học ---- */
-    var _hdBackdrop = document.getElementById('huong-dan-modal-backdrop');
-    var _hdModal    = document.getElementById('huong-dan-modal');
-
-    function openHuongDanModal() {
-      closeDropdown();
-      if (!_hdBackdrop || !_hdModal) return;
-      _hdBackdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          _hdModal.style.opacity   = '1';
-          _hdModal.style.transform = 'scale(1) translateY(0)';
-        });
-      });
-    }
-
-    function closeHuongDanModal() {
-      if (!_hdBackdrop || !_hdModal) return;
-      _hdModal.style.opacity   = '0';
-      _hdModal.style.transform = 'scale(0.97) translateY(12px)';
-      setTimeout(function () {
-        _hdBackdrop.style.display = 'none';
-        document.body.style.overflow = '';
-      }, 220);
-    }
-
-    if (_hdBackdrop) {
-      _hdBackdrop.addEventListener('click', function (e) {
-        if (e.target === _hdBackdrop) closeHuongDanModal();
-      });
-    }
-
-    /* ---- Modal 2: Lịch trình của Tân sinh viên ---- */
-    var _ltBackdrop = document.getElementById('lich-trinh-modal-backdrop');
-    var _ltModal    = document.getElementById('lich-trinh-modal');
-
-    function openLichTrinhModal() {
-      closeDropdown();
-      if (!_ltBackdrop || !_ltModal) return;
-      _ltBackdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          _ltModal.style.opacity   = '1';
-          _ltModal.style.transform = 'scale(1) translateY(0)';
-        });
-      });
-    }
-
-    function closeLichTrinhModal() {
-      if (!_ltBackdrop || !_ltModal) return;
-      _ltModal.style.opacity   = '0';
-      _ltModal.style.transform = 'scale(0.97) translateY(12px)';
-      setTimeout(function () {
-        _ltBackdrop.style.display = 'none';
-        document.body.style.overflow = '';
-      }, 220);
-    }
-
-    if (_ltBackdrop) {
-      _ltBackdrop.addEventListener('click', function (e) {
-        if (e.target === _ltBackdrop) closeLichTrinhModal();
-      });
-    }
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        if (_hdBackdrop && _hdBackdrop.style.display === 'flex') closeHuongDanModal();
-        if (_ltBackdrop && _ltBackdrop.style.display === 'flex') closeLichTrinhModal();
-      }
-    });
   </script>
 
   <!-- ====================================================
