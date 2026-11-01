@@ -1,0 +1,662 @@
+{% extends "base.html" %}
+
+{% block title %}{{ club.name }} - Câu lạc bộ sinh viên DUE | Trường Đại học Kinh tế - ĐH Đà Nẵng{% endblock %}
+
+{% block nav_sinhvien %}text-secondary-container font-headline-sm border-b-2 border-secondary-container{% endblock %}
+
+{% block content %}
+<main class="w-full pt-28 sm:pt-32 pb-20 bg-[#f8fafc] min-h-screen text-slate-800">
+
+  <!-- Breadcrumb -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 font-medium">
+      <a href="/" class="hover:text-[#0072BC] transition-colors flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">home</span>
+        <span>Trang chủ</span>
+      </a>
+      <span class="text-slate-300">/</span>
+      <a href="/sinh-vien/" class="hover:text-[#0072BC] transition-colors">Dành cho sinh viên</a>
+      <span class="text-slate-300">/</span>
+      <a href="/clb/" class="hover:text-[#0072BC] transition-colors">Câu lạc bộ</a>
+      <span class="text-slate-300">/</span>
+      <span class="text-[#003366] font-semibold truncate max-w-[200px] sm:max-w-none">{{ club.name }}</span>
+    </nav>
+  </div>
+
+  <!-- Hero Header Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+      <!-- Cover Banner -->
+      <div class="relative w-full h-56 sm:h-72 md:h-84 lg:h-96 bg-slate-900 overflow-hidden">
+        {% if club.cover_url %}
+          <img
+            src="{{ club.cover_url }}"
+            alt="Cover {{ club.name }}"
+            class="w-full h-full object-cover object-center filter brightness-[0.88]"
+          />
+        {% else %}
+          <div class="w-full h-full bg-gradient-to-r from-[#002855] via-[#003366] to-[#0072BC] flex items-center justify-center">
+            <span class="material-symbols-outlined text-white/20 text-[120px]">groups</span>
+          </div>
+        {% endif %}
+        <!-- Gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/30 to-transparent"></div>
+
+        <!-- Back to list badge (top left) -->
+        <div class="absolute top-5 left-5 z-10">
+          <a
+            href="/clb/"
+            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black/40 hover:bg-black/60 text-white text-xs font-semibold backdrop-blur-md border border-white/20 transition-all shadow-sm"
+          >
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Tất cả CLB</span>
+          </a>
+        </div>
+
+        <!-- Badge top right (Level) -->
+        <div class="absolute top-5 right-5 z-10 flex items-center gap-2">
+          <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#fd761a]/90 text-white text-xs font-bold shadow-md backdrop-blur-sm">
+            <span class="material-symbols-outlined text-[14px]">verified</span>
+            <span>{{ club.level }}</span>
+          </span>
+          <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/90 text-[#003366] text-xs font-bold shadow-md backdrop-blur-sm">
+            {{ club.category }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Header Info & CTA Bar -->
+      <div class="px-6 sm:px-10 pb-8 pt-0 relative">
+        <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 -mt-16 sm:-mt-20 z-10 relative">
+          <!-- Logo + Titles -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-end gap-5">
+            <!-- Club Logo -->
+            <div class="relative shrink-0">
+              {% if club.logo_url %}
+                <img
+                  src="{{ club.logo_url }}"
+                  alt="Logo {{ club.name }}"
+                  class="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl object-cover ring-4 ring-white shadow-xl bg-white"
+                />
+              {% else %}
+                <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-gradient-to-br from-[#0072BC] to-[#003366] text-white flex items-center justify-center font-black text-4xl ring-4 ring-white shadow-xl">
+                  {{ club.name|slice:":1" }}
+                </div>
+              {% endif %}
+              <div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#00A859] border-2 border-white flex items-center justify-center text-white shadow" title="Đang hoạt động sôi nổi">
+                <span class="material-symbols-outlined text-[16px]">check</span>
+              </div>
+            </div>
+
+            <!-- Title & Slogan -->
+            <div class="flex flex-col gap-1.5 pt-2">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-bold text-[#0072BC] uppercase tracking-wider flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[15px]">apartment</span>
+                  <span>{{ club.faculty_name }}</span>
+                </span>
+                {% if club.founded %}
+                  <span class="text-slate-300">•</span>
+                  <span class="text-xs font-medium text-slate-500">Thành lập: {{ club.founded }}</span>
+                {% endif %}
+              </div>
+
+              <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#003366] tracking-tight font-display-hero">
+                {{ club.name }}
+              </h1>
+
+              {% if club.slogan %}
+                <p class="text-sm sm:text-base font-semibold text-[#fd761a] italic flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[18px]">format_quote</span>
+                  <span>“{{ club.slogan }}”</span>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto self-stretch lg:self-end">
+            {% if club.contact and club.contact.facebook %}
+              <a
+                href="{{ club.contact.facebook }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex-1 lg:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#1877F2] hover:bg-[#166fe5] text-white text-sm font-bold shadow-md hover:shadow-lg transition-all"
+              >
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <span>Fanpage CLB</span>
+                <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+              </a>
+            {% endif %}
+
+            <a
+              href="#ung-tuyen"
+              class="flex-1 lg:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-[#fd761a] hover:bg-[#e0610f] text-white text-sm font-bold shadow-md hover:shadow-lg transition-all"
+            >
+              <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+              <span>Đăng ký tham gia</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Stats Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-100">
+          <div class="p-3.5 rounded-2xl bg-[#f0f4f9]/80 border border-slate-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#0072BC]/10 text-[#0072BC] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">groups</span>
+            </div>
+            <div>
+              <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Người theo dõi</p>
+              <p class="text-base sm:text-lg font-bold text-[#003366]">{{ club.followers|default:"10K+" }}</p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-[#f0f4f9]/80 border border-slate-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">account_tree</span>
+            </div>
+            <div>
+              <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Ban chức năng</p>
+              <p class="text-base sm:text-lg font-bold text-[#003366]">{{ club.departments|length|default:"4" }} Ban trực thuộc</p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-[#f0f4f9]/80 border border-slate-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-green-500/10 text-green-600 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">event_available</span>
+            </div>
+            <div>
+              <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Tuyển thành viên</p>
+              <p class="text-xs sm:text-sm font-bold text-[#00A859] truncate">{{ club.recruitment|default:"Tháng 8 - 10" }}</p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-[#f0f4f9]/80 border border-slate-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">military_tech</span>
+            </div>
+            <div>
+              <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Cấp quản lý</p>
+              <p class="text-xs sm:text-sm font-bold text-[#003366] truncate">{{ club.level }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky In-Page Navigation Bar -->
+  <div class="sticky top-20 z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+    <div class="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-sm p-1.5 flex items-center gap-1 overflow-x-auto">
+      <a href="#tong-quan" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0072BC] hover:bg-slate-100 whitespace-nowrap transition-colors flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">info</span>
+        <span>Tổng quan</span>
+      </a>
+      <a href="#co-cau" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0072BC] hover:bg-slate-100 whitespace-nowrap transition-colors flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">account_tree</span>
+        <span>Cơ cấu Ban</span>
+      </a>
+      <a href="#hoat-dong" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0072BC] hover:bg-slate-100 whitespace-nowrap transition-colors flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">star</span>
+        <span>Hoạt động & Sự kiện</span>
+      </a>
+      <a href="#hinh-anh" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0072BC] hover:bg-slate-100 whitespace-nowrap transition-colors flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">photo_library</span>
+        <span>Hình ảnh thực tế</span>
+      </a>
+      <a href="#thanh-tich" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0072BC] hover:bg-slate-100 whitespace-nowrap transition-colors flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">military_tech</span>
+        <span>Thành tích</span>
+      </a>
+      <a href="#ung-tuyen" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0072BC] hover:bg-[#005a96] whitespace-nowrap transition-colors flex items-center gap-1.5 shadow-sm">
+        <span class="material-symbols-outlined text-[16px]">how_to_reg</span>
+        <span>Tuyển thành viên</span>
+      </a>
+      <a href="#lien-he" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0072BC] hover:bg-slate-100 whitespace-nowrap transition-colors flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">contact_phone</span>
+        <span>Liên hệ</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- ================= LEFT COLUMN (8 cols) ================= -->
+      <div class="lg:col-span-8 flex flex-col gap-8">
+
+        <!-- 1. TỔNG QUAN & SỨ MỆNH -->
+        <section id="tong-quan" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
+          <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-2xl bg-[#0072BC]/10 text-[#0072BC] flex items-center justify-center">
+              <span class="material-symbols-outlined text-[22px]">info</span>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-[#003366]">Giới thiệu & Sứ mệnh phát triển</h2>
+              <p class="text-xs text-slate-400">Lịch sử, tôn chỉ và định hướng hoạt động</p>
+            </div>
+          </div>
+
+          <!-- Highlight Intro Quote -->
+          {% if club.intro %}
+            <div class="p-5 rounded-2xl bg-gradient-to-r from-blue-50/70 to-indigo-50/70 border border-blue-200/60 mb-6 relative">
+              <span class="material-symbols-outlined text-blue-300 text-[36px] absolute top-3 right-4 select-none">format_quote</span>
+              <p class="text-sm sm:text-base font-medium text-blue-900 leading-relaxed pr-8">
+                {{ club.intro }}
+              </p>
+            </div>
+          {% endif %}
+
+          <!-- Full Description -->
+          <div class="prose prose-slate max-w-none text-sm sm:text-base text-slate-700 leading-relaxed mb-6">
+            <p>{{ club.description }}</p>
+          </div>
+
+          <!-- Mission & Vision Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            {% if club.mission %}
+              <div class="p-5 rounded-2xl bg-[#f8fafc] border border-slate-200/80 hover:border-blue-300 transition-all">
+                <div class="flex items-center gap-2 mb-2 text-[#0072BC] font-bold text-sm">
+                  <span class="material-symbols-outlined text-[20px]">flag</span>
+                  <span>Sứ mệnh (Mission)</span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  {{ club.mission }}
+                </p>
+              </div>
+            {% endif %}
+
+            {% if club.vision %}
+              <div class="p-5 rounded-2xl bg-[#f8fafc] border border-slate-200/80 hover:border-orange-300 transition-all">
+                <div class="flex items-center gap-2 mb-2 text-[#fd761a] font-bold text-sm">
+                  <span class="material-symbols-outlined text-[20px]">visibility</span>
+                  <span>Tầm nhìn (Vision)</span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  {{ club.vision }}
+                </p>
+              </div>
+            {% endif %}
+          </div>
+        </section>
+
+        <!-- 2. CƠ CẤU CÁC BAN CHỨC NĂNG -->
+        <section id="co-cau" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-2xl bg-[#fd761a]/10 text-[#fd761a] flex items-center justify-center">
+              <span class="material-symbols-outlined text-[22px]">account_tree</span>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-[#003366]">Cơ cấu tổ chức & Các Ban chuyên môn</h2>
+              <p class="text-xs text-slate-400">Khám phá vị trí phù hợp với thế mạnh của bạn</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% if club.departments %}
+              {% for d in club.departments %}
+                <div class="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#0072BC] hover:shadow-md transition-all flex flex-col justify-between group">
+                  <div>
+                    <div class="flex items-center gap-3 mb-3">
+                      <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#0072BC] group-hover:bg-[#0072BC] group-hover:text-white transition-colors flex items-center justify-center font-bold text-sm">
+                        {{ forloop.counter }}
+                      </div>
+                      <h3 class="font-bold text-slate-900 text-sm sm:text-base group-hover:text-[#0072BC] transition-colors">
+                        {{ d.name }}
+                      </h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      {{ d.desc }}
+                    </p>
+                  </div>
+                  <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-slate-400">
+                    <span>Tuyển Gen mới hằng năm</span>
+                    <span class="material-symbols-outlined text-[16px] text-slate-300 group-hover:text-[#0072BC] transition-colors">arrow_forward</span>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="col-span-2 text-center py-8 text-slate-400 text-sm">
+                Đang cập nhật danh sách các ban chuyên môn của CLB.
+              </div>
+            {% endif %}
+          </div>
+        </section>
+
+        <!-- 3. HOẠT ĐỘNG & SỰ KIỆN NỔI BẬT -->
+        <section id="hoat-dong" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-2xl bg-green-500/10 text-[#00A859] flex items-center justify-center">
+              <span class="material-symbols-outlined text-[22px]">star</span>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-[#003366]">Hoạt động & Dấu ấn tiêu biểu</h2>
+              <p class="text-xs text-slate-400">Các cuộc thi, hội thảo và chương trình thường niên</p>
+            </div>
+          </div>
+
+          <!-- Major Highlights -->
+          <div class="mb-6">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-amber-500">campaign</span>
+              <span>Chương trình mũi nhọn / Sự kiện lớn</span>
+            </h3>
+            <div class="space-y-3">
+              {% if club.highlights %}
+                {% for hl in club.highlights %}
+                  <div class="p-4 rounded-2xl bg-[#f8fafc] border border-slate-200/80 flex items-start gap-3.5 hover:bg-white hover:border-blue-200 transition-all">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <span class="material-symbols-outlined text-[18px]">workspace_premium</span>
+                    </div>
+                    <div class="flex-1 text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed">
+                      {{ hl }}
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Recent activities -->
+          {% if club.recent_activities %}
+            <div class="pt-2">
+              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-[#0072BC]">history_edu</span>
+                <span>Hoạt động gần đây</span>
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {% for act in club.recent_activities %}
+                  <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs text-slate-700 flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-[#0072BC] shrink-0"></span>
+                    <span class="font-medium">{{ act }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        </section>
+
+        <!-- 4. THƯ VIỆN HÌNH ẢNH THỰC TẾ -->
+        <section id="hinh-anh" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[22px]">photo_library</span>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-[#003366]">Thư viện khoảnh khắc hoạt động</h2>
+                <p class="text-xs text-slate-400">Hình ảnh các chương trình, workshop và sinh hoạt của CLB</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200/60">
+              {{ club.gallery|length|default:"4" }} hình ảnh
+            </span>
+          </div>
+
+          <!-- Photo Gallery Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% if club.gallery %}
+              {% for g in club.gallery %}
+                <div class="group relative rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 aspect-[16/10] shadow-sm">
+                  <img
+                    src="{{ g.url }}"
+                    alt="{{ g.caption|default:club.name }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                    <p class="text-white text-xs sm:text-sm font-semibold leading-snug drop-shadow-sm">
+                      {{ g.caption }}
+                    </p>
+                    <span class="text-[11px] text-white/70 mt-1 flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[13px]">photo_camera</span>
+                      <span>Hoạt động CLB</span>
+                    </span>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="col-span-2 text-center py-10 text-slate-400 text-sm">
+                Đang cập nhật hình ảnh hoạt động của CLB.
+              </div>
+            {% endif %}
+          </div>
+        </section>
+
+        <!-- 5. THÀNH TÍCH ĐẠT ĐƯỢC -->
+        {% if club.achievements %}
+          <section id="thanh-tich" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+              <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[22px]">military_tech</span>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-[#003366]">Thành tích & Bằng khen</h2>
+                <p class="text-xs text-slate-400">Những dấu ấn và giải thưởng được ghi nhận</p>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              {% for ach in club.achievements %}
+                <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/60 flex items-start gap-3.5">
+                  <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <span class="material-symbols-outlined text-[18px]">trophy</span>
+                  </div>
+                  <p class="text-xs sm:text-sm font-semibold text-amber-950 leading-relaxed pt-1">
+                    {{ ach }}
+                  </p>
+                </div>
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+
+        <!-- 6. QUY TRÌNH ỨNG TUYỂN GEN MỚI & QUYỀN LỢI -->
+        <section id="ung-tuyen" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-2xl bg-[#fd761a]/10 text-[#fd761a] flex items-center justify-center">
+              <span class="material-symbols-outlined text-[22px]">how_to_reg</span>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-[#003366]">Tuyển thành viên Gen mới</h2>
+              <p class="text-xs text-slate-400">Quy trình ứng tuyển và quyền lợi dành cho thành viên</p>
+            </div>
+          </div>
+
+          <!-- Recruitment Alert Card -->
+          <div class="p-5 rounded-2xl bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200/80 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <span class="w-3 h-3 rounded-full bg-orange-500 animate-ping"></span>
+              <div>
+                <p class="text-xs font-bold text-orange-800 uppercase tracking-wide">Thời gian tuyển quân</p>
+                <p class="text-sm sm:text-base font-extrabold text-orange-950">{{ club.recruitment|default:"Mở đơn định kỳ tháng 8 - tháng 10" }}</p>
+              </div>
+            </div>
+            {% if club.contact and club.contact.facebook %}
+              <a
+                href="{{ club.contact.facebook }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="px-5 py-2.5 rounded-xl bg-[#fd761a] hover:bg-[#e0610f] text-white text-xs font-bold shadow transition-all whitespace-nowrap"
+              >
+                Nhận thông báo mở đơn
+              </a>
+            {% endif %}
+          </div>
+
+          <!-- 4-step recruitment funnel -->
+          {% if club.recruitment_steps %}
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Các vòng ứng tuyển</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+              {% for step in club.recruitment_steps %}
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+                  <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-black bg-[#0072BC] text-white mb-2">
+                      {{ step.step }}
+                    </span>
+                    <h4 class="font-bold text-slate-900 text-xs sm:text-sm mb-1.5">{{ step.title }}</h4>
+                    <p class="text-[12px] text-slate-600 leading-relaxed">{{ step.desc }}</p>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- Member Benefits -->
+          {% if club.benefits %}
+            <div class="pt-2">
+              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-green-600">redeem</span>
+                <span>Quyền lợi khi trở thành thành viên chính thức</span>
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {% for b in club.benefits %}
+                  <div class="p-3.5 rounded-xl bg-green-50/60 border border-green-200/70 text-xs sm:text-sm text-green-950 flex items-start gap-2.5">
+                    <span class="material-symbols-outlined text-[18px] text-green-600 shrink-0 mt-0.5">check_circle</span>
+                    <span class="font-medium leading-relaxed">{{ b }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        </section>
+
+      </div>
+
+      <!-- ================= RIGHT COLUMN / SIDEBAR (4 cols) ================= -->
+      <aside class="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-36">
+
+        <!-- Widget 1: Thông tin liên hệ nhanh -->
+        <div id="lien-he" class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm scroll-mt-36">
+          <h3 class="text-base font-bold text-[#003366] pb-3 mb-4 border-b border-slate-100 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px] text-[#0072BC]">contact_page</span>
+            <span>Kênh liên hệ chính thức</span>
+          </h3>
+
+          <div class="space-y-3.5 text-xs sm:text-sm">
+            {% if club.contact and club.contact.facebook %}
+              <a
+                href="{{ club.contact.facebook }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="p-3 rounded-2xl bg-blue-50/70 hover:bg-blue-100 border border-blue-200/60 text-[#1877F2] font-bold flex items-center justify-between transition-colors"
+              >
+                <div class="flex items-center gap-2.5 truncate">
+                  <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  <span class="truncate">Fanpage CLB</span>
+                </div>
+                <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+              </a>
+            {% endif %}
+
+            {% if club.contact and club.contact.email %}
+              <div class="flex items-start gap-2.5 text-slate-600">
+                <span class="material-symbols-outlined text-[18px] text-[#0072BC] shrink-0 mt-0.5">mail</span>
+                <div>
+                  <span class="text-[11px] text-slate-400 block font-semibold uppercase">Email</span>
+                  <a href="mailto:{{ club.contact.email }}" class="text-[#0072BC] hover:underline font-semibold break-all">{{ club.contact.email }}</a>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if club.contact and club.contact.phone %}
+              <div class="flex items-start gap-2.5 text-slate-600">
+                <span class="material-symbols-outlined text-[18px] text-[#0072BC] shrink-0 mt-0.5">call</span>
+                <div>
+                  <span class="text-[11px] text-slate-400 block font-semibold uppercase">Hotline / Ban liên lạc</span>
+                  <span class="font-semibold text-slate-800">{{ club.contact.phone }}</span>
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="flex items-start gap-2.5 text-slate-600">
+              <span class="material-symbols-outlined text-[18px] text-[#0072BC] shrink-0 mt-0.5">location_on</span>
+              <div>
+                <span class="text-[11px] text-slate-400 block font-semibold uppercase">Trụ sở / Văn phòng</span>
+                <span class="font-medium text-slate-700">{{ club.contact.address|default:"71 Ngũ Hành Sơn, Q. Ngũ Hành Sơn, TP. Đà Nẵng (Văn phòng Đoàn - Hội DUE)" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Widget 2: Ban Điều Hành & Cố Vấn -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
+          <h3 class="text-base font-bold text-[#003366] pb-3 mb-4 border-b border-slate-100 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px] text-[#fd761a]">badge</span>
+            <span>Ban Điều Hành & Cố Vấn</span>
+          </h3>
+
+          <div class="space-y-4 text-xs sm:text-sm">
+            {% if club.leaders %}
+              <div>
+                <span class="text-[11px] text-slate-400 block font-semibold uppercase mb-1">Ban Chủ nhiệm nhiệm kỳ</span>
+                <p class="font-bold text-slate-800 leading-snug">{{ club.leaders }}</p>
+              </div>
+            {% endif %}
+
+            {% if club.advisors %}
+              <div class="pt-3 border-t border-slate-100">
+                <span class="text-[11px] text-slate-400 block font-semibold uppercase mb-1">Cố vấn chuyên môn</span>
+                <p class="font-medium text-slate-700 leading-snug">{{ club.advisors }}</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Widget 3: Các câu lạc bộ liên quan -->
+        {% if related_clubs %}
+          <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
+            <h3 class="text-base font-bold text-[#003366] pb-3 mb-4 border-b border-slate-100 flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px] text-[#0072BC]">diversity_3</span>
+                <span>CLB cùng nhóm lĩnh vực</span>
+              </span>
+              <a href="/clb/" class="text-xs font-bold text-[#0072BC] hover:underline">Xem tất cả</a>
+            </h3>
+
+            <div class="space-y-3">
+              {% for rc in related_clubs %}
+                <a
+                  href="/clb/{{ rc.id }}/"
+                  class="p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/60 border border-slate-200/70 hover:border-blue-200 transition-all flex items-center gap-3 group"
+                >
+                  {% if rc.logo_url %}
+                    <img src="{{ rc.logo_url }}" alt="Logo {{ rc.name }}" class="w-11 h-11 rounded-xl object-cover shrink-0 bg-white shadow-xs">
+                  {% else %}
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0072BC] to-[#003366] text-white flex items-center justify-center font-bold text-base shrink-0">
+                      {{ rc.name|slice:":1" }}
+                    </div>
+                  {% endif %}
+                  <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold text-slate-900 group-hover:text-[#0072BC] transition-colors truncate">
+                      {{ rc.name }}
+                    </p>
+                    <p class="text-[11px] text-slate-500 truncate">{{ rc.category }} • {{ rc.level }}</p>
+                  </div>
+                  <span class="material-symbols-outlined text-slate-300 group-hover:text-[#0072BC] text-[18px] transition-colors">chevron_right</span>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Widget 4: Nút quay lại -->
+        <div>
+          <a
+            href="/clb/"
+            class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-sm font-bold shadow-xs hover:shadow transition-all"
+          >
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Khám phá các CLB khác</span>
+          </a>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+
+</main>
+{% endblock %}
+

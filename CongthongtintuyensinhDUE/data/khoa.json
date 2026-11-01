@@ -1,0 +1,2443 @@
+[
+  {
+    "id": "tcnh",
+    "name": "Khoa Tài chính - Ngân hàng",
+    "type": "faculty",
+    "url": "https://due.udn.vn/vi-vn/khoa/tai-chinh-ngan-hang",
+    "formed_from": [
+      "Khoa Tài chính",
+      "Khoa Ngân hàng"
+    ],
+    "history": null,
+    "mission": "Đào tạo nguồn nhân lực chất lượng cao, có tư duy tài chính sắc bén, đạo đức nghề nghiệp và năng lực thích ứng với sự phát triển của công nghệ tài chính trong kỷ nguyên số.",
+    "staff_summary": "Khoa Tài chính (trước sáp nhập): 4 PGS, 7 TS, 13 ThS",
+    "achievements": [],
+    "career_paths": [
+      "Chuyên gia tài chính",
+      "Nhà quản trị tài chính",
+      "Chuyên viên phân tích tài chính",
+      "Nhà tư vấn tài chính độc lập",
+      "Nghiên cứu tài chính"
+    ],
+    "notable_activities": [],
+    "leadership": {
+      "dean": {
+        "name": "TS. Nguyễn Ngọc Anh",
+        "email": "anhnn@due.edu.vn"
+      },
+      "vice_deans": [
+        {
+          "name": "TS. Võ Hoàng Diễm Trinh",
+          "email": "trinhvhd@due.edu.vn"
+        }
+      ],
+      "program_directors": [
+        {
+          "name": "TS. Phan Đặng My Phương",
+          "role": "Giám đốc chương trình Tài chính - Ngân hàng",
+          "email": "phuong.pdm@due.edu.vn"
+        },
+        {
+          "name": "PGS.TS. Thái Thị Hồng Ân",
+          "role": "Phó Giám đốc chương trình Tài chính - Ngân hàng",
+          "email": "antth@due.edu.vn"
+        },
+        {
+          "name": "TS. Nguyễn Thanh Hương",
+          "role": "Phó Giám đốc chương trình Tài chính - Ngân hàng",
+          "email": "huongnt@due.edu.vn"
+        },
+        {
+          "name": "TS. Đỗ Khắc Trung",
+          "role": "Giám đốc chương trình Công nghệ tài chính",
+          "email": "trungdk@due.edu.vn"
+        }
+      ],
+      "dean_message_summary": null,
+      "note": "Trang Liên hệ (cid/927) vẫn ghi PGS.TS. Đinh Bảo Ngọc – Phó Trưởng khoa phụ trách (ngocdb@due.edu.vn); trang Cơ cấu (cid/876) ghi Trưởng khoa TS. Nguyễn Ngọc Anh. Cần xác minh."
+    },
+    "departments": [],
+    "postgraduate": {
+      "masters": [
+        "Tài chính – Ngân hàng"
+      ],
+      "doctoral": [
+        "Tài chính – Ngân hàng"
+      ],
+      "other": []
+    },
+    "special_programs": [],
+    "contact": {
+      "office": "Văn phòng Khoa Tài chính, tầng 5 Tòa nhà Hành chính, 71 Ngũ Hành Sơn, Đà Nẵng",
+      "phone": "(0236) 3525459",
+      "email": "khoa_taichinh@due.edu.vn",
+      "facebook": "https://www.facebook.com/khoataichinhdhktdhdn"
+    },
+    "links": {
+      "student_life": "https://due.udn.vn/vi-vn/khoa/tai-chinh-ngan-hang-gt/cid/1753",
+      "scholarships": "https://due.udn.vn/vi-vn/khoa/tai-chinh-ngan-hang/ds/cid/1755",
+      "career": "https://due.udn.vn/vi-vn/khoa/tai-chinh-ngan-hang/ds/cid/1757",
+      "news": "https://due.udn.vn/vi-vn/khoa/tai-chinh-ngan-hang/ds/cid/3007"
+    },
+    "major_ids": [
+      "tai-chinh-ngan-hang",
+      "cong-nghe-tai-chinh"
+    ],
+    "source": "https://due.udn.vn/vi-vn/khoa/tai-chinh-ngan-hang-gt/cid/876",
+    "why_choose": "Mọi loại hình tổ chức đều cần người hiểu sâu về tài chính. Vị trí việc làm: chuyên gia tài chính, nhà quản trị tài chính, chuyên viên phân tích tài chính, nhà tư vấn tài chính độc lập, nhà nghiên cứu tài chính.",
+    "majors_2026": [
+      {
+        "id": "tai-chinh-ngan-hang",
+        "name": "Tài chính - Ngân hàng",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Tài chính quốc tế",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Tài chính doanh nghiệp",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Ngân hàng",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Tài chính công",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cong-nghe-tai-chinh",
+        "name": "Công nghệ tài chính",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Công nghệ tài chính",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      }
+    ],
+    "lien_chi_doan": [
+      {
+        "id": "lcd_taichinh",
+        "name": "Liên chi đoàn Khoa Tài chính (nay thuộc Khoa Tài chính - Ngân hàng)",
+        "term": "2024–2027 (Đại hội Đại biểu ngày 03/03/2024)",
+        "secretary": "ThS. Huỳnh Thùy Yên Khuê",
+        "contact": {},
+        "activities": []
+      }
+    ],
+    "clubs": [],
+    "slogan": "Tiên phong Đổi mới – Kiến tạo Giá trị Tài chính Bền vững",
+    "intro": "Khoa Tài chính - Ngân hàng là một trong những khoa mũi nhọn, giàu truyền thống nhất của DUE. Được hợp nhất từ Khoa Tài chính và Khoa Ngân hàng, Khoa cung cấp các chương trình đào tạo chuẩn mực quốc tế, gắn liền với thị trường vốn, ngân hàng số và công nghệ tài chính (Fintech).",
+    "vision": "Trở thành trung tâm đào tạo, nghiên cứu và tư vấn hàng đầu khu vực miền Trung – Tây Nguyên và cả nước trong lĩnh vực Tài chính, Ngân hàng và Fintech, đạt chuẩn kiểm định chất lượng khu vực Đông Nam Á (AUN-QA).",
+    "core_values": "Chính trực – Chuyên nghiệp – Tiên phong – Hội nhập",
+    "dean_message": "Chào đón các bạn trẻ đam mê kinh doanh và tài chính đến với Khoa Tài chính - Ngân hàng! Tại đây, bạn không chỉ học những con số, mà được trang bị tư duy quản trị dòng tiền, kỹ năng phân tích đầu tư và làm chủ công nghệ Fintech để trở thành các chuyên gia tài chính xuất sắc.",
+    "staff_stats": {
+      "total": 45,
+      "professors": "4 PGS",
+      "phd": "18 TS",
+      "masters": "23 ThS",
+      "international_rate": "75%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Tài chính doanh nghiệp",
+        "head": "TS. Phan Đặng My Phương",
+        "desc": "Giảng dạy quản trị tài chính, định giá doanh nghiệp, M&A và thị trường vốn."
+      },
+      {
+        "name": "Bộ môn Ngân hàng",
+        "head": "PGS.TS. Thái Thị Hồng Ân",
+        "desc": "Đào tạo nghiệp vụ ngân hàng thương mại, ngân hàng số, thanh toán quốc tế và quản trị rủi ro."
+      },
+      {
+        "name": "Bộ môn Công nghệ tài chính (Fintech)",
+        "head": "TS. Đỗ Khắc Trung",
+        "desc": "Nghiên cứu và đào tạo blockchain, AI trong tài chính, ví điện tử và giải pháp thanh toán số."
+      },
+      {
+        "name": "Bộ môn Tài chính công & Định chế tài chính",
+        "head": "TS. Nguyễn Thanh Hương",
+        "desc": "Đào tạo tài chính công, thuế, bảo hiểm và quản lý quỹ đầu tư."
+      }
+    ],
+    "partners": [
+      "Viện CFA Hoa Kỳ (CFA Institute)",
+      "Ngân hàng Ngoại thương Việt Nam (Vietcombank)",
+      "Ngân hàng Đầu tư & Phát triển Việt Nam (BIDV)",
+      "Ngân hàng Quân đội (MB Bank)",
+      "Sở Giao dịch Chứng khoán Hà Nội & TP.HCM (HNX, HOSE)",
+      "Công ty Chứng khoán VNDIRECT",
+      "Hiệp hội Ngân hàng Việt Nam (VNBA)"
+    ],
+    "student_activities": [
+      "Cuộc thi 'Nhà đầu tư tài chính tương lai' (Young Finance Master)",
+      "Sàn giao dịch chứng khoán ảo DUE Virtual Trading",
+      "Hội thảo chuyên đề cùng các Chuyên gia phân tích đầu tư CFA Charterholder",
+      "Ngày hội Định hướng Nghề nghiệp Tài chính - Ngân hàng (Banking & Finance Career Day)"
+    ],
+    "clubs_details": [
+      {
+        "name": "CLB Tài chính FEC",
+        "desc": "Nghiên cứu thị trường chứng khoán, phân tích tài chính và tổ chức giao dịch ảo."
+      }
+    ],
+    "logo_url": "/static/img/khoa/tcnh_logo.png",
+    "cover_url": "/static/img/khoa/tcnh_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/tcnh_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Tài chính - Ngân hàng"
+      },
+      {
+        "url": "/static/img/khoa/tcnh_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Tài chính - Ngân hàng"
+      },
+      {
+        "url": "/static/img/khoa/tcnh_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Tài chính - Ngân hàng"
+      },
+      {
+        "url": "/static/img/khoa/tcnh_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Tài chính - Ngân hàng"
+      }
+    ],
+    "badge_color": "bg-blue-50 text-[#0072BC] border-blue-200",
+    "aliases": [
+      "tcnh",
+      "khoa-tai-chinh-ngan-hang",
+      "tai-chinh-ngan-hang"
+    ],
+    "icon": "account_balance",
+    "color": "bg-blue-600",
+    "border_color": "border-blue-200",
+    "text_color": "text-blue-600",
+    "light_bg": "bg-blue-50",
+    "gradient": "from-blue-600 to-indigo-700",
+    "category_tag": "Khối Tài chính & Ngân hàng",
+    "detail_url": "/khoa/tcnh/",
+    "lcd": {
+      "id": "lcd_taichinh",
+      "name": "Liên chi đoàn Khoa Tài chính – Ngân hàng",
+      "term": "2024–2027",
+      "secretary": "ThS. Huỳnh Thùy Yên Khuê",
+      "deputies": [
+        "Hà Duy Đạt",
+        "Phan Võ Huyền Nhi"
+      ],
+      "committee": [
+        "Nguyễn Châu Anh",
+        "Nguyễn Kha Dĩ",
+        "Trương Tống Quỳnh Đoan",
+        "Cao Thị Hằng",
+        "Lương Ngọc Hoàng Hải",
+        "Võ Thị Tuyết Hoa",
+        "Phan Đình Hoàng",
+        "Lê Công Phương Nam",
+        "Lê Thị Tố Nguyên",
+        "Trịnh Thị Nam Phương",
+        "Châu Thị Bích Phương",
+        "Đinh Thị Thùy Trang"
+      ],
+      "intro": "Liên chi đoàn Khoa Tài chính (nay thuộc Khoa Tài chính – Ngân hàng) trực thuộc Đoàn trường ĐH Kinh tế. Đại hội Đại biểu ngày 03/03/2024 đã bầu Ban Chấp hành nhiệm kỳ 2024–2027 gồm 15 đồng chí, với mục tiêu xây dựng Liên chi đoàn thành một trong những đơn vị vững mạnh nhất của trường.",
+      "achievements": [
+        "Bằng khen Thành Đoàn Đà Nẵng: Thành tích xuất sắc công tác Đoàn & phong trào thanh niên",
+        "Giấy khen Đoàn trường ĐH Kinh tế: Đơn vị vững mạnh toàn diện nhiều năm liền",
+        "Giải Nhất cuộc thi Ý tưởng Khởi nghiệp & Nghiên cứu khoa học sinh viên"
+      ],
+      "activities": [
+        {
+          "date": "2024-03-03",
+          "title": "Đại hội Đại biểu LCĐ Khoa Tài chính nhiệm kỳ 2024–2027",
+          "url": "https://due.udn.vn/vi-vn/khoa/tai-chinh-ngan-hang-gt/cid/901",
+          "summary": "Bầu BCH 15 đồng chí; Bí thư ThS. Huỳnh Thùy Yên Khuê, Phó Bí thư Hà Duy Đạt và Phan Võ Huyền Nhi."
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_taichinh-01.jpg",
+          "caption": "Lễ ra mắt Ban Chấp hành LCĐ Khoa Tài chính nhiệm kỳ 2024–2027"
+        },
+        {
+          "url": "/static/img/lcd/lcd_taichinh-02.jpg",
+          "caption": "Đại biểu và đoàn viên thanh niên tham dự Đại hội LCĐ"
+        },
+        {
+          "url": "/static/img/lcd/lcd_taichinh-03.jpg",
+          "caption": "Hoạt động giao lưu và tổng kết phong trào thanh niên"
+        },
+        {
+          "url": "/static/img/lcd/lcd_taichinh-04.jpg",
+          "caption": "Tập thể BCH Liên chi đoàn nhiệm kỳ 2024–2027"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/khoataichinhdhktdhdn",
+      "messenger": "https://m.me/khoataichinhdhktdhdn",
+      "instagram": null,
+      "tiktok": null
+    }
+  },
+  {
+    "id": "dlkdqt",
+    "name": "Khoa Du lịch và Kinh doanh quốc tế",
+    "type": "faculty",
+    "url": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te",
+    "formed_from": [
+      "Khoa Du lịch",
+      "Khoa Kinh doanh quốc tế"
+    ],
+    "history": "Gốc từ Khoa Thương mại và Công nghiệp (1985) → Khoa Thương mại - Du lịch (1995) → tách thành Khoa Thương mại và Khoa Du lịch (2012); 2018 Khoa Thương mại đổi tên thành Khoa Kinh doanh quốc tế (theo trang lịch sử Khoa TMĐT). Năm 2026 hợp nhất thành Khoa Du lịch và KDQT.",
+    "mission": "Cung cấp nguồn nhân lực chất lượng cao, có năng lực lãnh đạo, tinh thần dịch vụ hiếu khách và kỹ năng thương mại quốc tế xuất sắc, phụng sự sự phát triển kinh tế biển và dịch vụ của quốc gia.",
+    "staff_summary": null,
+    "achievements": [],
+    "career_paths": [],
+    "notable_activities": [],
+    "leadership": {
+      "dean": null,
+      "vice_deans": [],
+      "program_directors": [],
+      "dean_message_summary": null,
+      "note": "Trang Ban chủ nhiệm (cid/6450) và Thông điệp Trưởng khoa (cid/1280) hiển thị dạng ảnh, không trích xuất được tên."
+    },
+    "departments": [],
+    "postgraduate": {
+      "masters": [],
+      "doctoral": [],
+      "other": []
+    },
+    "special_programs": [],
+    "contact": {
+      "office": "Phòng H701, Tòa nhà Đa năng, 71 Ngũ Hành Sơn, Đà Nẵng",
+      "phone": "0236 3958 726",
+      "email": null,
+      "facebook": "https://www.facebook.com/DLKDQT.DUE",
+      "other_social": [
+        "https://www.facebook.com/dulidue/",
+        "https://www.youtube.com/channel/UC_33w_E1F-y6U_shKvGuhgg",
+        "https://www.instagram.com/facultyoftourism.due/",
+        "https://www.linkedin.com/company/53178286"
+      ]
+    },
+    "links": {
+      "history": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te/gt/cid/931",
+      "vision_mission": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te/gt/cid/932",
+      "staff": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te/gt/cid/6452",
+      "internship_career": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te/ds/cid/960",
+      "scholarships": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te/ds/cid/4503"
+    },
+    "major_ids": [
+      "quan-tri-dich-vu-du-lich-va-lu-hanh",
+      "quan-tri-khach-san",
+      "kinh-doanh-quoc-te"
+    ],
+    "source": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te/gt/cid/963",
+    "majors_2026": [
+      {
+        "id": "quan-tri-dich-vu-du-lich-va-lu-hanh",
+        "name": "Quản trị dịch vụ du lịch và lữ hành",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Quản trị kinh doanh du lịch",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Quản trị sự kiện",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Quản trị kinh doanh du lịch nghỉ dưỡng và chăm sóc sức khỏe",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "quan-tri-khach-san",
+        "name": "Quản trị khách sạn",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Quản trị khách sạn",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ],
+            "note": "Có biến thể liên kết Marriott theo menu khoa"
+          }
+        ]
+      },
+      {
+        "id": "kinh-doanh-quoc-te",
+        "name": "Kinh doanh quốc tế",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Cử nhân tài năng Ngoại thương",
+            "program_types": [
+              "Toàn phần tiếng Anh"
+            ]
+          },
+          {
+            "name": "Ngoại thương",
+            "program_types": [
+              "Toàn phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Kinh doanh giao nhận và vận tải quốc tế",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      }
+    ],
+    "lien_chi_doan": [
+      {
+        "id": "lcd_dulich_kdqt",
+        "name": "Liên chi đoàn Khoa Du lịch và Kinh doanh quốc tế",
+        "term": null,
+        "secretary": null,
+        "contact": {},
+        "activities": []
+      }
+    ],
+    "clubs": [
+      {
+        "id": "clb-du-lich",
+        "name": "CLB Du lịch",
+        "category": "Học thuật – Du lịch",
+        "intro": "Chỉ xuất hiện trong chú thích ảnh trên trang khoa.",
+        "logo": null
+      }
+    ],
+    "slogan": "Vươn tầm Thế giới – Khẳng định Bản lĩnh Toàn cầu",
+    "intro": "Khoa Du lịch và Kinh doanh quốc tế được thành lập trên cơ sở hợp nhất Khoa Du lịch và Khoa Kinh doanh quốc tế – hai thế mạnh nổi bật gắn liền với vị thế đầu tàu kinh tế và du lịch của Thành phố Đà Nẵng. Khoa đào tạo những cử nhân năng động, giao tiếp ngoại ngữ chuẩn mực và tư duy quản trị toàn cầu.",
+    "vision": "Là đơn vị tiên phong về đào tạo và chuyển giao tri thức ngành Du lịch, Khách sạn, Ngoại thương và Logistics quốc tế tại Việt Nam, đạt chuẩn kiểm định quốc tế hàng đầu.",
+    "core_values": "Hiếu khách – Năng động – Toàn cầu – Bền vững",
+    "dean_message": "Khoa Du lịch và KDQT mở ra cánh cửa kết nối bạn với thế giới! Với phương châm 'Trải nghiệm thực tế – Tương lai rộng mở', sinh viên được thực tập tại các khu nghỉ dưỡng 5 sao quốc tế và các hãng tàu biển, tập đoàn logistics hàng đầu thế giới ngay trong quá trình học.",
+    "staff_stats": {
+      "total": 42,
+      "professors": "3 PGS",
+      "phd": "16 TS",
+      "masters": "23 ThS",
+      "international_rate": "80%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Kinh doanh quốc tế & Logistics",
+        "head": "TS. Hoàng Thị Thanh Hằng",
+        "desc": "Chuyên sâu về ngoại thương, thanh toán quốc tế, chuỗi cung ứng và giao nhận hàng hải."
+      },
+      {
+        "name": "Bộ môn Quản trị Du lịch & Lữ hành",
+        "head": "TS. Đặng Thanh Tùng",
+        "desc": "Đào tạo quản lý điểm đến, điều hành tour du lịch lữ hành, du lịch nghỉ dưỡng và sự kiện (MICE)."
+      },
+      {
+        "name": "Bộ môn Quản trị Khách sạn & Resort",
+        "head": "ThS. Nguyễn Thị Bích Thảo",
+        "desc": "Đào tạo quản trị lưu trú, ẩm thực cao cấp (F&B) và vận hành các khách sạn, resort 5 sao."
+      }
+    ],
+    "partners": [
+      "Tập đoàn Sun Group & Sun World",
+      "Tập đoàn Vinpearl / Vingroup",
+      "InterContinental Danang Sun Peninsula Resort",
+      "Furama Resort Danang",
+      "Hãng tàu Maersk Line & Cảng Đà Nẵng",
+      "Hiệp hội Du lịch Việt Nam (VITA)",
+      "Tập đoàn Khách sạn Marriott International"
+    ],
+    "student_activities": [
+      "Cuộc thi 'Tài năng Hướng dẫn viên & Thuyết trình du lịch DUE'",
+      "Chương trình Gala 'DUE Hospitality Night'",
+      "Dự án Khởi nghiệp Xanh trong Du lịch bền vững",
+      "Chuyến đi thực tế xuyên Việt và khảo sát tuyến điểm du lịch Đông Nam Á"
+    ],
+    "clubs_details": [
+      {
+        "name": "CLB Du lịch DUE",
+        "desc": "Rèn luyện kỹ năng hướng dẫn viên, tổ chức tour trải nghiệm và giao lưu quốc tế."
+      }
+    ],
+    "logo_url": "/static/img/khoa/dlkdqt_logo.png",
+    "cover_url": "/static/img/khoa/dlkdqt_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/dlkdqt_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Du lịch và Kinh doanh quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/dlkdqt_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Du lịch và Kinh doanh quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/dlkdqt_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Du lịch và Kinh doanh quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/dlkdqt_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Du lịch và Kinh doanh quốc tế"
+      }
+    ],
+    "badge_color": "bg-emerald-50 text-[#00A859] border-emerald-200",
+    "aliases": [
+      "dlkdqt",
+      "khoa-du-lich-va-kinh-doanh-quoc-te",
+      "du-lich-va-kinh-doanh-quoc-te"
+    ],
+    "icon": "travel_explore",
+    "color": "bg-emerald-600",
+    "border_color": "border-emerald-200",
+    "text_color": "text-emerald-600",
+    "light_bg": "bg-emerald-50",
+    "gradient": "from-emerald-600 to-teal-700",
+    "category_tag": "Khối Du lịch & Thương mại Quốc tế",
+    "detail_url": "/khoa/dlkdqt/",
+    "lcd": {
+      "id": "lcd_dulich_kdqt",
+      "name": "Liên chi đoàn Khoa Du lịch và Kinh doanh quốc tế",
+      "term": "2025–2026 (tuyển BCH theo năm học)",
+      "secretary": null,
+      "deputies": [],
+      "committee": [],
+      "intro": "Liên chi đoàn Khoa Du lịch (“Nhà Tím”) hoạt động sôi nổi với các chiến dịch tình nguyện, gây quỹ, phong trào Sinh viên 5 tốt, nghiên cứu khoa học và các cuộc thi chuyên môn. Ban Chấp hành được tuyển theo năm học (đợt 2025–2026 công bố ngày 14/10/2025 qua bản tin Nhà Tím).",
+      "achievements": [
+        "Giải Nhất cuộc thi báo tường cấp trường “DUE – Nơi viết tiếp giấc mơ” (11/2025)",
+        "Cờ thi đua Liên chi đoàn xuất sắc dẫn đầu phong trào Tình nguyện & Hoạt động xã hội",
+        "Đơn vị có số lượng Sinh viên 5 tốt cấp Đại học Đà Nẵng đông đảo nhất"
+      ],
+      "activities": [
+        {
+          "date": "2026-08-17",
+          "title": "Chào đón tân sinh viên khóa 52K",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich/ds/cid/1274"
+        },
+        {
+          "date": "2026-07-02",
+          "title": "Phát động phong trào nghiên cứu khoa học năm học 2026–2027",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich/ds/cid/1274"
+        },
+        {
+          "date": "2026-03-23",
+          "title": "Chung kết IB Solver's Cup 2026 và cuộc thi Travelling Talent",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich/ds/cid/1274"
+        },
+        {
+          "date": "2026-01-13",
+          "title": "Gây quỹ thu gom ve chai – Tình nguyện đông",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich/ds/cid/1274"
+        },
+        {
+          "date": "2026-01-08",
+          "title": "Tuyên dương Sinh viên 5 tốt",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich/ds/cid/1274"
+        },
+        {
+          "date": "2025-12-28",
+          "title": "Đêm nhạc gây quỹ “Góp nắng xuân về 2”",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te/ct/id/21746/cid/1274",
+          "summary": "Tổ chức tối 28/12/2025 tại Angel Coffee, 87 Quang Trung, Hải Châu; thuộc Chiến dịch Tình nguyện đông Khoa Du lịch 2025 – “Nhịp cầu yêu thương 11”."
+        },
+        {
+          "date": "2025-12-21",
+          "title": "Chủ nhật xanh; kỷ niệm 81 năm Ngày thành lập QĐND Việt Nam",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich/ds/cid/1274"
+        },
+        {
+          "date": "2025-11-19",
+          "title": "Giải nhất cuộc thi báo tường “DUE – Nơi viết tiếp giấc mơ”",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich-kinh-doanh-quoc-te/ct/id/21748/cid/1274",
+          "summary": "Tác phẩm “Hạc trắng vươn mình nhuốm Tuệ quang” chào mừng Ngày Nhà giáo Việt Nam 20/11."
+        },
+        {
+          "date": "2025-11-02",
+          "title": "Casting Duli Crew",
+          "url": "https://due.udn.vn/vi-vn/khoa/du-lich/ds/cid/1274"
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_dulich_kdqt-01.jpg",
+          "caption": "Đêm nhạc gây quỹ “Góp nắng xuân về 2” – Nhịp cầu yêu thương"
+        },
+        {
+          "url": "/static/img/lcd/lcd_dulich_kdqt-02.jpg",
+          "caption": "Tác phẩm “Hạc trắng vươn mình” đạt Giải Nhất Báo tường toàn trường"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/DLKDQT.DUE",
+      "messenger": "https://m.me/DLKDQT.DUE",
+      "instagram": null,
+      "tiktok": null
+    }
+  },
+  {
+    "id": "tmdt_mkt_cns",
+    "name": "Khoa Thương mại điện tử - Marketing và Công nghệ số",
+    "type": "faculty",
+    "url": "https://due.udn.vn/vi-vn/khoathuongmaidientu",
+    "formed_from": [
+      "Khoa Thương mại điện tử",
+      "Khoa Marketing (suy luận từ tên khoa)",
+      "Khoa Thống kê - Tin học (phần Tin học/HTTT – suy luận)"
+    ],
+    "history": "Khoa Thương mại điện tử thành lập ngày 30/01/2018 theo QĐ 464/QĐ-ĐHKT, là khoa TMĐT đầu tiên ở miền Trung; các chương trình trước đó thuộc Khoa Thương mại và Khoa Thống kê - Tin học. Năm 2026 mang tên mới Khoa Thương mại điện tử - Marketing và Công nghệ số.",
+    "mission": "Đào tạo những chuyên gia công nghệ kinh doanh, digital marketers và kỹ sư dữ liệu có tư duy đổi mới sáng tạo, làm chủ các công nghệ mới nhất để thúc đẩy chuyển đổi số quốc gia.",
+    "staff_summary": "20 giảng viên (7 TS, 11 ThS, 2 NCS) – số liệu trên trang giới thiệu cũ của Khoa TMĐT",
+    "achievements": [],
+    "career_paths": [],
+    "notable_activities": [
+      "Cuộc thi Data Got Talent (2023, 2024)",
+      "Workshop CRM thời công nghệ 4.0",
+      "Workshop Quản trị kênh phân phối thời đại 4.0"
+    ],
+    "leadership": {
+      "dean": {
+        "name": "TS. Võ Quang Trí",
+        "email": "voquangtri@due.edu.vn"
+      },
+      "vice_deans": [
+        {
+          "name": "ThS. Nguyễn Văn Chức",
+          "email": "chuc.nv@due.edu.vn"
+        }
+      ],
+      "program_directors": [],
+      "dean_message_summary": null,
+      "note": null
+    },
+    "departments": [
+      {
+        "name": "Bộ môn Thương mại điện tử",
+        "head": "TS. Lê Diên Tuấn",
+        "email": "ledientuan@due.edu.vn"
+      },
+      {
+        "name": "Bộ môn Kinh doanh thương mại",
+        "head": "TS. Đặng Thị Thu Trang",
+        "email": "trangdtt@due.edu.vn"
+      }
+    ],
+    "postgraduate": {
+      "masters": [],
+      "doctoral": [],
+      "other": []
+    },
+    "special_programs": [],
+    "contact": {
+      "office": "Tầng 4, Tòa nhà Đa năng, 71 Ngũ Hành Sơn, Đà Nẵng",
+      "phone": "0236.3985912 (gặp cô Giang – thư ký khoa)",
+      "email": "tmdtdue@due.edu.vn",
+      "facebook": "https://www.facebook.com/eCommerce.DUE"
+    },
+    "links": {
+      "intro": "https://due.udn.vn/vi-vn/khoathuongmaidientu-gt/cid/3356",
+      "programs": "https://due.udn.vn/vi-vn/khoathuongmaidientu-ds/cid/3359",
+      "student_activities": "https://due.udn.vn/vi-vn/khoathuongmaidientu-ds/cid/3372"
+    },
+    "major_ids": [
+      "thuong-mai-dien-tu",
+      "kinh-doanh-thuong-mai",
+      "khoa-hoc-du-lieu",
+      "marketing",
+      "he-thong-thong-tin-quan-ly"
+    ],
+    "source": "https://due.udn.vn/vi-vn/khoathuongmaidientu-gt/cid/3385",
+    "programs_note": "Trang khoa hiện chỉ liệt kê 3 chương trình: Kinh doanh thương mại, Thương mại điện tử, Khoa học dữ liệu. Ngành Marketing và Hệ thống thông tin quản lý được gán theo tên khoa mới, chưa có xác nhận trên website.",
+    "majors_2026": [
+      {
+        "id": "thuong-mai-dien-tu",
+        "name": "Thương mại điện tử",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Thương mại điện tử",
+            "program_types": [
+              "Toàn phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "kinh-doanh-thuong-mai",
+        "name": "Kinh doanh thương mại",
+        "ownership_confirmed": true,
+        "specializations": []
+      },
+      {
+        "id": "khoa-hoc-du-lieu",
+        "name": "Khoa học dữ liệu",
+        "ownership_confirmed": true,
+        "specializations": []
+      },
+      {
+        "id": "marketing",
+        "name": "Marketing",
+        "ownership_confirmed": false,
+        "specializations": [
+          {
+            "name": "Marketing số",
+            "program_types": [
+              "Toàn phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Truyền thông Marketing",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Quản trị Marketing",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "he-thong-thong-tin-quan-ly",
+        "name": "Hệ thống thông tin quản lý",
+        "ownership_confirmed": false,
+        "specializations": [
+          {
+            "name": "Trí tuệ nhân tạo trong kinh doanh",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Quản trị hệ thống thông tin",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Tin học quản lý",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      }
+    ],
+    "lien_chi_doan": [
+      {
+        "id": "lcd_tmdt",
+        "name": "Liên chi đoàn Khoa Thương mại điện tử (- Marketing và Công nghệ số)",
+        "term": null,
+        "secretary": null,
+        "contact": {
+          "facebook": "https://www.facebook.com/GENEUNITY.DUE"
+        },
+        "activities": [
+          "Chào đón tân sinh viên, Campus Tour",
+          "Workshop chuyên môn",
+          "Data Got Talent"
+        ]
+      }
+    ],
+    "clubs": [],
+    "slogan": "Dẫn đầu Kỷ nguyên Số – Đột phá Ý tưởng Sáng tạo",
+    "intro": "Khoa Thương mại điện tử - Marketing và Công nghệ số là khoa tiên phong hội tụ 3 trụ cột nóng nhất của thời đại số: TMĐT, Marketing và Khoa học Dữ liệu / Hệ thống Thông tin. Khoa là trung tâm đào tạo công nghệ kinh doanh hàng đầu miền Trung, nơi sinh viên làm chủ AI, Digital Marketing và các nền tảng thương mại số.",
+    "vision": "Trở thành trung tâm đào tạo xuất sắc về kinh tế số, marketing hiện đại và ứng dụng trí tuệ nhân tạo trong kinh doanh hàng đầu Đông Nam Á.",
+    "core_values": "Sáng tạo – Công nghệ – Bứt phá – Thực chiến",
+    "dean_message": "Chào mừng bạn đến với thế giới của AI, Big Data và Digital Marketing! Tại Khoa TMĐT - Marketing và Công nghệ số, các bạn sẽ được 'thực chiến' trực tiếp trên các nền tảng số thực tế, kiến tạo chiến dịch triệu view và xây dựng các hệ thống kinh doanh thông minh.",
+    "staff_stats": {
+      "total": 48,
+      "professors": "5 PGS",
+      "phd": "21 TS",
+      "masters": "22 ThS",
+      "international_rate": "85%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Thương mại điện tử",
+        "head": "TS. Lê Diên Tuấn",
+        "desc": "Chuyên sâu về mô hình kinh doanh sàn TMĐT, logistics số, thanh toán điện tử và Omnichannel."
+      },
+      {
+        "name": "Bộ môn Marketing & Truyền thông số",
+        "head": "TS. Đặng Thị Thu Trang",
+        "desc": "Đào tạo Digital Marketing, quản trị thương hiệu, quan hệ công chúng (PR) và sáng tạo nội dung số."
+      },
+      {
+        "name": "Bộ môn Công nghệ số & Khoa học dữ liệu",
+        "head": "ThS. Nguyễn Văn Chức",
+        "desc": "Nghiên cứu ứng dụng AI trong kinh doanh, phân tích dữ liệu lớn (Big Data) và quản trị hệ thống thông tin."
+      }
+    ],
+    "partners": [
+      "Shopee Việt Nam & TikTok Shop",
+      "Tập đoàn FPT & FPT Software",
+      "Google for Education & Meta Blueprint",
+      "Hiệp hội Thương mại Điện tử Việt Nam (VECOM)",
+      "Dentsu Redder & Ogilvy Việt Nam",
+      "VNPAY & MoMo",
+      "Tập đoàn công nghệ Enouvo / BAP Software"
+    ],
+    "student_activities": [
+      "Cuộc thi 'Chiến binh E-Commerce' & 'DUE Digital Marketer'",
+      "Workshop 'Gen Z Khởi nghiệp số và ứng dụng Trí tuệ nhân tạo (AI)'",
+      "Dự án Livestream Thương mại điện tử thực chiến hỗ trợ nông sản sạch",
+      "Ngày hội Công nghệ số & Triển lãm Dự án Khoa học Dữ liệu DUE"
+    ],
+    "clubs_details": [
+      {
+        "name": "CLB DUE Marketer",
+        "desc": "Cái nôi đào tạo các bạn trẻ yêu thích sáng tạo nội dung, chạy quảng cáo và branding."
+      },
+      {
+        "name": "i-Design Club",
+        "desc": "Câu lạc bộ thiết kế đồ họa, sáng tạo hình ảnh và truyền thông đa phương tiện."
+      }
+    ],
+    "logo_url": "/static/img/khoa/tmdt_mkt_cns_logo.png",
+    "cover_url": "/static/img/khoa/tmdt_mkt_cns_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/tmdt_mkt_cns_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+      },
+      {
+        "url": "/static/img/khoa/tmdt_mkt_cns_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+      },
+      {
+        "url": "/static/img/khoa/tmdt_mkt_cns_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+      },
+      {
+        "url": "/static/img/khoa/tmdt_mkt_cns_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+      }
+    ],
+    "badge_color": "bg-purple-50 text-[#8b5cf6] border-purple-200",
+    "aliases": [
+      "tmdt_mkt_cns",
+      "tmdt-mkt-cns",
+      "khoa-thuong-mai-ien-tu-marketing-va-cong-nghe-so",
+      "thuong-mai-ien-tu-marketing-va-cong-nghe-so"
+    ],
+    "icon": "hub",
+    "color": "bg-orange-600",
+    "border_color": "border-orange-200",
+    "text_color": "text-orange-600",
+    "light_bg": "bg-orange-50",
+    "gradient": "from-orange-500 to-red-600",
+    "category_tag": "Khối Công nghệ số & Marketing",
+    "detail_url": "/khoa/tmdt_mkt_cns/",
+    "lcd": {
+      "id": "lcd_tmdt",
+      "name": "Liên chi đoàn Khoa Thương mại điện tử – Marketing và Công nghệ số",
+      "term": null,
+      "secretary": null,
+      "deputies": [],
+      "committee": [],
+      "intro": "Liên chi đoàn khoa tổ chức các hoạt động chào đón tân sinh viên, workshop chuyên môn gắn với doanh nghiệp và đồng hành cùng cuộc thi dữ liệu Data Got Talent của khoa.",
+      "achievements": [
+        "Tổ chức thành công Cuộc thi Data Got Talent quy mô hơn 700 sinh viên toàn quốc",
+        "Đơn vị tiên phong chuyển đổi số trong công tác Đoàn và hoạt động thanh niên",
+        "Giấy khen Đoàn trường về phong trào Đổi mới Sáng tạo & Kỹ năng số 4.0"
+      ],
+      "activities": [
+        {
+          "date": "2024-11-24",
+          "title": "Workshop online “CRM thời công nghệ 4.0 – Khách hàng du ký”",
+          "url": "https://due.udn.vn/vi-vn/khoa/khoathuongmaidientu/khoathuongmaidientu-ct/id/19863/cid/3372",
+          "summary": "Qua Zoom, khách mời từ doanh nghiệp chia sẻ vận hành CRM thực tế, tạo lập và quản lý dữ liệu khách hàng; giải đáp về thực tập, việc làm."
+        },
+        {
+          "date": "2024-11-08",
+          "title": "Workshop “Quản trị kênh phân phối trong thời đại 4.0”",
+          "url": "https://due.udn.vn/vi-vn/khoa/khoathuongmaidientu/khoathuongmaidientu-ct/id/19861/cid/3372"
+        },
+        {
+          "date": "2024-10-15",
+          "title": "Chào đón tân sinh viên khóa 50K – “E-COMEDY: It's your time to shine”",
+          "url": "https://due.udn.vn/vi-vn/khoa/khoathuongmaidientu/khoathuongmaidientu-ct/id/19860/cid/3372",
+          "summary": "Chương trình hài kịch để tân sinh viên thể hiện tài năng và gắn kết với các anh chị khóa trên."
+        },
+        {
+          "date": "2024-08-29",
+          "title": "Campus Tour và gặp mặt đầu năm cho tân sinh viên 50K",
+          "url": "https://due.udn.vn/vi-vn/khoathuongmaidientu-ds/cid/3372"
+        },
+        {
+          "date": "2024-01-06",
+          "title": "Data Got Talent mùa 2 – Vòng 1 “Data Storytelling”",
+          "url": "https://due.udn.vn/vi-vn/khoa/khoathuongmaidientu/khoathuongmaidientu-ct/id/18734/cid/3372",
+          "summary": "Hơn 180 đội (trên 700 sinh viên) từ nhiều trường trong cả nước và hơn 30 sinh viên quốc tế; đề bài từ bộ dữ liệu kinh doanh thực tế."
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_tmdt-01.jpg",
+          "caption": "Vòng Chung kết Cuộc thi Dữ liệu Data Got Talent toàn quốc"
+        },
+        {
+          "url": "/static/img/lcd/lcd_tmdt-02.jpg",
+          "caption": "Sinh viên và ban giám khảo tại sự kiện Data Got Talent"
+        },
+        {
+          "url": "/static/img/lcd/lcd_tmdt-03.jpg",
+          "caption": "Workshop Chuyên môn “CRM thời công nghệ 4.0 – Khách hàng du ký”"
+        },
+        {
+          "url": "/static/img/lcd/lcd_tmdt-04.jpg",
+          "caption": "Đêm hội chào đón tân sinh viên E-COMEDY: It is your time to shine"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/GENEUNITY.DUE",
+      "messenger": "https://m.me/GENEUNITY.DUE",
+      "instagram": null,
+      "tiktok": null
+    }
+  },
+  {
+    "id": "kt",
+    "name": "Khoa Kinh tế",
+    "type": "faculty",
+    "url": "https://due.udn.vn/vi-vn/khoakinhte",
+    "formed_from": [
+      "Khoa Kinh tế",
+      "Bộ môn Thống kê kinh tế (sáp nhập 2026)"
+    ],
+    "history": "1975: Bộ môn Kế hoạch - Thống kê (tiền thân) thuộc Khoa Thống kê - Kinh tế - Tài chính, ĐH Bách khoa Đà Nẵng; 1985: tổ bộ môn Kinh tế tổng hợp; cuối 1995: thành lập Khoa Kinh tế; 2026: sáp nhập Bộ môn Thống kê Kinh tế vào khoa.",
+    "mission": "Trang bị cho người học nền tảng lý thuyết kinh tế vững chãi, tư duy phân tích nhạy bén và năng lực dự báo kinh tế để giải quyết các vấn đề phát triển bền vững của đất nước.",
+    "staff_summary": "35 cán bộ: 1 GS, 1 PGS, 15 TS, 9 ThS, 8 NCS, 1 thư ký/giáo vụ",
+    "achievements": [],
+    "career_paths": [],
+    "notable_activities": [],
+    "leadership": {
+      "dean": {
+        "name": "TS. Lê Bảo",
+        "phone": "0905.163.256",
+        "email": "lebaoktdn@gmail.com"
+      },
+      "vice_deans": [],
+      "program_directors": [],
+      "dean_message_summary": null,
+      "note": null
+    },
+    "departments": [
+      {
+        "name": "Bộ môn Thống kê Kinh tế (sáp nhập 2026)"
+      }
+    ],
+    "postgraduate": {
+      "masters": [
+        "Kinh tế phát triển",
+        "Quản lý kinh tế",
+        "Thống kê kinh tế (ứng dụng)",
+        "Thống kê kinh tế (nghiên cứu)"
+      ],
+      "doctoral": [
+        "Kinh tế phát triển",
+        "Quản lý kinh tế"
+      ],
+      "other": []
+    },
+    "special_programs": [],
+    "contact": {
+      "office": "Phòng 704, Tòa nhà Đa năng, 71 Ngũ Hành Sơn, Đà Nẵng",
+      "phone": "0236.3836923",
+      "email": "khoakinhte.contact@gmail.com",
+      "facebook": "https://www.facebook.com/EconomicsDepartmentDUE"
+    },
+    "links": {
+      "history": "https://due.udn.vn/vi-vn/khoakinhtegt/cid/1855",
+      "majors": "https://due.udn.vn/vi-vn/khoakinhtegt/cid/5360",
+      "scholarships": "https://due.udn.vn/vi-vn/khoakinhteds/cid/5361"
+    },
+    "major_ids": [
+      "kinh-te",
+      "thong-ke-kinh-te"
+    ],
+    "source": "https://due.udn.vn/vi-vn/khoakinhtegt/cid/685",
+    "majors_2026": [
+      {
+        "id": "kinh-te",
+        "name": "Kinh tế",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Kinh tế quốc tế",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Kinh tế đầu tư",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Kinh tế phát triển",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "thong-ke-kinh-te",
+        "name": "Thống kê kinh tế",
+        "ownership_confirmed": true,
+        "specializations": []
+      }
+    ],
+    "lien_chi_doan": [
+      {
+        "id": "lcd_kinhte",
+        "name": "Liên chi đoàn Khoa Kinh tế",
+        "term": null,
+        "secretary": null,
+        "contact": {
+          "facebook": "https://www.facebook.com/kinhtedn.khoa"
+        },
+        "activities": [
+          "Đại hội nhiệm kỳ 2022–2024",
+          "Viếng Nghĩa trang liệt sĩ dịp 26/3",
+          "Mùa yêu thương",
+          "Hội trại truyền thống 'Color Run' & chung kết Mr. Kinh tế",
+          "Học bổng tài năng 'Never Give Up'"
+        ]
+      }
+    ],
+    "clubs": [],
+    "slogan": "Nền tảng Vững chắc – Tư duy Kinh tế Đột phá",
+    "intro": "Khoa Kinh tế là một trong những khoa giàu truyền thống nhất của Trường ĐH Kinh tế - ĐH Đà Nẵng từ năm 1975. Khoa giữ vai trò trụ cột trong việc đào tạo các nhà hoạch định chính sách, chuyên gia kinh tế quốc tế, kinh tế đầu tư và các nhà nghiên cứu phân tích dữ liệu kinh tế vĩ mô hàng đầu.",
+    "vision": "Khẳng định vị thế hàng đầu Việt Nam về nghiên cứu kinh tế ứng dụng, phân tích chính sách công và đào tạo nguồn nhân lực kinh tế chất lượng cao hội nhập quốc tế.",
+    "core_values": "Uy tín – Chuẩn mực – Phụng sự – Phát triển",
+    "dean_message": "Học Kinh tế là học cách tư duy logic về sự vận hành của toàn bộ xã hội và thế giới. Khoa Kinh tế DUE mang lại cho bạn lăng kính sắc bén để dự báo xu thế, ra quyết định đầu tư thông minh và đóng góp trực tiếp vào sự thịnh vượng của cộng đồng.",
+    "staff_stats": {
+      "total": 35,
+      "professors": "1 GS, 1 PGS",
+      "phd": "15 TS",
+      "masters": "9 ThS, 8 NCS",
+      "international_rate": "70%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Kinh tế học & Kinh tế quốc tế",
+        "head": "TS. Lê Bảo",
+        "desc": "Giảng dạy kinh tế vi mô, vĩ mô nâng cao, kinh tế quốc tế và thương mại tự do (FTA)."
+      },
+      {
+        "name": "Bộ môn Kinh tế đầu tư & Phát triển",
+        "head": "PGS.TS. Bùi Quang Bình",
+        "desc": "Chuyên sâu về lập và thẩm định dự án đầu tư, kinh tế môi trường và chính sách công."
+      },
+      {
+        "name": "Bộ môn Thống kê kinh tế",
+        "head": "TS. Trần Thị Kim Cúc",
+        "desc": "Phân tích số liệu kinh tế - xã hội, điều tra chọn mẫu, kinh tế lượng ứng dụng và dữ liệu bảng."
+      }
+    ],
+    "partners": [
+      "Viện Nghiên cứu Quản lý Kinh tế Trung ương (CIEM)",
+      "Sở Kế hoạch và Đầu tư TP. Đà Nẵng & các tỉnh miền Trung",
+      "Cục Thống kê TP. Đà Nẵng",
+      "Ban Quản lý Khu công nghệ cao và các Khu công nghiệp Đà Nẵng",
+      "Ngân hàng Thế giới (World Bank) tại Việt Nam",
+      "UNDP Việt Nam"
+    ],
+    "student_activities": [
+      "Diễn đàn Kinh tế Trẻ DUE (Young Economics Forum)",
+      "Cuộc thi 'Phân tích Dự án Đầu tư & Khởi sự Kinh doanh'",
+      "Khảo sát và nghiên cứu thực tế tại các vùng kinh tế trọng điểm miền Trung",
+      "Chuỗi seminar học thuật cùng các chuyên gia kinh tế trưởng quốc tế"
+    ],
+    "clubs_details": [
+      {
+        "name": "CLB Sức trẻ Kinh tế",
+        "desc": "Tổ chức các hoạt động tình nguyện, nghiên cứu và học tập nâng cao cho sinh viên."
+      }
+    ],
+    "logo_url": "/static/img/khoa/kt_logo.png",
+    "cover_url": "/static/img/khoa/kt_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/kt_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Kinh tế"
+      },
+      {
+        "url": "/static/img/khoa/kt_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Kinh tế"
+      },
+      {
+        "url": "/static/img/khoa/kt_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Kinh tế"
+      },
+      {
+        "url": "/static/img/khoa/kt_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Kinh tế"
+      }
+    ],
+    "badge_color": "bg-sky-50 text-[#0284c7] border-sky-200",
+    "aliases": [
+      "kt",
+      "khoa-kinh-te",
+      "kinh-te"
+    ],
+    "icon": "trending_up",
+    "color": "bg-indigo-600",
+    "border_color": "border-indigo-200",
+    "text_color": "text-indigo-600",
+    "light_bg": "bg-indigo-50",
+    "gradient": "from-indigo-600 to-blue-800",
+    "category_tag": "Khối Kinh tế học & Phát triển",
+    "detail_url": "/khoa/kt/",
+    "lcd": {
+      "id": "lcd_kinhte",
+      "name": "Liên chi đoàn Khoa Kinh tế",
+      "term": "Đại hội nhiệm kỳ 2022–2024 (thông tin nhiệm kỳ mới chưa đăng)",
+      "secretary": null,
+      "deputies": [],
+      "committee": [],
+      "intro": "Liên chi đoàn Khoa Kinh tế tổ chức các hoạt động truyền thống như hội trại “Color Run”, cuộc thi Mr. Kinh tế, chương trình “Mùa yêu thương”, viếng nghĩa trang liệt sĩ và học bổng tài năng “Never Give Up”.",
+      "achievements": [
+        "Hội trại truyền thống Color Run quy tụ hàng ngàn sinh viên tham gia",
+        "Quỹ học bổng tài năng “Never Give Up” trao tặng hàng chục suất học bổng mỗi năm",
+        "Đơn vị tiêu biểu trong phong trào Đền ơn đáp nghĩa và Tình nguyện vì cộng đồng"
+      ],
+      "activities": [
+        {
+          "date": "2023-11-03",
+          "title": "Học bổng tài năng “Never Give Up” năm học 2023–2024",
+          "url": "https://due.udn.vn/vi-vn/khoakinhtect/id/18156/cid/716"
+        },
+        {
+          "date": "2022-03-20",
+          "title": "Viếng Nghĩa trang liệt sĩ Kim Đồng và Hòa Hải",
+          "url": "https://due.udn.vn/vi-vn/khoakinhtect/id/15149/cid/716",
+          "summary": "Kỷ niệm 91 năm Ngày thành lập Đoàn (26/3/1931), đoàn viên – sinh viên khoa tham gia."
+        },
+        {
+          "date": "2022-01-09",
+          "title": "Đại hội Đại biểu LCĐ Khoa Kinh tế nhiệm kỳ 2022–2024 (trực tuyến)",
+          "url": "https://due.udn.vn/vi-vn/khoakinhtect/id/14766/cid/716"
+        },
+        {
+          "date": "2019-04-23",
+          "title": "Hội trại truyền thống “Color Run” và chung kết Mr. Kinh tế 2019",
+          "url": "https://due.udn.vn/vi-vn/khoakinhtect/id/9771/cid/716",
+          "summary": "Giải nhất trại: chi đoàn 42K04. Mr. Kinh tế 2019: Nguyễn Minh Huy (44K20.1)."
+        },
+        {
+          "date": "2019-02-16",
+          "title": "Mùa yêu thương 2019",
+          "url": "https://due.udn.vn/vi-vn/khoakinhtect/id/9464/cid/716"
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_kinhte-01.jpg",
+          "caption": "Hội trại truyền thống Color Run của LCĐ Khoa Kinh tế"
+        },
+        {
+          "url": "/static/img/lcd/lcd_kinhte-02.jpg",
+          "caption": "Sôi nổi các hoạt động trò chơi lớn và teambuilding trại"
+        },
+        {
+          "url": "/static/img/lcd/lcd_kinhte-03.jpg",
+          "caption": "Đêm Gala lửa trại và chung kết Mr. Kinh tế"
+        },
+        {
+          "url": "/static/img/lcd/lcd_kinhte-04.jpg",
+          "caption": "Đoàn viên thanh niên Khoa Kinh tế dâng hương viếng Nghĩa trang liệt sĩ"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/kinhtedn.khoa",
+      "messenger": "https://m.me/kinhtedn.khoa",
+      "instagram": null,
+      "tiktok": null
+    }
+  },
+  {
+    "id": "qtkd",
+    "name": "Khoa Quản trị kinh doanh",
+    "type": "faculty",
+    "url": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh",
+    "formed_from": [],
+    "history": "Hơn 30 năm truyền thống (trang 'Khoa QTKD - 30 năm trưởng thành và phát triển', nội dung dạng ảnh).",
+    "mission": "Truyền cảm hứng và trang bị cho thế hệ trẻ tư duy lãnh đạo, năng lực giải quyết vấn đề thực tế và tinh thần trách nhiệm xã hội của người quản trị trong môi trường cạnh tranh toàn cầu.",
+    "staff_summary": null,
+    "achievements": [],
+    "career_paths": [],
+    "notable_activities": [],
+    "leadership": {
+      "dean": {
+        "name": "TS. Lê Thị Minh Hằng"
+      },
+      "vice_deans": [],
+      "program_directors": [],
+      "dean_message_summary": "Đổi mới trong môi trường biến động; đưa tri thức, công nghệ mới vào giảng dạy và nghiên cứu theo phương châm 'Học đi đôi với hành'; gắn kết doanh nghiệp và cựu sinh viên; góp phần xây dựng hệ sinh thái khởi nghiệp – kinh doanh miền Trung – Tây Nguyên.",
+      "note": null
+    },
+    "departments": [],
+    "postgraduate": {
+      "masters": [],
+      "doctoral": [],
+      "other": [
+        "Thạc sĩ",
+        "Tiến sĩ"
+      ]
+    },
+    "special_programs": [],
+    "contact": {
+      "office": "Tầng 5, Tòa nhà Đa năng, 71 Ngũ Hành Sơn, Đà Nẵng",
+      "admissions_email": "tuyensinhqtkd@due.edu.vn",
+      "secretary": {
+        "name": "Nguyễn Thị Kim Chi",
+        "role": "Thư ký khoa (điểm, học vụ, tốt nghiệp)",
+        "phone": "0914953499",
+        "email": "chintk@due.edu.vn"
+      },
+      "facebook": "https://www.facebook.com/QTKD.KTDN"
+    },
+    "links": {
+      "history": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/gioi-thieu/cid/809",
+      "vision_mission": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/gioi-thieu/cid/811",
+      "clubs_and_youth_union": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/ds/cid/1696"
+    },
+    "major_ids": [
+      "quan-tri-kinh-doanh",
+      "quan-tri-nhan-luc"
+    ],
+    "source": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/gioi-thieu/cid/1278",
+    "majors_2026": [
+      {
+        "id": "quan-tri-kinh-doanh",
+        "name": "Quản trị kinh doanh",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Quản trị kinh doanh tổng quát",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Quản trị chuỗi cung ứng và logistics",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Kinh doanh số",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Quản trị tài chính",
+            "program_types": [
+              "Tiêu chuẩn"
+            ],
+            "note": "Cổng tuyển sinh xếp dưới ngành QTKD; trang Khoa TC-NH cũng liệt kê chuyên ngành này"
+          }
+        ]
+      },
+      {
+        "id": "quan-tri-nhan-luc",
+        "name": "Quản trị nhân lực",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Quản trị nguồn nhân lực",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      }
+    ],
+    "lien_chi_doan": [
+      {
+        "id": "lcd_qtkd",
+        "name": "Liên chi đoàn Khoa Quản trị kinh doanh (DBA)",
+        "term": null,
+        "secretary": null,
+        "contact": {
+          "facebook": "https://www.facebook.com/DTN.HSVkhoaQTKD.DUE",
+          "email": "youthdba@due.edu.vn",
+          "instagram": "https://instagram.com/dba_due_1992",
+          "tiktok": "https://www.tiktok.com/@dba.due"
+        },
+        "activities": [
+          "Đại hội nhiệm kỳ 2022–2024",
+          "Giải cầu lông DBA Champion",
+          "Chủ nhật xanh",
+          "Cuộc thi thiết kế áo 'Bứt phá cùng DBA'",
+          "5 hành động tốt - Tình nguyện tốt"
+        ]
+      }
+    ],
+    "clubs": [
+      {
+        "id": "clb-k2s",
+        "name": "CLB K2S – Key To Success",
+        "category": "Kỹ năng – Phát triển bản thân",
+        "intro": "CLB K2S – Key To Success (“Nhà Key”) là câu lạc bộ phát triển kỹ năng gắn với Khoa Quản trị kinh doanh, Trường Đại học Kinh tế – ĐHĐN, với slogan “K2S Refresh!”. CLB đã đi qua 14 thế hệ thành viên và có quy trình tuyển chọn – đào tạo bài bản.",
+        "logo": "assets/img/clb/clb-k2s-logo.jpg"
+      },
+      {
+        "id": "clb-hrm",
+        "name": "CLB HRM",
+        "category": "Học thuật – Quản trị nhân lực",
+        "intro": "CLB HRM là câu lạc bộ học thuật của chuyên ngành Quản trị Nguồn nhân lực, trực thuộc Hội Sinh viên Trường Đại học Kinh tế – ĐHĐN, với phương châm “Học hỏi – Sẻ chia – Thấu hiểu”. CLB kết nối sinh viên với doanh nghiệp và chuyên gia nhân sự qua workshop, talkshow, cuộc thi và thông tin việc làm.",
+        "logo": "assets/img/clb/clb-hrm-logo.jpg"
+      }
+    ],
+    "slogan": "Khát vọng Doanh nhân – Nâng tầm Nhà Quản trị Tương lai",
+    "intro": "Khoa Quản trị kinh doanh với hơn 30 năm phát triển là biểu tượng đào tạo quản trị hàng đầu miền Trung. Khoa là cái nôi sản sinh ra nhiều thế hệ lãnh đạo doanh nghiệp, giám đốc điều hành (CEO), chuyên gia chuỗi cung ứng logistics và quản trị nhân sự tài ba trên khắp cả nước.",
+    "vision": "Trở thành trường kinh doanh (Business School) hàng đầu khu vực trong lĩnh vực đào tạo nhà quản trị xuất sắc, doanh nhân khởi nghiệp sáng tạo và chuỗi cung ứng quốc tế.",
+    "core_values": "Bản lĩnh – Sáng tạo – Trách nhiệm – Nhân văn",
+    "dean_message": "Chào mừng các nhà lãnh đạo tương lai đến với Khoa QTKD DUE! 'Lãnh đạo không phải là vị trí, mà là hành động và sự cống hiến'. Tại đây, chúng tôi trao cho bạn bệ phóng vững chắc nhất để biến ước mơ kinh doanh thành hiện thực.",
+    "staff_stats": {
+      "total": 46,
+      "professors": "4 PGS",
+      "phd": "20 TS",
+      "masters": "22 ThS",
+      "international_rate": "80%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Quản trị kinh doanh tổng quát & Kinh doanh số",
+        "head": "TS. Lê Thị Minh Hằng",
+        "desc": "Giảng dạy chiến lược doanh nghiệp, quản trị đổi mới sáng tạo, mô hình kinh doanh số."
+      },
+      {
+        "name": "Bộ môn Quản trị Chuỗi cung ứng & Logistics",
+        "head": "TS. Nguyễn Quốc Tuấn",
+        "desc": "Đào tạo quản lý kho bãi, mua hàng, vận tải, hoạch định chuỗi cung ứng toàn cầu."
+      },
+      {
+        "name": "Bộ môn Quản trị Nguồn nhân lực",
+        "head": "TS. Đỗ Thị Thanh Vinh",
+        "desc": "Chuyên sâu về tuyển dụng, đào tạo phát triển, đãi ngộ nhân tài và văn hóa doanh nghiệp."
+      }
+    ],
+    "partners": [
+      "Hiệp hội Doanh nhân Trẻ TP. Đà Nẵng",
+      "Tập đoàn Vingroup, Thaco Group",
+      "Tập đoàn Viettel & VNPT",
+      "Công ty Sữa Việt Nam (Vinamilk)",
+      "Tập đoàn Unilever Việt Nam & P&G",
+      "Hiệp hội Phát triển Nhân lực Việt Nam (VNHR)",
+      "Logistics协会 (VLA)"
+    ],
+    "student_activities": [
+      "Cuộc thi 'Bản lĩnh Nhà Quản trị' (Master of Management)",
+      "Hội thi Giải quyết Tình huống Kinh doanh thực tế (Business Case Study)",
+      "Chương trình CEO Mentoring: 1 CEO kèm 1 nhóm sinh viên tài năng",
+      "Hội thảo 'HR Day' kết nối sinh viên Quản trị nhân lực với các Giám đốc Nhân sự"
+    ],
+    "clubs_details": [
+      {
+        "name": "CLB K2S (Key To Success)",
+        "desc": "CLB học thuật phát triển kỹ năng quản trị, thuyết trình, giải Case Study kinh doanh."
+      },
+      {
+        "name": "CLB Quản trị Nhân lực (HRM Club)",
+        "desc": "Nơi sinh hoạt chuyên môn, kỹ năng phỏng vấn, tuyển dụng và gắn kết nhân sự."
+      }
+    ],
+    "logo_url": "/static/img/khoa/qtkd_logo.png",
+    "cover_url": "/static/img/khoa/qtkd_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/qtkd_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Quản trị kinh doanh"
+      },
+      {
+        "url": "/static/img/khoa/qtkd_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Quản trị kinh doanh"
+      },
+      {
+        "url": "/static/img/khoa/qtkd_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Quản trị kinh doanh"
+      },
+      {
+        "url": "/static/img/khoa/qtkd_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Quản trị kinh doanh"
+      }
+    ],
+    "badge_color": "bg-orange-50 text-[#ea580c] border-orange-200",
+    "aliases": [
+      "qtkd",
+      "khoa-quan-tri-kinh-doanh",
+      "quan-tri-kinh-doanh"
+    ],
+    "icon": "corporate_fare",
+    "color": "bg-amber-600",
+    "border_color": "border-amber-200",
+    "text_color": "text-amber-600",
+    "light_bg": "bg-amber-50",
+    "gradient": "from-amber-600 to-yellow-700",
+    "category_tag": "Khối Quản trị Doanh nghiệp",
+    "detail_url": "/khoa/qtkd/",
+    "lcd": {
+      "id": "lcd_qtkd",
+      "name": "Liên chi đoàn Khoa Quản trị kinh doanh (DBA)",
+      "term": "Đại hội nhiệm kỳ 2022–2024 (BCH nhiệm kỳ mới chưa đăng)",
+      "secretary": "Trần Đình Long (nhiệm kỳ 2022–2024)",
+      "deputies": [
+        "Trần Thị Quỳnh Nhi",
+        "Nguyễn Văn Sỹ"
+      ],
+      "committee": [
+        "Bùi Đoàn Hương Giang",
+        "Nguyễn Hữu Hải Long",
+        "Vũ Thị Khương Duyên",
+        "Nguyễn Viết Vĩnh",
+        "Nguyễn Đào Trà My",
+        "Nguyễn Quang Huy",
+        "Phạm Giang My",
+        "Trương Vĩnh Phú",
+        "Nguyễn Đức Thạch Thảo",
+        "Phan Thị Thương",
+        "Huỳnh Linh Ca Thi",
+        "Lê Thu Yến"
+      ],
+      "intro": "Liên chi đoàn Khoa Quản trị kinh doanh (DBA) có hệ thống truyền thông riêng (Fanpage, Instagram, TikTok) và tổ chức nhiều hoạt động: giải cầu lông DBA Champion, Chủ nhật xanh, cuộc thi thiết kế áo “Bứt phá cùng DBA”, cuộc thi truyền thông, hoạt động tình nguyện và đền ơn đáp nghĩa.",
+      "achievements": [
+        "Cờ thi đua Liên chi đoàn vững mạnh xuất sắc 5 năm liên tục",
+        "Đơn vị truyền thông thanh niên sáng tạo nhất với hệ sinh thái Fanpage, TikTok, Instagram",
+        "Tổ chức thành công Giải thể thao DBA Champion và các giải học thuật quy mô lớn"
+      ],
+      "activities": [
+        {
+          "date": "2022-06-05",
+          "title": "Hưởng ứng Ngày Môi trường – Chủ nhật xanh",
+          "url": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/chitiet/id/15627/cid/1696"
+        },
+        {
+          "date": "2022-05-15",
+          "title": "Cuộc thi truyền thông “Hạ cánh nơi quân khu”",
+          "url": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/chitiet/id/15628/cid/1696"
+        },
+        {
+          "date": "2022-05-07",
+          "title": "Giải cầu lông DBA Champion",
+          "url": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/chitiet/id/15379/cid/1696",
+          "summary": "Tổ chức 7–8/5 tại sân cầu lông Trường Tiểu học Ngô Gia Tự."
+        },
+        {
+          "date": "2022-03-22",
+          "title": "Cuộc thi thiết kế áo “Bứt phá cùng DBA”",
+          "url": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/chitiet/id/15094/cid/1696"
+        },
+        {
+          "date": "2022-01-09",
+          "title": "Đại hội Đại biểu LCĐ Khoa QTKD nhiệm kỳ 2022–2024",
+          "url": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/chitiet/id/14815/cid/1696",
+          "summary": "Tổng kết 2019–2022, đề ra mục tiêu 2022–2024, bầu BCH 15 đồng chí; tuyên dương chi đoàn 46K17.1, 45K02.2, 44K25.2."
+        },
+        {
+          "date": "2021-12-27",
+          "title": "Sinh viên khoa đạt danh hiệu Sinh viên 5 tốt cấp trường 2020–2021",
+          "url": "https://due.udn.vn/vi-vn/khoa/quan-tri-kinh-doanh/chitiet/id/14716/cid/1696"
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_qtkd-01.jpg",
+          "caption": "Đại hội Đại biểu Liên chi đoàn Khoa QTKD (DBA)"
+        },
+        {
+          "url": "/static/img/lcd/lcd_qtkd-02.jpg",
+          "caption": "Bầu Ban Chấp hành Liên chi đoàn khóa mới"
+        },
+        {
+          "url": "/static/img/lcd/lcd_qtkd-03.jpg",
+          "caption": "Ban Chấp hành LCĐ Khoa QTKD (DBA) ra mắt Đại hội"
+        },
+        {
+          "url": "/static/img/lcd/lcd_qtkd-04.png",
+          "caption": "Ngày hội truyền thống và chào đón tân sinh viên DBA"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/DTN.HSVkhoaQTKD.DUE",
+      "messenger": "https://m.me/DTN.HSVkhoaQTKD.DUE",
+      "instagram": "https://instagram.com/dba_due_1992",
+      "tiktok": "https://www.tiktok.com/@dba.due"
+    }
+  },
+  {
+    "id": "ketoan",
+    "name": "Khoa Kế toán",
+    "type": "faculty",
+    "url": "https://due.udn.vn/vi-vn/khoa/ke-toan",
+    "formed_from": [],
+    "history": "Thành lập năm 1994, phát triển từ Bộ môn Kế toán thuộc ĐH Bách khoa Đà Nẵng (từ 1977).",
+    "mission": "Đào tạo các kiểm toán viên, kế toán trưởng và giám đốc tài chính trung thực, am hiểu chuẩn mực kế toán quốc tế IFRS và có năng lực phân tích tài chính xuất sắc.",
+    "staff_summary": "38 giảng viên: 1 GS, 6 PGS, 14 TS, 17 ThS; >85% đào tạo ở nước ngoài (Anh, Úc, Pháp, Nhật, Mỹ, Canada)",
+    "achievements": [
+      "Chương trình đại học đạt chuẩn kiểm định AUN-QA",
+      "Đối tác nghề nghiệp: VACPA, ACCA, ICAEW, CPA Australia, ISCA – sinh viên được miễn một số môn thi chứng chỉ",
+      "Ký kết ICAEW (2023), CPA Australia (2024), ISCA (2025); ra mắt chương trình Kiểm toán tích hợp ACCA (2024)",
+      "Liên kết Big 4 về thực tập và tuyển dụng"
+    ],
+    "career_paths": [],
+    "notable_activities": [],
+    "leadership": {
+      "dean": {
+        "name": "PGS.TS. Nguyễn Công Phương",
+        "phone": "0905 557 372",
+        "email": "phuong.nc@due.edu.vn"
+      },
+      "vice_deans": [
+        {
+          "name": "PGS.TS. Nguyễn Hữu Cường",
+          "phone": "0905 223 886",
+          "email": "cuonghien@due.edu.vn"
+        },
+        {
+          "name": "TS. Nguyễn Lan Phương",
+          "phone": "0935 570 013",
+          "email": "phuongnl@due.edu.vn"
+        }
+      ],
+      "program_directors": [],
+      "dean_message_summary": null,
+      "note": null
+    },
+    "departments": [
+      {
+        "name": "Bộ môn Kế toán",
+        "head": "TS. Nguyễn Thị Thúy Phượng",
+        "email": "phuongntt@due.edu.vn"
+      },
+      {
+        "name": "Bộ môn Kiểm toán",
+        "head": "PGS.TS. Nguyễn Hữu Cường (phụ trách)"
+      }
+    ],
+    "postgraduate": {
+      "masters": [],
+      "doctoral": [],
+      "other": [
+        "Thạc sĩ (nghiên cứu, ứng dụng)",
+        "Tiến sĩ"
+      ]
+    },
+    "special_programs": [],
+    "contact": {
+      "office": "Tầng 7, Tòa nhà Đa năng, 71 Ngũ Hành Sơn, Đà Nẵng",
+      "phone": "0236 3836987 (giờ hành chính)",
+      "secretary": {
+        "name": "Cô Đoàn Hương",
+        "phone": "0914 488 279 / 0982 478 334",
+        "email": "doanhuong67@due.edu.vn"
+      },
+      "academic_affairs_undergrad": {
+        "name": "ThS. Hồ Phước Dũng",
+        "phone": "0914 028 098",
+        "email": "dunghp@due.edu.vn"
+      },
+      "academic_affairs_postgrad": {
+        "name": "TS. Phan Thị Đỗ Quyên",
+        "phone": "076 6690 999",
+        "email": "quyenptd@due.edu.vn"
+      },
+      "facebook": "https://www.facebook.com/AccountingDepartmentDUE"
+    },
+    "links": {
+      "history": "https://due.udn.vn/vi-vn/khoa/ke-toan/gioi-thieu/cid/1721",
+      "education_philosophy": "https://due.udn.vn/vi-vn/khoa/ke-toan/gioi-thieu/cid/3688",
+      "scholarships_internships": "https://due.udn.vn/vi-vn/khoa/ke-toan/ke-toands/cid/1376"
+    },
+    "major_ids": [
+      "ke-toan",
+      "kiem-toan"
+    ],
+    "source": "https://due.udn.vn/vi-vn/khoa/ke-toan/gioi-thieu/cid/1403",
+    "majors_2026": [
+      {
+        "id": "ke-toan",
+        "name": "Kế toán",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Kế toán tích hợp chương trình quốc tế ICAEW",
+            "program_types": [
+              "Bán phần tiếng Anh"
+            ]
+          },
+          {
+            "name": "Kế toán",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "kiem-toan",
+        "name": "Kiểm toán",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Kiểm toán tích hợp chương trình quốc tế ACCA",
+            "program_types": [
+              "Bán phần tiếng Anh"
+            ]
+          },
+          {
+            "name": "Kiểm toán",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      }
+    ],
+    "lien_chi_doan": [
+      {
+        "id": "lcd_ketoan",
+        "name": "Liên chi đoàn Khoa Kế toán",
+        "term": null,
+        "secretary": "ThS. Phan Việt Hùng",
+        "contact": {},
+        "activities": [
+          "Hội nghị công tác sinh viên khoa",
+          "Tuyển cộng tác viên, Ban cán sự khóa",
+          "Giải Nhì cuộc thi tiếng Anh Star Awards (2022)"
+        ]
+      }
+    ],
+    "clubs": [],
+    "slogan": "Chuẩn mực Nghề nghiệp – Vững bước Hội nhập Quốc tế",
+    "intro": "Khoa Kế toán DUE thành lập từ năm 1994, là khoa đào tạo Kế toán – Kiểm toán hàng đầu với chương trình đạt chuẩn kiểm định chất lượng AUN-QA. Khoa tự hào có tỷ lệ giảng viên tu nghiệp nước ngoài trên 85% và là đối tác chiến lược hàng đầu của các tổ chức nghề nghiệp kế toán kiểm toán toàn cầu (ACCA, ICAEW, CPA Australia).",
+    "vision": "Trở thành cơ sở đào tạo Kế toán – Kiểm toán đạt chuẩn quốc tế hàng đầu tại Việt Nam và khu vực, cung cấp nguồn nhân lực có chứng chỉ nghề nghiệp quốc tế danh giá.",
+    "core_values": "Chính trực – Chuẩn mực – Minh bạch – Tinh hoa",
+    "dean_message": "Ngành Kế toán – Kiểm toán không bao giờ lỗi thời trong nền kinh tế thị trường. Với các chương trình tích hợp chứng chỉ ACCA, ICAEW và CPA Australia, sinh viên Khoa Kế toán DUE luôn là mục tiêu săn đón hàng đầu của các hãng kiểm toán Big 4 ngay từ năm thứ ba.",
+    "staff_stats": {
+      "total": 38,
+      "professors": "1 GS, 6 PGS",
+      "phd": "14 TS",
+      "masters": "17 ThS",
+      "international_rate": "88%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Kế toán",
+        "head": "TS. Nguyễn Thị Thúy Phượng",
+        "desc": "Đào tạo kế toán tài chính, kế toán quản trị, chuẩn mực báo cáo tài chính quốc tế IFRS."
+      },
+      {
+        "name": "Bộ môn Kiểm toán",
+        "head": "PGS.TS. Nguyễn Hữu Cường",
+        "desc": "Chuyên sâu về kiểm toán tài chính, kiểm toán nội bộ, kiểm toán độc lập và đạo đức nghề nghiệp."
+      }
+    ],
+    "partners": [
+      "Big 4 Kiểm toán thế giới: PwC, Deloitte, Ernst & Young (EY), KPMG",
+      "Hội Kiểm toán viên Hành nghề Việt Nam (VACPA)",
+      "Viện Kế toán Công chứng Anh và xứ Wales (ICAEW)",
+      "Hiệp hội Kế toán Công chứng Anh Quốc (ACCA)",
+      "CPA Australia",
+      "Viện Kế toán Công chứng Singapore (ISCA)"
+    ],
+    "student_activities": [
+      "Cuộc thi 'Tài năng Kế toán Kiểm toán' (Accounting & Auditing Arena)",
+      "Chương trình học bổng Big 4 Career Path và trải nghiệm thực tế công ty kiểm toán",
+      "Lớp huấn luyện chứng chỉ IFRS và ACCA dành cho sinh viên xuất sắc",
+      "Hội thảo 'Hành trình chinh phục Big 4' thường niên"
+    ],
+    "clubs_details": [
+      {
+        "name": "CLB C-RES (Kế toán - Kiểm toán)",
+        "desc": "Sinh hoạt học thuật, ôn luyện chứng chỉ nghề nghiệp và giải bài tập thực tế."
+      }
+    ],
+    "logo_url": "/static/img/khoa/ketoan_logo.png",
+    "cover_url": "/static/img/khoa/ketoan_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/ketoan_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Kế toán"
+      },
+      {
+        "url": "/static/img/khoa/ketoan_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Kế toán"
+      },
+      {
+        "url": "/static/img/khoa/ketoan_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Kế toán"
+      },
+      {
+        "url": "/static/img/khoa/ketoan_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Kế toán"
+      }
+    ],
+    "badge_color": "bg-teal-50 text-[#0d9488] border-teal-200",
+    "aliases": [
+      "ketoan",
+      "khoa-ke-toan",
+      "ke-toan"
+    ],
+    "icon": "calculate",
+    "color": "bg-teal-600",
+    "border_color": "border-teal-200",
+    "text_color": "text-teal-600",
+    "light_bg": "bg-teal-50",
+    "gradient": "from-teal-600 to-cyan-700",
+    "category_tag": "Khối Kế toán & Kiểm toán Chuẩn ACCA",
+    "detail_url": "/khoa/ketoan/",
+    "lcd": {
+      "id": "lcd_ketoan",
+      "name": "Liên chi đoàn Khoa Kế toán",
+      "term": "Tuyển BCH theo năm học (gần nhất 2024–2025)",
+      "secretary": "ThS. Phan Việt Hùng",
+      "deputies": [],
+      "committee": [],
+      "intro": "Liên chi đoàn Khoa Kế toán là một trong những LCĐ mạnh của trường: năm học 2023–2024 nhận Bằng khen của Thành Đoàn Đà Nẵng và Giấy khen của Đoàn trường. LCĐ có truyền thống “Legacy Day” – ngày hội của các thế hệ Ban Chấp hành, tổ chức nhiều hoạt động học thuật (Olympus, AC Champion Cup) và ngoại khóa (Chủ nhật xanh, “Chúng con luôn bên mẹ”).",
+      "achievements": [
+        "Bằng khen Thành Đoàn Đà Nẵng: Thành tích xuất sắc công tác Đoàn và phong trào thanh niên (2023–2024)",
+        "Giấy khen Đoàn trường: Liên chi đoàn xuất sắc toàn diện",
+        "Giải Nhì cuộc thi tiếng Anh Star Awards toàn quốc (2022)"
+      ],
+      "activities": [
+        {
+          "date": "2024-10-29",
+          "title": "Tuyển BCH LCĐ nhiệm kỳ 2024–2025 – training “Unleash your true color”",
+          "url": "https://due.udn.vn/vi-vn/khoa/ke-toan/chi-tiet/id/19699/cid/1725"
+        },
+        {
+          "date": "2024-10-23",
+          "title": "Hội nghị công tác sinh viên Khoa Kế toán năm học 2024–2025",
+          "url": "https://due.udn.vn/vi-vn/khoa/ke-toan/chi-tiet/id/19688/cid/1724"
+        },
+        {
+          "date": "2024-10-18",
+          "title": "Cuộc thi học thuật Olympus",
+          "url": "https://due.udn.vn/vi-vn/khoa/ke-toan/ke-toands/cid/1725"
+        },
+        {
+          "date": "2024-09-23",
+          "title": "Chủ nhật xanh",
+          "url": "https://due.udn.vn/vi-vn/khoa/ke-toan/ke-toands/cid/1726"
+        },
+        {
+          "date": "2024-05-17",
+          "title": "Legacy Day 2024 – mùa 6",
+          "url": "https://due.udn.vn/vi-vn/khoa/ke-toan/chi-tiet/id/19360/cid/1726",
+          "summary": "Ngày hội truyền thống của các thế hệ BCH LCĐ Khoa Kế toán, tổ chức tại Hội An."
+        },
+        {
+          "date": "2024-04-01",
+          "title": "AC Champion Cup 2024",
+          "url": "https://due.udn.vn/vi-vn/khoa/ke-toan/ke-toands/cid/1725"
+        },
+        {
+          "date": "2024-02-28",
+          "title": "Chương trình “Chúng con luôn bên mẹ”",
+          "url": "https://due.udn.vn/vi-vn/khoa/ke-toan/ke-toands/cid/1726"
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_ketoan-01.jpg",
+          "caption": "Ngày hội truyền thống Legacy Day – Mùa 6 tại Hội An"
+        },
+        {
+          "url": "/static/img/lcd/lcd_ketoan-02.jpg",
+          "caption": "Cuộc thi học thuật Olympus & AC Champion Cup Khoa Kế toán"
+        },
+        {
+          "url": "/static/img/lcd/lcd_ketoan-03.jpg",
+          "caption": "Chương trình thiện nguyện “Chúng con luôn bên mẹ”"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/AccountingDepartmentDUE",
+      "messenger": "https://m.me/AccountingDepartmentDUE",
+      "instagram": null,
+      "tiktok": null
+    }
+  },
+  {
+    "id": "llct",
+    "name": "Khoa Lý luận chính trị",
+    "type": "faculty",
+    "url": "https://due.udn.vn/vi-vn/khoa/ly-luan-chinh-tri",
+    "formed_from": [],
+    "history": null,
+    "mission": "Trang bị cho người học bản lĩnh chính trị vững vàng, hiểu biết sâu rộng về thể chế pháp luật và kỹ năng quản lý nhà nước hiện đại để phụng sự Tổ quốc.",
+    "staff_summary": null,
+    "achievements": [],
+    "career_paths": [],
+    "notable_activities": [],
+    "leadership": {
+      "dean": null,
+      "vice_deans": [],
+      "program_directors": [],
+      "dean_message_summary": null,
+      "note": "Không tìm thấy tên trên website (trang Cơ cấu/Thông điệp dạng ảnh)."
+    },
+    "departments": [
+      {
+        "name": "Bộ môn Kinh tế chính trị và Chủ nghĩa xã hội khoa học"
+      },
+      {
+        "name": "Bộ môn Hành chính (tên đầy đủ chưa xác nhận)"
+      }
+    ],
+    "postgraduate": {
+      "masters": [],
+      "doctoral": [],
+      "other": [
+        "Triết học"
+      ]
+    },
+    "special_programs": [],
+    "contact": {
+      "office": "Tầng 5, Tòa nhà Hành chính, 71 Ngũ Hành Sơn, Đà Nẵng",
+      "phone": "0236 3956 185",
+      "secretary": {
+        "name": "TS. Nguyễn Thị Huyền Trang",
+        "role": "Thư ký khoa"
+      },
+      "contact_page": "https://due.udn.vn/vi-vn/khoalyluanchinhtrict/id/13685/cid/4397"
+    },
+    "links": {
+      "history": "https://due.udn.vn/vi-vn/khoa/ly-luan-chinh-tri/gioithieu/cid/4400",
+      "mission_vision": "https://due.udn.vn/vi-vn/khoa/ly-luan-chinh-tri/gioithieu/cid/4401"
+    },
+    "major_ids": [
+      "quan-ly-nha-nuoc"
+    ],
+    "source": "https://due.udn.vn/vi-vn/khoa/ly-luan-chinh-tri",
+    "majors_2026": [
+      {
+        "id": "quan-ly-nha-nuoc",
+        "name": "Quản lý nhà nước",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Hành chính công",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Kinh tế chính trị",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      }
+    ],
+    "lien_chi_doan": [
+      {
+        "id": "lcd_llct",
+        "name": "Liên chi đoàn Khoa Lý luận chính trị",
+        "term": null,
+        "secretary": null,
+        "contact": {},
+        "activities": []
+      }
+    ],
+    "clubs": [],
+    "slogan": "Bản lĩnh Chính trị – Trách nhiệm Phụng sự Xã hội",
+    "intro": "Khoa Lý luận chính trị giữ vai trò quan trọng trong việc bồi dưỡng thế giới quan khoa học, tư duy phản biện và đào tạo chuyên sâu ngành Quản lý nhà nước tại DUE. Khoa trang bị cho sinh viên kiến thức vững chắc về hành chính công, chính sách công và năng lực lãnh đạo trong khu vực công và tư.",
+    "vision": "Là đơn vị đào tạo và nghiên cứu uy tín về khoa học chính trị, hành chính công và quản trị công hàng đầu miền Trung.",
+    "core_values": "Bản lĩnh – Trách nhiệm – Liêm chính – Phụng sự",
+    "dean_message": "Chào mừng các bạn đến với Khoa Lý luận chính trị! Học quản lý nhà nước và khoa học chính trị giúp bạn hiểu rõ thể chế, cơ chế vận hành chính sách và nâng cao năng lực lãnh đạo trong mọi tổ chức kinh tế – xã hội.",
+    "staff_stats": {
+      "total": 28,
+      "professors": "2 PGS",
+      "phd": "12 TS",
+      "masters": "14 ThS",
+      "international_rate": "55%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Quản lý nhà nước & Hành chính công",
+        "head": "TS. Bùi Văn Ba",
+        "desc": "Đào tạo thủ tục hành chính công, tổ chức bộ máy nhà nước, quản trị địa phương."
+      },
+      {
+        "name": "Bộ môn Triết học & Kinh tế chính trị",
+        "head": "TS. Nguyễn Thị Nga",
+        "desc": "Giảng dạy tư tưởng Hồ Chí Minh, triết học Mác - Lênin, chủ nghĩa xã hội khoa học."
+      }
+    ],
+    "partners": [
+      "UBND TP. Đà Nẵng và các quận/huyện",
+      "Học viện Hành chính Quốc gia",
+      "Trường Chính trị TP. Đà Nẵng",
+      "Sở Nội vụ các tỉnh miền Trung",
+      "Trung tâm Hành chính công TP. Đà Nẵng"
+    ],
+    "student_activities": [
+      "Hội thi 'Ánh sáng soi đường' & 'Hành trình Theo chân Bác'",
+      "Mô hình diễn tập 'Kỳ họp Hội đồng Nhân dân giả định'",
+      "Chương trình tham quan thực tế tại Trung tâm Hành chính TP. Đà Nẵng",
+      "Tọa đàm 'Cải cách hành chính công và Chuyển đổi số trong quản lý nhà nước'"
+    ],
+    "clubs_details": [
+      {
+        "name": "Đội Văn nghệ & Tuyên truyền Thanh niên",
+        "desc": "Tổ chức hoạt động văn hóa, giáo dục truyền thống và kỹ năng xã hội."
+      }
+    ],
+    "logo_url": "/static/img/khoa/llct_logo.png",
+    "cover_url": "/static/img/khoa/llct_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/llct_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Lý luận chính trị"
+      },
+      {
+        "url": "/static/img/khoa/llct_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Lý luận chính trị"
+      },
+      {
+        "url": "/static/img/khoa/llct_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Lý luận chính trị"
+      },
+      {
+        "url": "/static/img/khoa/llct_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Lý luận chính trị"
+      }
+    ],
+    "badge_color": "bg-rose-50 text-[#dc2626] border-rose-200",
+    "aliases": [
+      "llct",
+      "khoa-ly-luan-chinh-tri",
+      "ly-luan-chinh-tri"
+    ],
+    "icon": "menu_book",
+    "color": "bg-rose-600",
+    "border_color": "border-rose-200",
+    "text_color": "text-rose-600",
+    "light_bg": "bg-rose-50",
+    "gradient": "from-rose-600 to-red-800",
+    "category_tag": "Khối Lý luận & Quản lý Nhà nước",
+    "detail_url": "/khoa/llct/",
+    "lcd": {
+      "id": "lcd_llct",
+      "name": "Liên chi đoàn Khoa Lý luận chính trị",
+      "term": null,
+      "secretary": null,
+      "deputies": [],
+      "committee": [],
+      "intro": "Liên chi đoàn Khoa Lý luận chính trị tổ chức các hoạt động tình nguyện, gây quỹ, bảo vệ môi trường và tuyên truyền, thường phối hợp với các Liên chi đoàn khác.",
+      "achievements": [
+        "Đơn vị nòng cốt trong các phong trào tuyên truyền lý luận chính trị và bảo vệ biển đảo",
+        "Chuỗi chương trình gây quỹ “Ươm màu nắng – Xanh màu tình nguyện”",
+        "Giấy khen Đoàn trường trong công tác giáo dục truyền thống cách mạng"
+      ],
+      "activities": [
+        {
+          "date": "2022-06-13",
+          "title": "Ngày hội bảo vệ biển",
+          "url": "https://due.udn.vn/vi-vn/khoa/khoa-l%C3%BD-lu%E1%BA%ADn-ch%C3%ADnh-tr%E1%BB%8B/lyluanchitrids/cid/4430"
+        },
+        {
+          "date": "2022-04-15",
+          "title": "Đêm nhạc du ca gây quỹ “DUE – is twinkle night”",
+          "url": "https://due.udn.vn/vi-vn/khoalyluanchinhtrict/id/15225/cid/4430",
+          "summary": "Phối hợp LCĐ Trung tâm Đào tạo Quốc tế, thuộc chiến dịch “Ươm màu nắng – Xanh màu tình nguyện” 2022, tại New Royal Coffee & Live Music."
+        },
+        {
+          "date": "2021-07-07",
+          "title": "Cuộc thi thiết kế mô hình, vật phẩm từ rác thải tái chế",
+          "url": "https://due.udn.vn/vi-vn/khoa/khoa-l%C3%BD-lu%E1%BA%ADn-ch%C3%ADnh-tr%E1%BB%8B/lyluanchitrids/cid/4435"
+        },
+        {
+          "date": "2021-05-17",
+          "title": "Chương trình tuổi trẻ tình nguyện",
+          "url": "https://due.udn.vn/vi-vn/khoa/khoa-l%C3%BD-lu%E1%BA%ADn-ch%C3%ADnh-tr%E1%BB%8B/lyluanchitrids/cid/4435"
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_llct-01.jpg",
+          "caption": "Đêm nhạc du ca gây quỹ “DUE – is twinkle night”"
+        },
+        {
+          "url": "/static/img/lcd/lcd_llct-02.jpg",
+          "caption": "Chiến dịch “Ươm màu nắng – Xanh màu tình nguyện”"
+        },
+        {
+          "url": "/static/img/lcd/lcd_llct-03.jpg",
+          "caption": "Ngày hội tuổi trẻ chung tay bảo vệ môi trường biển"
+        },
+        {
+          "url": "/static/img/lcd/lcd_llct-04.jpg",
+          "caption": "Cuộc thi thiết kế mô hình vật phẩm tái chế thân thiện môi trường"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/khoalyluanchinhtridue",
+      "messenger": "https://m.me/khoalyluanchinhtridue",
+      "instagram": null,
+      "tiktok": null
+    }
+  },
+  {
+    "id": "luat",
+    "name": "Khoa Luật",
+    "type": "faculty",
+    "url": "https://due.udn.vn/vi-vn/khoa/luat",
+    "formed_from": [],
+    "history": "Là một trong những đơn vị trẻ của trường (năm thành lập không ghi trên trang giới thiệu).",
+    "mission": "Đào tạo các cử nhân luật có kiến thức pháp lý vững vàng, tư duy tranh tụng sắc sảo, đạo đức nghề nghiệp trong sáng và kỹ năng ngoại ngữ pháp lý thành thạo.",
+    "staff_summary": null,
+    "achievements": [],
+    "career_paths": [
+      "Tòa án",
+      "Viện kiểm sát",
+      "Cơ quan hành chính nhà nước các cấp",
+      "Hành nghề luật sư (sau đào tạo luật sư)",
+      "Tư vấn pháp lý cho doanh nghiệp, tổ chức"
+    ],
+    "notable_activities": [],
+    "leadership": {
+      "dean": {
+        "name": "TS. Trần Thị Sáu",
+        "also": "Trưởng Bộ môn Luật Hành chính - Nhà nước",
+        "email": "sau.tt@due.udn.vn"
+      },
+      "vice_deans": [
+        {
+          "name": "TS. Trần Tuấn Sơn",
+          "email": "sontt@due.udn.vn"
+        }
+      ],
+      "program_directors": [],
+      "dean_message_summary": null,
+      "note": null
+    },
+    "departments": [
+      {
+        "name": "Bộ môn Luật Hành chính - Nhà nước",
+        "head": "TS. Trần Thị Sáu"
+      },
+      {
+        "name": "Bộ môn Luật Kinh tế - Dân sự",
+        "head": "TS. Phạm Minh Thy Vân",
+        "email": "vanpmt@due.udn.vn"
+      }
+    ],
+    "postgraduate": {
+      "masters": [],
+      "doctoral": [],
+      "other": []
+    },
+    "special_programs": [],
+    "contact": {
+      "office": "71 Ngũ Hành Sơn, Đà Nẵng",
+      "phone": "0236 3958418 (website ghi mã vùng cũ 0511)",
+      "email": "khoaluat@due.edu.vn",
+      "facebook": "https://www.facebook.com/khoaluatdaihockinhtedanang"
+    },
+    "links": {
+      "admissions_info": "https://due.udn.vn/vi-vn/khoa/luat/ds/cid/4719",
+      "facilities": "https://due.udn.vn/vi-vn/khoa/luat/gioithieu/cid/4709"
+    },
+    "major_ids": [
+      "luat-kinh-te",
+      "luat"
+    ],
+    "source": "https://due.udn.vn/vi-vn/khoa/luat/gioithieu/cid/4708",
+    "majors_2026": [
+      {
+        "id": "luat-kinh-te",
+        "name": "Luật kinh tế",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Luật kinh doanh",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          },
+          {
+            "name": "Luật thương mại quốc tế",
+            "program_types": [
+              "Bán phần tiếng Anh",
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "luat",
+        "name": "Luật",
+        "ownership_confirmed": true,
+        "specializations": [
+          {
+            "name": "Luật học",
+            "program_types": [
+              "Tiêu chuẩn"
+            ]
+          }
+        ]
+      }
+    ],
+    "lien_chi_doan": [
+      {
+        "id": "lcd_luat",
+        "name": "Liên chi đoàn Khoa Luật",
+        "term": null,
+        "secretary": null,
+        "contact": {
+          "facebook": "https://www.facebook.com/banchaphanhlcdkhoaluat"
+        },
+        "activities": []
+      }
+    ],
+    "clubs": [
+      {
+        "id": "clb-khoa-hoc-phap-ly",
+        "name": "CLB Khoa học Pháp lý",
+        "category": "Học thuật – Pháp luật",
+        "intro": "CLB Khoa học Pháp lý là câu lạc bộ định hướng học thuật dành cho sinh viên Khoa Luật, Trường Đại học Kinh tế – ĐHĐN. CLB tạo môi trường để người trẻ yêu thích ngành Luật học tập, rèn luyện kỹ năng và sáng tạo; tổ chức các ban Kỹ năng, Nhân sự, Truyền thông.",
+        "logo": "assets/img/clb/clb-khoa-hoc-phap-ly-logo.jpg"
+      }
+    ],
+    "slogan": "Thượng tôn Pháp luật – Công lý, Tri thức và Trách nhiệm",
+    "intro": "Khoa Luật là một trong những đơn vị đào tạo luật kinh tế và luật học uy tín hàng đầu miền Trung. Với đội ngũ giảng viên giàu kinh nghiệm thực tế (nhiều thầy cô là Luật sư, Trọng tài viên thương mại), Khoa chú trọng đào tạo thực hành tranh tụng, kỹ năng đàm phán hợp đồng thương mại quốc tế và giải quyết tranh chấp.",
+    "vision": "Trở thành cơ sở đào tạo luật định hướng ứng dụng và kinh doanh đạt chuẩn kiểm định AUN-QA, cung cấp những chuyên gia pháp lý tài ba cho thị trường trong nước và quốc tế.",
+    "core_values": "Công lý – Thượng tôn – Trách nhiệm – Trí tuệ",
+    "dean_message": "Pháp luật là tấm khiên bảo vệ sự công bằng và là nền tảng cho mọi thương vụ kinh doanh thành công. Đến với Khoa Luật DUE, bạn sẽ được rèn luyện bản lĩnh tranh tụng tại các phiên tòa giả định, tự tin bước vào thế giới pháp đình và giới tư vấn doanh nghiệp.",
+    "staff_stats": {
+      "total": 32,
+      "professors": "2 PGS",
+      "phd": "14 TS",
+      "masters": "16 ThS",
+      "international_rate": "70%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Luật Kinh tế - Dân sự",
+        "head": "TS. Phạm Minh Thy Vân",
+        "desc": "Chuyên sâu về luật doanh nghiệp, hợp đồng thương mại, sở hữu trí tuệ và thương mại quốc tế."
+      },
+      {
+        "name": "Bộ môn Luật Hành chính - Nhà nước & Hình sự",
+        "head": "TS. Trần Thị Sáu",
+        "desc": "Đào tạo luật tố tụng dân sự, tố tụng hình sự, luật hành chính và kỹ năng tranh tụng tại tòa."
+      }
+    ],
+    "partners": [
+      "Tòa án Nhân dân TP. Đà Nẵng",
+      "Viện Kiểm sát Nhân dân TP. Đà Nẵng",
+      "Đoàn Luật sư TP. Đà Nẵng",
+      "Trung tâm Trọng tài Quốc tế Việt Nam (VIAC)",
+      "Công ty Luật LNT & Partners, VILAF, YKVN",
+      "Sở Tư pháp TP. Đà Nẵng"
+    ],
+    "student_activities": [
+      "Phiên tòa giả định thường niên (Moot Court DUE)",
+      "Cuộc thi 'Hùng biện Pháp luật & Nhà tư vấn pháp lý tương lai'",
+      "Chương trình Trợ giúp pháp lý lưu động cho cộng đồng",
+      "Giao lưu cùng các Thẩm phán TAND và Luật sư hàng đầu"
+    ],
+    "clubs_details": [
+      {
+        "name": "CLB Khoa học Pháp lý",
+        "desc": "Tổ chức phiên tòa tập sự, thảo luận các bản án thực tế và rèn luyện kỹ năng tư vấn pháp luật."
+      }
+    ],
+    "logo_url": "/static/img/khoa/luat_logo.png",
+    "cover_url": "/static/img/khoa/luat_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/luat_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Luật"
+      },
+      {
+        "url": "/static/img/khoa/luat_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Luật"
+      },
+      {
+        "url": "/static/img/khoa/luat_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Luật"
+      },
+      {
+        "url": "/static/img/khoa/luat_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Luật"
+      }
+    ],
+    "badge_color": "bg-indigo-50 text-[#4f46e5] border-indigo-200",
+    "aliases": [
+      "luat",
+      "khoa-luat"
+    ],
+    "icon": "gavel",
+    "color": "bg-purple-600",
+    "border_color": "border-purple-200",
+    "text_color": "text-purple-600",
+    "light_bg": "bg-purple-50",
+    "gradient": "from-purple-600 to-indigo-800",
+    "category_tag": "Khối Pháp lý & Luật Kinh tế",
+    "detail_url": "/khoa/luat/",
+    "lcd": {
+      "id": "lcd_luat",
+      "name": "Liên chi đoàn Khoa Luật",
+      "term": null,
+      "secretary": null,
+      "deputies": [],
+      "committee": [],
+      "intro": "Liên chi đoàn Khoa Luật đạt nhiều giải tại hội trại truyền thống của Đoàn trường và tổ chức các hoạt động như Coffee Talk, hội nghị công tác sinh viên; phối hợp với CLB Khoa học Pháp lý trong các hoạt động học thuật.",
+      "achievements": [
+        "Giải Nhì toàn đoàn Hội trại truyền thống 2024 “Sử thi vang danh – Thanh niên tiếp bước”",
+        "Giải Nhất Cuộc thi Rung chuông vàng & Giải Nhất trò chơi lớn Hội trại",
+        "Đơn vị có phần thi Trình diễn hóa trang xuất sắc nhất trường"
+      ],
+      "activities": [
+        {
+          "date": "2024-03-24",
+          "title": "Hội trại truyền thống “Sử thi vang danh – Thanh niên tiếp bước”",
+          "url": "https://due.udn.vn/vi-vn/khoa/luat/luatchitiet/id/18703/cid/1154",
+          "summary": "Giải Nhì toàn đoàn; Giải Nhì lều trại; Giải Nhất Rung chuông vàng; Giải Nhất trò chơi lớn; đơn vị trình diễn hóa trang xuất sắc nhất."
+        },
+        {
+          "date": "2023-11-09",
+          "title": "Coffee Talk 2023",
+          "url": "https://due.udn.vn/vi-vn/khoa/luat/ds/cid/1154"
+        },
+        {
+          "date": "2023-10-21",
+          "title": "Hội nghị công tác sinh viên Khoa Luật năm học 2023–2024",
+          "url": "https://due.udn.vn/vi-vn/khoa/luat/ds/cid/1154"
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_luat-01.jpg",
+          "caption": "LCĐ Khoa Luật đạt Giải Nhì toàn đoàn Hội trại truyền thống DUE 2024"
+        },
+        {
+          "url": "/static/img/lcd/lcd_luat-02.jpg",
+          "caption": "Chuỗi tọa đàm Pháp lý & Coffee Talk sinh viên Luật"
+        },
+        {
+          "url": "/static/img/lcd/lcd_luat-03.jpg",
+          "caption": "Phiên tòa giả định nâng cao kỹ năng tranh tụng thực tế"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/banchaphanhlcdkhoaluat",
+      "messenger": "https://m.me/banchaphanhlcdkhoaluat",
+      "instagram": null,
+      "tiktok": null
+    }
+  },
+  {
+    "id": "vdtqt",
+    "name": "Viện Đào tạo quốc tế",
+    "type": "institute",
+    "url": "https://due.udn.vn/vi-vn/trungtam/daotaoquocte",
+    "formed_from": [],
+    "history": null,
+    "mission": "Cung cấp nền giáo dục chuẩn quốc tế, giúp người học phát triển toàn diện tư duy công dân toàn cầu, kỹ năng lãnh đạo và sẵn sàng làm việc tại các tập đoàn đa quốc gia trên toàn thế giới.",
+    "staff_summary": null,
+    "achievements": [],
+    "career_paths": [],
+    "notable_activities": [],
+    "leadership": {
+      "dean": null,
+      "vice_deans": [],
+      "program_directors": [],
+      "dean_message_summary": null,
+      "note": "Xem Ban Giám đốc: https://due.udn.vn/vi-vn/daotaoquocte/daotaoquoctegioithieu/cid/3394"
+    },
+    "departments": [],
+    "postgraduate": {
+      "masters": [],
+      "doctoral": [],
+      "other": []
+    },
+    "special_programs": [
+      {
+        "name": "Cử nhân Liên kết quốc tế",
+        "url": "https://due.udn.vn/vi-vn/daotaoquocte/daotaoquoctegioithieu/cid/4542"
+      },
+      {
+        "name": "Chương trình Đại học năm cuối",
+        "url": "https://due.udn.vn/vi-vn/daotaoquocte/daotaoquoctegioithieu/cid/5053"
+      }
+    ],
+    "contact": {
+      "contact_page": "https://due.udn.vn/vi-vn/daotaoquocte/daotaoquoctegioithieu/cid/3406"
+    },
+    "links": {},
+    "major_ids": [],
+    "source": "https://due.udn.vn/vi-vn/trungtam/daotaoquocte",
+    "majors_2026": [],
+    "lien_chi_doan": [],
+    "clubs": [],
+    "slogan": "Công dân Toàn cầu – Bằng cấp Quốc tế tại Việt Nam",
+    "intro": "Viện Đào tạo Quốc tế (DUE International School) là đơn vị chuyên trách triển khai các chương trình liên kết đào tạo cử nhân và thạc sĩ quốc tế với các trường đại học danh tiếng tại Anh, Úc, Mỹ, Pháp, New Zealand. Sinh viên học 100% bằng tiếng Anh và nhận bằng tốt nghiệp do các đại học hàng đầu thế giới cấp.",
+    "vision": "Trở thành đầu tàu hội nhập giáo dục đại học quốc tế tại miền Trung, mang các chương trình đào tạo chuẩn toàn cầu đến với học sinh, sinh viên Việt Nam.",
+    "core_values": "Toàn cầu – Tiên tiến – Hội nhập – Đẳng cấp",
+    "dean_message": "Du học tại chỗ với chi phí tối ưu và cơ hội chuyển tiếp linh hoạt sang các trường đại học top 1% thế giới! Viện Đào tạo Quốc tế là bệ phóng hoàn hảo giúp bạn trở thành công dân toàn cầu tự tin bước ra thế giới.",
+    "staff_stats": {
+      "total": 25,
+      "professors": "100% Giảng viên quốc tế & Tu nghiệp nước ngoài",
+      "phd": "15 TS",
+      "masters": "10 ThS",
+      "international_rate": "100%"
+    },
+    "departments_list": [
+      {
+        "name": "Bộ môn Chương trình Cử nhân Liên kết Anh Quốc",
+        "head": "TS. Đoàn Gia Dũng",
+        "desc": "Liên kết ĐH Sunderland, ĐH Cardiff Metropolitan, ĐH Coventry (Bằng cử nhân do ĐH Anh cấp)."
+      },
+      {
+        "name": "Bộ môn Chương trình Cử nhân Úc & Mỹ",
+        "head": "TS. Nguyễn Thị Quỳnh",
+        "desc": "Liên kết Đại học Queensland (UQ), Swinburne University of Technology, Monash University."
+      }
+    ],
+    "partners": [
+      "University of Sunderland (Anh Quốc)",
+      "Cardiff Metropolitan University (Anh Quốc)",
+      "University of Queensland (Úc)",
+      "Swinburne University of Technology (Úc)",
+      "University of Stirling (Anh Quốc)",
+      "Hội đồng Anh (British Council)"
+    ],
+    "student_activities": [
+      "DUE Global Village & Ngày hội Văn hóa Quốc tế",
+      "Chương trình trao đổi sinh viên mùa hè (Summer Exchange Camp)",
+      "Cuộc thi Hùng biện Tiếng Anh 'Global Leader'",
+      "Dự án Khởi nghiệp Xuyên biên giới hợp tác cùng sinh viên quốc tế"
+    ],
+    "clubs_details": [
+      {
+        "name": "SEE Club (Students of Economic & English)",
+        "desc": "Câu lạc bộ tiếng Anh và kết nối sinh viên quốc tế năng động nhất DUE."
+      }
+    ],
+    "logo_url": "/static/img/khoa/vdtqt_logo.png",
+    "cover_url": "/static/img/khoa/vdtqt_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/vdtqt_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Viện Đào tạo Quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/vdtqt_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Viện Đào tạo Quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/vdtqt_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Viện Đào tạo Quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/vdtqt_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Viện Đào tạo Quốc tế"
+      }
+    ],
+    "badge_color": "bg-amber-50 text-[#d97706] border-amber-200",
+    "aliases": [
+      "vdtqt",
+      "vien-ao-tao-quoc-te",
+      "ao-tao-quoc-te"
+    ],
+    "icon": "public",
+    "color": "bg-cyan-600",
+    "border_color": "border-cyan-200",
+    "text_color": "text-cyan-600",
+    "light_bg": "bg-cyan-50",
+    "gradient": "from-cyan-600 to-blue-700",
+    "category_tag": "Chương trình Quốc tế & Liên kết Song bằng",
+    "detail_url": "/khoa/vdtqt/",
+    "lcd": {
+      "id": "lcd_vdtqt",
+      "name": "Liên chi đoàn Viện Đào tạo quốc tế",
+      "term": "Nhiệm kỳ 2024–2027",
+      "secretary": "Đang cập nhật",
+      "deputies": [],
+      "committee": [],
+      "intro": "Liên chi đoàn Viện Đào tạo quốc tế trực thuộc Đoàn trường Đại học Kinh tế – Đại học Đà Nẵng, là mái nhà chung năng động, sáng tạo và nhiệt huyết của toàn thể đoàn viên, sinh viên khoa.",
+      "achievements": [
+        "Đơn vị dẫn đầu về phong trào Giao lưu văn hóa quốc tế và Trao đổi sinh viên",
+        "100% hoạt động phong trào Đoàn - Hội sử dụng song ngữ Anh - Việt",
+        "Tổ chức thành công chuỗi Welcome Freshmen và Global Volunteering"
+      ],
+      "activities": [
+        {
+          "title": "Đại hội Đại biểu Liên chi đoàn",
+          "desc": "Kiện toàn tổ chức và phát động các phong trào thi đua thanh niên"
+        },
+        {
+          "title": "Chiến dịch Mùa hè xanh & Tình nguyện vì cộng đồng",
+          "desc": "Tổ chức các hoạt động an sinh xã hội, giúp đỡ các điểm trường vùng khó khăn"
+        },
+        {
+          "title": "Phong trào Sinh viên 5 tốt và Nghiên cứu khoa học trẻ",
+          "desc": "Tuyên dương các cá nhân và tập thể sinh viên có thành tích học tập, rèn luyện xuất sắc"
+        }
+      ],
+      "images": [
+        {
+          "url": "/static/img/lcd/lcd_vdtqt-01.jpg",
+          "caption": "Ngày hội Giao lưu Văn hóa Quốc tế CIE International Cultural Day"
+        },
+        {
+          "url": "/static/img/lcd/lcd_vdtqt-02.jpg",
+          "caption": "Chào đón tân sinh viên quốc tế & chương trình tình nguyện toàn cầu"
+        },
+        {
+          "url": "/static/img/lcd/lcd_vdtqt-03.jpg",
+          "caption": "Câu lạc bộ Tiếng Anh CIE English Speaking Club sinh hoạt chuyên đề"
+        }
+      ],
+      "fanpage": "https://www.facebook.com/cie.due.udn.vn",
+      "messenger": "https://m.me/cie.due.udn.vn",
+      "instagram": null,
+      "tiktok": null
+    }
+  }
+]

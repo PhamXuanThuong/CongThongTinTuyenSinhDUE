@@ -1,0 +1,433 @@
+{% extends "base.html" %}
+
+{% block title %}Hệ thống Câu Lạc Bộ – Đội – Nhóm | DUE - Trường Đại học Kinh tế, ĐH Đà Nẵng{% endblock %}
+
+{% block nav_sinhvien %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block extra_head %}
+<style>
+  .clb-card {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  }
+  .clb-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px -8px rgba(0, 51, 102, 0.14), 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+  }
+  .chip-btn {
+    transition: all 0.18s ease;
+  }
+  .chip-btn.active {
+    background-color: #003366 !important;
+    color: #ffffff !important;
+    border-color: #003366 !important;
+    box-shadow: 0 4px 12px rgba(0, 51, 102, 0.25);
+  }
+  .custom-modal-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-modal-scroll::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 9999px;
+  }
+  .custom-modal-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="w-full pt-36 sm:pt-40 pb-20 flex-1 bg-[#f8fafc]">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+
+    <!-- BREADCRUMB -->
+    <nav aria-label="Breadcrumb" class="mb-5">
+      <ol class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+        <li><a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a></li>
+        <li><span>/</span></li>
+        <li><span class="text-slate-500">Dành cho sinh viên</span></li>
+        <li><span>/</span></li>
+        <li class="text-slate-900 font-bold" aria-current="page">Câu lạc bộ – Đội – Nhóm</li>
+      </ol>
+    </nav>
+
+    <!-- HERO BANNER -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#00274d] via-[#003366] to-[#004f8c] text-white p-6 sm:p-10 mb-10 shadow-xl">
+      <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
+      <div class="absolute right-60 -bottom-32 w-72 h-72 rounded-full bg-orange-500/15 blur-2xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-blue-100 text-xs font-bold mb-4 backdrop-blur-sm border border-white/20">
+          <span class="w-2 h-2 rounded-full bg-[#00A859] animate-pulse"></span>
+          Đời sống sinh viên DUE • Năng động & Sáng tạo
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold font-headline-lg tracking-tight mb-3">
+          Hệ Thống Câu Lạc Bộ – Đội – Nhóm DUE
+        </h1>
+        <p class="text-blue-100/90 text-sm sm:text-base leading-relaxed mb-6 max-w-2xl">
+          Nơi kết nối đam mê, rèn luyện kỹ năng thực chiến, tự tin khẳng định bản lĩnh và lưu giữ những thanh xuân rực rỡ nhất tại Trường Đại học Kinh tế – Đại học Đà Nẵng.
+        </p>
+
+        <!-- 3 Thống kê nhanh -->
+        <div class="grid grid-cols-3 gap-3 sm:gap-4 max-w-xl">
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 border border-white/15">
+            <div class="text-xl sm:text-3xl font-extrabold text-[#fd761a]">{{ clubs_count }}</div>
+            <div class="text-[11px] sm:text-xs text-blue-100 font-medium mt-0.5">CLB – Đội – Nhóm</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 border border-white/15">
+            <div class="text-xl sm:text-3xl font-extrabold text-white">6</div>
+            <div class="text-[11px] sm:text-xs text-blue-100 font-medium mt-0.5">Lĩnh vực hoạt động</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 border border-white/15">
+            <div class="text-xl sm:text-3xl font-extrabold text-[#7dd3fc]">54K+</div>
+            <div class="text-[11px] sm:text-xs text-blue-100 font-medium mt-0.5">Lượt theo dõi Fanpage</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROL BAR: TÌM KIẾM & BỘ LỌC CẤP -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 mb-6 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+      <!-- Search Input -->
+      <div class="relative flex-1">
+        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+        <input
+          id="clbSearchInput"
+          type="search"
+          placeholder="Tìm tên CLB, lĩnh vực, chuyên môn, kỹ năng..."
+          class="w-full pl-11 pr-4 py-2.5 rounded-full border border-slate-200 bg-slate-50 focus:bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072BC] focus:border-[#0072BC] transition-all"
+        >
+      </div>
+
+      <!-- Level Filter Dropdown -->
+      <div class="flex items-center gap-2">
+        <label for="clbLevelSelect" class="text-xs font-bold text-slate-500 whitespace-nowrap uppercase tracking-wider">Cấp quản lý:</label>
+        <select
+          id="clbLevelSelect"
+          class="px-4 py-2.5 rounded-full border border-slate-200 bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#0072BC] transition-all cursor-pointer"
+        >
+          <option value="all">Tất cả cấp (Trường & Khoa)</option>
+          <option value="truong">Cấp trường (Đoàn – Hội)</option>
+          <option value="khoa">Cấp khoa chuyên ngành</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- FILTER CHIPS: LĨNH VỰC HOẠT ĐỘNG -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar" id="categoryChips">
+      <button type="button" data-group="all" class="chip-btn active shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
+        <span class="material-symbols-outlined text-[18px]">apps</span>
+        <span>Tất cả</span>
+      </button>
+      <button type="button" data-group="hoc-thuat" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
+        <span class="material-symbols-outlined text-[18px] text-blue-600">menu_book</span>
+        <span>Học thuật & Chuyên ngành</span>
+      </button>
+      <button type="button" data-group="ky-nang" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
+        <span class="material-symbols-outlined text-[18px] text-amber-500">rocket_launch</span>
+        <span>Kỹ năng & Khởi nghiệp</span>
+      </button>
+      <button type="button" data-group="ngoai-ngu" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
+        <span class="material-symbols-outlined text-[18px] text-emerald-600">translate</span>
+        <span>Ngoại ngữ & Tiếng Anh</span>
+      </button>
+      <button type="button" data-group="nghe-thuat" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
+        <span class="material-symbols-outlined text-[18px] text-pink-500">music_note</span>
+        <span>Văn nghệ & Nghệ thuật</span>
+      </button>
+      <button type="button" data-group="the-thao" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
+        <span class="material-symbols-outlined text-[18px] text-indigo-600">sports_martial_arts</span>
+        <span>Thể dục & Thể thao</span>
+      </button>
+      <button type="button" data-group="cong-dong" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
+        <span class="material-symbols-outlined text-[18px] text-teal-600">campaign</span>
+        <span>Truyền thông & Cộng đồng</span>
+      </button>
+    </div>
+
+    <!-- KẾT QUẢ ĐẾM -->
+    <div class="flex items-center justify-between mb-5 px-1">
+      <div id="clbResultCount" class="text-xs sm:text-sm font-bold text-slate-600">
+        Hiển thị <span class="text-[#0072BC] font-extrabold" id="shownCount">{{ clubs_count }}</span> / {{ clubs_count }} câu lạc bộ, đội, nhóm
+      </div>
+      <div class="text-xs text-slate-400 hidden sm:block">
+        Bấm "Xem chi tiết" để xem hồ sơ và liên hệ từng CLB
+      </div>
+    </div>
+
+    <!-- GRID DANH SÁCH CLB -->
+    <div id="clbGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <!-- Sẽ được Render động bằng Javascript từ dữ liệu clb.json -->
+    </div>
+
+    <!-- KHÔNG TÌM THẤY KẾT QUẢ EMPTY STATE -->
+    <div id="clbEmptyState" class="hidden text-center py-16 bg-white rounded-3xl border border-slate-200 shadow-sm mb-16">
+      <span class="material-symbols-outlined text-slate-300 text-[56px] mb-3">search_off</span>
+      <h3 class="text-lg font-bold text-slate-700 mb-1">Không tìm thấy câu lạc bộ phù hợp</h3>
+      <p class="text-sm text-slate-500 max-w-md mx-auto mb-4">Vui lòng thử tìm với từ khóa khác hoặc chuyển sang danh mục "Tất cả".</p>
+      <button onclick="resetFilters()" class="px-5 py-2 rounded-full bg-[#0072BC] text-white text-xs font-bold hover:bg-[#005a96] transition-colors">
+        Xem tất cả câu lạc bộ
+      </button>
+    </div>
+
+    <!-- HOẠT ĐỘNG THƯỜNG NIÊN CỦA SINH VIÊN DUE -->
+    <div class="rounded-3xl bg-gradient-to-br from-[#003366] to-[#001e40] text-white p-6 sm:p-10 shadow-xl relative overflow-hidden">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-orange-200 text-xs font-bold uppercase tracking-wider mb-3">
+        <span class="material-symbols-outlined text-[16px] text-orange-400">celebration</span>
+        Không chỉ có CLB
+      </div>
+      <h2 class="text-xl sm:text-3xl font-bold font-headline-lg mb-2">Các Hoạt Động & Sự Kiện Thường Niên Của DUE</h2>
+      <p class="text-blue-100 text-xs sm:text-sm max-w-2xl mb-8">Bên cạnh sinh hoạt CLB, sinh viên DUE còn được hòa mình vào chuỗi phong trào quy mô lớn do Đoàn trường và Hội Sinh viên tổ chức.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/15 transition-colors">
+          <span class="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-400 text-white flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-[24px]">volunteer_activism</span>
+          </span>
+          <div>
+            <h4 class="font-bold text-sm text-white">Chiến dịch Tình nguyện Đông</h4>
+            <p class="text-xs text-blue-100/80 mt-1 leading-relaxed">Mang hơi ấm, áo ấm và công trình thanh niên đến với bà con đồng bào vùng sâu vùng xa.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/15 transition-colors">
+          <span class="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-[24px]">wb_sunny</span>
+          </span>
+          <div>
+            <h4 class="font-bold text-sm text-white">Chiến dịch Mùa Hè Xanh</h4>
+            <p class="text-xs text-blue-100/80 mt-1 leading-relaxed">Mặt trận tình nguyện hè rực lửa, xây dựng nông thôn mới và chuyển giao văn hóa kỹ năng.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/15 transition-colors">
+          <span class="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-400 text-white flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-[24px]">nightlife</span>
+          </span>
+          <div>
+            <h4 class="font-bold text-sm text-white">Đêm Khiêu vũ Lovely Night</h4>
+            <p class="text-xs text-blue-100/80 mt-1 leading-relaxed">Dạ hội khiêu vũ thường niên lãng mạn, sang trọng và gắn kết các thế hệ sinh viên DUE.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/15 transition-colors">
+          <span class="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-tr from-purple-500 to-indigo-400 text-white flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-[24px]">military_tech</span>
+          </span>
+          <div>
+            <h4 class="font-bold text-sm text-white">Cuộc thi Thủ lĩnh Sinh viên</h4>
+            <p class="text-xs text-blue-100/80 mt-1 leading-relaxed">Sân chơi rèn luyện tài năng lãnh đạo, tư duy phản biện và khả năng xử lý tình huống thực tế.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/15 transition-colors">
+          <span class="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-400 text-white flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-[24px]">star</span>
+          </span>
+          <div>
+            <h4 class="font-bold text-sm text-white">Sinh viên Tài năng – Thanh lịch</h4>
+            <p class="text-xs text-blue-100/80 mt-1 leading-relaxed">Tôn vinh vẻ đẹp trí tuệ, duyên dáng và phong thái tự tin của nam nữ sinh viên Kinh tế.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/15 transition-colors">
+          <span class="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-500 to-cyan-400 text-white flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-[24px]">sports_soccer</span>
+          </span>
+          <div>
+            <h4 class="font-bold text-sm text-white">Hội thao Sinh viên DUE</h4>
+            <p class="text-xs text-blue-100/80 mt-1 leading-relaxed">Giải thi đấu bóng đá, bóng rổ, cầu lông, bóng chuyền, cờ vua giữa các Khoa và CLB.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Dữ liệu danh sách CLB từ Django backend
+  const CLUBS_DATA = {{ clubs_json|safe }};
+
+  // Nhóm phân loại
+  const GROUPS = [
+    { key: "hoc-thuat", label: "Học thuật & Chuyên ngành", ic: "menu_book", color: "blue", test: (c) => /^Học thuật/i.test(c.category || "") },
+    { key: "ky-nang", label: "Kỹ năng & Khởi nghiệp", ic: "rocket_launch", color: "amber", test: (c) => /Kỹ năng|Kinh doanh|Thương mại/i.test(c.category || "") },
+    { key: "ngoai-ngu", label: "Ngoại ngữ & Tiếng Anh", ic: "translate", color: "emerald", test: (c) => /Ngoại ngữ/i.test(c.category || "") },
+    { key: "nghe-thuat", label: "Văn nghệ & Nghệ thuật", ic: "music_note", color: "pink", test: (c) => /Âm nhạc|Văn nghệ/i.test(c.category || "") },
+    { key: "the-thao", label: "Thể dục & Thể thao", ic: "sports_martial_arts", color: "indigo", test: (c) => /Thể thao/i.test(c.category || "") },
+    { key: "cong-dong", label: "Truyền thông & Cộng đồng", ic: "campaign", color: "teal", test: (c) => /Truyền thông|Môi trường|xã hội/i.test(c.category || "") },
+    { key: "khac", label: "Đa lĩnh vực", ic: "interests", color: "slate", test: () => true }
+  ];
+
+  function getGroup(club) {
+    return GROUPS.find(g => g.test(club)) || GROUPS[GROUPS.length - 1];
+  }
+
+  const state = {
+    q: "",
+    group: "all",
+    level: "all"
+  };
+
+  function removeDiacritics(str) {
+    return String(str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+  }
+
+  function renderClubs() {
+    const q = removeDiacritics(state.q);
+    const filtered = CLUBS_DATA.filter(c => {
+      const g = getGroup(c);
+      const matchGroup = (state.group === "all" || g.key === state.group);
+      const isTruong = !c.faculty_id;
+      const matchLevel = (state.level === "all" || (state.level === "truong" && isTruong) || (state.level === "khoa" && !isTruong));
+      const searchTarget = [c.name, c.category, c.description, c.slogan, c.faculty_name, c.intro].join(" ");
+      const matchSearch = (!q || removeDiacritics(searchTarget).includes(q));
+      return matchGroup && matchLevel && matchSearch;
+    });
+
+    // Update count
+    document.getElementById("shownCount").textContent = filtered.length;
+    const grid = document.getElementById("clbGrid");
+    const empty = document.getElementById("clbEmptyState");
+
+    if (filtered.length === 0) {
+      grid.innerHTML = "";
+      empty.classList.remove("hidden");
+      return;
+    }
+
+    empty.classList.add("hidden");
+
+    grid.innerHTML = filtered.map(c => {
+      const g = getGroup(c);
+      const isTruong = !c.faculty_id;
+      const levelLabel = isTruong ? "Cấp trường (Đoàn – Hội)" : (c.faculty_name || "Cấp khoa");
+
+      // Badge color
+      let badgeBg = "bg-blue-50 text-blue-700 border-blue-200";
+      if (g.color === "amber") badgeBg = "bg-amber-50 text-amber-700 border-amber-200";
+      if (g.color === "emerald") badgeBg = "bg-emerald-50 text-emerald-700 border-emerald-200";
+      if (g.color === "pink") badgeBg = "bg-pink-50 text-pink-700 border-pink-200";
+      if (g.color === "indigo") badgeBg = "bg-indigo-50 text-indigo-700 border-indigo-200";
+      if (g.color === "teal") badgeBg = "bg-teal-50 text-teal-700 border-teal-200";
+
+      const coverHtml = c.cover_url
+        ? `<div class="aspect-[21/9] w-full bg-slate-100 overflow-hidden relative">
+             <img src="${c.cover_url}" alt="${c.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+             <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+           </div>`
+        : `<div class="aspect-[21/9] w-full bg-gradient-to-r from-[#003366] to-[#0072BC] relative overflow-hidden flex items-center justify-center">
+             <div class="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10 blur-xl"></div>
+             <span class="material-symbols-outlined text-white/30 text-[48px]">${g.ic}</span>
+           </div>`;
+
+      const logoHtml = c.logo_url
+        ? `<img src="${c.logo_url}" alt="Logo ${c.name}" class="w-14 h-14 rounded-2xl object-cover ring-4 ring-white shadow-md bg-white shrink-0 -mt-7 ml-5 z-10" loading="lazy">`
+        : `<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0072BC] to-[#003366] text-white flex items-center justify-center font-black text-xl ring-4 ring-white shadow-md shrink-0 -mt-7 ml-5 z-10">
+             ${c.name.charAt(0)}
+           </div>`;
+
+      return `
+        <a href="/clb/${c.id}/" class="clb-card group flex flex-col bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 block text-inherit no-underline cursor-pointer">
+          <!-- Cover -->
+          ${coverHtml}
+
+          <!-- Logo & Badges -->
+          <div class="flex items-start justify-between pr-4">
+            ${logoHtml}
+            <div class="pt-2 flex flex-wrap items-center justify-end gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${badgeBg}">${g.label}</span>
+              ${c.founded ? `<span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-600">Từ ${c.founded.substring(0, 4)}</span>` : ""}
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="p-5 flex flex-col flex-1">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px] ${isTruong ? 'text-orange-500' : 'text-blue-600'}">
+                ${isTruong ? 'flag' : 'school'}
+              </span>
+              <span>${levelLabel}</span>
+            </div>
+
+            <h3 class="font-bold text-slate-900 text-lg leading-snug group-hover:text-[#0072BC] transition-colors mb-2">
+              ${c.name}
+            </h3>
+
+            ${c.slogan ? `<p class="text-xs font-semibold text-[#0072BC] italic mb-2 line-clamp-1">“${c.slogan}”</p>` : ""}
+
+            <p class="text-slate-600 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4">
+              ${c.intro || c.description || "Câu lạc bộ đang hoạt động sôi nổi tại Trường Đại học Kinh tế - ĐH Đà Nẵng."}
+            </p>
+
+            ${c.recruitment ? `
+              <div class="mt-auto mb-4 px-3 py-1.5 rounded-xl bg-orange-50 border border-orange-200/70 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-orange-500 animate-ping"></span>
+                <span class="text-[11px] font-bold text-orange-700 truncate">Tuyển TV: ${c.recruitment}</span>
+              </div>
+            ` : `<div class="mt-auto"></div>`}
+
+            <!-- Footer Card -->
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                ${c.followers ? `<span class="material-symbols-outlined text-[16px] text-slate-400">group</span> ${c.followers} theo dõi` : ""}
+              </span>
+
+              <span
+                class="inline-flex items-center gap-1 px-4 py-1.5 rounded-full bg-[#0072BC] group-hover:bg-[#005a96] text-white text-xs font-bold transition-all shadow-sm group-hover:shadow"
+              >
+                <span>Xem chi tiết</span>
+                <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+              </span>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join("");
+  }
+
+  function resetFilters() {
+    state.q = "";
+    state.group = "all";
+    state.level = "all";
+    document.getElementById("clbSearchInput").value = "";
+    document.getElementById("clbLevelSelect").value = "all";
+    document.querySelectorAll(".chip-btn").forEach(b => {
+      b.classList.toggle("active", b.dataset.group === "all");
+    });
+    renderClubs();
+  }
+
+  // Lắng nghe sự kiện tìm kiếm & lọc
+  document.getElementById("clbSearchInput").addEventListener("input", function(e) {
+    state.q = e.target.value.trim();
+    renderClubs();
+  });
+
+  document.getElementById("clbLevelSelect").addEventListener("change", function(e) {
+    state.level = e.target.value;
+    renderClubs();
+  });
+
+  document.querySelectorAll(".chip-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".chip-btn").forEach(b => b.classList.remove("active"));
+      this.classList.add("active");
+      state.group = this.dataset.group;
+      renderClubs();
+    });
+  });
+
+  // Điều hướng xem trang chi tiết đầy đủ thông tin CLB
+  function openClubDetail(clubId) {
+    if (!clubId) return;
+    window.location.href = `/clb/${clubId}/`;
+  }
+
+  // Khởi tạo ban đầu
+  renderClubs();
+</script>
+{% endblock %}
+
