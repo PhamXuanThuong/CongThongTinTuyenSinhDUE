@@ -1,0 +1,218 @@
+[
+  {
+    "code": "pb-ctsv",
+    "name": "Phòng Công tác sinh viên, Quan hệ Doanh nghiệp và Truyền thông",
+    "tagline": "Tận tâm vì sinh viên - Cầu nối vững chắc với Doanh nghiệp",
+    "desc": "Đầu mối tiếp nhận, giải quyết chế độ chính sách, học bổng sinh viên, tư vấn tâm lý, tổ chức ngày hội việc làm (Job Fair) và điều phối công tác truyền thông tuyển sinh của nhà trường.",
+    "functions": [
+      "Hỗ trợ chế độ chính sách, học bổng khuyến khích và học bổng doanh nghiệp",
+      "Tư vấn tâm lý, kỹ năng mềm và tổ chức ngày hội việc làm Job Fair",
+      "Đầu mối giải quyết thủ tục sinh viên, thẻ sinh viên và chứng nhận"
+    ],
+    "location": "Phòng 102, Nhà Hiệu bộ, 71 Ngũ Hành Sơn, Đà Nẵng",
+    "phone": "0236 3950 110",
+    "email": "ctsv@due.edu.vn",
+    "fanpage": "https://www.facebook.com/ctsv.due.udn.vn",
+    "icon": "diversity_3",
+    "color": "bg-blue-600",
+    "badge": "Hỗ trợ sinh viên",
+    "short_name": "Phòng Công tác sinh viên",
+    "duties": [
+      "Hỗ trợ chế độ chính sách, học bổng khuyến khích và học bổng doanh nghiệp",
+      "Tư vấn tâm lý, kỹ năng mềm và tổ chức ngày hội việc làm Job Fair",
+      "Đầu mối giải quyết thủ tục sinh viên, thẻ sinh viên và chứng nhận"
+    ]
+  },
+  {
+    "code": "pb-dao-tao",
+    "name": "Phòng Đào tạo",
+    "tagline": "Quản lý đào tạo chuẩn mực, linh hoạt theo hệ thống tín chỉ tiên tiến",
+    "desc": "Đơn vị tham mưu cho Ban Giám hiệu về kế hoạch đào tạo, chương trình đào tạo đại học, quản lý kết quả học tập, đăng ký học phần và cấp phát văn bằng cử nhân.",
+    "functions": [
+      "Quản lý kế hoạch giảng dạy, thời khóa biểu và đăng ký học phần",
+      "Tư vấn lộ trình học vượt, song bằng, văn bằng 2 và chuyển đổi tín chỉ",
+      "Xét công nhận điều kiện tốt nghiệp và cấp phát văn bằng cử nhân"
+    ],
+    "location": "Tầng 1, Nhà Hiệu bộ, 71 Ngũ Hành Sơn, Đà Nẵng",
+    "phone": "0236 3836 169",
+    "email": "daotao@due.edu.vn",
+    "fanpage": "https://www.facebook.com/tuyensinhdue",
+    "icon": "school",
+    "color": "bg-indigo-600",
+    "badge": "Quản lý đào tạo",
+    "short_name": "Phòng Đào tạo",
+    "duties": [
+      "Quản lý kế hoạch giảng dạy, thời khóa biểu và đăng ký học phần",
+      "Tư vấn lộ trình học vượt, song bằng, văn bằng 2 và chuyển đổi tín chỉ",
+      "Xét công nhận điều kiện tốt nghiệp và cấp phát văn bằng cử nhân"
+    ]
+  },
+  {
+    "code": "pb-tchc",
+    "name": "Phòng Tổ chức - Hành chính",
+    "tagline": "Kỷ cương - Chuyên nghiệp - Phục vụ hiệu quả",
+    "desc": "Tham mưu cho Hiệu trưởng về công tác quy hoạch, tuyển dụng, bồi dưỡng đội ngũ cán bộ giảng viên; quản trị văn thư lưu trữ và điều hành hành chính văn phòng.",
+    "functions": [
+      "Tiếp nhận văn thư, giấy giới thiệu và xác nhận giấy tờ hành chính",
+      "Quản trị điều hành hành chính văn phòng và quy chế nội bộ",
+      "Phối hợp giải quyết khiếu nại, phản ánh và hỗ trợ pháp lý văn bản"
+    ],
+    "location": "Tầng 2, Nhà Hiệu bộ, 71 Ngũ Hành Sơn, Đà Nẵng",
+    "phone": "0236 3836 168",
+    "email": "tchc@due.edu.vn",
+    "fanpage": "https://www.facebook.com/FaceDue",
+    "icon": "domain",
+    "color": "bg-slate-700",
+    "badge": "Hành chính - Nhân sự",
+    "short_name": "Phòng Tổ chức - Hành chính",
+    "duties": [
+      "Tiếp nhận văn thư, giấy giới thiệu và xác nhận giấy tờ hành chính",
+      "Quản trị điều hành hành chính văn phòng và quy chế nội bộ",
+      "Phối hợp giải quyết khiếu nại, phản ánh và hỗ trợ pháp lý văn bản"
+    ]
+  },
+  {
+    "code": "pb-khhtqt",
+    "name": "Phòng Khoa học và Hợp tác Quốc tế",
+    "tagline": "Thúc đẩy nghiên cứu khoa học đỉnh cao & Hội nhập học thuật toàn cầu",
+    "desc": "Quản lý các đề tài nghiên cứu khoa học sinh viên và giảng viên, tổ chức các hội thảo quốc tế lớn và kết nối chương trình trao đổi sinh viên quốc tế (Erasmus+, chuyển tiếp 2+2).",
+    "functions": [
+      "Quản lý và hỗ trợ kinh phí đề tài Nghiên cứu khoa học sinh viên",
+      "Tổ chức các hội thảo học thuật quốc tế và ngày hội sáng tạo trẻ",
+      "Chương trình trao đổi sinh viên quốc tế (Erasmus+, liên kết 2+2, 3+1)"
+    ],
+    "location": "Tầng 3, Nhà Hiệu bộ, 71 Ngũ Hành Sơn, Đà Nẵng",
+    "phone": "0236 3950 113",
+    "email": "khhtqt@due.edu.vn",
+    "fanpage": "https://www.facebook.com/FaceDue",
+    "icon": "public",
+    "color": "bg-emerald-600",
+    "badge": "Hợp tác quốc tế & NCKH",
+    "short_name": "Phòng KH & Hợp tác Quốc tế",
+    "duties": [
+      "Quản lý và hỗ trợ kinh phí đề tài Nghiên cứu khoa học sinh viên",
+      "Tổ chức các hội thảo học thuật quốc tế và ngày hội sáng tạo trẻ",
+      "Chương trình trao đổi sinh viên quốc tế (Erasmus+, liên kết 2+2, 3+1)"
+    ]
+  },
+  {
+    "code": "pb-qlcl",
+    "name": "Phòng Quản lý chất lượng",
+    "tagline": "Cam kết chất lượng - Chuẩn hóa quy trình theo chuẩn mực quốc tế",
+    "desc": "Phụ trách kiểm định chất lượng cơ sở giáo dục, kiểm định chương trình đào tạo theo chuẩn AUN-QA và Bộ GD&ĐT, đồng thời tổ chức thi và khảo sát sự hài lòng của người học.",
+    "functions": [
+      "Kiểm định chất lượng chương trình đào tạo theo chuẩn AUN-QA",
+      "Tổ chức khảo sát ý kiến người học và đánh giá chất lượng giảng dạy",
+      "Quản lý ngân hàng đề thi, coi thi và chuẩn đầu ra tốt nghiệp"
+    ],
+    "location": "Tầng 2, Nhà F, 71 Ngũ Hành Sơn, Đà Nẵng",
+    "phone": "0236 3950 117",
+    "email": "qlcl@due.edu.vn",
+    "fanpage": "https://www.facebook.com/FaceDue",
+    "icon": "verified",
+    "color": "bg-amber-600",
+    "badge": "Kiểm định AUN-QA",
+    "short_name": "Phòng Quản lý chất lượng",
+    "duties": [
+      "Kiểm định chất lượng chương trình đào tạo theo chuẩn AUN-QA",
+      "Tổ chức khảo sát ý kiến người học và đánh giá chất lượng giảng dạy",
+      "Quản lý ngân hàng đề thi, coi thi và chuẩn đầu ra tốt nghiệp"
+    ]
+  },
+  {
+    "code": "pb-khtc",
+    "name": "Phòng Kế hoạch - Tài chính",
+    "tagline": "Quản lý tài chính minh bạch, hỗ trợ tối đa học phí sinh viên",
+    "desc": "Thực hiện thu học phí, giải ngân học bổng, quản lý nguồn kinh phí hoạt động và phân bổ ngân sách đầu tư cơ sở vật chất phục vụ sinh viên học tập.",
+    "functions": [
+      "Hướng dẫn tra cứu và nộp học phí qua cổng thanh toán trực tuyến",
+      "Giải ngân học bổng, trợ cấp xã hội và chế độ miễn giảm học phí",
+      "Hỗ trợ hồ sơ xác nhận vay vốn ngân hàng chính sách xã hội (VBSP)"
+    ],
+    "location": "Tầng 1, Nhà Hiệu bộ, 71 Ngũ Hành Sơn, Đà Nẵng",
+    "phone": "0236 3847 485",
+    "email": "khtc@due.edu.vn",
+    "fanpage": "https://www.facebook.com/FaceDue",
+    "icon": "payments",
+    "color": "bg-teal-600",
+    "badge": "Học phí & Tài chính",
+    "short_name": "Phòng Kế hoạch - Tài chính",
+    "duties": [
+      "Hướng dẫn tra cứu và nộp học phí qua cổng thanh toán trực tuyến",
+      "Giải ngân học bổng, trợ cấp xã hội và chế độ miễn giảm học phí",
+      "Hỗ trợ hồ sơ xác nhận vay vốn ngân hàng chính sách xã hội (VBSP)"
+    ]
+  },
+  {
+    "code": "pb-csvc",
+    "name": "Phòng Cơ sở vật chất",
+    "tagline": "Không gian học tập hiện đại - Giảng đường thông minh chuẩn quốc tế",
+    "desc": "Quản lý và vận hành hệ thống giảng đường 100% máy lạnh, máy chiếu thông minh, phòng máy tính cấu hình cao, khuôn viên cây xanh và ký túc xá sinh viên hiện đại.",
+    "functions": [
+      "Quản lý hệ thống giảng đường 100% máy lạnh, máy chiếu và Wifi",
+      "Bố trí phòng thực hành máy tính cấu hình cao và không gian tự học",
+      "Quản lý và tiếp nhận đăng ký lưu trú ký túc xá sinh viên hiện đại"
+    ],
+    "location": "Tầng 1, Nhà G, 71 Ngũ Hành Sơn, Đà Nẵng",
+    "phone": "0236 3836 170",
+    "email": "csvc@due.edu.vn",
+    "fanpage": "https://www.facebook.com/FaceDue",
+    "icon": "apartment",
+    "color": "bg-cyan-600",
+    "badge": "Giảng đường & Thiết bị",
+    "short_name": "Phòng Cơ sở vật chất",
+    "duties": [
+      "Quản lý hệ thống giảng đường 100% máy lạnh, máy chiếu và Wifi",
+      "Bố trí phòng thực hành máy tính cấu hình cao và không gian tự học",
+      "Quản lý và tiếp nhận đăng ký lưu trú ký túc xá sinh viên hiện đại"
+    ]
+  },
+  {
+    "code": "pb-ttshl",
+    "name": "Trung tâm Số và Học liệu",
+    "tagline": "Kho tàng tri thức vô tận - Không gian tự học và sáng tạo lý tưởng",
+    "desc": "Thư viện số DUE sở hữu hàng triệu đầu sách kinh tế, tạp chí học thuật quốc tế (Scopus, ScienceDirect, Springer), cùng không gian tự học máy lạnh, phòng thảo luận nhóm hiện đại.",
+    "functions": [
+      "Thư viện số với hàng triệu đầu sách, giáo trình và tài liệu nghiên cứu",
+      "Không gian tự học thông minh, phòng đọc yên tĩnh, điều hòa mát mẻ",
+      "Cấp tài khoản tra cứu cơ sở dữ liệu học thuật quốc tế (Scopus, ScienceDirect)"
+    ],
+    "location": "Tòa nhà Thư viện, Trường ĐH Kinh tế - ĐH Đà Nẵng",
+    "phone": "0236 3836 182",
+    "email": "thuvien@due.edu.vn",
+    "fanpage": "https://www.facebook.com/FaceDue",
+    "icon": "local_library",
+    "color": "bg-violet-600",
+    "badge": "Thư viện số & Học liệu",
+    "short_name": "Trung tâm Số & Học liệu",
+    "duties": [
+      "Thư viện số với hàng triệu đầu sách, giáo trình và tài liệu nghiên cứu",
+      "Không gian tự học thông minh, phòng đọc yên tĩnh, điều hòa mát mẻ",
+      "Cấp tài khoản tra cứu cơ sở dữ liệu học thuật quốc tế (Scopus, ScienceDirect)"
+    ]
+  },
+  {
+    "code": "pb-ttnnth",
+    "name": "Trung tâm Ngoại ngữ - Tin học",
+    "tagline": "Chuẩn hóa năng lực Ngoại ngữ & Tin học quốc tế (TOEIC, IELTS, MOS)",
+    "desc": "Đào tạo, luyện thi và tổ chức các kỳ thi cấp chứng chỉ chuẩn đầu ra ngoại ngữ (Tiếng Anh TOEIC/IELTS, Tiếng Nhật, Tiếng Trung) và chứng chỉ Tin học văn phòng quốc tế MOS cho sinh viên.",
+    "functions": [
+      "Tổ chức đào tạo & cấp chứng chỉ tiếng Anh chuẩn đầu ra (TOEIC, IELTS)",
+      "Đào tạo & sát hạch chứng chỉ Tin học văn phòng quốc tế (MOS, IC3)",
+      "Tổ chức các khóa bồi dưỡng kỹ năng công nghệ số ứng dụng"
+    ],
+    "location": "Tầng 1, Nhà H, 71 Ngũ Hành Sơn, Đà Nẵng",
+    "phone": "0236 3847 488",
+    "email": "ttnnth@due.edu.vn",
+    "fanpage": "https://www.facebook.com/FaceDue",
+    "icon": "computer",
+    "color": "bg-rose-600",
+    "badge": "Chứng chỉ Ngoại ngữ - Tin học",
+    "short_name": "Trung tâm Ngoại ngữ - Tin học",
+    "duties": [
+      "Tổ chức đào tạo & cấp chứng chỉ tiếng Anh chuẩn đầu ra (TOEIC, IELTS)",
+      "Đào tạo & sát hạch chứng chỉ Tin học văn phòng quốc tế (MOS, IC3)",
+      "Tổ chức các khóa bồi dưỡng kỹ năng công nghệ số ứng dụng"
+    ]
+  }
+]

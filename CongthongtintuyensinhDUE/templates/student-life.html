@@ -1,0 +1,274 @@
+<div id="sinh-vien-content-root" class="flex flex-col md:flex-row min-h-[500px] h-full text-slate-800">
+  
+  <!-- CỘT TRÁI: DANH SÁCH TABS (CHỈ GIỮ LẠI: KÝ TÚC XÁ, CÂU LẠC BỘ, HOẠT ĐỘNG ĐOÀN) -->
+  <div class="w-full md:w-64 lg:w-72 border-b md:border-b-0 md:border-r border-slate-200 bg-slate-50/70 p-3 md:p-4 shrink-0 overflow-x-auto md:overflow-y-auto">
+    <div class="hidden md:block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-3">
+      Dành cho sinh viên
+    </div>
+    
+    <div class="flex md:flex-col gap-1.5" role="tablist">
+      <!-- 1. Ký túc xá -->
+      <button onclick="switchSinhVienTab('ky-tuc-xa')" id="tab-btn-ky-tuc-xa" class="sv-tab-btn active" role="tab">
+        <span class="sv-tab-bullet">▪</span>
+        <span class="sv-tab-name">Ký túc xá</span>
+      </button>
+
+      <!-- 2. Câu lạc bộ -->
+      <button onclick="switchSinhVienTab('cau-lac-bo')" id="tab-btn-cau-lac-bo" class="sv-tab-btn" role="tab">
+        <span class="sv-tab-bullet">▪</span>
+        <span class="sv-tab-name">Câu lạc bộ</span>
+      </button>
+
+      <!-- 3. Hoạt động Đoàn -->
+      <button onclick="switchSinhVienTab('hoat-dong-doan')" id="tab-btn-hoat-dong-doan" class="sv-tab-btn" role="tab">
+        <span class="sv-tab-bullet">▪</span>
+        <span class="sv-tab-name">Hoạt động Đoàn</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CỘT PHẢI: NỘI DUNG CHI TIẾT THEO 3 MỤC ĐƯỢC CHỌN -->
+  <div class="flex-1 p-5 md:p-8 overflow-y-auto bg-white custom-modal-scroll">
+
+    <!-- 1. KÝ TÚC XÁ -->
+    <div id="sv-pane-ky-tuc-xa" class="sv-pane active">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="px-2.5 py-1 rounded-full bg-green-100 text-[#00A859] text-xs font-bold uppercase tracking-wider">Đời sống nội trú</span>
+        <span class="text-xs text-slate-400">An toàn - Tiện nghi - Tiết kiệm</span>
+      </div>
+      <h3 class="text-xl md:text-2xl font-bold text-slate-900 mb-4">Hệ Thống Ký Túc Xá Sinh Viên DUE &amp; ĐH Đà Nẵng</h3>
+      
+      <p class="text-slate-600 leading-relaxed mb-6 text-sm sm:text-base">
+        Ký túc xá phục vụ sinh viên DUE được quản lý chuyên nghiệp, nằm liền kề khuôn viên trường hoặc tại các khu ký túc xá tập trung hiện đại của TP. Đà Nẵng, mang đến cho sinh viên môi trường sống văn minh, thân thiện và an ninh 24/7.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#00A859] text-[20px]">apartment</span>
+            KTX Khu Đông Ngũ Hành Sơn
+          </div>
+          <p class="text-xs text-slate-500 mb-3">Liền kề khuôn viên Trường DUE, thuận tiện đi bộ đến giảng đường trong 3 phút.</p>
+          <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+            <li>Phòng khép kín sạch đẹp, điều hòa nhiệt độ, bình nóng lạnh.</li>
+            <li>Hệ thống Wifi tốc độ cao phủ sóng toàn khu nội trú.</li>
+            <li>Khu nhà ăn sinh viên chuẩn an toàn VSTP, giá cả bình dân.</li>
+          </ul>
+        </div>
+
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#0072BC] text-[20px]">sports_tennis</span>
+            Tiện Ích &amp; Hoạt Động Thể Thao
+          </div>
+          <p class="text-xs text-slate-500 mb-3">Không gian rèn luyện thể chất và giao lưu cộng đồng sinh viên.</p>
+          <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+            <li>Sân bóng đá cỏ nhân tạo, sân bóng rổ, bóng chuyền, cầu lông.</li>
+            <li>Phòng tự học, thư viện mini mở cửa miễn phí cho cư dân KTX.</li>
+            <li>Bảo vệ và camera an ninh kiểm soát ra vào 24/24.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <div class="text-xs font-bold text-slate-500 uppercase">Mức phí hỗ trợ sinh viên</div>
+          <div class="text-sm font-semibold text-slate-800">Chỉ từ <span class="text-[#00A859] font-bold">250.000đ – 650.000đ/tháng</span> (Ưu tiên tân sinh viên)</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="/ky-tuc-xa/" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors">
+            Xem trang Ký túc xá &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 2. CÂU LẠC BỘ -->
+    <div id="sv-pane-cau-lac-bo" class="sv-pane hidden">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="px-2.5 py-1 rounded-full bg-violet-100 text-violet-800 text-xs font-bold uppercase tracking-wider">Hơn 40 Câu lạc bộ &amp; Đội nhóm</span>
+        <span class="text-xs text-slate-400">Sống trọn đam mê sinh viên</span>
+      </div>
+      <h3 class="text-xl md:text-2xl font-bold text-slate-900 mb-3">Hệ Thống Câu Lạc Bộ – Đội – Nhóm DUE</h3>
+      
+      <!-- Banner CTA Trang CLB -->
+      <div class="p-4 sm:p-5 mb-6 rounded-2xl bg-gradient-to-r from-[#003366] via-[#004f8c] to-[#0072BC] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-orange-200 text-[11px] font-bold uppercase mb-1">
+            <span class="material-symbols-outlined text-[14px] text-orange-400">stars</span>
+            Trang chuyên biệt
+          </div>
+          <h4 class="font-bold text-base text-white">Khám phá Trang Câu Lạc Bộ DUE đầy đủ</h4>
+          <p class="text-xs text-blue-100 mt-0.5 leading-relaxed">Tìm kiếm, lọc theo 6 lĩnh vực, xem lịch tuyển thành viên và thông tin liên hệ chi tiết của 40+ CLB.</p>
+        </div>
+        <a href="/clb/" class="shrink-0 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#fd761a] hover:bg-[#ea6509] text-white text-xs font-bold transition-all shadow-md">
+          <span>Xem trang CLB</span>
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+
+      <!-- Preview các CLB tiêu biểu -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 mb-6">
+        <a href="/clb/" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0072BC] hover:shadow-md transition-all flex items-center gap-3 group">
+          <img src="/static/img/clb/see-club-logo.jpg" alt="SEE Club" class="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-200 shrink-0" onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';">
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-xs text-slate-900 group-hover:text-[#0072BC] truncate">SEE CLUB - Tiếng Anh</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">20K theo dõi • Ngoại ngữ</div>
+          </div>
+        </a>
+
+        <a href="/clb/" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0072BC] hover:shadow-md transition-all flex items-center gap-3 group">
+          <img src="/static/img/clb/clb-due-marketer-logo.jpg" alt="DUE Marketer" class="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-200 shrink-0" onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';">
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-xs text-slate-900 group-hover:text-[#0072BC] truncate">CLB DUE Marketer</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Học thuật Marketing thực chiến</div>
+          </div>
+        </a>
+
+        <a href="/clb/" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0072BC] hover:shadow-md transition-all flex items-center gap-3 group">
+          <img src="/static/img/clb/i-design-club-logo.jpg" alt="I-Design" class="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-200 shrink-0" onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';">
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-xs text-slate-900 group-hover:text-[#0072BC] truncate">I-Design Club</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Thiết kế đồ họa &amp; Sáng tạo</div>
+          </div>
+        </a>
+
+        <a href="/clb/" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0072BC] hover:shadow-md transition-all flex items-center gap-3 group">
+          <img src="/static/img/clb/clb-guitar-due-logo.jpg" alt="Guitar DUE" class="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-200 shrink-0" onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';">
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-xs text-slate-900 group-hover:text-[#0072BC] truncate">CLB Guitar DUE</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Âm nhạc &amp; Kết nối đam mê</div>
+          </div>
+        </a>
+
+        <a href="/clb/" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0072BC] hover:shadow-md transition-all flex items-center gap-3 group">
+          <img src="/static/img/clb/clb-k2s-logo.jpg" alt="K2S" class="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-200 shrink-0" onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';">
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-xs text-slate-900 group-hover:text-[#0072BC] truncate">CLB K2S - Key To Success</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Kỹ năng mềm &amp; Khởi nghiệp</div>
+          </div>
+        </a>
+
+        <a href="/clb/" class="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0072BC] hover:shadow-md transition-all flex items-center gap-3 group">
+          <img src="/static/img/clb/clb-c-res-logo.jpg" alt="C-RES" class="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-200 shrink-0" onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';">
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-xs text-slate-900 group-hover:text-[#0072BC] truncate">CLB C-RES Thương Mại</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">24K theo dõi • Sự kiện quốc tế</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="pt-2 text-center">
+        <a href="/clb/" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-[#0072BC] text-[#0072BC] hover:bg-blue-50 text-xs sm:text-sm font-bold transition-all">
+          <span>Xem đầy đủ 40+ Câu lạc bộ trên trang riêng</span>
+          <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+        </a>
+      </div>
+    </div>
+
+
+    <!-- 3. HOẠT ĐỘNG ĐOÀN -->
+    <div id="sv-pane-hoat-dong-doan" class="sv-pane hidden">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold uppercase tracking-wider">Tuổi trẻ &amp; Phong trào</span>
+        <span class="text-xs text-slate-400">Đoàn Thanh niên - Hội Sinh viên DUE</span>
+      </div>
+      <h3 class="text-xl md:text-2xl font-bold text-slate-900 mb-4">Hoạt Động Đoàn &amp; Phong Trào Sinh Viên Sôi Nổi</h3>
+      
+      <p class="text-slate-600 leading-relaxed mb-6 text-sm sm:text-base">
+        Đoàn Thanh niên – Hội Sinh viên DUE liên tục nhiều năm là lá cờ đầu trong công tác Đoàn và phong trào thanh niên khối trường học tại Đà Nẵng, tạo môi trường rèn luyện toàn diện về đạo đức, trí tuệ, kỹ năng và bản lĩnh cho sinh viên.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="p-4 rounded-xl border border-red-100 bg-red-50/30">
+          <h4 class="font-bold text-red-700 text-sm mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px]">volunteer_activism</span>
+            Các Chiến dịch Tình nguyện Lớn
+          </h4>
+          <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+            <li><strong>Chiến dịch Mùa hè xanh:</strong> Về vùng sâu vùng xa hỗ trợ bà con nhân dân.</li>
+            <li><strong>Tiếp sức mùa thi:</strong> Hướng dẫn và tiếp sức cho sĩ tử vào đại học.</li>
+            <li><strong>Giọt hồng DUE:</strong> Ngày hội hiến máu nhân đạo thường niên với hàng ngàn đơn vị máu.</li>
+          </ul>
+        </div>
+
+        <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/30">
+          <h4 class="font-bold text-[#0072BC] text-sm mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px]">emoji_events</span>
+            Phong trào "Sinh viên 5 tốt"
+          </h4>
+          <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+            <li>Tiêu chuẩn rèn luyện: Đạo đức tốt, Học tập tốt, Thể lực tốt, Tình nguyện tốt, Hội nhập tốt.</li>
+            <li>Hỗ trợ xét tuyển kết nạp Đảng cho những đoàn viên ưu tú xuất sắc.</li>
+            <li>Cơ hội nhận học bổng và chứng nhận danh giá khi ứng tuyển việc làm.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between flex-wrap gap-3">
+        <div class="text-xs text-slate-600">Fanpage chính thức: <strong class="text-slate-800">Đoàn Thanh niên - Hội Sinh viên DUE</strong></div>
+        <div class="flex items-center gap-2">
+          <a href="/hoat-dong-doan/" class="px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition-colors">
+            Xem trang Đoàn &rarr;
+          </a>
+          <a href="/lien-chi-doan/" class="px-3.5 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-lg text-xs font-bold transition-colors">
+            Xem 9 Liên Chi Đoàn
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* Styling tab button Dành cho sinh viên */
+  .sv-tab-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #334155;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .sv-tab-btn:hover {
+    background-color: #e2e8f0;
+    color: #0072BC;
+  }
+  .sv-tab-btn.active {
+    background-color: #dbeafe;
+    color: #0072BC;
+    font-weight: 700;
+  }
+  .sv-tab-bullet {
+    font-size: 11px;
+    margin-right: 8px;
+    color: #64748b;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .sv-tab-btn.active .sv-tab-bullet {
+    color: #0072BC;
+  }
+  .sv-tab-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sv-pane {
+    animation: svFadeIn 0.2s ease forwards;
+  }
+  @keyframes svFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

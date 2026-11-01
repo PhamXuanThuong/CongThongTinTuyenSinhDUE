@@ -1,38 +1,6 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="web_standard" name="shell-type">
-  <title>Cổng thông tin tuyển sinh - Trường Đại học Kinh tế, ĐH Đà Nẵng (DUE)</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+{% extends "base.html" %}
 
-  <style>
-    @layer base {
-      html, body {
-        margin: 0;
-        padding: 0;
-        scroll-behavior: smooth;
-      }
-      body {
-        overscroll-behavior: none;
-      }
-      main > :first-child {
-        margin-top: 0 !important;
-      }
-      main > :last-child {
-        margin-bottom: 0 !important;
-      }
-    }
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
+{% block title %}Cổng thông tin tuyển sinh - Trường Đại học Kinh tế, ĐH Đà Nẵng (DUE){% endblock %}
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
@@ -359,14 +327,18 @@
               </p>
 
               <!-- CTA Buttons -->
-              <div class="flex flex-wrap items-center gap-4 pt-2 w-full sm:w-auto">
+              <div class="flex flex-wrap items-center gap-3 pt-2 w-full sm:w-auto">
+                <a href="/khoa/" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-secondary-container hover:bg-[#e0610f] text-white font-label-lg shadow-lg shadow-secondary-container/25 hover:shadow-xl transition-all duration-200 font-semibold">
+                  <span class="material-symbols-outlined text-[20px]">school</span>
+                  <span>Khám phá các Khoa</span>
+                </a>
                 <a href="#tin-tuc" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary-container hover:bg-primary text-on-primary font-label-lg shadow-lg shadow-primary-container/20 hover:shadow-xl transition-all duration-200">
-                  <span>Khám phá tin tuyển sinh</span>
+                  <span>Tin tuyển sinh</span>
                   <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
                 </a>
-                <a href="tel:02363836169" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-surface-container-high hover:bg-surface-container text-on-surface font-label-lg border border-outline-variant/60 transition-all duration-200">
+                <a href="tel:02363836169" class="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-surface-container-high hover:bg-surface-container text-on-surface font-label-lg border border-outline-variant/60 transition-all duration-200">
                   <span class="material-symbols-outlined text-[20px] text-secondary-container">call</span>
-                  <span>Hotline: 0236 3836 169</span>
+                  <span>0236 3836 169</span>
                 </a>
               </div>
 
