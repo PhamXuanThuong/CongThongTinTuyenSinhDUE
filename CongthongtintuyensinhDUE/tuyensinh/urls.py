@@ -7,7 +7,8 @@ urlpatterns = [
     # Các trang giao diện chính
     path('', views.home, name='home'),
     path('lich-su-phat-trien/', views.lich_su_phat_trien, name='lich_su_phat_trien'),
-    path('su-menh-tam-nhin/', views.su_mang_tam_nhin, name='su_mang_tam_nhin'),
+    path('su-mang-tam-nhin/', views.su_mang_tam_nhin, name='su_mang_tam_nhin'),
+    path('su-menh-tam-nhin/', views.su_mang_tam_nhin, name='su_menh_tam_nhin'),
     path('phuong-thuc-xet-tuyen/', views.phuong_thuc_xet_tuyen, name='phuong_thuc_xet_tuyen'),
     path('diem-chuan-cac-nam/', views.diem_chuan_cac_nam, name='diem_chuan_cac_nam'),
     path('chi-tieu-tuyen-sinh/', views.chi_tieu_tuyen_sinh, name='chi_tieu_tuyen_sinh'),
