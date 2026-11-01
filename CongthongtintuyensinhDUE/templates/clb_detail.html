@@ -66,12 +66,12 @@
       </div>
 
       <!-- Header Info & CTA Bar -->
-      <div class="px-6 sm:px-10 pb-8 pt-0 relative">
-        <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 -mt-16 sm:-mt-20 z-10 relative">
+      <div class="px-6 sm:px-10 pb-8 pt-4 relative">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative">
           <!-- Logo + Titles -->
-          <div class="flex flex-col sm:flex-row items-start sm:items-end gap-5">
-            <!-- Club Logo -->
-            <div class="relative shrink-0">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 w-full lg:w-auto">
+            <!-- Club Logo (Elevated cleanly into cover banner) -->
+            <div class="relative shrink-0 -mt-16 sm:-mt-24 z-20">
               {% if club.logo_url %}
                 <img
                   src="{{ club.logo_url }}"
@@ -115,7 +115,7 @@
           </div>
 
           <!-- CTAs -->
-          <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto self-stretch lg:self-end">
+          <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto shrink-0">
             {% if club.contact and club.contact.facebook %}
               <a
                 href="{{ club.contact.facebook }}"
