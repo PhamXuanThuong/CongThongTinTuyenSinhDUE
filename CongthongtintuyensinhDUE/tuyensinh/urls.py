@@ -28,4 +28,6 @@ urlpatterns = [
     path('api/tra-cuu/', views.api_tra_cuu_nganh, name='api_tra_cuu_nganh'),
     path('api/chatbot/', views.api_chatbot, name='api_chatbot'),
     path('api/thong-ke/', views.api_thong_ke, name='api_thong_ke'),
+    path('api/tu-van-huong-nghiep/', views.api_tu_van_huong_nghiep, name='api_tu_van_huong_nghiep'),
+    path('api/clb/dang-ky/', views.api_dang_ky_clb, name='api_dang_ky_clb'),
 ]

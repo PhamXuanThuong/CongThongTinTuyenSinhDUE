@@ -1,9 +1,11 @@
 import json
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.http import JsonResponse
 from django.db.models import Q, Sum
+from django.views.decorators.csrf import csrf_exempt
 from .models import (
     TinTuc,
     LoaiHinhDaoTao,
@@ -11,7 +13,16 @@ from .models import (
     DiemChuan,
     PhuongThucXetTuyen,
     CauHoiThuongGap,
-    TuVanTuyenSinh
+    TuVanTuyenSinh,
+    CauLacBo,
+    DangKyCLB,
+    HoSoHuongNghiep,
+    HuongDanNhapHoc,
+    LichTrinhTanSinhVien,
+    KhoaPhongBan,
+    BangHocPhi,
+    CauHoiHocPhi,
+    ChinhSachHocBong
 )
 
 
@@ -190,6 +201,7 @@ def dang_xuat(request):
     return redirect('tuyensinh:home')
 
 
+@csrf_exempt
 def dang_ky_tu_van(request):
     """
     API & Form tiếp nhận đăng ký tư vấn tuyển sinh từ thí sinh/phụ huynh
@@ -255,60 +267,98 @@ def chi_tiet_tin_tuc(request, slug):
 
 
 # ========================================================
-# CÁC API ENDPOINTS PHỤC VỤ TÌM KIẾM & CHATBOT THÔNG MINH
+# CÁC API ENDPOINTS PHỤC VỤ TÌM KIẾM, HƯỚNG NGHIỆP, CHATBOT & CLB
 # ========================================================
 
 def api_tra_cuu_nganh(request):
     """
-    API Tra cứu thông tin ngành học, chỉ tiêu, tổ hợp môn và điểm chuẩn
-    GET /api/tra-cuu/?q=Marketing&loai_hinh=toan_phan
+    API Tra cứu thông tin ngành học, chỉ tiêu, tổ hợp môn và điểm chuẩn đa tiêu chí:
+    GET /api/tra-cuu/?q=Marketing&loai_hinh=toan_phan&to_hop=A00&diem_min=22&diem_max=26
     """
     query = request.GET.get('q', '').strip()
     loai_hinh_param = request.GET.get('loai_hinh', '').strip()
+    to_hop_param = request.GET.get('to_hop', '').strip().upper()
+    khoa_param = request.GET.get('khoa', '').strip()
 
-    nganh_qs = NganhDaoTao.objects.select_related('loai_hinh').all()
+    try:
+        diem_min = float(request.GET.get('diem_min', 0))
+    except (ValueError, TypeError):
+        diem_min = 0
+
+    try:
+        diem_max = float(request.GET.get('diem_max', 35))
+    except (ValueError, TypeError):
+        diem_max = 35
+
+    nganh_qs = NganhDaoTao.objects.select_related('loai_hinh').prefetch_related('diem_chuan_cac_nam').all()
 
     if query:
         nganh_qs = nganh_qs.filter(
             Q(ten_nganh__icontains=query) |
             Q(ma_nganh__icontains=query) |
             Q(to_hop_mon__icontains=query) |
-            Q(khoa__icontains=query)
+            Q(khoa__icontains=query) |
+            Q(mo_ta__icontains=query)
         )
 
     if loai_hinh_param:
         nganh_qs = nganh_qs.filter(loai_hinh__ma_loai_hinh=loai_hinh_param)
 
+    if to_hop_param:
+        nganh_qs = nganh_qs.filter(to_hop_mon__icontains=to_hop_param)
+
+    if khoa_param:
+        nganh_qs = nganh_qs.filter(khoa__icontains=khoa_param)
+
     results = []
-    for n in nganh_qs[:30]:
-        diem_2025 = n.diem_chuan_cac_nam.filter(nam=2025, phuong_thuc='THPT').first()
-        diem_dgnl = n.diem_chuan_cac_nam.filter(nam=2025, phuong_thuc='DGNL').first()
+    for n in nganh_qs:
+        # Lấy lịch sử điểm chuẩn các năm
+        dc_qs = n.diem_chuan_cac_nam.all().order_by('-nam')
+        diem_2025 = dc_qs.filter(nam=2025, phuong_thuc='THPT').first()
+        diem_2024 = dc_qs.filter(nam=2024, phuong_thuc='THPT').first()
+        diem_2023 = dc_qs.filter(nam=2023, phuong_thuc='THPT').first()
+        diem_dgnl = dc_qs.filter(nam=2025, phuong_thuc='DGNL').first()
+
+        thpt_score = float(diem_2025.diem_trung_tuyen) if diem_2025 else 0.0
+
+        # Lọc theo khoảng điểm nếu người dùng chỉ định
+        if diem_min > 0 and thpt_score > 0 and thpt_score < diem_min:
+            continue
+        if diem_max < 30 and thpt_score > 0 and thpt_score > diem_max:
+            continue
 
         results.append({
             'ma_nganh': n.ma_nganh,
             'ten_nganh': n.ten_nganh,
+            'khoa': n.khoa,
             'loai_hinh': n.loai_hinh.ten_loai_hinh if n.loai_hinh else 'Tiêu chuẩn',
             'chi_tieu': n.chi_tieu,
+            'chi_tieu_toan_phan': n.chi_tieu_toan_phan,
+            'chi_tieu_ban_phan': n.chi_tieu_ban_phan,
+            'chi_tieu_tieu_chuan': n.chi_tieu_tieu_chuan,
             'to_hop_mon': n.to_hop_mon,
-            'diem_thpt_2025': float(diem_2025.diem_trung_tuyen) if diem_2025 else None,
+            'diem_thpt_2025': thpt_score if thpt_score > 0 else None,
+            'diem_thpt_2024': float(diem_2024.diem_trung_tuyen) if diem_2024 else None,
+            'diem_thpt_2023': float(diem_2023.diem_trung_tuyen) if diem_2023 else None,
             'diem_dgnl_2025': float(diem_dgnl.diem_trung_tuyen) if diem_dgnl else None,
+            'hoc_phi_du_kien': n.hoc_phi_du_kien,
             'mo_ta': n.mo_ta,
         })
 
     return JsonResponse({
         'status': 'success',
         'count': len(results),
-        'results': results
+        'results': results[:50]
     })
 
 
+@csrf_exempt
 def api_chatbot(request):
     """
     API Trợ lý AI Tuyển sinh DUE (Hỏi đáp tự động từ cơ sở tri thức CauHoiThuongGap)
-    POST /api/chatbot/ hoặc GET /api/chatbot/?q=...
+    Hỗ trợ cả POST (JSON/Form) và GET (?q=...)
     """
     if request.method == 'POST':
-        import json
         try:
             data = json.loads(request.body)
             cau_hoi = data.get('question', '').strip()
@@ -323,31 +373,251 @@ def api_chatbot(request):
             'message': 'Vui lòng cung cấp nội dung câu hỏi!'
         }, status=400)
 
-    words = [w.lower() for w in cau_hoi.split() if len(w) > 1]
-    q_filter = Q()
-    for w in words:
-        q_filter |= Q(cau_hoi_mau__icontains=w) | Q(tu_khoa__icontains=w) | Q(chu_de__icontains=w) | Q(cau_tra_loi__icontains=w)
-
-    cau_tra_loi_match = CauHoiThuongGap.objects.filter(kich_hoat=True).filter(q_filter).first()
-
-    if cau_tra_loi_match:
+    # Thuật toán tìm kiếm theo trọng số từ khóa
+    words = [w.lower() for w in re.split(r'[\s,\.?!;]+', cau_hoi) if len(w) > 1]
+    
+    # 1. Tìm chính xác cụm từ hoặc từ khóa chủ chốt
+    exact_matches = CauHoiThuongGap.objects.filter(kich_hoat=True).filter(
+        Q(cau_hoi_mau__icontains=cau_hoi) |
+        Q(tu_khoa__icontains=cau_hoi) |
+        Q(chu_de__icontains=cau_hoi)
+    )
+    if exact_matches.exists():
+        match = exact_matches.first()
         return JsonResponse({
             'status': 'success',
             'found': True,
             'cau_hoi': cau_hoi,
-            'chu_de': cau_tra_loi_match.chu_de,
-            'phan_loai': cau_tra_loi_match.get_phan_loai_display(),
-            'cau_tra_loi': cau_tra_loi_match.cau_tra_loi,
-            'nguon_tham_khao': cau_tra_loi_match.nguon_tham_khao or 'https://due.udn.vn',
+            'chu_de': match.chu_de,
+            'phan_loai': match.get_phan_loai_display(),
+            'cau_tra_loi': match.cau_tra_loi,
+            'nguon_tham_khao': match.nguon_tham_khao or 'https://due.udn.vn',
         })
-    else:
+
+    # 2. Tính điểm từng bản ghi tri thức theo số từ khóa trùng khớp
+    candidates = CauHoiThuongGap.objects.filter(kich_hoat=True)
+    best_candidate = None
+    best_score = 0
+
+    for item in candidates:
+        score = 0
+        text_corpus = f"{item.chu_de} {item.cau_hoi_mau} {item.tu_khoa} {item.cau_tra_loi}".lower()
+        for w in words:
+            if w in item.tu_khoa.lower():
+                score += 5
+            elif w in item.chu_de.lower():
+                score += 3
+            elif w in item.cau_hoi_mau.lower():
+                score += 2
+            elif w in text_corpus:
+                score += 1
+        if score > best_score:
+            best_score = score
+            best_candidate = item
+
+    if best_candidate and best_score >= 3:
         return JsonResponse({
             'status': 'success',
-            'found': False,
+            'found': True,
             'cau_hoi': cau_hoi,
-            'cau_tra_loi': 'Xin lỗi, câu hỏi của bạn chưa có sẵn trong cơ sở dữ liệu tự động. Bạn vui lòng liên hệ trực tiếp Hotline Tư vấn Tuyển sinh DUE: 0236 3836 169 hoặc gửi form yêu cầu tư vấn để được hỗ trợ chi tiết nhất nhé!',
-            'nguon_tham_khao': 'https://due.udn.vn',
+            'chu_de': best_candidate.chu_de,
+            'phan_loai': best_candidate.get_phan_loai_display(),
+            'cau_tra_loi': best_candidate.cau_tra_loi,
+            'nguon_tham_khao': best_candidate.nguon_tham_khao or 'https://due.udn.vn',
         })
+
+    return JsonResponse({
+        'status': 'success',
+        'found': False,
+        'cau_hoi': cau_hoi,
+        'cau_tra_loi': 'Cảm ơn bạn đã đặt câu hỏi! Trợ lý AI DUE đã ghi nhận thắc mắc. Để được tư vấn chi tiết theo hồ sơ và nguyện vọng riêng của bạn, vui lòng liên hệ Ban tuyển sinh DUE qua Hotline: 0236 3836 169 - 0236 3847 139 hoặc gửi form yêu cầu tư vấn trên website nhé!',
+        'nguon_tham_khao': 'https://due.udn.vn',
+    })
+
+
+# Danh mục ngành gợi ý theo mã trắc nghiệm Holland RIASEC
+HOLLAND_MAJORS = {
+    'E': [
+        {'ten': 'Quản trị kinh doanh', 'khoa': 'Khoa Quản trị kinh doanh', 'ma': '7340101', 'diem': '24.50', 'icon': 'corporate_fare'},
+        {'ten': 'Marketing', 'khoa': 'Khoa Marketing', 'ma': '7340115', 'diem': '25.50', 'icon': 'campaign'},
+        {'ten': 'Kinh doanh quốc tế', 'khoa': 'Khoa Du lịch & KDQT', 'ma': '7340120', 'diem': '25.75', 'icon': 'public'},
+        {'ten': 'Kinh doanh thương mại', 'khoa': 'Khoa TMĐT', 'ma': '7340121', 'diem': '24.25', 'icon': 'storefront'},
+        {'ten': 'Bất động sản', 'khoa': 'Khoa Tài chính - Ngân hàng', 'ma': '7340116', 'diem': '22.00', 'icon': 'real_estate_agent'},
+    ],
+    'C': [
+        {'ten': 'Kế toán doanh nghiệp', 'khoa': 'Khoa Kế toán', 'ma': '7340301', 'diem': '24.25', 'icon': 'calculate'},
+        {'ten': 'Kiểm toán (Chuẩn ACCA)', 'khoa': 'Khoa Kế toán', 'ma': '7340302', 'diem': '25.00', 'icon': 'verified_user'},
+        {'ten': 'Tài chính - Ngân hàng', 'khoa': 'Khoa Tài chính - Ngân hàng', 'ma': '7340201', 'diem': '24.00', 'icon': 'account_balance'},
+        {'ten': 'Công nghệ Tài chính (Fintech)', 'khoa': 'Khoa Tài chính - Ngân hàng', 'ma': '7340205', 'diem': '24.75', 'icon': 'currency_exchange'},
+        {'ten': 'Luật Kinh tế', 'khoa': 'Khoa Luật', 'ma': '7380107', 'diem': '24.50', 'icon': 'gavel'},
+    ],
+    'I': [
+        {'ten': 'Khoa học dữ liệu trong Kinh tế', 'khoa': 'Khoa Thống kê - Tin học', 'ma': '7310108', 'diem': '24.50', 'icon': 'query_stats'},
+        {'ten': 'Thương mại điện tử', 'khoa': 'Khoa TMĐT', 'ma': '7340122', 'diem': '25.25', 'icon': 'shopping_cart'},
+        {'ten': 'Hệ thống thông tin quản lý', 'khoa': 'Khoa TMĐT', 'ma': '7340405', 'diem': '24.00', 'icon': 'lan'},
+        {'ten': 'Kinh tế đầu tư & Phát triển', 'khoa': 'Khoa Kinh tế', 'ma': '7310101', 'diem': '23.00', 'icon': 'trending_up'},
+        {'ten': 'Thống kê kinh tế', 'khoa': 'Khoa Thống kê - Tin học', 'ma': '7460117', 'diem': '22.50', 'icon': 'bar_chart'},
+    ],
+    'S': [
+        {'ten': 'Quản trị khách sạn', 'khoa': 'Khoa Du lịch & KDQT', 'ma': '7810201', 'diem': '24.00', 'icon': 'hotel'},
+        {'ten': 'Quản trị dịch vụ du lịch & lữ hành', 'khoa': 'Khoa Du lịch & KDQT', 'ma': '7810103', 'diem': '23.50', 'icon': 'travel_explore'},
+        {'ten': 'Quản trị nhân lực', 'khoa': 'Khoa Quản trị kinh doanh', 'ma': '7340101_02', 'diem': '24.50', 'icon': 'diversity_3'},
+        {'ten': 'Luật học', 'khoa': 'Khoa Luật', 'ma': '7380101', 'diem': '23.50', 'icon': 'balance'},
+    ],
+    'A': [
+        {'ten': 'Truyền thông Marketing tích hợp (IMC)', 'khoa': 'Khoa Marketing', 'ma': '7340115_02', 'diem': '25.50', 'icon': 'podcasts'},
+        {'ten': 'Marketing Số (Digital Marketing)', 'khoa': 'Khoa Marketing', 'ma': '7340115_01', 'diem': '25.75', 'icon': 'ads_click'},
+        {'ten': 'Cử nhân Quốc tế (Liên kết Anh/Úc)', 'khoa': 'Viện Đào tạo Quốc tế', 'ma': '7340101_QT', 'diem': '22.00', 'icon': 'language'},
+    ],
+    'R': [
+        {'ten': 'Quản trị chuỗi cung ứng & Logistics', 'khoa': 'Khoa Quản trị kinh doanh', 'ma': '7340101_03', 'diem': '25.50', 'icon': 'local_shipping'},
+        {'ten': 'Hệ thống thông tin quản lý', 'khoa': 'Khoa TMĐT', 'ma': '7340405', 'diem': '24.00', 'icon': 'dns'},
+        {'ten': 'Công nghệ Tài chính (Fintech)', 'khoa': 'Khoa Tài chính - Ngân hàng', 'ma': '7340205', 'diem': '24.75', 'icon': 'payments'},
+    ]
+}
+
+
+@csrf_exempt
+def api_tu_van_huong_nghiep(request):
+    """
+    API Tiếp nhận bài trắc nghiệm Holland và thông tin cá nhân của học sinh:
+    POST /api/tu-van-huong-nghiep/
+    """
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Chỉ chấp nhận phương thức POST'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+    except:
+        data = request.POST
+
+    ho_ten = data.get('full_name', '').strip()
+    so_dien_thoai = data.get('phone_number', '').strip()
+    email = data.get('email', '').strip()
+
+    if not ho_ten or not so_dien_thoai:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Vui lòng cung cấp đầy đủ Họ tên và Số điện thoại!'
+        }, status=400)
+
+    # Điểm Holland
+    scores = {
+        'R': int(data.get('score_r', 0)),
+        'I': int(data.get('score_i', 0)),
+        'A': int(data.get('score_a', 0)),
+        'S': int(data.get('score_s', 0)),
+        'E': int(data.get('score_e', 0)),
+        'C': int(data.get('score_c', 0)),
+    }
+
+    # Tính mã Holland top 3
+    sorted_letters = sorted(scores.keys(), key=lambda k: scores[k], reverse=True)
+    holland_code = "".join(sorted_letters[:3]) if any(scores.values()) else ""
+
+    # Gợi ý ngành tương ứng với top 3 nhóm
+    suggested = []
+    seen = set()
+    for letter in sorted_letters[:3]:
+        for major in HOLLAND_MAJORS.get(letter, []):
+            if major['ten'] not in seen:
+                seen.add(major['ten'])
+                suggested.append(major)
+            if len(suggested) >= 6:
+                break
+        if len(suggested) >= 6:
+            break
+
+    # Lưu vào database
+    hoso = HoSoHuongNghiep.objects.create(
+        ho_ten=ho_ten,
+        gioi_tinh=data.get('gender', 'Nam'),
+        ngay_sinh=data.get('date_of_birth', ''),
+        so_dien_thoai=so_dien_thoai,
+        email=email,
+        truong_thpt=data.get('high_school', ''),
+        tinh_thanh=data.get('province', ''),
+        dia_chi=data.get('address', ''),
+        so_thich=data.get('interests', ''),
+        so_truong=data.get('strengths', ''),
+        muc_tieu_nghe_nghiep=data.get('career_goals', ''),
+        diem_r=scores['R'],
+        diem_i=scores['I'],
+        diem_a=scores['A'],
+        diem_s=scores['S'],
+        diem_e=scores['E'],
+        diem_c=scores['C'],
+        ma_holland=holland_code,
+        nganh_de_xuat=", ".join([s['ten'] for s in suggested])
+    )
+
+    return JsonResponse({
+        'status': 'success',
+        'message': f'Hồ sơ của bạn {ho_ten} đã được lưu thành công vào Cổng thông tin Tuyển sinh DUE.',
+        'data': {
+            'id': hoso.id,
+            'holland_code': holland_code,
+            'scores': scores,
+            'suggested_majors': suggested
+        }
+    })
+
+
+@csrf_exempt
+def api_dang_ky_clb(request):
+    """
+    API Ứng tuyển thành viên Câu lạc bộ / Đội / Nhóm DUE:
+    POST /api/clb/dang-ky/
+    """
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Chỉ chấp nhận phương thức POST'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+    except:
+        data = request.POST
+
+    clb_slug = data.get('clb_slug', '').strip()
+    ho_ten = data.get('ho_ten', '').strip()
+    so_dien_thoai = data.get('so_dien_thoai', '').strip()
+    email = data.get('email', '').strip()
+    ban_ung_tuyen = data.get('ban_ung_tuyen', '').strip()
+    ly_do_ung_tuyen = data.get('ly_do_ung_tuyen', '').strip()
+
+    if not clb_slug or not ho_ten or not so_dien_thoai:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Vui lòng cung cấp đầy đủ thông tin: CLB ứng tuyển, Họ tên và Số điện thoại!'
+        }, status=400)
+
+    club = CauLacBo.objects.filter(Q(slug=clb_slug) | Q(name__icontains=clb_slug)).first()
+    if not club:
+        return JsonResponse({'status': 'error', 'message': 'Không tìm thấy câu lạc bộ tương ứng'}, status=404)
+
+    don_ung_tuyen = DangKyCLB.objects.create(
+        clb=club,
+        ho_ten=ho_ten,
+        ma_sinh_vien=data.get('ma_sinh_vien', ''),
+        khoa_lop=data.get('khoa_lop', ''),
+        so_dien_thoai=so_dien_thoai,
+        email=email,
+        facebook_link=data.get('facebook_link', ''),
+        ban_ung_tuyen=ban_ung_tuyen,
+        kinh_nghiem=data.get('kinh_nghiem', ''),
+        ly_do_ung_tuyen=ly_do_ung_tuyen,
+        trang_thai='cho_duyet'
+    )
+
+    return JsonResponse({
+        'status': 'success',
+        'message': f'Chúc mừng bạn {ho_ten}! Đơn ứng tuyển vào {club.name} ({ban_ung_tuyen or "Thành viên"}) đã được gửi thành công. Ban chủ nhiệm CLB sẽ liên hệ phỏng vấn qua số điện thoại {so_dien_thoai} sớm nhất!',
+        'data': {
+            'id': don_ung_tuyen.id,
+            'clb_name': club.name,
+            'ngay_nop': don_ung_tuyen.ngay_nop.strftime('%d/%m/%Y %H:%M')
+        }
+    })
+
 
 
 def api_thong_ke(request):

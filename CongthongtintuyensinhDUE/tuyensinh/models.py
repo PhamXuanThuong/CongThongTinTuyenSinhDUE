@@ -298,3 +298,253 @@ class ChinhSachHocBong(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# ========================================================
+# 8. CÂU LẠC BỘ, ĐỘI, NHÓM SINH VIÊN (CLB)
+# ========================================================
+
+class CauLacBo(models.Model):
+    FACULTY_CHOICES = [
+        ('tcnh', 'Khoa Tài chính - Ngân hàng'),
+        ('dlkdqt', 'Khoa Du lịch & Kinh doanh quốc tế'),
+        ('tmdt_mkt_cns', 'Khoa Thương mại điện tử - Marketing và Công nghệ số'),
+        ('kt', 'Khoa Kinh tế'),
+        ('qtkd', 'Khoa Quản trị kinh doanh'),
+        ('ketoan', 'Khoa Kế toán'),
+        ('llct', 'Khoa Lý luận chính trị'),
+        ('luat', 'Khoa Luật'),
+        ('vdtqt', 'Viện Đào tạo Quốc tế'),
+    ]
+
+    slug = models.SlugField(max_length=100, unique=True, verbose_name="Mã định danh (ID/Slug)")
+    name = models.CharField(max_length=200, verbose_name="Tên Câu lạc bộ")
+    aliases = models.JSONField(default=list, blank=True, verbose_name="Tên viết tắt / Bí danh")
+    level = models.CharField(max_length=100, default="Trường (trực thuộc Hội SV)", verbose_name="Cấp trực thuộc")
+    faculty_id = models.CharField(max_length=50, blank=True, null=True, verbose_name="Mã Khoa (nếu thuộc Khoa)")
+    category = models.CharField(max_length=100, default="Kỹ năng & Khởi nghiệp", verbose_name="Lĩnh vực hoạt động")
+    founded = models.CharField(max_length=50, blank=True, verbose_name="Ngày thành lập")
+    slogan = models.CharField(max_length=255, blank=True, verbose_name="Khẩu hiệu / Slogan")
+    description = models.TextField(verbose_name="Mô tả chi tiết")
+    intro = models.TextField(blank=True, verbose_name="Giới thiệu ngắn")
+    mission = models.TextField(blank=True, verbose_name="Sứ mệnh")
+    vision = models.TextField(blank=True, verbose_name="Tầm nhìn")
+
+    departments = models.JSONField(default=list, blank=True, verbose_name="Các ban chuyên môn")
+    contact = models.JSONField(default=dict, blank=True, verbose_name="Thông tin liên hệ (Facebook, Email...)")
+    leaders = models.CharField(max_length=255, blank=True, verbose_name="Ban chủ nhiệm nhiệm kỳ")
+    advisors = models.CharField(max_length=255, blank=True, verbose_name="Cố vấn chuyên môn")
+    achievements = models.JSONField(default=list, blank=True, verbose_name="Thành tích & Bằng khen")
+    recruitment = models.CharField(max_length=200, blank=True, default="Mở đơn định kỳ tháng 8 - tháng 10", verbose_name="Thời gian tuyển quân")
+    recruitment_steps = models.JSONField(default=list, blank=True, verbose_name="Các vòng ứng tuyển")
+    benefits = models.JSONField(default=list, blank=True, verbose_name="Quyền lợi thành viên")
+    followers = models.CharField(max_length=50, default="10K+", verbose_name="Lượng người theo dõi")
+
+    logo = models.CharField(max_length=255, blank=True, verbose_name="Đường dẫn logo")
+    cover = models.CharField(max_length=255, blank=True, verbose_name="Đường dẫn ảnh bìa cover")
+    gallery = models.JSONField(default=list, blank=True, verbose_name="Thư viện ảnh")
+    highlights = models.JSONField(default=list, blank=True, verbose_name="Điểm nổi bật")
+    recent_activities = models.JSONField(default=list, blank=True, verbose_name="Hoạt động gần đây")
+
+    order = models.PositiveIntegerField(default=0, verbose_name="Thứ tự hiển thị")
+    is_active = models.BooleanField(default=True, verbose_name="Kích hoạt")
+
+    class Meta:
+        verbose_name = "Câu lạc bộ / Đội / Nhóm"
+        verbose_name_plural = "8. Quản lý Câu lạc bộ – Đội – Nhóm (CLB)"
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return f"{self.name} ({self.level})"
+
+    def to_dict(self):
+        """Serialize thành dict chuẩn cho template & API"""
+        fid = self.faculty_id
+        faculty_name_map = dict(self.FACULTY_CHOICES)
+        fac_name = faculty_name_map.get(fid, 'Cấp trường (Đoàn – Hội)' if not fid else fid)
+
+        logo_url = None
+        if self.logo:
+            logo_clean = self.logo.replace('\\', '/').split('/')[-1]
+            logo_url = f"/static/img/clb/{logo_clean}"
+
+        cover_url = None
+        if self.cover:
+            cover_clean = self.cover.replace('\\', '/').split('/')[-1]
+            cover_url = f"/static/img/clb/{cover_clean}"
+
+        formatted_gallery = []
+        for g in (self.gallery or []):
+            if isinstance(g, dict):
+                url = g.get('url', '')
+                if url and not url.startswith('/'):
+                    url_clean = url.replace('\\', '/').split('/')[-1]
+                    url = f"/static/img/clb/{url_clean}"
+                formatted_gallery.append({'url': url, 'caption': g.get('caption', '')})
+
+        return {
+            "id": self.slug,
+            "name": self.name,
+            "aliases": self.aliases or [],
+            "level": self.level,
+            "faculty_id": self.faculty_id,
+            "faculty_name": fac_name,
+            "category": self.category,
+            "founded": self.founded,
+            "slogan": self.slogan,
+            "description": self.description,
+            "intro": self.intro,
+            "mission": self.mission,
+            "vision": self.vision,
+            "departments": self.departments or [],
+            "contact": self.contact or {},
+            "leaders": self.leaders,
+            "advisors": self.advisors,
+            "achievements": self.achievements or [],
+            "recruitment": self.recruitment,
+            "recruitment_steps": self.recruitment_steps or [],
+            "benefits": self.benefits or [],
+            "followers": self.followers,
+            "logo": self.logo,
+            "cover": self.cover,
+            "logo_url": logo_url,
+            "cover_url": cover_url,
+            "gallery": formatted_gallery,
+            "highlights": self.highlights or [],
+            "recent_activities": self.recent_activities or []
+        }
+
+
+# ========================================================
+# 9. ĐĂNG KÝ THÀNH VIÊN CLB
+# ========================================================
+
+class DangKyCLB(models.Model):
+    TRANG_THAI_CHOICES = [
+        ('cho_duyet', 'Chờ duyệt hồ sơ'),
+        ('moi_phong_van', 'Mời phỏng vấn'),
+        ('trung_tuyen', 'Trúng tuyển'),
+        ('khong_dat', 'Không đạt'),
+    ]
+
+    clb = models.ForeignKey(CauLacBo, on_delete=models.CASCADE, related_name='don_dang_ky', verbose_name="Câu lạc bộ ứng tuyển")
+    ho_ten = models.CharField(max_length=100, verbose_name="Họ và tên ứng viên")
+    ma_sinh_vien = models.CharField(max_length=30, blank=True, verbose_name="Mã sinh viên (nếu có)")
+    khoa_lop = models.CharField(max_length=150, blank=True, verbose_name="Khóa / Lớp / Trường THPT")
+    so_dien_thoai = models.CharField(max_length=20, verbose_name="Số điện thoại")
+    email = models.EmailField(verbose_name="Email liên hệ")
+    facebook_link = models.URLField(blank=True, verbose_name="Link trang Facebook cá nhân")
+    ban_ung_tuyen = models.CharField(max_length=100, blank=True, verbose_name="Ban chuyên môn nguyện vọng")
+    kinh_nghiem = models.TextField(blank=True, verbose_name="Kinh nghiệm / Năng khiếu")
+    ly_do_ung_tuyen = models.TextField(verbose_name="Lý do mong muốn tham gia CLB")
+    trang_thai = models.CharField(max_length=30, choices=TRANG_THAI_CHOICES, default='cho_duyet', verbose_name="Trạng thái hồ sơ")
+    ghi_chu_noi_bo = models.TextField(blank=True, verbose_name="Ghi chú đánh giá / Phỏng vấn")
+    ngay_nop = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian nộp đơn")
+
+    class Meta:
+        verbose_name = "Đơn đăng ký tham gia CLB"
+        verbose_name_plural = "9. Đơn đăng ký thành viên CLB"
+        ordering = ['-ngay_nop']
+
+    def __str__(self):
+        return f"{self.ho_ten} - Ứng tuyển {self.clb.name} [{self.get_trang_thai_display()}]"
+
+
+# ========================================================
+# 10. HỒ SƠ TƯ VẤN HƯỚNG NGHIỆP HOLLAND (RIASEC)
+# ========================================================
+
+class HoSoHuongNghiep(models.Model):
+    GIOI_TINH_CHOICES = [
+        ('Nam', 'Nam'),
+        ('Nữ', 'Nữ'),
+        ('Khác', 'Khác'),
+    ]
+
+    ho_ten = models.CharField(max_length=100, verbose_name="Họ và tên học sinh")
+    gioi_tinh = models.CharField(max_length=10, choices=GIOI_TINH_CHOICES, default='Nam', verbose_name="Giới tính")
+    ngay_sinh = models.CharField(max_length=20, blank=True, verbose_name="Ngày sinh (DD/MM/YYYY)")
+    so_dien_thoai = models.CharField(max_length=20, verbose_name="Số điện thoại")
+    email = models.EmailField(verbose_name="Email liên hệ")
+    truong_thpt = models.CharField(max_length=200, blank=True, verbose_name="Trường THPT đang học")
+    tinh_thanh = models.CharField(max_length=100, blank=True, verbose_name="Tỉnh / Thành phố")
+    dia_chi = models.CharField(max_length=255, blank=True, verbose_name="Địa chỉ cụ thể")
+
+    so_thich = models.TextField(blank=True, verbose_name="Sở thích cá nhân")
+    so_truong = models.TextField(blank=True, verbose_name="Sở trường / Thế mạnh")
+    muc_tieu_nghe_nghiep = models.TextField(blank=True, verbose_name="Mục tiêu nghề nghiệp tương lai")
+
+    # Điểm RIASEC Holland
+    diem_r = models.PositiveSmallIntegerField(default=0, verbose_name="Điểm R (Realistic - Kỹ thuật)")
+    diem_i = models.PositiveSmallIntegerField(default=0, verbose_name="Điểm I (Investigative - Nghiên cứu)")
+    diem_a = models.PositiveSmallIntegerField(default=0, verbose_name="Điểm A (Artistic - Nghệ thuật)")
+    diem_s = models.PositiveSmallIntegerField(default=0, verbose_name="Điểm S (Social - Xã hội)")
+    diem_e = models.PositiveSmallIntegerField(default=0, verbose_name="Điểm E (Enterprising - Quản lý/Kinh doanh)")
+    diem_c = models.PositiveSmallIntegerField(default=0, verbose_name="Điểm C (Conventional - Nghiệp vụ/Chi tiết)")
+    ma_holland = models.CharField(max_length=20, blank=True, verbose_name="Mã Holland (Top 3)")
+    nganh_de_xuat = models.TextField(blank=True, verbose_name="Danh sách ngành học DUE đề xuất")
+
+    da_lien_he = models.BooleanField(default=False, verbose_name="Đã liên hệ tư vấn")
+    ghi_chu_tu_van = models.TextField(blank=True, verbose_name="Ghi chú cán bộ tuyển sinh")
+    ngay_tao = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian thực hiện")
+
+    class Meta:
+        verbose_name = "Hồ sơ trắc nghiệm hướng nghiệp"
+        verbose_name_plural = "10. Hồ sơ Trắc nghiệm Hướng nghiệp Holland"
+        ordering = ['-ngay_tao']
+
+    def __str__(self):
+        return f"{self.ho_ten} ({self.so_dien_thoai}) - Mã: {self.ma_holland or 'Chưa xác định'}"
+
+
+# ========================================================
+# 11. HƯỚNG DẪN NHẬP HỌC & LỊCH TRÌNH TÂN SINH VIÊN
+# ========================================================
+
+class HuongDanNhapHoc(models.Model):
+    ma_huong_dan = models.CharField(max_length=50, unique=True, verbose_name="Mã hướng dẫn (ID)")
+    chu_de = models.CharField(max_length=150, verbose_name="Chủ đề / Chuyên mục")
+    cau_hoi = models.TextField(verbose_name="Tiêu đề / Câu hỏi tình huống")
+    noi_dung = models.TextField(verbose_name="Nội dung giải đáp chi tiết")
+    tu_khoa = models.TextField(blank=True, verbose_name="Từ khóa tra cứu")
+    link_tai_lieu = models.CharField(max_length=300, blank=True, verbose_name="Link tài liệu / Website / Hotline")
+    thu_tu = models.PositiveIntegerField(default=0, verbose_name="Thứ tự hiển thị")
+    kich_hoat = models.BooleanField(default=True, verbose_name="Kích hoạt")
+
+    class Meta:
+        verbose_name = "Hướng dẫn nhập học tân SV"
+        verbose_name_plural = "11. Cẩm nang Hướng dẫn Nhập học Khóa mới"
+        ordering = ['thu_tu', 'id']
+
+    def __str__(self):
+        return f"[{self.chu_de}] {self.cau_hoi[:60]}"
+
+
+class LichTrinhTanSinhVien(models.Model):
+    LOAI_SU_KIEN_CHOICES = [
+        ('ke_khai', 'Kê khai trực tuyến'),
+        ('dong_hoc_phi', 'Nộp học phí tạm thu'),
+        ('nop_ho_so', 'Nộp hồ sơ trực tiếp'),
+        ('tuan_sinh_hoat', 'Tuần sinh hoạt công dân'),
+        ('kham_suc_khoe', 'Khám sức khỏe'),
+        ('khai_giang', 'Lễ Khai giảng'),
+        ('khac', 'Hoạt động khác'),
+    ]
+
+    tieu_de = models.CharField(max_length=200, verbose_name="Tên hoạt động / Mốc sự kiện")
+    thoi_gian = models.CharField(max_length=150, verbose_name="Thời gian diễn ra")
+    dia_diem = models.CharField(max_length=200, default="Trường ĐH Kinh tế - ĐH Đà Nẵng", verbose_name="Địa điểm")
+    doi_tuong = models.CharField(max_length=150, default="Tân sinh viên Khóa 52K", verbose_name="Đối tượng tham gia")
+    noi_dung = models.TextField(verbose_name="Nội dung chi tiết & Lưu ý")
+    loai_su_kien = models.CharField(max_length=30, choices=LOAI_SU_KIEN_CHOICES, default='khac', verbose_name="Phân loại sự kiện")
+    thu_tu = models.PositiveIntegerField(default=0, verbose_name="Thứ tự thời gian")
+    kich_hoat = models.BooleanField(default=True, verbose_name="Kích hoạt")
+
+    class Meta:
+        verbose_name = "Mốc lịch trình tân sinh viên"
+        verbose_name_plural = "12. Lịch trình sự kiện Tân sinh viên"
+        ordering = ['thu_tu', 'id']
+
+    def __str__(self):
+        return f"{self.tieu_de} ({self.thoi_gian})"
+

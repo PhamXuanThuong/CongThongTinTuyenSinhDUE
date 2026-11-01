@@ -356,9 +356,26 @@
 
       var typingId = appendTypingIndicator();
 
-      setTimeout(function () {
+      // Gọi API Backend Django AI Chatbot
+      fetch('/api/chatbot/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ question: query })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
         removeTypingIndicator(typingId);
-
+        if (data && data.status === 'success' && data.cau_tra_loi) {
+          appendMessage('assistant', data.cau_tra_loi);
+        } else {
+          appendMessage('assistant', knowledgeBase.default_answer);
+        }
+      })
+      .catch(function(err) {
+        removeTypingIndicator(typingId);
         var reply = knowledgeBase.default_answer;
         var lower = query.toLowerCase();
         if (lower.indexOf('phương thức') !== -1 || lower.indexOf('tổ hợp') !== -1 || lower.indexOf('xét tuyển') !== -1) {
@@ -368,9 +385,8 @@
         } else if (lower.indexOf('học phí') !== -1 || lower.indexOf('học bổng') !== -1 || lower.indexOf('tiền') !== -1) {
           reply = knowledgeBase.hoc_phi;
         }
-
         appendMessage('assistant', reply);
-      }, 600);
+      });
     }
 
     function appendMessage(sender, text) {

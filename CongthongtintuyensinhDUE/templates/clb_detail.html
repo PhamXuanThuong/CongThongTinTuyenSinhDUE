@@ -520,6 +520,82 @@
               </div>
             </div>
           {% endif %}
+
+          <!-- FORM ỨNG TUYỂN THÀNH VIÊN TRỰC TUYẾN -->
+          <div class="mt-8 pt-6 border-t border-slate-100">
+            <div class="p-6 rounded-3xl bg-gradient-to-br from-slate-50 to-orange-50/40 border border-orange-100 shadow-sm">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-2xl bg-[#fd761a] text-white flex items-center justify-center font-bold shadow-sm">
+                  <span class="material-symbols-outlined text-[22px]">edit_document</span>
+                </div>
+                <div>
+                  <h3 class="text-base sm:text-lg font-bold text-[#003366]">Đơn Đăng Ký Ứng Tuyển Online</h3>
+                  <p class="text-xs text-slate-500">Điền thông tin ứng tuyển vào {{ club.name }} - Gen mới 2026</p>
+                </div>
+              </div>
+
+              <form id="clb-apply-form" onsubmit="handleClbApplySubmit(event)" class="space-y-4">
+                <input type="hidden" id="clb_slug" value="{{ club.id }}">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Họ và tên <span class="text-red-500">*</span></label>
+                    <input type="text" id="clb_ho_ten" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:border-[#fd761a] focus:ring-1 focus:ring-[#fd761a] outline-none bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Số điện thoại <span class="text-red-500">*</span></label>
+                    <input type="tel" id="clb_sdt" required placeholder="0905 xxx xxx" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:border-[#fd761a] focus:ring-1 focus:ring-[#fd761a] outline-none bg-white">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Email <span class="text-red-500">*</span></label>
+                    <input type="email" id="clb_email" required placeholder="email@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:border-[#fd761a] focus:ring-1 focus:ring-[#fd761a] outline-none bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mã sinh viên / Khóa - Lớp (hoặc Trường THPT)</label>
+                    <input type="text" id="clb_khoa_lop" placeholder="VD: 51K15.2 hoặc THPT Phan Châu Trinh" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:border-[#fd761a] focus:ring-1 focus:ring-[#fd761a] outline-none bg-white">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ban nguyện vọng ứng tuyển</label>
+                    <select id="clb_ban" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm bg-white focus:border-[#fd761a] focus:ring-1 focus:ring-[#fd761a] outline-none">
+                      <option value="Thành viên chung">-- Chọn ban chuyên môn --</option>
+                      {% for dept in club.departments %}
+                        <option value="{{ dept.name }}">{{ dept.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Link Facebook cá nhân</label>
+                    <input type="url" id="clb_fb" placeholder="https://facebook.com/..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:border-[#fd761a] focus:ring-1 focus:ring-[#fd761a] outline-none bg-white">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Sở trường / Năng khiếu nổi bật</label>
+                  <input type="text" id="clb_so_truong" placeholder="VD: Thiết kế Canva/Photoshop, MC dẫn chương trình, Hậu cần, Nhảy, Đàn guitar..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:border-[#fd761a] focus:ring-1 focus:ring-[#fd761a] outline-none bg-white">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Lý do bạn muốn tham gia {{ club.name }}? <span class="text-red-500">*</span></label>
+                  <textarea id="clb_ly_do" rows="3" required placeholder="Chia sẻ đôi nét về mục tiêu và mong muốn gắn bó cùng CLB..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:border-[#fd761a] focus:ring-1 focus:ring-[#fd761a] outline-none bg-white"></textarea>
+                </div>
+
+                <div id="clb-apply-msg" class="hidden p-3.5 rounded-xl text-xs sm:text-sm font-semibold"></div>
+
+                <div class="flex items-center justify-end gap-3 pt-2">
+                  <button type="submit" id="clb-apply-btn" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-[#fd761a] hover:bg-[#e0610f] text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all">
+                    <span class="material-symbols-outlined text-[18px]">send</span>
+                    <span>Gửi Đơn Ứng Tuyển</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </section>
 
       </div>
@@ -658,5 +734,63 @@
   </div>
 
 </main>
+<script>
+function handleClbApplySubmit(e) {
+  e.preventDefault();
+  var btn = document.getElementById('clb-apply-btn');
+  var msg = document.getElementById('clb-apply-msg');
+  var slug = document.getElementById('clb_slug').value;
+  var hoTen = document.getElementById('clb_ho_ten').value.trim();
+  var sdt = document.getElementById('clb_sdt').value.trim();
+  var email = document.getElementById('clb_email').value.trim();
+  var khoaLop = document.getElementById('clb_khoa_lop').value.trim();
+  var ban = document.getElementById('clb_ban').value;
+  var fb = document.getElementById('clb_fb').value.trim();
+  var soTruong = document.getElementById('clb_so_truong').value.trim();
+  var lyDo = document.getElementById('clb_ly_do').value.trim();
+
+  btn.disabled = true;
+  btn.innerHTML = '<span>Đang gửi đơn...</span>';
+
+  fetch('/api/clb/dang-ky/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    body: JSON.stringify({
+      clb_slug: slug,
+      ho_ten: hoTen,
+      so_dien_thoai: sdt,
+      email: email,
+      khoa_lop: khoaLop,
+      ban_ung_tuyen: ban,
+      facebook_link: fb,
+      kinh_nghiem: soTruong,
+      ly_do_ung_tuyen: lyDo
+    })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">send</span><span>Gửi Đơn Ứng Tuyển</span>';
+    msg.className = 'p-3.5 rounded-xl text-xs sm:text-sm font-semibold border';
+    if (data.status === 'success') {
+      msg.classList.add('bg-emerald-50', 'text-emerald-800', 'border-emerald-200');
+      msg.textContent = data.message;
+      document.getElementById('clb-apply-form').reset();
+    } else {
+      msg.classList.add('bg-red-50', 'text-red-700', 'border-red-200');
+      msg.textContent = data.message || 'Đã có lỗi xảy ra. Vui lòng thử lại!';
+    }
+  })
+  .catch(function(err) {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">send</span><span>Gửi Đơn Ứng Tuyển</span>';
+    msg.className = 'p-3.5 rounded-xl text-xs sm:text-sm font-semibold border bg-red-50 text-red-700 border-red-200';
+    msg.textContent = 'Lỗi kết nối máy chủ. Vui lòng kiểm tra lại!';
+  });
+}
+</script>
 {% endblock %}
 

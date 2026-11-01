@@ -205,6 +205,15 @@ def api_khoa_detail(request, code):
 khoa = khoa_overview_view
 
 def load_clb_data():
+    """Tải danh sách CLB từ Database model CauLacBo, fallback sang clb.json nếu trống"""
+    try:
+        from tuyensinh.models import CauLacBo
+        db_clubs = list(CauLacBo.objects.filter(is_active=True).order_by('order', 'id'))
+        if db_clubs:
+            return [c.to_dict() for c in db_clubs]
+    except Exception:
+        pass
+
     clb_path = os.path.join(settings.BASE_DIR, 'data', 'clb.json')
     if os.path.exists(clb_path):
         with open(clb_path, 'r', encoding='utf-8') as f:

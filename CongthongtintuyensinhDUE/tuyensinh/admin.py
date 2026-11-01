@@ -206,3 +206,111 @@ class ChinhSachHocBongAdmin(admin.ModelAdmin):
     list_editable = ('order',)
     search_fields = ('title', 'summary')
 
+
+# ========================================================
+# ĐĂNG KÝ QUẢN TRỊ CLB, HƯỚNG NGHIỆP, NHẬP HỌC & LỊCH TRÌNH
+# ========================================================
+
+from .models import CauLacBo, DangKyCLB, HoSoHuongNghiep, HuongDanNhapHoc, LichTrinhTanSinhVien
+
+class DangKyCLBInline(admin.TabularInline):
+    model = DangKyCLB
+    extra = 0
+    fields = ('ho_ten', 'so_dien_thoai', 'email', 'ban_ung_tuyen', 'trang_thai', 'ngay_nop')
+    readonly_fields = ('ho_ten', 'so_dien_thoai', 'email', 'ban_ung_tuyen', 'ngay_nop')
+    can_delete = False
+
+@admin.register(CauLacBo)
+class CauLacBoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'level', 'faculty_id', 'followers', 'order', 'is_active')
+    list_filter = ('category', 'level', 'is_active')
+    search_fields = ('name', 'slug', 'description', 'slogan')
+    prepopulated_fields = {'slug': ('name',)}
+    list_editable = ('order', 'is_active')
+    inlines = [DangKyCLBInline]
+
+def export_dang_ky_clb_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
+    response['Content-Disposition'] = 'attachment; filename="danh_sach_ung_tuyen_clb.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'CLB', 'Họ tên', 'MSSV', 'Khóa/Lớp', 'SĐT', 'Email', 'Ban nguyện vọng', 'Lý do', 'Trạng thái', 'Ngày nộp'])
+    for obj in queryset:
+        writer.writerow([
+            obj.id, obj.clb.name, obj.ho_ten, obj.ma_sinh_vien, obj.khoa_lop,
+            obj.so_dien_thoai, obj.email, obj.ban_ung_tuyen, obj.ly_do_ung_tuyen,
+            obj.get_trang_thai_display(), obj.ngay_nop.strftime('%d/%m/%Y %H:%M')
+        ])
+    return response
+export_dang_ky_clb_csv.short_description = "Xuất danh sách ứng viên CLB ra file CSV"
+
+@admin.register(DangKyCLB)
+class DangKyCLBAdmin(admin.ModelAdmin):
+    list_display = ('ho_ten', 'clb_name', 'ban_ung_tuyen', 'so_dien_thoai', 'email', 'trang_thai_badge', 'ngay_nop')
+    list_filter = ('trang_thai', 'clb', 'ngay_nop')
+    search_fields = ('ho_ten', 'so_dien_thoai', 'email', 'ma_sinh_vien', 'clb__name')
+    date_hierarchy = 'ngay_nop'
+    actions = [export_dang_ky_clb_csv]
+    readonly_fields = ('ngay_nop',)
+
+    def clb_name(self, obj):
+        return obj.clb.name
+    clb_name.short_description = "CLB ứng tuyển"
+
+    def trang_thai_badge(self, obj):
+        colors = {
+            'cho_duyet': '#ea580c',
+            'moi_phong_van': '#0284c7',
+            'trung_tuyen': '#16a34a',
+            'khong_dat': '#dc2626',
+        }
+        color = colors.get(obj.trang_thai, '#64748b')
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 3px 10px; border-radius: 12px; font-weight: 600; font-size: 11px;">{}</span>',
+            color, obj.get_trang_thai_display()
+        )
+    trang_thai_badge.short_description = "Trạng thái"
+
+def export_huong_nghiep_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
+    response['Content-Disposition'] = 'attachment; filename="danh_sach_trac_nghiem_holland.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Họ tên', 'Giới tính', 'SĐT', 'Email', 'Trường THPT', 'Tỉnh/TP', 'Mã Holland', 'R', 'I', 'A', 'S', 'E', 'C', 'Ngành đề xuất', 'Ngày tạo'])
+    for obj in queryset:
+        writer.writerow([
+            obj.id, obj.ho_ten, obj.gioi_tinh, obj.so_dien_thoai, obj.email,
+            obj.truong_thpt, obj.tinh_thanh, obj.ma_holland,
+            obj.diem_r, obj.diem_i, obj.diem_a, obj.diem_s, obj.diem_e, obj.diem_c,
+            obj.nganh_de_xuat, obj.ngay_tao.strftime('%d/%m/%Y %H:%M')
+        ])
+    return response
+export_huong_nghiep_csv.short_description = "Xuất kết quả Holland ra file CSV"
+
+@admin.register(HoSoHuongNghiep)
+class HoSoHuongNghiepAdmin(admin.ModelAdmin):
+    list_display = ('ho_ten', 'so_dien_thoai', 'email', 'truong_thpt', 'tinh_thanh', 'ma_holland', 'da_lien_he', 'ngay_tao')
+    list_filter = ('da_lien_he', 'ma_holland', 'tinh_thanh', 'gioi_tinh')
+    search_fields = ('ho_ten', 'so_dien_thoai', 'email', 'truong_thpt', 'ma_holland')
+    list_editable = ('da_lien_he',)
+    date_hierarchy = 'ngay_tao'
+    actions = [export_huong_nghiep_csv]
+    readonly_fields = ('ngay_tao',)
+
+@admin.register(HuongDanNhapHoc)
+class HuongDanNhapHocAdmin(admin.ModelAdmin):
+    list_display = ('ma_huong_dan', 'chu_de', 'cau_hoi_rut_gon', 'thu_tu', 'kich_hoat')
+    list_filter = ('chu_de', 'kich_hoat')
+    search_fields = ('ma_huong_dan', 'chu_de', 'cau_hoi', 'noi_dung', 'tu_khoa')
+    list_editable = ('thu_tu', 'kich_hoat')
+
+    def cau_hoi_rut_gon(self, obj):
+        return obj.cau_hoi[:80] + ('...' if len(obj.cau_hoi) > 80 else '')
+    cau_hoi_rut_gon.short_description = "Nội dung câu hỏi / Hướng dẫn"
+
+@admin.register(LichTrinhTanSinhVien)
+class LichTrinhTanSinhVienAdmin(admin.ModelAdmin):
+    list_display = ('tieu_de', 'thoi_gian', 'dia_diem', 'loai_su_kien', 'thu_tu', 'kich_hoat')
+    list_filter = ('loai_su_kien', 'kich_hoat')
+    search_fields = ('tieu_de', 'thoi_gian', 'noi_dung', 'dia_diem')
+    list_editable = ('thu_tu', 'kich_hoat')
+
+
