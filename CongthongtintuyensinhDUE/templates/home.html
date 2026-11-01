@@ -154,24 +154,176 @@
             <input class="w-full pl-10 pr-4 py-2 bg-surface-container-low text-on-surface rounded-full font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" placeholder="Tìm kiếm..." type="text">
             <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
           </div>
-          <a class="flex items-center gap-space-xs px-4 py-2 rounded-full bg-surface-container-high hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors" data-path="login" href="#">
-            <span class="material-symbols-outlined text-[18px]">login</span>
-            <span>Đăng nhập</span>
-          </a>
-          <a href="#" class="w-10 h-10 rounded-full bg-[#f0f4f9] hover:bg-[#e4ebf5] border border-slate-200/80 flex items-center justify-center transition-all shadow-sm" title="Tài khoản cá nhân">
-            <svg class="w-[26px] h-[26px] text-[#505763]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="9.5"></circle>
-              <circle cx="12" cy="9.5" r="3.2"></circle>
-              <path d="M6.5 17.6a6.6 6.6 0 0 1 11 0"></path>
-            </svg>
-          </a>
+                    {% if user.is_authenticated %}
+          <div class="relative group">
+            <button class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-container text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-primary transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[18px]">account_circle</span>
+              <span>{{ user.first_name|default:user.username }}</span>
+              <span class="material-symbols-outlined text-[16px]">expand_more</span>
+            </button>
+            <div class="absolute right-0 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 min-w-[200px]">
+              <div class="bg-white rounded-2xl shadow-xl border border-slate-200 py-2 overflow-hidden">
+                <div class="px-4 py-2 border-b border-slate-100 text-[11px] text-slate-500">
+                  Đăng nhập: <strong class="text-slate-800">{{ user.username }}</strong>
+                </div>
+                {% if user.is_staff %}
+                <a href="/admin/" class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors font-semibold">
+                  <span class="material-symbols-outlined text-[18px] text-blue-600">dashboard</span>
+                  <span>Trang quản trị Admin</span>
+                </a>
+                {% endif %}
+                <a href="{% url 'tuyensinh:dang_xuat' %}" class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-red-600 hover:bg-red-50 transition-colors font-semibold">
+                  <span class="material-symbols-outlined text-[18px]">logout</span>
+                  <span>Đăng xuất</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <!-- Authentication & Login Popover Dropdown -->
+          <div class="relative" id="dueLoginContainer">
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <button type="button" onclick="toggleDueLoginPopover(event)" class="text-[#0056b3] hover:text-[#003d82] text-xs sm:text-sm font-semibold transition-colors cursor-pointer py-1 px-1">
+                Đăng nhập
+              </button>
+              <button type="button" onclick="toggleDueLoginPopover(event)" id="dueAvatarBtn" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-300 flex items-center justify-center transition-all shadow-sm cursor-pointer relative" title="Đăng nhập tài khoản">
+                <svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-5.5-2.2c.3-1.6 1.8-2.8 3.5-2.8h4c1.7 0 3.2 1.2 3.5 2.8A8 8 0 0 1 12 20z"></path>
+                  <circle cx="12" cy="9" r="3.2"></circle>
+                </svg>
+              </button>
+            </div>
+
+            <!-- THE EXACT POPOVER CARD AS IN SCREENSHOT -->
+            <div id="dueLoginPopover" class="hidden absolute right-0 top-full mt-2 w-[285px] sm:w-[310px] max-w-[calc(100vw-24px)] bg-white rounded-md shadow-[0_10px_25px_-5px_rgba(0,0,0,0.25),0_8px_10px_-6px_rgba(0,0,0,0.15)] border border-slate-200 z-[120] text-slate-800 transition-all select-none">
+              
+              <!-- Upward Caret Pointer pointing directly up to the avatar -->
+              <div class="absolute -top-[7px] right-[13px] sm:right-[15px] w-3.5 h-3.5 bg-white border-t border-l border-slate-200 transform rotate-45 z-20"></div>
+
+              <div class="relative z-10 pt-4 px-4 pb-0">
+                <!-- Feedback Alert inside Popover -->
+                <div id="popoverAlert" class="hidden mb-3 p-2 rounded text-xs leading-normal"></div>
+
+                <form id="dueLoginForm" onsubmit="handleDueLoginSubmit(event)">
+                  <!-- Tên đăng nhập -->
+                  <div class="relative mb-3">
+                    <input type="text" id="p_username" name="username" placeholder="Tên đăng nhập" required autocomplete="username"
+                           class="w-full px-3 py-2 pr-9 text-xs sm:text-sm text-slate-800 bg-white border border-[#ced4da] rounded focus:outline-none focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3] placeholder:text-slate-400 transition-colors">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-slate-400">
+                      <!-- User silhouette icon like the screenshot -->
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </div>
+
+                  <!-- Mật khẩu -->
+                  <div class="relative mb-3">
+                    <input type="password" id="p_password" name="password" placeholder="Mật khẩu" required autocomplete="current-password"
+                           class="w-full px-3 py-2 pr-9 text-xs sm:text-sm text-slate-800 bg-white border border-[#ced4da] rounded focus:outline-none focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3] placeholder:text-slate-400 transition-colors">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-slate-400">
+                      <!-- Lock icon like the screenshot -->
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </div>
+
+                  <!-- Ghi nhớ tài khoản -->
+                  <div class="flex items-center mb-3">
+                    <input id="p_remember" name="remember" type="checkbox" class="w-4 h-4 text-[#0056b3] border-slate-300 rounded focus:ring-[#0056b3] cursor-pointer">
+                    <label for="p_remember" class="ml-2 text-xs text-slate-700 cursor-pointer select-none">Ghi nhớ tài khoản</label>
+                  </div>
+
+                  <!-- Demo accounts shortcut -->
+                  <div class="flex items-center justify-between text-[11px] text-slate-500 mb-3 bg-[#f8f9fa] px-2 py-1 rounded border border-slate-200/70">
+                    <span class="text-slate-400">Tài khoản mẫu:</span>
+                    <div class="space-x-1 font-medium">
+                      <button type="button" onclick="quickFillCreds('thisinh2026','thisinh123')" class="text-[#0056b3] hover:underline cursor-pointer">Thí sinh</button>
+                      <span class="text-slate-300">|</span>
+                      <button type="button" onclick="quickFillCreds('canbo','canbo123')" class="text-[#0056b3] hover:underline cursor-pointer">Cán bộ</button>
+                      <span class="text-slate-300">|</span>
+                      <button type="button" onclick="quickFillCreds('admin','admin123')" class="text-[#0056b3] hover:underline cursor-pointer">Admin</button>
+                    </div>
+                  </div>
+
+                  <!-- LOGIN button (solid blue like screenshot) -->
+                  <button type="submit" id="p_submit_btn" class="w-full py-2 px-4 bg-[#0056b3] hover:bg-[#004494] active:bg-[#003366] text-white font-bold text-sm rounded shadow-sm transition-colors cursor-pointer text-center">
+                    Đăng nhập
+                  </button>
+                </form>
+              </div>
+
+              <!-- Quên mật khẩu footer section (exact as screenshot) -->
+              <div class="bg-[#f8f9fa] px-4 py-2.5 border-t border-slate-200 mt-3 rounded-b-md text-left">
+                <a href="javascript:void(0)" onclick="alert('Quý thí sinh hoặc cán bộ vui lòng liên hệ Ban Đào tạo & Tuyển sinh DUE qua Hotline (0236) 3836 169 để được hỗ trợ cấp lại mật khẩu.')" class="text-xs text-[#0056b3] hover:underline font-normal">
+                  Quên mật khẩu?
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <!-- Nút Hamburger Menu Mobile -->
+          <button id="mobileMenuOpenBtn" class="lg:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors flex items-center justify-center cursor-pointer ml-1" aria-label="Mở menu tuyển sinh">
+            <span class="material-symbols-outlined text-[24px]">menu</span>
+          </button>
         </div>
       </div>
-      <div class="h-12 flex items-center justify-between overflow-x-auto">
-        <nav class="flex items-center gap-space-lg h-full" data-active-classes="text-secondary-container font-headline-sm border-b-2 border-secondary-container">
+      <div class="hidden lg:flex h-12 items-center justify-between overflow-visible">
+        <nav class="flex items-center gap-4 xl:gap-space-lg h-full" data-active-classes="text-secondary-container font-headline-sm border-b-2 border-secondary-container">
           <a class="h-full flex items-center font-label-lg text-label-lg text-secondary-container border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold" data-path="trang-chu" href="#">TRANG CHỦ</a>
-          <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="gioi-thieu" href="#">GIỚI THIỆU</a>
-          <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="thong-tin-tuyen-sinh" href="#">THÔNG TIN TUYỂN SINH</a>
+          
+          <!-- Dropdown Giới thiệu -->
+          <div class="relative group h-full flex items-center">
+            <a class="h-full flex items-center gap-1 font-label-lg text-label-lg text-on-surface-variant group-hover:text-primary-container transition-colors uppercase whitespace-nowrap cursor-pointer" data-path="gioi-thieu" href="/lich-su-phat-trien/">
+              <span>GIỚI THIỆU</span>
+              <span class="material-symbols-outlined text-[18px] transition-transform duration-200 group-hover:rotate-180">expand_more</span>
+            </a>
+            
+            <!-- Menu thả xuống -->
+            <div class="absolute left-0 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 min-w-[220px]">
+              <div class="bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/30 py-2 overflow-hidden backdrop-blur-xl">
+                <a class="group/item flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-high hover:text-primary-container transition-colors" href="/lich-su-phat-trien/">
+                  <span class="w-2 h-2 rounded-full bg-slate-400 group-hover/item:bg-secondary-container shrink-0 transition-colors"></span>
+                  <span>Lịch sử phát triển</span>
+                </a>
+                <a class="group/item flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-high hover:text-primary-container transition-colors" href="/su-mang-tam-nhin/">
+                  <span class="w-2 h-2 rounded-full bg-slate-400 group-hover/item:bg-secondary-container shrink-0 transition-colors"></span>
+                  <span>Sứ mạng, tầm nhìn</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dropdown Thông tin tuyển sinh -->
+          <div class="relative group h-full flex items-center">
+            <a class="h-full flex items-center gap-1 font-label-lg text-label-lg text-on-surface-variant group-hover:text-primary-container transition-colors uppercase whitespace-nowrap cursor-pointer" data-path="thong-tin-tuyen-sinh" href="#tin-tuc">
+              <span>THÔNG TIN TUYỂN SINH</span>
+              <span class="material-symbols-outlined text-[18px] transition-transform duration-200 group-hover:rotate-180">expand_more</span>
+            </a>
+            
+            <!-- Menu thả xuống -->
+            <div class="absolute left-0 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 min-w-[240px]">
+              <div class="bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/30 py-2 overflow-hidden backdrop-blur-xl">
+                <a class="group/item flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-high hover:text-primary-container transition-colors" href="/phuong-thuc-xet-tuyen/">
+                  <span class="w-2 h-2 rounded-full bg-slate-400 group-hover/item:bg-secondary-container shrink-0 transition-colors"></span>
+                  <span>Phương thức xét tuyển</span>
+                </a>
+                <a class="group/item flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-high hover:text-primary-container transition-colors" href="/diem-chuan-cac-nam/">
+                  <span class="w-2 h-2 rounded-full bg-slate-400 group-hover/item:bg-secondary-container shrink-0 transition-colors"></span>
+                  <span>Điểm chuẩn các năm</span>
+                </a>
+                <a class="group/item flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-high hover:text-primary-container transition-colors" href="/chi-tieu-tuyen-sinh/">
+                  <span class="w-2 h-2 rounded-full bg-slate-400 group-hover/item:bg-secondary-container shrink-0 transition-colors"></span>
+                  <span>Chỉ tiêu tuyển sinh</span>
+                </a>
+                <a class="group/item flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-high hover:text-primary-container transition-colors" href="/loai-hinh-dao-tao/">
+                  <span class="w-2 h-2 rounded-full bg-slate-400 group-hover/item:bg-secondary-container shrink-0 transition-colors"></span>
+                  <span>Loại hình đào tạo</span>
+                </a>
+              </div>
+            </div>
+          </div>
           <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="khoa" href="#">KHOA</a>
           <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="danh-cho-sinh-vien" href="#">DÀNH CHO SINH VIÊN</a>
           <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="tu-van-chon-nganh" href="#">TƯ VẤN CHỌN NGÀNH</a>
@@ -181,7 +333,7 @@
   </header>
 
   <!-- Main Content -->
-  <main class="w-full pt-32 sm:pt-36 bg-surface min-h-[calc(100vh-28rem)]">
+  <main class="w-full pt-24 lg:pt-36 bg-surface min-h-[calc(100vh-28rem)]">
     <div class="flex flex-col w-full">
       <!-- Top Ambient Glows -->
       <div class="relative w-full overflow-hidden">
@@ -273,12 +425,130 @@
                     <span class="material-symbols-outlined text-[24px]">school</span>
                   </div>
                   <div>
-                    <p class="font-label-md text-xs font-bold text-on-surface">Mã trường: <span class="text-secondary-container font-extrabold">DDK</span></p>
+                    <p class="font-label-md text-xs font-bold text-on-surface">Mã trường: <span class="text-secondary-container font-extrabold">DDQ</span></p>
                     <p class="text-[11px] text-on-surface-variant">Chỉ tiêu 2026: 4.600 sinh viên</p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <!-- 2. PHƯƠNG THỨC XÉT TUYỂN 2026 (DỰ KIẾN) -->
+        <section id="phuong-thuc-xet-tuyen" class="max-w-7xl mx-auto px-6 lg:px-12 py-16 border-t border-outline-variant/30">
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-secondary-fixed/60 text-secondary-container text-xs font-bold uppercase tracking-wider mb-2">
+                <span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+                Đề án tuyển sinh 2026
+              </div>
+              <h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">04 Phương Thức Xét Tuyển Năm 2026</h2>
+              <p class="font-body-md text-on-surface-variant max-w-2xl mt-2 text-sm sm:text-base">
+                Áp dụng cho 04 loại hình đào tạo: Cử nhân tài năng (DUE-Elite), Toàn phần tiếng Anh (DUE-Global), Bán phần tiếng Anh (DUE-Professional) và Tiêu chuẩn (DUE-Standard).
+              </p>
+            </div>
+            <a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-container hover:bg-primary text-white text-sm font-semibold shadow-md transition-all shrink-0" href="/phuong-thuc-xet-tuyen/">
+              <span>Xem chi tiết quy chế &amp; Bảng 1</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- PT1 -->
+            <a href="/phuong-thuc-xet-tuyen/#pt1" class="group relative bg-surface-container-lowest rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-200/70 flex flex-col justify-between hover:-translate-y-1 cursor-pointer block text-left">
+              <div class="absolute top-0 left-0 right-0 h-2 bg-blue-600 rounded-t-3xl"></div>
+              <div>
+                <div class="flex items-center justify-between mb-4 mt-1">
+                  <span class="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold">PT 1</span>
+                  <span class="w-10 h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined">workspace_premium</span>
+                  </span>
+                </div>
+                <h3 class="text-base font-bold text-on-surface mb-2 group-hover:text-primary-container transition-colors">Xét tuyển thẳng</h3>
+                <p class="text-xs text-on-surface-variant leading-relaxed mb-4">
+                  Thí sinh đạt giải học sinh giỏi quốc gia, quốc tế THPT và các diện ưu tiên xét tuyển thẳng theo quy chế Bộ GD&ĐT.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-xs font-semibold text-blue-700">
+                  <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                  <span>Áp dụng cả 4 loại hình</span>
+                </div>
+                <span class="material-symbols-outlined text-blue-600 text-[18px] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all">arrow_forward</span>
+              </div>
+            </a>
+
+            <!-- PT2 -->
+            <a href="/phuong-thuc-xet-tuyen/#pt2" class="group relative bg-surface-container-lowest rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-emerald-200/70 flex flex-col justify-between hover:-translate-y-1 cursor-pointer block text-left">
+              <div class="absolute top-0 left-0 right-0 h-2 bg-emerald-600 rounded-t-3xl"></div>
+              <div>
+                <div class="flex items-center justify-between mb-4 mt-1">
+                  <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">PT 2</span>
+                  <span class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined">translate</span>
+                  </span>
+                </div>
+                <h3 class="text-base font-bold text-on-surface mb-2 group-hover:text-emerald-700 transition-colors">Tiếng Anh &amp; Học bạ THPT</h3>
+                <p class="text-xs text-on-surface-variant leading-relaxed mb-4">
+                  Xét kết hợp năng lực tiếng Anh (IELTS, TOEFL, Bậc 3-4 VSTEP, giải HSG) và điểm học bạ 3 năm THPT (3 môn tổ hợp).
+                </p>
+              </div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                  <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                  <span>Toàn phần &amp; Bán phần Tiếng Anh</span>
+                </div>
+                <span class="material-symbols-outlined text-emerald-600 text-[18px] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all">arrow_forward</span>
+              </div>
+            </a>
+
+            <!-- PT3 -->
+            <a href="/phuong-thuc-xet-tuyen/#pt3" class="group relative bg-surface-container-lowest rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-orange-200/70 flex flex-col justify-between hover:-translate-y-1 cursor-pointer block text-left">
+              <div class="absolute top-0 left-0 right-0 h-2 bg-orange-500 rounded-t-3xl"></div>
+              <div>
+                <div class="flex items-center justify-between mb-4 mt-1">
+                  <span class="inline-block px-3 py-1 rounded-full bg-orange-100 text-orange-800 text-xs font-bold">PT 3</span>
+                  <span class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-700 flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined">menu_book</span>
+                  </span>
+                </div>
+                <h3 class="text-base font-bold text-on-surface mb-2 group-hover:text-secondary-container transition-colors">Điểm thi TN THPT 2026</h3>
+                <p class="text-xs text-on-surface-variant leading-relaxed mb-4">
+                  Xét tuyển dựa trên kết quả thi tốt nghiệp THPT năm 2026 của 03 môn thuộc tổ hợp xét tuyển tương ứng.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-xs font-semibold text-secondary-container">
+                  <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                  <span>Chương trình Tiêu chuẩn</span>
+                </div>
+                <span class="material-symbols-outlined text-[#fd761a] text-[18px] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all">arrow_forward</span>
+              </div>
+            </a>
+
+            <!-- PT4 -->
+            <a href="/phuong-thuc-xet-tuyen/#pt4" class="group relative bg-surface-container-lowest rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-amber-200/70 flex flex-col justify-between hover:-translate-y-1 cursor-pointer block text-left">
+              <div class="absolute top-0 left-0 right-0 h-2 bg-amber-500 rounded-t-3xl"></div>
+              <div>
+                <div class="flex items-center justify-between mb-4 mt-1">
+                  <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">PT 4</span>
+                  <span class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined">psychology</span>
+                  </span>
+                </div>
+                <h3 class="text-base font-bold text-on-surface mb-2 group-hover:text-amber-700 transition-colors">ĐGNL ĐHQG-HCM 2026</h3>
+                <p class="text-xs text-on-surface-variant leading-relaxed mb-4">
+                  Xét tuyển dựa trên kết quả bài thi Đánh giá năng lực của ĐHQG TP. Hồ Chí Minh năm 2026 quy đổi sang thang 30.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-xs font-semibold text-amber-700">
+                  <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                  <span>Chương trình Tiêu chuẩn</span>
+                </div>
+                <span class="material-symbols-outlined text-amber-600 text-[18px] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all">arrow_forward</span>
+              </div>
+            </a>
           </div>
         </section>
 
@@ -294,24 +564,28 @@
               <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
             </a>
           </div>
-          <!-- 3 Articles Grid -->
+          <!-- Articles Grid (Dynamic from Database) -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Post 1 -->
+            {% for item in tin_tuc_list %}
             <article class="group flex flex-col bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
               <div class="aspect-video w-full overflow-hidden bg-surface-container">
-                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Conference hall packed with high school students attending University of Economics Danang admission open day seminar, university banner and keynote speaker on stage, modern collegiate auditorium, professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzXb9zH72OHWTf2IbP2BsKvFX4YjyDASjrp5nhInnps1X57MLZ5tYoHQnwQoVLPv1nUKRcYHrlJ8LOY3oY2kE9nhxOiUYgsbgUROkrOQMCOVRzcmcTC-2jprQR71UbXLZALEVYHnFDXCpMA88ALgTLrrExQ3wiQ57ZsXZZhFupkkdyIzm6agAGl3xEq8Z-4Bm2cjBknQkeG6hkDuwXzU6VlQQUHLqQsRwcxmroZlpZ">
+                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                     src="{{ item.hinh_anh }}" 
+                     alt="{{ item.tieu_de }}">
               </div>
               <div class="p-6 flex flex-col flex-1 justify-between">
                 <div>
                   <div class="flex items-center justify-between mb-3">
-                    <span class="px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">Tuyển sinh</span>
-                    <span class="font-body-sm text-body-sm text-outline">15/02/2026</span>
+                    <span class="px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">
+                      {{ item.get_the_loai_display }}
+                    </span>
+                    <span class="font-body-sm text-body-sm text-outline">{{ item.ngay_dang|date:"d/m/Y" }}</span>
                   </div>
-                  <h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary-container transition-colors mb-2 leading-snug">
-                    Thông báo đề án tuyển sinh Đại học chính quy năm 2026 chính thức
+                  <h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary-container transition-colors mb-2 leading-snug line-clamp-2">
+                    {{ item.tieu_de }}
                   </h3>
                   <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">
-                    Năm 2026, Trường Đại học Kinh tế giữ ổn định 4 phương thức xét tuyển và mở thêm ngành Kinh tế số liên ngành thích ứng chuẩn nhân lực 4.0.
+                    {{ item.tom_tat }}
                   </p>
                 </div>
                 <a class="font-label-md text-label-md text-primary-container group-hover:text-secondary-container flex items-center gap-1.5 transition-colors" href="#">
@@ -320,56 +594,9 @@
                 </a>
               </div>
             </article>
-
-            <!-- Post 2 -->
-            <article class="group flex flex-col bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-              <div class="aspect-video w-full overflow-hidden bg-surface-container">
-                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Tech-savvy university students and mentors working in innovation fintech lab, multiple computer screens showing stock trading algorithms, collaborative workshop atmosphere at Danang University of Economics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC_9_nZEiYQFTEVi4j1Euk7pjYY2R0FZf4RCSacCOK1jsCxMjMRKgLJSHksCx_bsVYGN9_2EmKgCLEy8oIO2xTm4CbdovXLs3-faqfHwoNkZq6J9hQYlLUiEpyPc_-bYb1q5gqZlOwgLyVIBemZ8G2dHrKGXtcKm2YjQwK9c763aT83ikT3OW3j902xrE24mslmXbnLMmA7obCVuBSIuak8iamrNz_fztfwqmz0LhL">
-              </div>
-              <div class="p-6 flex flex-col flex-1 justify-between">
-                <div>
-                  <div class="flex items-center justify-between mb-3">
-                    <span class="px-2.5 py-1 rounded-full bg-surface-container-high text-primary-container font-label-sm text-label-sm font-semibold">Workshop</span>
-                    <span class="font-body-sm text-body-sm text-outline">10/02/2026</span>
-                  </div>
-                  <h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary-container transition-colors mb-2 leading-snug">
-                    DUE Open Day 2026: Một ngày làm sinh viên Kinh tế Đà Nẵng
-                  </h3>
-                  <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">
-                    Trải nghiệm giảng đường thông minh, thư viện mở và gặp gỡ các giáo sư hàng đầu trong chuỗi ngày hội trải nghiệm ngành nghề thực tế.
-                  </p>
-                </div>
-                <a class="font-label-md text-label-md text-primary-container group-hover:text-secondary-container flex items-center gap-1.5 transition-colors" href="#">
-                  <span>Đăng ký tham dự</span>
-                  <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                </a>
-              </div>
-            </article>
-
-            <!-- Post 3 -->
-            <article class="group flex flex-col bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-              <div class="aspect-video w-full overflow-hidden bg-surface-container">
-                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Happy university student receiving prestigious academic merit scholarship award certificate on modern graduation stage, smiling professors in academic regalia, ceremonial corporate backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg6lFdAKNFI0j41O-TQJ5e277aXB0ufSjs40BAXYLqhaKf3WtmM8WOzLEthZgWHSmUvqoixQZcpONZ33YKyAeoOzHwdseHA5yJkgE8SkmnhnJWVTSLYOEFcbSeGczZBLVSS9CKTygI-77ZGm8xH50syWpqMNRx7ADDZmHpQvkVbtYDNGCyLcAb6Dk5YlwFdsQd6gMewxTMFoIk-bx1VcHrsGlu0KTma1gxAFE6bzbn">
-              </div>
-              <div class="p-6 flex flex-col flex-1 justify-between">
-                <div>
-                  <div class="flex items-center justify-between mb-3">
-                    <span class="px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">Học bổng</span>
-                    <span class="font-body-sm text-body-sm text-outline">02/02/2026</span>
-                  </div>
-                  <h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary-container transition-colors mb-2 leading-snug">
-                    Quỹ học bổng Tài năng Trẻ 15 Tỷ Đồng dành riêng cho Khóa 50K
-                  </h3>
-                  <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">
-                    Hỗ trợ 100% học phí toàn khóa cùng sinh hoạt phí hàng tháng dành cho thủ khoa, học sinh giỏi quốc gia và thí sinh sở hữu chứng chỉ quốc tế.
-                  </p>
-                </div>
-                <a class="font-label-md text-label-md text-primary-container group-hover:text-secondary-container flex items-center gap-1.5 transition-colors" href="#">
-                  <span>Xem điều kiện xét</span>
-                  <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                </a>
-              </div>
-            </article>
+            {% empty %}
+            <p class="text-on-surface-variant col-span-3 text-center py-8">Hiện chưa có tin tức tuyển sinh mới.</p>
+            {% endfor %}
           </div>
         </section>
 
@@ -437,5 +664,319 @@
       </div>
     </div>
   </footer>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="mobileDrawerOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <!-- Mobile Navigation Drawer Panel -->
+  <aside id="mobileDrawerPanel" class="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-surface-container-lowest z-50 shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="p-5 flex flex-col h-full overflow-y-auto">
+      <!-- Header in Drawer -->
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
+          <span class="font-bold text-primary-container text-sm sm:text-base tracking-tight uppercase">Menu Tuyển Sinh DUE</span>
+        </div>
+        <button id="mobileMenuCloseBtn" class="p-1.5 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer" aria-label="Đóng menu">
+          <span class="material-symbols-outlined text-[24px]">close</span>
+        </button>
+      </div>
+
+      <!-- Mobile Search Input -->
+      <div class="mt-4 relative">
+        <input class="w-full pl-9 pr-4 py-2 bg-slate-100 text-slate-800 rounded-full text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-secondary-container" placeholder="Tìm kiếm ngành, điểm chuẩn..." type="text">
+        <span class="material-symbols-outlined absolute left-2.5 top-2.5 text-slate-400 text-[18px]">search</span>
+      </div>
+
+      <!-- Drawer Links -->
+      <nav class="mt-4 flex flex-col gap-1 text-sm font-semibold">
+        <a href="/" class="px-3 py-2.5 rounded-xl flex items-center gap-2.5 transition-colors text-secondary-container font-bold bg-orange-50/70 border-l-4 border-secondary-container">
+          <span class="material-symbols-outlined text-[20px] text-secondary-container">home</span>
+          <span>TRANG CHỦ</span>
+        </a>
+
+        <!-- Accordion: Giới thiệu -->
+        <div class="flex flex-col">
+          <button onclick="toggleMobileSubmenu('sub-gioi-thieu')" class="w-full px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center justify-between transition-colors cursor-pointer">
+            <span class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-[20px] text-blue-600">info</span>
+              <span>GIỚI THIỆU</span>
+            </span>
+            <span id="sub-gioi-thieu-icon" class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+          </button>
+          <div id="sub-gioi-thieu" class="hidden pl-6 pr-2 py-1 flex flex-col gap-1 text-xs sm:text-sm">
+            <a href="/lich-su-phat-trien/" class="py-2 px-3 rounded-lg flex items-center gap-2 transition-colors text-slate-700 hover:bg-slate-100 hover:text-primary-container">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary-container shrink-0"></span>
+              <span>Lịch sử phát triển</span>
+            </a>
+            <a href="/su-menh-tam-nhin/" class="py-2 px-3 rounded-lg flex items-center gap-2 transition-colors text-slate-700 hover:bg-slate-100 hover:text-primary-container">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary-container shrink-0"></span>
+              <span>Sứ mạng, tầm nhìn</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Accordion: Thông tin tuyển sinh -->
+        <div class="flex flex-col">
+          <button onclick="toggleMobileSubmenu('sub-tuyen-sinh')" class="w-full px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center justify-between transition-colors cursor-pointer">
+            <span class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-[20px] text-orange-500">campaign</span>
+              <span>THÔNG TIN TUYỂN SINH</span>
+            </span>
+            <span id="sub-tuyen-sinh-icon" class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+          </button>
+          <div id="sub-tuyen-sinh" class="hidden pl-6 pr-2 py-1 flex flex-col gap-1 text-xs sm:text-sm">
+            <a href="/phuong-thuc-xet-tuyen/" class="py-2 px-3 rounded-lg flex items-center gap-2 transition-colors text-slate-700 hover:bg-slate-100 hover:text-primary-container">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary-container shrink-0"></span>
+              <span>Phương thức xét tuyển</span>
+            </a>
+            <a href="/diem-chuan-cac-nam/" class="py-2 px-3 rounded-lg flex items-center gap-2 transition-colors text-slate-700 hover:bg-slate-100 hover:text-primary-container">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary-container shrink-0"></span>
+              <span>Điểm chuẩn các năm</span>
+            </a>
+            <a href="/chi-tieu-tuyen-sinh/" class="py-2 px-3 rounded-lg flex items-center gap-2 transition-colors text-slate-700 hover:bg-slate-100 hover:text-primary-container">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary-container shrink-0"></span>
+              <span>Chỉ tiêu tuyển sinh</span>
+            </a>
+            <a href="/loai-hinh-dao-tao/" class="py-2 px-3 rounded-lg flex items-center gap-2 transition-colors text-slate-700 hover:bg-slate-100 hover:text-primary-container">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary-container shrink-0"></span>
+              <span>Loại hình đào tạo</span>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" class="px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center gap-2.5 transition-colors">
+          <span class="material-symbols-outlined text-[20px] text-slate-500">domain</span>
+          <span>KHOA</span>
+        </a>
+        <a href="#" class="px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center gap-2.5 transition-colors">
+          <span class="material-symbols-outlined text-[20px] text-slate-500">school</span>
+          <span>DÀNH CHO SINH VIÊN</span>
+        </a>
+        <a href="#" class="px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center gap-2.5 transition-colors">
+          <span class="material-symbols-outlined text-[20px] text-secondary-container">support_agent</span>
+          <span>TƯ VẤN CHỌN NGÀNH</span>
+        </a>
+      </nav>
+
+      <!-- Bottom: Hotline & Login -->
+      <div class="mt-auto pt-6 border-t border-slate-100 flex flex-col gap-3">
+        <a href="tel:02363836169" class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-50 text-secondary-container font-bold text-xs sm:text-sm transition-colors">
+          <span class="material-symbols-outlined text-[18px]">call</span>
+          <span>Hotline: 0236 3836 169</span>
+        </a>
+        <button type="button" onclick="toggleDueLoginPopover(event)" id="mobileLoginBtn" data-mobile-login="1" class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#0056b3] hover:bg-[#004494] text-white font-bold text-xs sm:text-sm shadow-md transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">login</span>
+          <span>Đăng nhập hệ thống</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile Drawer Controller Script -->
+  <script>
+    (function() {
+      const openBtn = document.getElementById('mobileMenuOpenBtn');
+      const closeBtn = document.getElementById('mobileMenuCloseBtn');
+      const overlay = document.getElementById('mobileDrawerOverlay');
+      const panel = document.getElementById('mobileDrawerPanel');
+
+      function openDrawer() {
+        if (!overlay || !panel) return;
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        overlay.classList.add('opacity-100', 'pointer-events-auto');
+        panel.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        if (!overlay || !panel) return;
+        overlay.classList.remove('opacity-100', 'pointer-events-auto');
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        panel.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+      }
+
+      if (openBtn) openBtn.addEventListener('click', openDrawer);
+      if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+      if (overlay) overlay.addEventListener('click', closeDrawer);
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeDrawer();
+      });
+
+      window.toggleMobileSubmenu = function(id) {
+        const el = document.getElementById(id);
+        const icon = document.getElementById(id + '-icon');
+        if (el) {
+          el.classList.toggle('hidden');
+          if (icon) icon.classList.toggle('rotate-180');
+        }
+      };
+    })();
+  </script>
+<!-- Popover Dropdown Login Controller Script -->
+  <script>
+    function toggleDueLoginPopover(e) {
+      if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      const popover = document.getElementById('dueLoginPopover');
+      if (!popover) return;
+
+      const isHidden = popover.classList.contains('hidden');
+      if (isHidden) {
+        // If mobile drawer is open, close it cleanly
+        const drawerOverlay = document.getElementById('mobileDrawerOverlay');
+        const drawerPanel = document.getElementById('mobileDrawerPanel');
+        if (drawerOverlay && drawerPanel) {
+          drawerOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+          drawerOverlay.classList.add('opacity-0', 'pointer-events-none');
+          drawerPanel.classList.add('translate-x-full');
+        }
+
+        popover.classList.remove('hidden');
+        setTimeout(() => {
+          const u = document.getElementById('p_username');
+          if (u) u.focus();
+        }, 80);
+      } else {
+        popover.classList.add('hidden');
+      }
+    }
+
+    function closeDueLoginPopover() {
+      const popover = document.getElementById('dueLoginPopover');
+      if (popover) popover.classList.add('hidden');
+    }
+
+    window.openLoginModal = toggleDueLoginPopover;
+    window.closeLoginModal = closeDueLoginPopover;
+
+    function quickFillCreds(u, p) {
+      const userInp = document.getElementById('p_username');
+      const passInp = document.getElementById('p_password');
+      if (userInp && passInp) {
+        userInp.value = u;
+        passInp.value = p;
+      }
+    }
+
+    // Close on click outside
+    document.addEventListener('click', function(e) {
+      const popover = document.getElementById('dueLoginPopover');
+      if (!popover || popover.classList.contains('hidden')) return;
+
+      const container = document.getElementById('dueLoginContainer');
+      const mobileBtn = e.target.closest('#mobileLoginBtn') || e.target.closest('[data-mobile-login]');
+      if (container && !container.contains(e.target) && !mobileBtn) {
+        closeDueLoginPopover();
+      }
+    });
+
+    // Close on ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDueLoginPopover();
+    });
+
+    // Submit handler
+    function handleDueLoginSubmit(e) {
+      e.preventDefault();
+      const u = document.getElementById('p_username').value.trim();
+      const p = document.getElementById('p_password').value.trim();
+      const alertBox = document.getElementById('popoverAlert');
+      const submitBtn = document.getElementById('p_submit_btn');
+
+      if (!u || !p) {
+        alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-red-50 text-red-700 border border-red-200 block";
+        alertBox.textContent = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Đăng nhập";
+
+      const isDjango = window.location.pathname.startsWith('/lich-su') || 
+                       window.location.pathname.startsWith('/su-mang') ||
+                       window.location.pathname.startsWith('/su-menh') ||
+                       window.location.pathname.startsWith('/phuong-thuc') ||
+                       window.location.pathname.startsWith('/diem-chuan') ||
+                       window.location.pathname.startsWith('/chi-tieu') ||
+                       window.location.pathname.startsWith('/loai-hinh') ||
+                       window.location.pathname === '/' ||
+                       document.cookie.indexOf('csrftoken') !== -1;
+
+      if (isDjango) {
+        let csrfToken = '';
+        const cookieMatch = document.cookie.match(/csrftoken=([^;]+)/);
+        if (cookieMatch) csrfToken = cookieMatch[1];
+
+        const formData = new FormData();
+        formData.append('username', u);
+        formData.append('password', p);
+        formData.append('is_ajax', '1');
+
+        fetch('/dang-nhap/', {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrfToken
+          },
+          body: formData
+        })
+        .then(res => res.json().then(data => ({ status: res.status, ok: res.ok, body: data })))
+        .then(({ status, ok, body }) => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Đăng nhập";
+          if (ok && body.status === 'success') {
+            alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-green-50 text-green-700 border border-green-200 block";
+            alertBox.textContent = body.message || "Đăng nhập thành công!";
+            setTimeout(() => {
+              if (body.redirect_url) {
+                window.location.href = body.redirect_url;
+              } else {
+                window.location.reload();
+              }
+            }, 600);
+          } else {
+            alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-red-50 text-red-700 border border-red-200 block";
+            alertBox.textContent = body.message || "Tên đăng nhập hoặc mật khẩu không chính xác.";
+          }
+        })
+        .catch(err => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Đăng nhập";
+          alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-red-50 text-red-700 border border-red-200 block";
+          alertBox.textContent = "Đã xảy ra lỗi kết nối. Vui lòng thử lại!";
+        });
+      } else {
+        // Static HTML mock
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Đăng nhập";
+          if ((u === 'thisinh2026' && p === 'thisinh123') || (u === 'admin' && p === 'admin123') || (u === 'canbo' && p === 'canbo123')) {
+            alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-green-50 text-green-700 border border-green-200 block";
+            const roleName = u === 'admin' ? 'Quản trị viên' : (u === 'canbo' ? 'Cán bộ Tuyển sinh' : 'Nguyễn Văn');
+            alertBox.textContent = "Đăng nhập thành công! Xin chào " + roleName + ".";
+            setTimeout(() => {
+              closeDueLoginPopover();
+              const container = document.getElementById('dueLoginContainer');
+              if (container) {
+                container.innerHTML = '<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00274e] text-white text-xs font-bold shadow-sm">' +
+                  '<span class="material-symbols-outlined text-[18px]">account_circle</span>' +
+                  '<span>' + roleName + '</span>' +
+                  '</div>';
+              }
+            }, 800);
+          } else {
+            alertBox.className = "mb-3 p-2 rounded text-xs leading-normal bg-red-50 text-red-700 border border-red-200 block";
+            alertBox.textContent = "Tên đăng nhập hoặc mật khẩu không đúng! Hãy bấm Thí sinh, Cán bộ hoặc Admin để thử mẫu.";
+          }
+        }, 300);
+      }
+    }
+  </script>
+
 </body>
 </html>
