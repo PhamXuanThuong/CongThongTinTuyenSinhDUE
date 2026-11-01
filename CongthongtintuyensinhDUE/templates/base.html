@@ -111,6 +111,25 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+        /* Nút chấm tròn (Bullet dot) dùng chung cho tất cả Dropdown menu: Bình thường xám, rơ chuột vào cam */
+    .due-nav-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #94a3b8; /* Bình thường màu xám */
+      display: inline-block;
+      flex-shrink: 0;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .due-dropdown-link:hover .due-nav-bullet,
+    .nav-khoa-item:hover .due-nav-bullet,
+    .dcsv-item:hover .due-nav-bullet,
+    a:hover > .due-nav-bullet,
+    button:hover > .due-nav-bullet {
+      background-color: #fd761a !important; /* Khi rơ chuột vào là màu cam */
+      transform: scale(1.25);
+    }
+
     /* Style cho Dropdown KHOA */
     .nav-khoa-panel {
       position: fixed;
@@ -472,7 +491,7 @@
     </div>
   </header>
 
-    <!-- Dropdown panel for GIỚI THIỆU -->
+      <!-- Dropdown panel for GIỚI THIỆU -->
   <div
     id="nav-gioithieu-dropdown"
     style="position:fixed;display:none;z-index:9999;width:245px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12);border:1px solid #e2e8f0;padding:6px 0;"
@@ -480,23 +499,25 @@
   >
     <a
       href="/lich-su-phat-trien/"
-      style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      <span style="width:8px;height:8px;border-radius:50%;background:#fd761a;display:inline-block;"></span>
+      <span class="due-nav-bullet"></span>
       <span>Lịch sử phát triển</span>
     </a>
     <div style="height:1px;background:#f1f5f9;margin:3px 0;"></div>
     <a
-      href="/su-menh-tam-nhin/"
-      style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      href="/su-mang-tam-nhin/"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      <span style="width:8px;height:8px;border-radius:50%;background:#fd761a;display:inline-block;"></span>
+      <span class="due-nav-bullet"></span>
       <span>Sứ mạng, tầm nhìn</span>
     </a>
   </div>
@@ -509,62 +530,70 @@
   >
     <a
       href="/phuong-thuc-xet-tuyen/"
-      style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      <span style="width:8px;height:8px;border-radius:50%;background:#fd761a;display:inline-block;"></span>
+      <span class="due-nav-bullet"></span>
       <span>Phương thức xét tuyển</span>
     </a>
     <a
       href="/diem-chuan-cac-nam/"
-      style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      <span style="width:8px;height:8px;border-radius:50%;background:#fd761a;display:inline-block;"></span>
+      <span class="due-nav-bullet"></span>
       <span>Điểm chuẩn các năm</span>
     </a>
     <a
       href="/chi-tieu-tuyen-sinh/"
-      style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      <span style="width:8px;height:8px;border-radius:50%;background:#fd761a;display:inline-block;"></span>
+      <span class="due-nav-bullet"></span>
       <span>Chỉ tiêu tuyển sinh</span>
     </a>
     <a
       href="/loai-hinh-dao-tao/"
-      style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      <span style="width:8px;height:8px;border-radius:50%;background:#fd761a;display:inline-block;"></span>
+      <span class="due-nav-bullet"></span>
       <span>Loại hình đào tạo</span>
     </a>
     <div style="height:1px;background:#f1f5f9;margin:4px 0;"></div>
     <button
       onclick="openHuongDanModal()"
-      style="width:100%;display:block;padding:9px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      Hướng dẫn nhập học
+      <span class="due-nav-bullet"></span>
+      <span>Hướng dẫn nhập học</span>
     </button>
     <button
       onclick="openLichTrinhModal()"
-      style="width:100%;display:block;padding:9px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
+      class="due-dropdown-link"
+      style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;background:none;border:none;cursor:pointer;text-align:left;font-size:14px;font-weight:600;color:#334155;transition:all .15s;"
       onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'"
       onmouseout="this.style.background='';this.style.color='#334155'"
       role="menuitem"
     >
-      Lịch trình của Tân sinh viên
+      <span class="due-nav-bullet"></span>
+      <span>Lịch trình của Tân sinh viên</span>
     </button>
   </div>
 
@@ -581,6 +610,7 @@
     </div>
     
     <a href="/khoa/tcnh/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#dbeafe;color:#1d4ed8;">
         <span class="material-symbols-outlined" style="font-size:20px;">account_balance</span>
       </span>
@@ -591,6 +621,7 @@
     </a>
 
     <a href="/khoa/dlkdqt/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#d1fae5;color:#047857;">
         <span class="material-symbols-outlined" style="font-size:20px;">travel_explore</span>
       </span>
@@ -601,6 +632,7 @@
     </a>
 
     <a href="/khoa/tmdt_mkt_cns/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#ffedd5;color:#c2410c;">
         <span class="material-symbols-outlined" style="font-size:20px;">hub</span>
       </span>
@@ -611,6 +643,7 @@
     </a>
 
     <a href="/khoa/kt/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#e0e7ff;color:#4338ca;">
         <span class="material-symbols-outlined" style="font-size:20px;">trending_up</span>
       </span>
@@ -621,6 +654,7 @@
     </a>
 
     <a href="/khoa/qtkd/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#fef3c7;color:#b45309;">
         <span class="material-symbols-outlined" style="font-size:20px;">corporate_fare</span>
       </span>
@@ -631,6 +665,7 @@
     </a>
 
     <a href="/khoa/ketoan/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#ccfbf1;color:#0f766e;">
         <span class="material-symbols-outlined" style="font-size:20px;">calculate</span>
       </span>
@@ -641,6 +676,7 @@
     </a>
 
     <a href="/khoa/llct/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#ffe4e6;color:#be123c;">
         <span class="material-symbols-outlined" style="font-size:20px;">menu_book</span>
       </span>
@@ -651,6 +687,7 @@
     </a>
 
     <a href="/khoa/luat/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#f3e8ff;color:#7e22ce;">
         <span class="material-symbols-outlined" style="font-size:20px;">gavel</span>
       </span>
@@ -661,6 +698,7 @@
     </a>
 
     <a href="/khoa/vdtqt/" class="nav-khoa-item" role="menuitem">
+      <span class="due-nav-bullet"></span>
       <span class="nav-khoa-icon" style="background:#cffafe;color:#0e7490;">
         <span class="material-symbols-outlined" style="font-size:20px;">public</span>
       </span>
@@ -671,31 +709,34 @@
     </a>
 
     <div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:6px;">
-      <a href="/khoa/" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:10px;background:#f8fafc;color:#003366;font-size:12.5px;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#e0f2fe';this.style.color='#0284c7';" onmouseout="this.style.background='#f8fafc';this.style.color='#003366';">
-        <span>Xem tất cả 9 Khoa &amp; Phòng ban</span>
+      <a href="/khoa/" class="due-dropdown-link" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:10px;background:#f8fafc;color:#003366;font-size:12.5px;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#e0f2fe';this.style.color='#0284c7';" onmouseout="this.style.background='#f8fafc';this.style.color='#003366';">
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="due-nav-bullet"></span>
+          <span>Xem tất cả 9 Khoa &amp; Phòng ban</span>
+        </span>
         <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
       </a>
     </div>
   </div>
 
-  <!-- Dropdown panel for DÀNH CHO SINH VIÊN (Chỉ giữ lại: Ký túc xá, Câu lạc bộ, Hoạt động Đoàn) -->
+  <!-- Dropdown panel for DÀNH CHO SINH VIÊN -->
   <div
     id="nav-dcsv-dropdown"
-    class="dcsv-dropdown-panel"
+    style="position:fixed;display:none;z-index:9999;width:245px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12);border:1px solid #e2e8f0;padding:6px 0;"
     role="menu"
     aria-label="Danh mục Dành cho sinh viên"
   >
-    <a href="/ky-tuc-xa/" class="dcsv-item" role="menuitem">
-      <span class="dcsv-bullet">&#9642;</span>
-      <span class="dcsv-text">Ký túc xá</span>
+    <a href="/ky-tuc-xa/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet"></span>
+      <span>Ký túc xá</span>
     </a>
-    <a href="/clb/" class="dcsv-item" role="menuitem">
-      <span class="dcsv-bullet">&#9642;</span>
-      <span class="dcsv-text">Câu lạc bộ</span>
+    <a href="/clb/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet"></span>
+      <span>Câu lạc bộ</span>
     </a>
-    <a href="/hoat-dong-doan/" class="dcsv-item" style="border-bottom:none;" role="menuitem">
-      <span class="dcsv-bullet">&#9642;</span>
-      <span class="dcsv-text">Hoạt động Đoàn</span>
+    <a href="/hoat-dong-doan/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#eff6ff';this.style.color='#0072BC'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet"></span>
+      <span>Hoạt động Đoàn</span>
     </a>
   </div>
 
