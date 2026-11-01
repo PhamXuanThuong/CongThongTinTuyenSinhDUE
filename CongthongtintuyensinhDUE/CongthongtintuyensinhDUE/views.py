@@ -299,3 +299,12 @@ def career_advisory(request):
 
 def chatbot(request):
     return render(request, 'chatbot.html')
+
+
+def huong_dan_nhap_hoc_view(request):
+    """Trang Hướng dẫn nhập học dành cho Tân sinh viên"""
+    return render(request, 'huong_dan_nhap_hoc.html')
+
+def lich_trinh_tan_sinh_vien_view(request):
+    """Trang Lịch trình dành cho Tân sinh viên"""
+    return render(request, 'lich_trinh_tan_sinh_vien.html')

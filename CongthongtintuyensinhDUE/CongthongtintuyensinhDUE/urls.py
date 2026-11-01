@@ -47,6 +47,12 @@ urlpatterns = [
     path('cau-lac-bo/<str:club_id>/', views.clb_detail_view, name='cau_lac_bo_detail'),
     path('sinh-vien/', views.sinh_vien_view, name='sinh_vien'),
 
+    # Hướng dẫn nhập học & Lịch trình tân sinh viên (trang riêng biệt)
+    path('huong-dan-nhap-hoc/', views.huong_dan_nhap_hoc_view, name='huong_dan_nhap_hoc'),
+    path('enrollment-guide/', views.huong_dan_nhap_hoc_view, name='enrollment_guide'),
+    path('lich-trinh-tan-sinh-vien/', views.lich_trinh_tan_sinh_vien_view, name='lich_trinh_tan_sinh_vien'),
+    path('freshman-schedule/', views.lich_trinh_tan_sinh_vien_view, name='freshman_schedule'),
+
     # API endpoints (từ nhánh main)
     path('api/khoa/', views.api_khoa_list, name='api_khoa_list'),
     path('api/khoa/<str:code>/', views.api_khoa_detail, name='api_khoa_detail'),
