@@ -59,6 +59,121 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #94a3b8;
     }
+
+    /* Style cho Dropdown DÀNH CHO SINH VIÊN chuẩn theo ảnh mẫu */
+    .dcsv-dropdown-panel {
+      position: fixed;
+      display: none;
+      z-index: 9999;
+      width: 275px;
+      background-color: #dbe6f3;
+      border: 1px solid #7c9ec7;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+      padding: 0;
+      border-radius: 0;
+      font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .dcsv-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 14px;
+      background-color: #dbe6f3;
+      color: #0b4d8c;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 700;
+      border-bottom: 1px solid #adc7e7;
+      transition: background-color .15s ease, color .15s ease, padding-left .15s ease;
+      line-height: 1.35;
+      cursor: pointer;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    .dcsv-item:hover {
+      background-color: #c7dcf2;
+      color: #003366;
+      padding-left: 17px;
+    }
+    .dcsv-item:last-child {
+      border-bottom: none;
+    }
+    .dcsv-bullet {
+      font-size: 11px;
+      margin-right: 8px;
+      color: #1e293b;
+      flex-shrink: 0;
+      line-height: 1;
+      font-weight: 900;
+    }
+    .dcsv-text {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Style cho Dropdown KHOA */
+    .nav-khoa-panel {
+      position: fixed;
+      display: none;
+      z-index: 9999;
+      width: 380px;
+      max-height: 85vh;
+      overflow-y: auto;
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(0, 30, 64, 0.16);
+      padding: 8px;
+      font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .nav-khoa-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background-color .15s ease, transform .15s ease;
+    }
+    .nav-khoa-item:hover {
+      background-color: #f1f5f9;
+    }
+    .nav-khoa-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-khoa-text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-khoa-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .nav-khoa-item:hover .nav-khoa-name {
+      color: #003366;
+    }
+    .nav-khoa-sub {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
   </style>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -213,9 +328,33 @@
               <svg id="nav-ttts-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
-          <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_khoa %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="khoa" href="/khoa/">KHOA</a>
+          <!-- KHOA - Dropdown (Cơ cấu mới 2026: 8 Khoa + Viện ĐTQT) -->
+          <div class="relative h-full flex items-center" id="nav-khoa">
+            <button
+              class="h-full flex items-center gap-1 font-label-lg text-label-lg uppercase whitespace-nowrap focus:outline-none {% block nav_khoa %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}"
+              aria-haspopup="true"
+              aria-expanded="false"
+              id="nav-khoa-btn"
+              type="button"
+            >
+              KHOA
+              <svg id="nav-khoa-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_hocphi %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="hoc-phi" href="/hoc-phi/">HỌC PHÍ</a>
-          <a class="h-full flex items-center font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap" data-path="danh-cho-sinh-vien" href="#">DÀNH CHO SINH VIÊN</a>
+          <!-- DÀNH CHO SINH VIÊN - Dropdown -->
+          <div class="relative h-full flex items-center" id="nav-dcsv">
+            <button
+              class="h-full flex items-center gap-1 font-label-lg text-label-lg text-on-surface-variant hover:text-primary-container transition-colors uppercase whitespace-nowrap focus:outline-none {% block nav_sinhvien %}{% endblock %}"
+              aria-haspopup="true"
+              aria-expanded="false"
+              id="nav-dcsv-btn"
+              type="button"
+            >
+              DÀNH CHO SINH VIÊN
+              <svg id="nav-dcsv-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_career %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="tu-van-chon-nganh" href="/career-advisory/">TƯ VẤN CHỌN NGÀNH</a>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_chatbot %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="chat-ai" href="/chatbot/">CHAT VỚI DUE</a>
         </nav>
@@ -248,6 +387,137 @@
     >
       Lịch trình của Tân sinh viên
     </button>
+  </div>
+
+  <!-- Dropdown panel for KHOA (8 Khoa + 1 Viện Đào tạo Quốc tế) -->
+  <div
+    id="nav-khoa-dropdown"
+    class="nav-khoa-panel"
+    role="menu"
+    aria-label="Danh mục Khoa đào tạo"
+  >
+    <div style="padding:6px 10px 8px;border-bottom:1px solid #f1f5f9;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Khoa &amp; Viện Đào Tạo 2026</span>
+      <span style="font-size:11px;font-weight:700;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:999px;">9 Đơn vị</span>
+    </div>
+    
+    <a href="/khoa/tcnh/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#dbeafe;color:#1d4ed8;">
+        <span class="material-symbols-outlined" style="font-size:20px;">account_balance</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Khoa Tài chính - Ngân hàng</span>
+        <span class="nav-khoa-sub">Tài chính, Ngân hàng, Công nghệ tài chính (Fintech)</span>
+      </div>
+    </a>
+
+    <a href="/khoa/dlkdqt/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#d1fae5;color:#047857;">
+        <span class="material-symbols-outlined" style="font-size:20px;">travel_explore</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Khoa Du lịch &amp; Kinh doanh quốc tế</span>
+        <span class="nav-khoa-sub">Kinh doanh quốc tế, Ngoại thương, Du lịch &amp; Khách sạn</span>
+      </div>
+    </a>
+
+    <a href="/khoa/tmdt_mkt_cns/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#ffedd5;color:#c2410c;">
+        <span class="material-symbols-outlined" style="font-size:20px;">hub</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Khoa TMĐT - Marketing &amp; Công nghệ số</span>
+        <span class="nav-khoa-sub">Marketing số, TMĐT, Kinh tế số, TT Marketing</span>
+      </div>
+    </a>
+
+    <a href="/khoa/kt/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#e0e7ff;color:#4338ca;">
+        <span class="material-symbols-outlined" style="font-size:20px;">trending_up</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Khoa Kinh tế</span>
+        <span class="nav-khoa-sub">Kinh tế đầu tư, Kinh tế phát triển, Thống kê dữ liệu</span>
+      </div>
+    </a>
+
+    <a href="/khoa/qtkd/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#fef3c7;color:#b45309;">
+        <span class="material-symbols-outlined" style="font-size:20px;">corporate_fare</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Khoa Quản trị kinh doanh</span>
+        <span class="nav-khoa-sub">Quản trị kinh doanh, Quản trị nhân lực, Chuỗi cung ứng</span>
+      </div>
+    </a>
+
+    <a href="/khoa/ketoan/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#ccfbf1;color:#0f766e;">
+        <span class="material-symbols-outlined" style="font-size:20px;">calculate</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Khoa Kế toán</span>
+        <span class="nav-khoa-sub">Kế toán doanh nghiệp, Kiểm toán chuẩn ACCA quốc tế</span>
+      </div>
+    </a>
+
+    <a href="/khoa/llct/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#ffe4e6;color:#be123c;">
+        <span class="material-symbols-outlined" style="font-size:20px;">menu_book</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Khoa Lý luận chính trị</span>
+        <span class="nav-khoa-sub">Quản lý nhà nước, Kinh tế chính trị, Chính sách công</span>
+      </div>
+    </a>
+
+    <a href="/khoa/luat/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#f3e8ff;color:#7e22ce;">
+        <span class="material-symbols-outlined" style="font-size:20px;">gavel</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Khoa Luật</span>
+        <span class="nav-khoa-sub">Luật kinh tế, Luật tài chính - ngân hàng</span>
+      </div>
+    </a>
+
+    <a href="/khoa/vdtqt/" class="nav-khoa-item" role="menuitem">
+      <span class="nav-khoa-icon" style="background:#cffafe;color:#0e7490;">
+        <span class="material-symbols-outlined" style="font-size:20px;">public</span>
+      </span>
+      <div class="nav-khoa-text">
+        <span class="nav-khoa-name">Viện Đào tạo Quốc tế</span>
+        <span class="nav-khoa-sub">Chương trình liên kết Anh, Mỹ, Úc; Cử nhân quốc tế</span>
+      </div>
+    </a>
+
+    <div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:6px;">
+      <a href="/khoa/" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:10px;background:#f8fafc;color:#003366;font-size:12.5px;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#e0f2fe';this.style.color='#0284c7';" onmouseout="this.style.background='#f8fafc';this.style.color='#003366';">
+        <span>Xem tất cả 9 Khoa &amp; Phòng ban</span>
+        <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Dropdown panel for DÀNH CHO SINH VIÊN (Chỉ giữ lại: Ký túc xá, Câu lạc bộ, Hoạt động Đoàn) -->
+  <div
+    id="nav-dcsv-dropdown"
+    class="dcsv-dropdown-panel"
+    role="menu"
+    aria-label="Danh mục Dành cho sinh viên"
+  >
+    <a href="/ky-tuc-xa/" class="dcsv-item" role="menuitem">
+      <span class="dcsv-bullet">&#9642;</span>
+      <span class="dcsv-text">Ký túc xá</span>
+    </a>
+    <a href="/clb/" class="dcsv-item" role="menuitem">
+      <span class="dcsv-bullet">&#9642;</span>
+      <span class="dcsv-text">Câu lạc bộ</span>
+    </a>
+    <a href="/hoat-dong-doan/" class="dcsv-item" style="border-bottom:none;" role="menuitem">
+      <span class="dcsv-bullet">&#9642;</span>
+      <span class="dcsv-text">Hoạt động Đoàn</span>
+    </a>
   </div>
 
   <!-- Main Content Block -->
@@ -409,6 +679,46 @@
     </div>
   </div>
 
+  <!-- ================================================
+       MODAL 3: DÀNH CHO SINH VIÊN (Chi tiết cẩm nang)
+       ================================================ -->
+  <div
+    id="sinh-vien-modal-backdrop"
+    style="position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:8px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);"
+    aria-modal="true"
+    role="dialog"
+    aria-labelledby="sinh-vien-modal-title"
+  >
+    <div
+      id="sinh-vien-modal"
+      style="position:relative;width:100%;max-width:1080px;max-height:94vh;height:94vh;background:#fff;border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,0.18);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:scale(0.97) translateY(12px);transition:opacity .22s ease,transform .22s ease;"
+    >
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #f1f5f9;background:#fff;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:#dbeafe;display:flex;align-items:center;justify-content:center;color:#0072BC;flex-shrink:0;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div>
+            <h3 id="sinh-vien-modal-title" style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#1e293b;font-size:17px;line-height:1.3;">Dành cho Sinh viên DUE</h3>
+            <p style="margin:3px 0 0;font-size:12px;color:#94a3b8;">Cẩm nang học tập, cơ sở vật chất, phong trào Đoàn - Hội và học bổng</p>
+          </div>
+        </div>
+        <button
+          onclick="closeSinhVienModal()"
+          style="width:36px;height:36px;border-radius:50%;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;color:#94a3b8;cursor:pointer;transition:all .15s;flex-shrink:0;"
+          onmouseover="this.style.background='#fef2f2';this.style.borderColor='#fca5a5';this.style.color='#ef4444'"
+          onmouseout="this.style.background='#f8fafc';this.style.borderColor='#e2e8f0';this.style.color='#94a3b8'"
+          aria-label="Đóng"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div style="flex:1;overflow:hidden;background:#fff;">
+        {% include "student-life.html" %}
+      </div>
+    </div>
+  </div>
+
   <script>
     /* ---- Dropdown Navbar: THÔNG TIN TUYỂN SINH ---- */
     var _btn     = document.getElementById('nav-ttts-btn');
@@ -443,19 +753,179 @@
       if (_btn) _btn.setAttribute('aria-expanded', 'false');
     }
 
-    if (_btn) _btn.addEventListener('click', toggleDropdown);
+    if (_btn) {
+      _btn.addEventListener('click', toggleDropdown);
+      _btn.addEventListener('mouseenter', function() {
+        closeDcsvDropdown();
+        positionDropdown();
+        _drop.style.display = 'block';
+        if (_chevron) _chevron.style.transform = 'rotate(180deg)';
+      });
+      _btn.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_drop.matches(':hover') && !_btn.matches(':hover')) closeDropdown();
+        }, 220);
+      });
+    }
+    if (_drop) {
+      _drop.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_drop.matches(':hover') && !_btn.matches(':hover')) closeDropdown();
+        }, 220);
+      });
+    }
+
+    /* ---- Dropdown Navbar: KHOA ---- */
+    var _khoaBtn     = document.getElementById('nav-khoa-btn');
+    var _khoaDrop    = document.getElementById('nav-khoa-dropdown');
+    var _khoaChevron = document.getElementById('nav-khoa-chevron');
+
+    function positionKhoaDropdown() {
+      if (!_khoaBtn || !_khoaDrop) return;
+      var rect = _khoaBtn.getBoundingClientRect();
+      _khoaDrop.style.top  = (rect.bottom + 6) + 'px';
+      var left = rect.left;
+      var width = 380;
+      if (left + width > window.innerWidth) {
+        left = Math.max(10, window.innerWidth - width - 15);
+      }
+      _khoaDrop.style.left = left + 'px';
+    }
+
+    function openKhoaDropdown() {
+      closeDropdown();
+      closeDcsvDropdown();
+      if (!_khoaDrop) return;
+      positionKhoaDropdown();
+      _khoaDrop.style.display = 'block';
+      if (_khoaChevron) _khoaChevron.style.transform = 'rotate(180deg)';
+      if (_khoaBtn) _khoaBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeKhoaDropdown() {
+      if (!_khoaDrop) return;
+      _khoaDrop.style.display = 'none';
+      if (_khoaChevron) _khoaChevron.style.transform = '';
+      if (_khoaBtn) _khoaBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggleKhoaDropdown(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      if (!_khoaDrop) return;
+      var isOpen = _khoaDrop.style.display === 'block';
+      if (isOpen) {
+        closeKhoaDropdown();
+      } else {
+        openKhoaDropdown();
+      }
+    }
+
+    if (_khoaBtn) {
+      _khoaBtn.addEventListener('click', toggleKhoaDropdown);
+      _khoaBtn.addEventListener('mouseenter', openKhoaDropdown);
+      _khoaBtn.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_khoaDrop.matches(':hover') && !_khoaBtn.matches(':hover')) closeKhoaDropdown();
+        }, 220);
+      });
+    }
+    if (_khoaDrop) {
+      _khoaDrop.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_khoaDrop.matches(':hover') && !_khoaBtn.matches(':hover')) closeKhoaDropdown();
+        }, 220);
+      });
+    }
+
+    /* ---- Dropdown Navbar: DÀNH CHO SINH VIÊN ---- */
+    var _dcsvBtn     = document.getElementById('nav-dcsv-btn');
+    var _dcsvDrop    = document.getElementById('nav-dcsv-dropdown');
+    var _dcsvChevron = document.getElementById('nav-dcsv-chevron');
+
+    function positionDcsvDropdown() {
+      if (!_dcsvBtn || !_dcsvDrop) return;
+      var rect = _dcsvBtn.getBoundingClientRect();
+      _dcsvDrop.style.top  = (rect.bottom + 6) + 'px';
+      var left = rect.left;
+      var width = 275;
+      if (left + width > window.innerWidth) {
+        left = Math.max(10, window.innerWidth - width - 15);
+      }
+      _dcsvDrop.style.left = left + 'px';
+    }
+
+    function openDcsvDropdown() {
+      closeDropdown();
+      closeKhoaDropdown();
+      if (!_dcsvDrop) return;
+      positionDcsvDropdown();
+      _dcsvDrop.style.display = 'block';
+      if (_dcsvChevron) _dcsvChevron.style.transform = 'rotate(180deg)';
+      if (_dcsvBtn) _dcsvBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeDcsvDropdown() {
+      if (!_dcsvDrop) return;
+      _dcsvDrop.style.display = 'none';
+      if (_dcsvChevron) _dcsvChevron.style.transform = '';
+      if (_dcsvBtn) _dcsvBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggleDcsvDropdown(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      if (!_dcsvDrop) return;
+      var isOpen = _dcsvDrop.style.display === 'block';
+      if (isOpen) {
+        closeDcsvDropdown();
+      } else {
+        openDcsvDropdown();
+      }
+    }
+
+    if (_dcsvBtn) {
+      _dcsvBtn.addEventListener('click', toggleDcsvDropdown);
+      _dcsvBtn.addEventListener('mouseenter', openDcsvDropdown);
+      _dcsvBtn.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_dcsvDrop.matches(':hover') && !_dcsvBtn.matches(':hover')) closeDcsvDropdown();
+        }, 220);
+      });
+    }
+    if (_dcsvDrop) {
+      _dcsvDrop.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_dcsvDrop.matches(':hover') && !_dcsvBtn.matches(':hover')) closeDcsvDropdown();
+        }, 220);
+      });
+    }
 
     document.addEventListener('click', function (e) {
       if (_btn && !_btn.contains(e.target) && _drop && !_drop.contains(e.target)) {
         closeDropdown();
       }
+      if (_dcsvBtn && !_dcsvBtn.contains(e.target) && _dcsvDrop && !_dcsvDrop.contains(e.target)) {
+        closeDcsvDropdown();
+      }
+      if (_khoaBtn && !_khoaBtn.contains(e.target) && _khoaDrop && !_khoaDrop.contains(e.target)) {
+        closeKhoaDropdown();
+      }
     });
 
     window.addEventListener('resize', function () {
       if (_drop && _drop.style.display === 'block') positionDropdown();
+      if (_dcsvDrop && _dcsvDrop.style.display === 'block') positionDcsvDropdown();
+      if (_khoaDrop && _khoaDrop.style.display === 'block') positionKhoaDropdown();
     });
     window.addEventListener('scroll', function () {
       if (_drop && _drop.style.display === 'block') positionDropdown();
+      if (_dcsvDrop && _dcsvDrop.style.display === 'block') positionDcsvDropdown();
+      if (_khoaDrop && _khoaDrop.style.display === 'block') positionKhoaDropdown();
     }, { passive: true });
 
     /* ---- Modal 1: Hướng dẫn nhập học ---- */
@@ -464,6 +934,8 @@
 
     function openHuongDanModal() {
       closeDropdown();
+      closeKhoaDropdown();
+      closeDcsvDropdown();
       if (!_hdBackdrop || !_hdModal) return;
       _hdBackdrop.style.display = 'flex';
       document.body.style.overflow = 'hidden';
@@ -497,6 +969,8 @@
 
     function openLichTrinhModal() {
       closeDropdown();
+      closeKhoaDropdown();
+      closeDcsvDropdown();
       if (!_ltBackdrop || !_ltModal) return;
       _ltBackdrop.style.display = 'flex';
       document.body.style.overflow = 'hidden';
@@ -524,10 +998,78 @@
       });
     }
 
+    /* ---- Modal 3: Dành cho sinh viên ---- */
+    var _svBackdrop = document.getElementById('sinh-vien-modal-backdrop');
+    var _svModal    = document.getElementById('sinh-vien-modal');
+
+    function openSinhVienModal(topicKey) {
+      closeDropdown();
+      closeKhoaDropdown();
+      closeDcsvDropdown();
+      if (topicKey) {
+        switchSinhVienTab(topicKey);
+      }
+      if (!_svBackdrop || !_svModal) return;
+      _svBackdrop.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          _svModal.style.opacity   = '1';
+          _svModal.style.transform = 'scale(1) translateY(0)';
+        });
+      });
+    }
+
+    function closeSinhVienModal() {
+      if (!_svBackdrop || !_svModal) return;
+      _svModal.style.opacity   = '0';
+      _svModal.style.transform = 'scale(0.97) translateY(12px)';
+      setTimeout(function () {
+        _svBackdrop.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 220);
+    }
+
+    function switchSinhVienTab(topicKey) {
+      if (!topicKey) return;
+      var buttons = document.querySelectorAll('.sv-tab-btn');
+      buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      var activeBtn = document.getElementById('tab-btn-' + topicKey);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        if (typeof activeBtn.scrollIntoView === 'function') {
+          activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        }
+      }
+
+      var panes = document.querySelectorAll('.sv-pane');
+      panes.forEach(function(pane) {
+        pane.classList.add('hidden');
+        pane.classList.remove('active');
+      });
+      var activePane = document.getElementById('sv-pane-' + topicKey);
+      if (activePane) {
+        activePane.classList.remove('hidden');
+        activePane.classList.add('active');
+      }
+    }
+
+    if (_svBackdrop) {
+      _svBackdrop.addEventListener('click', function (e) {
+        if (e.target === _svBackdrop) closeSinhVienModal();
+      });
+    }
+
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
+        closeDropdown();
+        closeKhoaDropdown();
+        closeDcsvDropdown();
         if (_hdBackdrop && _hdBackdrop.style.display === 'flex') closeHuongDanModal();
         if (_ltBackdrop && _ltBackdrop.style.display === 'flex') closeLichTrinhModal();
+        if (_svBackdrop && _svBackdrop.style.display === 'flex') closeSinhVienModal();
       }
     });
   </script>

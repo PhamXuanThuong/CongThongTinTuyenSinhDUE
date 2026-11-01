@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}Hệ Thống Liên Chi Đoàn Các Khoa - Đoàn Thanh Niên DUE{% endblock %}
+
+{% block nav_sinhvien %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block extra_head %}
+<style>
+  .lcd-card-item {
+    transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .lcd-card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px -4px rgba(225, 29, 72, 0.12);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="w-full pt-28 sm:pt-36 pb-20 bg-surface min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mb-4 font-medium">
+      <a href="/" class="hover:text-primary transition-colors flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">home</span>
+        <span>Trang chủ</span>
+      </a>
+      <span>/</span>
+      <a href="/khoa/" class="hover:text-primary transition-colors">Khoa &amp; Viện Đào Tạo</a>
+      <span>/</span>
+      <span class="text-rose-700 font-bold">Hệ thống Liên Chi Đoàn DUE</span>
+    </nav>
+
+    <!-- Header Hero Banner -->
+    <div class="bg-gradient-to-r from-[#001e40] via-[#003366] to-[#be123c] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden mb-12">
+      <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-rose-500/20 blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-blue-500/20 blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-600/90 text-white text-xs font-bold mb-4 backdrop-blur-sm shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">flag</span>
+          Đoàn TNCS Hồ Chí Minh – Hội Sinh Viên Trường ĐH Kinh Tế (DUE)
+        </div>
+
+        <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-headline-lg tracking-tight mb-3">
+          Hệ Thống Liên Chi Đoàn Các Khoa
+        </h1>
+
+        <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6">
+          Mạng lưới <strong>9 Liên Chi Đoàn trực thuộc 8 Khoa &amp; Viện Đào tạo Quốc tế DUE</strong> là môi trường tôi luyện bản lĩnh, kỹ năng lãnh đạo và kết nối cộng đồng năng động cho hơn 15.000 đoàn viên sinh viên. Mỗi Liên Chi Đoàn có trang thông tin riêng với đầy đủ nhân sự Ban Chấp Hành, các hoạt động tiêu biểu và hình ảnh phong trào.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium">
+          <a href="https://www.facebook.com/FaceDue" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-[#1877F2] hover:bg-[#166fe5] text-white px-4 py-2.5 rounded-full shadow-md transition-all hover:scale-105">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+            <span>Fanpage Đoàn - Hội DUE</span>
+          </a>
+          <div class="flex items-center gap-2 bg-white/10 px-4 py-2.5 rounded-full border border-white/15">
+            <span class="font-bold text-amber-300">9</span> Liên Chi Đoàn Khoa &amp; Viện
+          </div>
+          <div class="flex items-center gap-2 bg-white/10 px-4 py-2.5 rounded-full border border-white/15">
+            <span class="font-bold text-green-300">{{ clubs_count }}+</span> CLB - Đội - Nhóm
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         LƯỚI 9 LIÊN CHI ĐOÀN CÁC KHOA
+         ==================================================== -->
+    <div class="mb-16">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">
+            Danh Sách 9 Liên Chi Đoàn Trực Thuộc (Nhiệm Kỳ 2024–2027)
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Bấm vào từng Liên Chi Đoàn để xem trang chi tiết: Ban chấp hành, sự kiện tiêu biểu, thư viện ảnh và kênh liên hệ.
+          </p>
+        </div>
+
+        <div class="relative w-full sm:w-72">
+          <input 
+            type="text" 
+            id="searchLcdInput" 
+            placeholder="Tìm kiếm Liên Chi Đoàn..." 
+            class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-full text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all"
+            onkeyup="filterLcdCards()"
+          />
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">search</span>
+        </div>
+      </div>
+
+      <!-- Grid 9 Thẻ LCĐ -->
+      <div id="lcdGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for fac in faculties %}
+        <div class="lcd-card-item rounded-3xl bg-white border border-slate-200 hover:border-rose-300 shadow-sm p-6 flex flex-col justify-between group" data-name="{{ fac.lcd.name|default:fac.name|lower }} {{ fac.name|lower }} {{ fac.lcd.secretary|lower }}">
+          
+          <div>
+            <!-- Top Badges -->
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 font-bold text-[11px] border border-rose-200/80 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">flag</span>
+                <span>{{ fac.lcd.term|default:"Nhiệm kỳ 2024–2027" }}</span>
+              </span>
+              <span class="text-[11px] text-slate-400 font-medium">
+                {{ fac.clubs_count }} CLB trực thuộc
+              </span>
+            </div>
+
+            <!-- Tên & Giới thiệu -->
+            <div class="flex items-start gap-3.5 mb-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-slate-50 p-1.5 shrink-0 border border-slate-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <img src="{{ fac.logo_url }}" alt="{{ fac.name }}" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';" />
+              </div>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-rose-600 transition-colors leading-snug">
+                  {{ fac.lcd.name|default:fac.lien_chi_doan }}
+                </h3>
+                <span class="text-xs text-blue-700 font-medium block mt-0.5">Khoa: {{ fac.name }}</span>
+              </div>
+            </div>
+
+            <!-- Bí thư LCĐ -->
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 mb-3.5 flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-rose-600 text-[18px] shrink-0">badge</span>
+              <div class="text-xs">
+                <span class="text-slate-400 block text-[10px] uppercase font-bold">Bí thư Liên Chi Đoàn:</span>
+                <span class="font-bold text-slate-800">{{ fac.lcd.secretary|default:"Đang cập nhật" }}</span>
+              </div>
+            </div>
+
+            <!-- Tóm tắt giới thiệu -->
+            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed mb-4">
+              {{ fac.lcd.intro|default:"Tổ chức Đoàn cơ sở năng động, quy tụ các bạn sinh viên nhiệt huyết, tổ chức các cuộc thi học thuật và hoạt động tình nguyện tiêu biểu." }}
+            </p>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+            <a 
+              href="/lien-chi-doan/{{ fac.id }}/" 
+              class="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-700 hover:to-red-600 text-white font-bold text-xs shadow-sm transition-all hover:scale-[1.02]"
+            >
+              <span>Xem trang riêng LCĐ</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+
+            {% if fac.lcd.fanpage %}
+            <a 
+              href="{{ fac.lcd.fanpage }}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="p-2.5 rounded-xl bg-blue-50 text-[#1877F2] hover:bg-blue-100 transition-colors"
+              title="Ghé thăm Fanpage LCĐ"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+            </a>
+            {% endif %}
+          </div>
+
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         THÔNG TIN VĂN PHÒNG ĐOÀN THANH NIÊN - HỘI SINH VIÊN TRƯỜNG
+         ==================================================== -->
+    <div class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-2 max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-[#003366] text-xs font-bold uppercase">
+            Cơ quan thường trực
+          </div>
+          <h3 class="text-lg sm:text-xl font-bold text-slate-900">
+            Văn Phòng Đoàn Thanh Niên – Hội Sinh Viên Trường Đại Học Kinh Tế
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Địa chỉ: Tầng 1, Nhà Đa năng, 71 Ngũ Hành Sơn, Bắc Mỹ An, Ngũ Hành Sơn, Đà Nẵng. Tiếp nhận các thủ tục chuyển sinh hoạt đoàn, giới thiệu đoàn viên ưu tú vào Đảng, tư vấn phong trào Sinh viên 5 tốt và hỗ trợ CLB đội nhóm.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+          <a 
+            href="https://www.facebook.com/FaceDue" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+            <span>Fanpage Đoàn Trường DUE</span>
+          </a>
+
+          <a 
+            href="/clb/" 
+            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm transition-colors"
+          >
+            <span>Khám phá 40+ CLB DUE</span>
+            <span class="material-symbols-outlined text-[18px]">groups</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  function filterLcdCards() {
+    const input = document.getElementById('searchLcdInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.lcd-card-item');
+    cards.forEach(card => {
+      const text = card.getAttribute('data-name') || '';
+      if (!input || text.includes(input)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+{% endblock %}
+

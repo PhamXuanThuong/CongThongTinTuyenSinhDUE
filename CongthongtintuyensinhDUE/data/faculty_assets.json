@@ -1,0 +1,200 @@
+{
+  "tcnh": {
+    "logo_url": "/static/img/khoa/tcnh_logo.png",
+    "cover_url": "/static/img/khoa/tcnh_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/tcnh_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Tài chính - Ngân hàng"
+      },
+      {
+        "url": "/static/img/khoa/tcnh_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Tài chính - Ngân hàng"
+      },
+      {
+        "url": "/static/img/khoa/tcnh_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Tài chính - Ngân hàng"
+      },
+      {
+        "url": "/static/img/khoa/tcnh_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Tài chính - Ngân hàng"
+      }
+    ]
+  },
+  "dlkdqt": {
+    "logo_url": "/static/img/khoa/dlkdqt_logo.png",
+    "cover_url": "/static/img/khoa/dlkdqt_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/dlkdqt_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Du lịch và Kinh doanh quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/dlkdqt_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Du lịch và Kinh doanh quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/dlkdqt_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Du lịch và Kinh doanh quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/dlkdqt_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Du lịch và Kinh doanh quốc tế"
+      }
+    ]
+  },
+  "tmdt_mkt_cns": {
+    "logo_url": "/static/img/khoa/tmdt_mkt_cns_logo.png",
+    "cover_url": "/static/img/khoa/tmdt_mkt_cns_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/tmdt_mkt_cns_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+      },
+      {
+        "url": "/static/img/khoa/tmdt_mkt_cns_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+      },
+      {
+        "url": "/static/img/khoa/tmdt_mkt_cns_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+      },
+      {
+        "url": "/static/img/khoa/tmdt_mkt_cns_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+      }
+    ]
+  },
+  "kt": {
+    "logo_url": "/static/img/khoa/kt_logo.png",
+    "cover_url": "/static/img/khoa/kt_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/kt_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Kinh tế"
+      },
+      {
+        "url": "/static/img/khoa/kt_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Kinh tế"
+      },
+      {
+        "url": "/static/img/khoa/kt_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Kinh tế"
+      },
+      {
+        "url": "/static/img/khoa/kt_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Kinh tế"
+      }
+    ]
+  },
+  "qtkd": {
+    "logo_url": "/static/img/khoa/qtkd_logo.png",
+    "cover_url": "/static/img/khoa/qtkd_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/qtkd_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Quản trị kinh doanh"
+      },
+      {
+        "url": "/static/img/khoa/qtkd_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Quản trị kinh doanh"
+      },
+      {
+        "url": "/static/img/khoa/qtkd_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Quản trị kinh doanh"
+      },
+      {
+        "url": "/static/img/khoa/qtkd_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Quản trị kinh doanh"
+      }
+    ]
+  },
+  "ketoan": {
+    "logo_url": "/static/img/khoa/ketoan_logo.png",
+    "cover_url": "/static/img/khoa/ketoan_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/ketoan_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Kế toán"
+      },
+      {
+        "url": "/static/img/khoa/ketoan_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Kế toán"
+      },
+      {
+        "url": "/static/img/khoa/ketoan_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Kế toán"
+      },
+      {
+        "url": "/static/img/khoa/ketoan_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Kế toán"
+      }
+    ]
+  },
+  "llct": {
+    "logo_url": "/static/img/khoa/llct_logo.png",
+    "cover_url": "/static/img/khoa/llct_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/llct_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Lý luận chính trị"
+      },
+      {
+        "url": "/static/img/khoa/llct_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Lý luận chính trị"
+      },
+      {
+        "url": "/static/img/khoa/llct_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Lý luận chính trị"
+      },
+      {
+        "url": "/static/img/khoa/llct_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Lý luận chính trị"
+      }
+    ]
+  },
+  "luat": {
+    "logo_url": "/static/img/khoa/luat_logo.png",
+    "cover_url": "/static/img/khoa/luat_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/luat_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Luật"
+      },
+      {
+        "url": "/static/img/khoa/luat_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Luật"
+      },
+      {
+        "url": "/static/img/khoa/luat_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Luật"
+      },
+      {
+        "url": "/static/img/khoa/luat_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Luật"
+      }
+    ]
+  },
+  "vdtqt": {
+    "logo_url": "/static/img/khoa/vdtqt_logo.png",
+    "cover_url": "/static/img/khoa/vdtqt_cover.jpg",
+    "gallery": [
+      {
+        "url": "/static/img/khoa/vdtqt_gallery_1.jpg",
+        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Viện Đào tạo Quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/vdtqt_gallery_2.jpg",
+        "caption": "Giang duong hien dai & Thuc hanh thuc te - Viện Đào tạo Quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/vdtqt_gallery_3.jpg",
+        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Viện Đào tạo Quốc tế"
+      },
+      {
+        "url": "/static/img/khoa/vdtqt_gallery_4.jpg",
+        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Viện Đào tạo Quốc tế"
+      }
+    ]
+  }
+}
