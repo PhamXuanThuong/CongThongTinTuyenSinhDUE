@@ -172,7 +172,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='nganhdaotao',
             name='loai_hinh',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='nganh_hoc', to='tuyensinh.loaihinhdaotao', verbose_name='Loại hình đào tạo chính'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='nganh_hoc', to='admissions.loaihinhdaotao', verbose_name='Loại hình đào tạo chính'),
         ),
         migrations.CreateModel(
             name='DiemChuan',
@@ -184,7 +184,7 @@ class Migration(migrations.Migration):
                 ('to_hop_xet_tuyen', models.CharField(blank=True, default='A00, A01, D01, D07', max_length=100, verbose_name='Tổ hợp áp dụng')),
                 ('tieu_chi_phu', models.CharField(blank=True, max_length=255, verbose_name='Tiêu chí phụ (nếu có)')),
                 ('ghi_chu', models.CharField(blank=True, max_length=255, verbose_name='Ghi chú')),
-                ('nganh', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='diem_chuan_cac_nam', to='tuyensinh.nganhdaotao', verbose_name='Ngành đào tạo')),
+                ('nganh', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='diem_chuan_cac_nam', to='admissions.nganhdaotao', verbose_name='Ngành đào tạo')),
             ],
             options={
                 'verbose_name': 'Điểm chuẩn theo năm',

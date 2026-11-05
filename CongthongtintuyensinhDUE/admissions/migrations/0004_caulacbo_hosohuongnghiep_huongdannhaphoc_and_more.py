@@ -137,7 +137,7 @@ class Migration(migrations.Migration):
                 ('trang_thai', models.CharField(choices=[('cho_duyet', 'Chờ duyệt hồ sơ'), ('moi_phong_van', 'Mời phỏng vấn'), ('trung_tuyen', 'Trúng tuyển'), ('khong_dat', 'Không đạt')], default='cho_duyet', max_length=30, verbose_name='Trạng thái hồ sơ')),
                 ('ghi_chu_noi_bo', models.TextField(blank=True, verbose_name='Ghi chú đánh giá / Phỏng vấn')),
                 ('ngay_nop', models.DateTimeField(auto_now_add=True, verbose_name='Thời gian nộp đơn')),
-                ('clb', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='don_dang_ky', to='tuyensinh.caulacbo', verbose_name='Câu lạc bộ ứng tuyển')),
+                ('clb', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='don_dang_ky', to='admissions.caulacbo', verbose_name='Câu lạc bộ ứng tuyển')),
             ],
             options={
                 'verbose_name': 'Đơn đăng ký tham gia CLB',

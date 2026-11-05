@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200, verbose_name='Tên Ngành / Chuyên ngành')),
                 ('note', models.CharField(blank=True, max_length=150, verbose_name='Mã ngành hoặc ghi chú')),
                 ('order', models.PositiveIntegerField(default=0, verbose_name='Thứ tự')),
-                ('khoa', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='majors', to='tuyensinh.khoaphongban', verbose_name='Thuộc Khoa')),
+                ('khoa', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='majors', to='admissions.khoaphongban', verbose_name='Thuộc Khoa')),
             ],
             options={
                 'verbose_name': 'Chuyên ngành đào tạo',

@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('chunk_index', models.PositiveIntegerField(default=0)),
                 ('content', models.TextField()),
                 ('embedding', models.JSONField()),
-                ('document', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chunks', to='tuyensinh.tailieutuyensinh')),
+                ('document', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chunks', to='admissions.tailieutuyensinh')),
             ],
         ),
     ]
