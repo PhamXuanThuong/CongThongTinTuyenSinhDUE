@@ -48,23 +48,20 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-28 sm:pt-32 pb-20 bg-surface">
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
 
   <!-- ====================================================
        1. HERO BANNER CHI TIẾT KHOA
        ==================================================== -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 mb-8">
+  <section class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4 mb-4">
     
     <!-- Breadcrumb -->
-    <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mb-4 font-medium" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-primary transition-colors flex items-center gap-1">
-        <span class="material-symbols-outlined text-[16px]">home</span>
-        <span>Trang chủ</span>
-      </a>
-      <span>/</span>
-      <a href="/khoa/" class="hover:text-primary transition-colors">Khoa &amp; Đơn vị đào tạo</a>
-      <span>/</span>
-      <span class="text-slate-800 font-semibold truncate">{{ faculty.name }}</span>
+    <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa &amp; Đơn vị đào tạo</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-secondary-container font-semibold truncate">{{ faculty.name }}</span>
     </nav>
 
     <!-- Hero Card with Cover & Gradient Overlay -->
@@ -190,7 +187,7 @@
        2. STICKY SUB-NAVIGATION BAR (Thanh điều hướng nhanh)
        ==================================================== -->
   <div class="sticky-subnav shadow-sm mb-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex items-center overflow-x-auto no-scrollbar py-1">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 flex items-center overflow-x-auto no-scrollbar py-1">
       <a href="#gioi-thieu" class="subnav-link">
         <span class="material-symbols-outlined text-[18px] mr-1.5">info</span> Giới thiệu &amp; Sứ mệnh
       </a>
@@ -226,7 +223,7 @@
   <!-- ====================================================
        3. NỘI DUNG CHÍNH (Cấu trúc 2 cột: Cột trái 8 phần + Cột phải 4 phần)
        ==================================================== -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
       <!-- CỘT TRÁI: NỘI DUNG CHI TIẾT (8 Cột) -->
@@ -776,7 +773,7 @@
        4. MỤC BẮT BUỘC Ở DƯỚI CÙNG: HỆ THỐNG PHÒNG BAN CHỨC NĂNG & TRUNG TÂM
        (ĐÃ SỬA LỖI HÌNH 1: Hiển thị đầy đủ câu nhiệm vụ hỗ trợ, không bị cắt từng chữ)
        ==================================================== -->
-  <section id="phong-ban-ho-tro" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 mt-20 pt-16 border-t border-slate-200">
+  <section id="phong-ban-ho-tro" class="max-w-7xl mx-auto px-6 lg:px-12 mt-20 pt-16 border-t border-slate-200">
     
     <div class="text-center max-w-3xl mx-auto mb-12">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100 text-[#003366] text-xs font-bold uppercase tracking-wider mb-3">

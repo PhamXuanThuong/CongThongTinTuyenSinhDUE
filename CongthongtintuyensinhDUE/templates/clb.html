@@ -36,18 +36,16 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-36 sm:pt-40 pb-20 flex-1 bg-[#f8fafc]">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
 
     <!-- BREADCRUMB -->
-    <nav aria-label="Breadcrumb" class="mb-5">
-      <ol class="flex items-center gap-2 text-xs text-slate-500 font-medium">
-        <li><a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a></li>
-        <li><span>/</span></li>
-        <li><span class="text-slate-500">Dành cho sinh viên</span></li>
-        <li><span>/</span></li>
-        <li class="text-slate-900 font-bold" aria-current="page">Câu lạc bộ – Đội – Nhóm</li>
-      </ol>
+    <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/sinh-vien/" class="hover:text-primary-container transition-colors">Dành cho sinh viên</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-secondary-container font-semibold">Câu lạc bộ – Đội – Nhóm</span>
     </nav>
 
     <!-- HERO BANNER -->

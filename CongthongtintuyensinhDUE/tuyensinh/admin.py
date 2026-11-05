@@ -168,7 +168,7 @@ class TuVanTuyenSinhAdmin(admin.ModelAdmin):
 # ĐĂNG KÝ QUẢN TRỊ KHOA, PHÒNG BAN, HỌC PHÍ, HỌC BỔNG
 # ========================================================
 
-from .models import KhoaPhongBan, ChuyenNganh, BangHocPhi, CauHoiHocPhi, ChinhSachHocBong
+from .models import KhoaPhongBan, ChuyenNganh, BangHocPhi, CauHoiHocPhi, ChinhSachHocBong, TaiLieuTuyenSinh
 
 class ChuyenNganhInline(admin.TabularInline):
     model = ChuyenNganh
@@ -313,4 +313,8 @@ class LichTrinhTanSinhVienAdmin(admin.ModelAdmin):
     search_fields = ('tieu_de', 'thoi_gian', 'noi_dung', 'dia_diem')
     list_editable = ('thu_tu', 'kich_hoat')
 
-
+@admin.register(TaiLieuTuyenSinh)
+class TaiLieuTuyenSinhAdmin(admin.ModelAdmin):
+    list_display = ('title', 'file', 'file_size', 'uploaded_at', 'is_processed')
+    list_filter = ('is_processed', 'uploaded_at')
+    search_fields = ('title',)

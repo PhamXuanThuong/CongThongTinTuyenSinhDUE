@@ -57,6 +57,13 @@ urlpatterns = [
     path('api/khoa/', views.api_khoa_list, name='api_khoa_list'),
     path('api/khoa/<str:code>/', views.api_khoa_detail, name='api_khoa_detail'),
     path('api/clb/', views.api_clb_list, name='api_clb_list'),
+    
+    # API endpoints
+    path('api/chat/', tuyensinh_views.chat_api, name='api_chat'),
+    path('api/khoa/<str:code>/', tuyensinh_views.khoa_detail_api, name='api_khoa_detail'),
+    path('api/tailieu/', tuyensinh_views.tailieu_list_api, name='api_tailieu_list'),
+    path('api/tailieu/upload/', tuyensinh_views.tailieu_upload_api, name='api_tailieu_upload'),
+    path('api/tailieu/<int:doc_id>/delete/', tuyensinh_views.tailieu_delete_api, name='api_tailieu_delete'),
 ]
 
 if settings.DEBUG:

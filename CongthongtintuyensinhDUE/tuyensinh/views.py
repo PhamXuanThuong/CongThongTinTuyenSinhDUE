@@ -640,7 +640,8 @@ def api_thong_ke(request):
 # VIEWS CHO KHOA & HỌC PHÍ (TỪ NHÁNH MAIN)
 # ========================================================
 
-from .models import KhoaPhongBan, BangHocPhi, CauHoiHocPhi, ChinhSachHocBong
+from .models import KhoaPhongBan, BangHocPhi, CauHoiHocPhi, ChinhSachHocBong, TaiLieuTuyenSinh
+from . import rag
 
 def khoa_view(request):
     """
@@ -738,3 +739,106 @@ def tinh_hoc_phi_api(request):
 
     return JsonResponse({'status': 'error', 'message': 'Không tìm thấy thông tin chương trình'}, status=400)
 
+
+
+
+from django.views.decorators.csrf import csrf_exempt
+
+def format_file_size(size_bytes):
+    if size_bytes == 0:
+        return '0 B'
+    size_name = ('B', 'KB', 'MB', 'GB')
+    i = 0
+    p = 1024
+    s = size_bytes
+    while s >= p and i < len(size_name) - 1:
+        s /= p
+        i += 1
+    return f"{s:.1f} {size_name[i]}"
+
+def tailieu_list_api(request):
+    """API trả về danh sách các tài liệu đã upload"""
+    docs = TaiLieuTuyenSinh.objects.all().order_by('-uploaded_at')
+    data = []
+    for d in docs:
+        data.append({
+            'id': d.id,
+            'name': d.title,
+            'size': d.file_size,
+            'url': d.file.url if d.file else '',
+            'date': d.uploaded_at.strftime('%H:%M - %d/%m/%Y'),
+            'is_processed': d.is_processed,
+        })
+    return JsonResponse({'status': 'success', 'data': data})
+
+@csrf_exempt
+def tailieu_upload_api(request):
+    """API tiếp nhận upload tài liệu từ Cán bộ tư vấn"""
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Chỉ hỗ trợ phương thức POST'}, status=405)
+
+    files = request.FILES.getlist('files')
+    if not files:
+        return JsonResponse({'status': 'error', 'message': 'Không có tệp nào được gửi lên'}, status=400)
+
+    saved_items = []
+    for f in files:
+        doc = TaiLieuTuyenSinh(title=f.name, file=f, file_size=format_file_size(f.size))
+        doc.save()
+        error = ''
+        try:
+            n = rag.index_document(doc)
+        except Exception as e:
+            n, error = 0, str(e)
+        saved_items.append({
+            'id': doc.id,
+            'name': doc.title,
+            'size': doc.file_size,
+            'url': doc.file.url,
+            'date': doc.uploaded_at.strftime('%H:%M - %d/%m/%Y'),
+            'is_processed': doc.is_processed,
+            'chunks': n,
+            'error': error,
+        })
+
+    return JsonResponse({
+        'status': 'success',
+        'message': f'Đã tải lên {len(saved_items)} tài liệu thành công vào media/tailieu_tuyensinh/',
+        'data': saved_items
+    })
+
+@csrf_exempt
+def tailieu_delete_api(request, doc_id):
+    """API xóa tài liệu"""
+    if request.method not in ['POST', 'DELETE']:
+        return JsonResponse({'status': 'error', 'message': 'Yêu cầu không hợp lệ'}, status=405)
+
+    try:
+        doc = TaiLieuTuyenSinh.objects.get(id=doc_id)
+        if doc.file:
+            doc.file.delete(save=False)
+        doc.delete()
+        return JsonResponse({'status': 'success', 'message': 'Đã xóa tài liệu'})
+    except TaiLieuTuyenSinh.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Tài liệu không tồn tại'}, status=404)
+
+@csrf_exempt
+def chat_api(request):
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Chỉ hỗ trợ POST'}, status=405)
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+        question = (body.get('message') or '').strip()
+        history = body.get('history') or []
+    except Exception:
+        return JsonResponse({'status': 'error', 'message': 'JSON không hợp lệ'}, status=400)
+    if not question:
+        return JsonResponse({'status': 'error', 'message': 'Câu hỏi trống'}, status=400)
+    try:
+        reply, sources = rag.answer(question, history)
+        return JsonResponse({'status': 'success', 'reply': reply, 'sources': sources})
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Không gọi được Ollama: {e}. Hãy kiểm tra Ollama đang chạy và model đã được pull.'
+        }, status=502)

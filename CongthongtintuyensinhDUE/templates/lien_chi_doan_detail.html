@@ -21,27 +21,24 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-28 sm:pt-36 pb-20 bg-[#faf8ff] min-h-screen">
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
 
   <!-- ====================================================
        1. BREADCRUMB & HERO BANNER LIÊN CHI ĐOÀN
        ==================================================== -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 mb-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4 mb-4">
     
     <!-- Breadcrumb -->
-    <nav class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-slate-500 mb-4 font-medium">
-      <a href="/" class="hover:text-primary transition-colors flex items-center gap-1">
-        <span class="material-symbols-outlined text-[16px]">home</span>
-        <span>Trang chủ</span>
-      </a>
-      <span>/</span>
-      <a href="/khoa/" class="hover:text-primary transition-colors">Khoa &amp; Viện Đào Tạo</a>
-      <span>/</span>
-      <a href="/khoa/{{ faculty.id }}/" class="hover:text-primary transition-colors">{{ faculty.name }}</a>
-      <span>/</span>
-      <a href="/lien-chi-doan/" class="hover:text-primary transition-colors">Liên Chi Đoàn</a>
-      <span>/</span>
-      <span class="text-rose-700 font-bold truncate max-w-[200px] sm:max-w-none">{{ lcd.name|default:"Chi tiết LCĐ" }}</span>
+    <nav class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
+      <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa &amp; Viện Đào Tạo</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/khoa/{{ faculty.id }}/" class="hover:text-primary-container transition-colors">{{ faculty.name }}</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/lien-chi-doan/" class="hover:text-primary-container transition-colors">Liên Chi Đoàn</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-secondary-container font-semibold truncate max-w-[200px] sm:max-w-none">{{ lcd.name|default:"Chi tiết LCĐ" }}</span>
     </nav>
 
     <!-- Hero Card Liên Chi Đoàn -->
@@ -145,7 +142,7 @@
   <!-- ====================================================
        2. NỘI DUNG CHÍNH (Cấu trúc 2 cột: Cột trái 8 phần + Cột phải 4 phần)
        ==================================================== -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
       <!-- CỘT TRÁI (8 Cột): TOÀN BỘ NỘI DUNG CHUYÊN SÂU VỀ LIÊN CHI ĐOÀN -->

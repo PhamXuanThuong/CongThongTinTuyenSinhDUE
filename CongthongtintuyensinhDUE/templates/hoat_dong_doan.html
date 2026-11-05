@@ -17,19 +17,16 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-28 sm:pt-36 pb-20 bg-surface min-h-screen">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
 
     <!-- Breadcrumb -->
-    <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mb-4 font-medium">
-      <a href="/" class="hover:text-primary transition-colors flex items-center gap-1">
-        <span class="material-symbols-outlined text-[16px]">home</span>
-        <span>Trang chủ</span>
-      </a>
-      <span>/</span>
-      <span class="text-slate-500">Dành cho sinh viên</span>
-      <span>/</span>
-      <span class="text-rose-700 font-bold">Hoạt động Đoàn &amp; Hội Sinh viên</span>
+    <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
+      <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/sinh-vien/" class="hover:text-primary-container transition-colors">Dành cho sinh viên</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-secondary-container font-semibold">Hoạt động Đoàn &amp; Hội Sinh viên</span>
     </nav>
 
     <!-- Header Hero Banner -->

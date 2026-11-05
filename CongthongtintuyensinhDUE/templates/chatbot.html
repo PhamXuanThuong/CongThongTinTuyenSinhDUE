@@ -31,10 +31,10 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 flex-1 flex flex-col bg-slate-50">
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
 
     <!-- 3-Panel Workspace Container -->
-    <div class="max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <div class="max-w-7xl w-full mx-auto px-6 lg:px-12 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       
       <!-- ==============================================
            PANEL 1: NGUỒN TÀI LIỆU (CÁN BỘ TƯ VẤN UPLOAD) - 3 COLS
@@ -44,7 +44,7 @@
         <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-[20px] text-[#0072BC]">folder_open</span>
-            <h3 class="font-['Space_Grotesk'] text-sm font-bold text-slate-800">Nguồn tài liệu</h3>
+            <h3 class="font-heading text-sm font-bold text-slate-800">Nguồn tài liệu</h3>
           </div>
           <span id="sources-count-badge" class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">0 tệp</span>
         </div>
@@ -96,7 +96,7 @@
               <span class="px-2 py-0.5 rounded bg-[#0072BC] text-white text-[11px] font-bold">DUE AI BOT</span>
               <span class="text-xs text-slate-400 font-mono" id="active-source-indicator">0 nguồn tham chiếu</span>
             </div>
-            <h3 class="font-['Space_Grotesk'] text-base font-bold text-slate-900 mb-1">
+            <h3 class="font-heading text-base font-bold text-slate-900 mb-1">
               Xin chào! Tôi có thể giúp gì cho bạn về tuyển sinh DUE 2026?
             </h3>
             <p class="text-xs text-slate-600 leading-relaxed">
@@ -106,7 +106,7 @@
 
           <!-- Suggestion Chips -->
           <div id="suggestions-block" class="space-y-2 pt-1">
-            <p class="text-xs font-['Space_Grotesk'] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            <p class="text-xs font-heading font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
               <span class="material-symbols-outlined text-[15px] text-[#F37021]">lightbulb</span>
               Câu hỏi thường gặp:
             </p>
@@ -172,7 +172,7 @@
         
         <div class="pb-3 border-b border-slate-100 flex items-center gap-2">
           <span class="material-symbols-outlined text-[20px] text-[#00A859]">info</span>
-          <h3 class="font-['Space_Grotesk'] text-sm font-bold text-slate-800">Thông tin quan trọng 2026</h3>
+          <h3 class="font-heading text-sm font-bold text-slate-800">Thông tin quan trọng 2026</h3>
         </div>
 
         <!-- Highlight 1 -->
@@ -227,27 +227,43 @@
 <script>
     /* ---- Danh sách nguồn tài liệu do Cán bộ tải lên ---- */
     var uploadedSources = [];
+    var chatHistory = [];
 
-    function handleStaffUpload(e) {
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+
+    async function loadSources() {
+      var res = await fetch('/api/tailieu/');
+      var json = await res.json();
+      uploadedSources = json.data.map(function (d) {
+        return { id: d.id, name: d.name, size: d.size, date: d.date };
+      });
+      renderSourcesList();
+    }
+
+    async function handleStaffUpload(e) {
       var files = e.target.files;
       if (!files || files.length === 0) return;
-
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var sizeStr = formatBytes(file.size);
-        uploadedSources.push({
-          id: 'src-' + Date.now() + '-' + i,
-          name: file.name,
-          size: sizeStr,
-          date: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
-        });
-      }
-
-      // Reset file input
+      var fd = new FormData();
+      for (var i = 0; i < files.length; i++) fd.append('files', files[i]);
       e.target.value = '';
 
-      renderSourcesList();
-      alert('Đã tải lên ' + files.length + ' tài liệu thành công vào cơ sở tri thức của AI!');
+      document.getElementById('sources-count-badge').textContent = 'Đang xử lý...';
+      try {
+        var res = await fetch('/api/tailieu/upload/', { method: 'POST', body: fd });
+        var json = await res.json();
+        if (json.status !== 'success') throw new Error(json.message);
+        var errs = json.data.filter(function (d) { return d.error; });
+        var msg = 'Đã nạp ' + (json.data.length - errs.length) + ' tài liệu vào AI.';
+        if (errs.length) msg += '\nLỗi: ' + errs.map(function (d) { return d.name + ' - ' + d.error; }).join('\n');
+        alert(msg);
+      } catch (err) {
+        alert('Tải lên thất bại: ' + err.message);
+      }
+      loadSources();
     }
 
     function formatBytes(bytes) {
@@ -258,10 +274,52 @@
       return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
     }
 
-    function removeSource(id) {
-      uploadedSources = uploadedSources.filter(function(s) { return s.id !== id; });
-      renderSourcesList();
+    async function removeSource(id) {
+      if (!confirm('Xóa tài liệu này khỏi cơ sở tri thức?')) return;
+      await fetch('/api/tailieu/' + id + '/delete/', { method: 'POST' });
+      loadSources();
     }
+
+    /* ---- Chat gọi API RAG ---- */
+    async function handleChatSubmit(e) {
+      e.preventDefault();
+      var input = document.getElementById('chat-input');
+      var query = input.value.trim();
+      if (!query) return;
+      input.value = '';
+
+      var sug = document.getElementById('suggestions-block');
+      if (sug) sug.style.display = 'none';
+
+      appendMessage('user', query);
+      var typingId = appendTypingIndicator();
+
+      try {
+        var res = await fetch('/api/chat/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: query, history: chatHistory })
+        });
+        var json = await res.json();
+        removeTypingIndicator(typingId);
+        if (json.status !== 'success') {
+          appendMessage('assistant', '⚠️ ' + (json.message || 'Có lỗi xảy ra'));
+          return;
+        }
+        var text = json.reply;
+        if (json.sources && json.sources.length) {
+          text += '\n\n**Nguồn tham khảo:** ' + json.sources.join(', ');
+        }
+        appendMessage('assistant', text);
+        chatHistory.push({ role: 'user', content: query });
+        chatHistory.push({ role: 'assistant', content: json.reply });
+      } catch (err) {
+        removeTypingIndicator(typingId);
+        appendMessage('assistant', '⚠️ Không kết nối được máy chủ.');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadSources);
 
     function renderSourcesList() {
       var listEl = document.getElementById('sources-list');
@@ -291,7 +349,7 @@
                   '<div class="flex items-center gap-2 min-w-0 flex-1">' +
                     '<span class="material-symbols-outlined text-[18px] text-[#0072BC] flex-shrink-0">article</span>' +
                     '<div class="min-w-0 flex-1">' +
-                      '<p class="font-semibold text-slate-800 truncate" title="' + src.name + '">' + src.name + '</p>' +
+                      '<p class="font-semibold text-slate-800 truncate" title="' + escapeHtml(src.name) + '">' + escapeHtml(src.name) + '</p>' +
                       '<p class="text-[10px] text-slate-400">' + src.size + ' • Lúc ' + src.date + '</p>' +
                     '</div>' +
                   '</div>' +
@@ -304,30 +362,7 @@
       listEl.innerHTML = html;
     }
 
-    /* ---- Knowledge Base for demo chat ---- */
-    var knowledgeBase = {
-      phuong_thuc: "Năm 2026, Trường Đại học Kinh tế - ĐH Đà Nẵng áp dụng 4 phương thức xét tuyển chính:\n\n" +
-                   "1. **Phương thức 1 (PT1):** Xét tuyển thẳng theo Quy chế của Bộ GD&ĐT.\n" +
-                   "2. **Phương thức 2 (PT2):** Xét tuyển theo kết quả học tập THPT (Học bạ).\n" +
-                   "3. **Phương thức 3 (PT3):** Xét kết quả kỳ thi Đánh giá năng lực của ĐHQG TP.HCM năm 2026.\n" +
-                   "4. **Phương thức 4 (PT4):** Xét tuyển theo kết quả thi Tốt nghiệp THPT 2026.\n\n" +
-                   "👉 Tổng chỉ tiêu năm 2026 là 4.600 sinh viên cho 31 ngành/chuyên ngành đào tạo.",
-
-      hoc_ba: "Về điều kiện và cách tính điểm xét tuyển theo Học bạ (Phương thức 2) tại DUE:\n\n" +
-              "• **Điều kiện:** Tốt nghiệp THPT năm 2026 hoặc đã tốt nghiệp các năm trước, đạt học lực Khá trở lên.\n" +
-              "• **Công thức:** Điểm xét tuyển = Điểm TB 3 môn theo tổ hợp + Điểm ưu tiên + Điểm cộng khuyến khích (nếu có).\n" +
-              "• **Khuyến khích:** Chứng chỉ IELTS từ 5.5 trở lên được cộng điểm ưu đãi.",
-
-      hoc_phi: "Thông tin Học phí và Học bổng năm học 2026 - 2027 tại DUE:\n\n" +
-               "• **Chương trình chuẩn:** Dao động từ 19.500.000 - 24.500.000 đồng/năm học.\n" +
-               "• **Chương trình Bán phần/Toàn phần tiếng Anh:** Khoảng 38.000.000 - 45.000.000 đồng/năm học.\n" +
-               "• **Quỹ học bổng 15 Tỷ Đồng:** Học bổng 100% học phí toàn khóa dành cho Thủ khoa, giải Quốc gia và năng khiếu.",
-
-      default_answer: "Cảm ơn câu hỏi của bạn! Chatbot đã ghi nhận thông tin. Để được tư vấn chi tiết nhất theo đúng nguyện vọng hồ sơ của bạn, xin vui lòng liên hệ Ban tuyển sinh DUE:\n\n" +
-                      "• 📞 Hotline: **0236 3836 169 - 0236 3847 139**\n" +
-                      "• 🌐 Website: **due.udn.vn**\n" +
-                      "• ✉️ Email: **tuyensinh@due.edu.vn**"
-    };
+    
 
     function handleKey(e) {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -341,60 +376,13 @@
       handleChatSubmit(new Event('submit'));
     }
 
-    function handleChatSubmit(e) {
-      e.preventDefault();
-      var input = document.getElementById('chat-input');
-      var query = input.value.trim();
-      if (!query) return;
-
-      input.value = '';
-
-      var suggestions = document.getElementById('suggestions-block');
-      if (suggestions) suggestions.style.display = 'none';
-
-      appendMessage('user', query);
-
-      var typingId = appendTypingIndicator();
-
-      // Gọi API Backend Django AI Chatbot
-      fetch('/api/chatbot/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({ question: query })
-      })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        removeTypingIndicator(typingId);
-        if (data && data.status === 'success' && data.cau_tra_loi) {
-          appendMessage('assistant', data.cau_tra_loi);
-        } else {
-          appendMessage('assistant', knowledgeBase.default_answer);
-        }
-      })
-      .catch(function(err) {
-        removeTypingIndicator(typingId);
-        var reply = knowledgeBase.default_answer;
-        var lower = query.toLowerCase();
-        if (lower.indexOf('phương thức') !== -1 || lower.indexOf('tổ hợp') !== -1 || lower.indexOf('xét tuyển') !== -1) {
-          reply = knowledgeBase.phuong_thuc;
-        } else if (lower.indexOf('học bạ') !== -1 || lower.indexOf('pt2') !== -1 || lower.indexOf('điều kiện') !== -1) {
-          reply = knowledgeBase.hoc_ba;
-        } else if (lower.indexOf('học phí') !== -1 || lower.indexOf('học bổng') !== -1 || lower.indexOf('tiền') !== -1) {
-          reply = knowledgeBase.hoc_phi;
-        }
-        appendMessage('assistant', reply);
-      });
-    }
 
     function appendMessage(sender, text) {
       var list = document.getElementById('messages-list');
       var msgDiv = document.createElement('div');
       msgDiv.className = 'flex items-start gap-3 ' + (sender === 'user' ? 'justify-end' : 'justify-start');
 
-      var formatted = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      var formatted = escapeHtml(text).replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
       if (sender === 'user') {
         msgDiv.innerHTML = '<div class="max-w-[85%] rounded-2xl p-3.5 bg-[#0072BC] text-white text-xs sm:text-sm shadow-sm">' +
@@ -444,6 +432,7 @@
 
     function newChat() {
       document.getElementById('messages-list').innerHTML = '';
+      chatHistory = [];
       var suggestions = document.getElementById('suggestions-block');
       if (suggestions) suggestions.style.display = 'block';
     }

@@ -42,15 +42,15 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 flex-1 bg-gradient-to-b from-slate-50 via-white to-slate-50">
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
 
     <!-- 2. Hero Section Header (Font Space Grotesk) -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pt-8 pb-6 text-center">
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-6 text-center">
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0072BC] text-xs font-bold tracking-wider uppercase mb-3">
         <span class="w-2 h-2 rounded-full bg-[#00A859]"></span>
         AI DUE CAREER ADVISORY
       </div>
-      <h1 class="font-['Space_Grotesk'] text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
+      <h1 class="font-heading text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
         HỆ THỐNG TƯ VẤN <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC]">CHỌN NGÀNH HỌC</span>
       </h1>
       <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
@@ -66,7 +66,7 @@
     </section>
 
     <!-- 3. Main Form & Result Grid -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pb-20">
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 pb-20">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- ==============================================
@@ -83,7 +83,7 @@
                 <span class="material-symbols-outlined text-[24px]">assignment_ind</span>
               </div>
               <div>
-                <h2 class="font-['Space_Grotesk'] text-lg sm:text-xl font-bold text-slate-900">Nhập thông tin học sinh</h2>
+                <h2 class="font-heading text-lg sm:text-xl font-bold text-slate-900">Nhập thông tin học sinh</h2>
                 <p class="text-xs sm:text-sm text-slate-500">Điền đầy đủ thông tin để hệ thống phân tích và đề xuất ngành học phù hợp nhất.</p>
               </div>
             </div>
@@ -93,7 +93,7 @@
               
               <!-- 1. THÔNG TIN CÁ NHÂN -->
               <div>
-                <h3 class="font-['Space_Grotesk'] text-xs font-bold text-[#0072BC] uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                <h3 class="font-heading text-xs font-bold text-[#0072BC] uppercase tracking-wider mb-3 flex items-center gap-1.5">
                   <span class="w-1.5 h-3.5 rounded bg-[#0072BC]"></span>
                   1. Thông tin cá nhân
                 </h3>
@@ -231,7 +231,7 @@
                 <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 sm:p-5 mb-5">
                   <div class="flex items-center gap-2 mb-1">
                     <span class="w-2.5 h-2.5 rounded-full bg-[#00A859]"></span>
-                    <h3 class="font-['Space_Grotesk'] text-sm sm:text-base font-bold text-[#00A859]">Trắc nghiệm nghề nghiệp Holland (RIASEC)</h3>
+                    <h3 class="font-heading text-sm sm:text-base font-bold text-[#00A859]">Trắc nghiệm nghề nghiệp Holland (RIASEC)</h3>
                   </div>
                   <p class="text-xs text-slate-600">Chọn <strong>đúng 01 đáp án</strong> ở mỗi câu hỏi phản ánh chính xác nhất tính cách và sở thích của bạn (chưa có lựa chọn mặc định):</p>
                 </div>
@@ -241,7 +241,7 @@
 
                   <!-- Câu 1 -->
                   <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
                       <span class="text-[#0072BC]">Câu 1:</span> Nếu được chọn một hoạt động cho buổi ngoại khóa, bạn sẽ thích:
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -292,7 +292,7 @@
 
                   <!-- Câu 2 -->
                   <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
                       <span class="text-[#0072BC]">Câu 2:</span> Khi làm bài tập nhóm, bạn thường:
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -343,7 +343,7 @@
 
                   <!-- Câu 3 -->
                   <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
                       <span class="text-[#0072BC]">Câu 3:</span> Bạn cảm thấy vui nhất khi:
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -394,7 +394,7 @@
 
                   <!-- Câu 4 -->
                   <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
                       <span class="text-[#0072BC]">Câu 4:</span> Nếu có một vấn đề xảy ra, bạn thường:
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -445,7 +445,7 @@
 
                   <!-- Câu 5 -->
                   <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
                       <span class="text-[#0072BC]">Câu 5:</span> Bạn thích môi trường học tập/làm việc:
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -496,7 +496,7 @@
 
                   <!-- Câu 6 -->
                   <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-['Space_Grotesk'] text-sm font-bold text-slate-800 mb-3">
+                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
                       <span class="text-[#0072BC]">Câu 6:</span> Bạn bè thường nhận xét bạn là người:
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -550,7 +550,7 @@
 
               <!-- 3. ĐỊNH HƯỚNG & NĂNG LỰC CÁ NHÂN -->
               <div class="pt-4 border-t border-slate-100 space-y-4">
-                <h3 class="font-['Space_Grotesk'] text-xs font-bold text-[#F37021] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <h3 class="font-heading text-xs font-bold text-[#F37021] uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <span class="w-1.5 h-3.5 rounded bg-[#F37021]"></span>
                   3. Định hướng & Năng lực
                 </h3>
@@ -589,7 +589,7 @@
               <!-- Submit button -->
               <div class="pt-4 border-t border-slate-100 flex flex-col items-center">
                 <button type="submit"
-                  class="font-['Space_Grotesk'] w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC] hover:opacity-95 text-white font-bold text-base shadow-xl shadow-orange-500/20 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2">
+                  class="font-heading w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC] hover:opacity-95 text-white font-bold text-base shadow-xl shadow-orange-500/20 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2">
                   <span class="material-symbols-outlined text-[20px]">send</span>
                   <span>GỬI HỆ THỐNG</span>
                 </button>
@@ -612,8 +612,8 @@
             <div class="p-6">
               <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                 <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#0072BC] font-bold flex items-center justify-center text-sm font-['Space_Grotesk']">1</div>
-                  <h2 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base sm:text-lg">Tóm tắt hồ sơ</h2>
+                  <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#0072BC] font-bold flex items-center justify-center text-sm font-heading">1</div>
+                  <h2 class="font-heading font-bold text-slate-900 text-base sm:text-lg">Tóm tắt hồ sơ</h2>
                 </div>
                 <span id="profile-status-badge" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-500 text-xs font-semibold">Chưa có dữ liệu</span>
               </div>
@@ -623,7 +623,7 @@
                 <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
                   <span class="material-symbols-outlined text-[32px]">folder_open</span>
                 </div>
-                <h4 class="font-['Space_Grotesk'] font-bold text-slate-700 text-sm mb-1">Chưa có thông tin hồ sơ</h4>
+                <h4 class="font-heading font-bold text-slate-700 text-sm mb-1">Chưa có thông tin hồ sơ</h4>
                 <p class="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
                   Vui lòng điền đầy đủ các thông tin ở biểu mẫu bên trái và nhấn <strong class="text-[#F37021]">Gửi hệ thống</strong> để lưu lại và xem tóm tắt hồ sơ của bạn.
                 </p>
@@ -671,15 +671,15 @@
                 <!-- Interests & Goals -->
                 <div class="space-y-2 text-xs">
                   <div class="p-3 bg-orange-50/60 border border-orange-100 rounded-xl">
-                    <span class="font-['Space_Grotesk'] font-bold text-[#F37021] block mb-0.5">Sở thích cá nhân:</span>
+                    <span class="font-heading font-bold text-[#F37021] block mb-0.5">Sở thích cá nhân:</span>
                     <p id="res-interests" class="text-slate-700 leading-relaxed">-</p>
                   </div>
                   <div class="p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl">
-                    <span class="font-['Space_Grotesk'] font-bold text-[#00A859] block mb-0.5">Năng lực, điểm mạnh:</span>
+                    <span class="font-heading font-bold text-[#00A859] block mb-0.5">Năng lực, điểm mạnh:</span>
                     <p id="res-strengths" class="text-slate-700 leading-relaxed">-</p>
                   </div>
                   <div class="p-3 bg-blue-50/60 border border-blue-100 rounded-xl">
-                    <span class="font-['Space_Grotesk'] font-bold text-[#0072BC] block mb-0.5">Định hướng nghề nghiệp:</span>
+                    <span class="font-heading font-bold text-[#0072BC] block mb-0.5">Định hướng nghề nghiệp:</span>
                     <p id="res-goals" class="text-slate-700 leading-relaxed">-</p>
                   </div>
                 </div>
@@ -696,8 +696,8 @@
             <div class="p-6">
               <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                 <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-[#00A859] font-bold flex items-center justify-center text-sm font-['Space_Grotesk']">2</div>
-                  <h2 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base sm:text-lg">Ngành phù hợp tại các trường</h2>
+                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-[#00A859] font-bold flex items-center justify-center text-sm font-heading">2</div>
+                  <h2 class="font-heading font-bold text-slate-900 text-base sm:text-lg">Ngành phù hợp tại các trường</h2>
                 </div>
                 <span class="px-2.5 py-1 rounded-none bg-emerald-100 text-[#00A859] text-[11px] font-bold">Mô hình Holland</span>
               </div>
@@ -706,7 +706,7 @@
               <div class="mb-4">
                 <div class="text-xs text-slate-500 mb-2 font-semibold">Kết quả phân tích RIASEC của bạn:</div>
                 <div class="flex flex-wrap gap-2 text-xs">
-                  <span id="pill-code" class="px-3 py-1.5 rounded-none bg-[#0072BC] text-white font-bold font-['Space_Grotesk']">Mã Holland: -</span>
+                  <span id="pill-code" class="px-3 py-1.5 rounded-none bg-[#0072BC] text-white font-bold font-heading">Mã Holland: -</span>
                   <span id="pill-r" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">R: 0</span>
                   <span id="pill-i" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">I: 0</span>
                   <span id="pill-a" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">A: 0</span>
@@ -719,22 +719,22 @@
               <!-- Personality Description -->
               <div class="space-y-3 mb-4">
                 <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
-                  <h4 class="font-['Space_Grotesk'] font-bold text-[#0072BC] mb-1">Nhóm Thực tế - Kỹ thuật (R)</h4>
+                  <h4 class="font-heading font-bold text-[#0072BC] mb-1">Nhóm Thực tế - Kỹ thuật (R)</h4>
                   <p class="text-slate-600 leading-relaxed">Thực tế, ưa hành động cụ thể, tỉ mỉ, thích khám phá và thao tác với hệ thống công việc rõ ràng.</p>
                 </div>
                 <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
-                  <h4 class="font-['Space_Grotesk'] font-bold text-[#00A859] mb-1">Nhóm Xã hội (S)</h4>
+                  <h4 class="font-heading font-bold text-[#00A859] mb-1">Nhóm Xã hội (S)</h4>
                   <p class="text-slate-600 leading-relaxed">Quảng giao, biết lắng nghe, kiên nhẫn, thích tương tác, hỗ trợ và làm việc cùng đồng đội.</p>
                 </div>
                 <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
-                  <h4 class="font-['Space_Grotesk'] font-bold text-[#F37021] mb-1">Nhóm Nghệ thuật (A)</h4>
+                  <h4 class="font-heading font-bold text-[#F37021] mb-1">Nhóm Nghệ thuật (A)</h4>
                   <p class="text-slate-600 leading-relaxed">Sáng tạo, giàu cảm xúc, linh hoạt và luôn dồi dào ý tưởng mới lạ trong công việc.</p>
                 </div>
               </div>
 
               <!-- Phù hợp khối công việc -->
               <div class="mb-4">
-                <h4 class="font-['Space_Grotesk'] text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Khối công việc phù hợp:</h4>
+                <h4 class="font-heading text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Khối công việc phù hợp:</h4>
                 <div class="flex flex-wrap gap-1.5 text-[11px]">
                   <span class="px-2.5 py-1 rounded-none bg-blue-50 text-[#0072BC] font-semibold border border-blue-100">Kinh tế & Quản trị kinh doanh</span>
                   <span class="px-2.5 py-1 rounded-none bg-orange-50 text-[#F37021] font-semibold border border-orange-100">Marketing & Truyền thông</span>
@@ -745,7 +745,7 @@
 
               <!-- Các trường phù hợp -->
               <div>
-                <h4 class="font-['Space_Grotesk'] text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Các trường đại học phù hợp:</h4>
+                <h4 class="font-heading text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Các trường đại học phù hợp:</h4>
                 <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
                   <li><strong class="text-[#0072BC]">Trường Đại học Kinh tế - ĐH Đà Nẵng (DUE)</strong></li>
                   <li>Trường Đại học Kinh tế Quốc dân (NEU)</li>
@@ -765,8 +765,8 @@
             <div class="p-6">
               <div class="flex items-center justify-between mb-4 pb-3 border-b border-blue-100">
                 <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F37021] to-[#0072BC] text-white font-bold flex items-center justify-center text-sm font-['Space_Grotesk']">3</div>
-                  <h2 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base sm:text-lg">Top 3 ngành phù hợp tại DUE</h2>
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F37021] to-[#0072BC] text-white font-bold flex items-center justify-center text-sm font-heading">3</div>
+                  <h2 class="font-heading font-bold text-slate-900 text-base sm:text-lg">Top 3 ngành phù hợp tại DUE</h2>
                 </div>
               </div>
 
@@ -774,9 +774,9 @@
                 
                 <!-- Ngành 1 -->
                 <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-orange-100 text-[#F37021] flex items-center justify-center font-bold flex-shrink-0 text-sm font-['Space_Grotesk']">#1</div>
+                  <div class="w-8 h-8 rounded-xl bg-orange-100 text-[#F37021] flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#1</div>
                   <div>
-                    <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-sm">Marketing & Thương mại điện tử</h4>
+                    <h4 class="font-heading font-bold text-slate-900 text-sm">Marketing & Thương mại điện tử</h4>
                     <p class="text-xs text-slate-500 mt-0.5">Phù hợp tính cách sáng tạo, thích giao tiếp và năng động dẫn đầu.</p>
                     <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-emerald-50 text-[#00A859] text-[10px] font-bold">Chuẩn Quốc tế AUN-QA</span>
                   </div>
@@ -784,9 +784,9 @@
 
                 <!-- Ngành 2 -->
                 <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-blue-100 text-[#0072BC] flex items-center justify-center font-bold flex-shrink-0 text-sm font-['Space_Grotesk']">#2</div>
+                  <div class="w-8 h-8 rounded-xl bg-blue-100 text-[#0072BC] flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#2</div>
                   <div>
-                    <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-sm">Khoa học dữ liệu & Kinh tế số</h4>
+                    <h4 class="font-heading font-bold text-slate-900 text-sm">Khoa học dữ liệu & Kinh tế số</h4>
                     <p class="text-xs text-slate-500 mt-0.5">Dành cho bạn đam mê kỹ thuật thực hành, tư duy logic và ứng dụng công nghệ 4.0.</p>
                     <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-blue-50 text-[#0072BC] text-[10px] font-bold">Ngành mũi nhọn 2026</span>
                   </div>
@@ -794,9 +794,9 @@
 
                 <!-- Ngành 3 -->
                 <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-emerald-100 text-[#00A859] flex items-center justify-center font-bold flex-shrink-0 text-sm font-['Space_Grotesk']">#3</div>
+                  <div class="w-8 h-8 rounded-xl bg-emerald-100 text-[#00A859] flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#3</div>
                   <div>
-                    <h4 class="font-['Space_Grotesk'] font-bold text-slate-900 text-sm">Kinh doanh quốc tế</h4>
+                    <h4 class="font-heading font-bold text-slate-900 text-sm">Kinh doanh quốc tế</h4>
                     <p class="text-xs text-slate-500 mt-0.5">Môi trường toàn cầu, giao thoa văn hóa, phát triển kỹ năng đàm phán và lãnh đạo.</p>
                     <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-orange-50 text-[#F37021] text-[10px] font-bold">98.5% Việc làm</span>
                   </div>
@@ -810,8 +810,8 @@
           <!-- 4. THÔNG TIN CHI TIẾT TẠI DUE -->
           <div class="bg-white rounded-3xl shadow-lg border border-slate-200/80 p-6">
             <div class="flex items-center gap-2.5 mb-4 pb-3 border-b border-slate-100">
-              <div class="w-8 h-8 rounded-lg bg-orange-100 text-[#F37021] font-bold flex items-center justify-center text-sm font-['Space_Grotesk']">4</div>
-              <h2 class="font-['Space_Grotesk'] font-bold text-slate-900 text-base sm:text-lg">Kênh thông tin tuyển sinh DUE</h2>
+              <div class="w-8 h-8 rounded-lg bg-orange-100 text-[#F37021] font-bold flex items-center justify-center text-sm font-heading">4</div>
+              <h2 class="font-heading font-bold text-slate-900 text-base sm:text-lg">Kênh thông tin tuyển sinh DUE</h2>
             </div>
             
             <div class="space-y-3 text-xs">
@@ -1125,9 +1125,9 @@
               var colors = ['bg-orange-100 text-[#F37021]', 'bg-blue-100 text-[#0072BC]', 'bg-emerald-100 text-[#00A859]'];
               var colorClass = colors[idx % 3];
               html += '<div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">' +
-                      '<div class="w-8 h-8 rounded-xl ' + colorClass + ' flex items-center justify-center font-bold flex-shrink-0 text-sm font-[\'Space_Grotesk\']">#' + (idx + 1) + '</div>' +
+                      '<div class="w-8 h-8 rounded-xl ' + colorClass + ' flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#' + (idx + 1) + '</div>' +
                       '<div class="flex-1 min-w-0">' +
-                      '<h4 class="font-[\'Space_Grotesk\'] font-bold text-slate-900 text-sm">' + m.ten + '</h4>' +
+                      '<h4 class="font-heading font-bold text-slate-900 text-sm">' + m.ten + '</h4>' +
                       '<p class="text-xs text-slate-500 mt-0.5">' + m.khoa + ' • Mã: ' + m.ma + '</p>' +
                       '<span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-blue-50 text-[#0072BC] text-[10px] font-bold">Điểm chuẩn: ' + m.diem + 'đ</span>' +
                       '</div></div>';
