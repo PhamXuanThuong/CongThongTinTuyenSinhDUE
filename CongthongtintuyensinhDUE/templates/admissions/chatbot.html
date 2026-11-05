@@ -50,6 +50,7 @@
         </div>
 
         <div class="p-4 space-y-4">
+          {% if user.is_staff %}
           <!-- Upload Box dành cho Cán bộ tư vấn -->
           <div class="p-4 rounded-xl border-2 border-dashed border-slate-200 hover:border-[#0072BC] bg-slate-50/50 hover:bg-blue-50/30 transition-all text-center">
             <input type="file" id="staff-file-input" multiple onchange="handleStaffUpload(event)" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.md,.xlsx">
@@ -59,9 +60,10 @@
                 <span class="material-symbols-outlined text-[22px]">cloud_upload</span>
               </div>
               <p class="text-xs font-bold text-[#0072BC]">Tải lên tài liệu mới</p>
-              <p class="text-[10px] text-slate-400 mt-0.5">PDF, DOCX, CSV, TXT, MD</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">PDF, DOCX, XLSX, CSV, TXT, MD</p>
             </label>
           </div>
+          {% endif %}
 
           <!-- Empty State (Khi chưa có file tải lên) -->
           <div id="sources-empty-state" class="py-6 px-2 text-center text-slate-400">
@@ -76,6 +78,12 @@
         <!-- Role tag -->
         <div class="p-3 bg-slate-50 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1.5">
           <span class="material-symbols-outlined text-[15px] text-[#F37021]">admin_panel_settings</span>
+          {% if user.is_staff %}
+            <a href="/can-bo/hoi-dap/" class="font-bold text-[#0072BC] hover:underline">Trả lời câu hỏi đang chờ</a>
+            <span id="staff-pending-badge" class="ml-auto px-1.5 py-0.5 rounded-full bg-red-100 text-red-600 font-bold hidden"></span>
+          {% else %}
+            <span>Tài liệu do cán bộ tuyển sinh DUE cung cấp</span>
+          {% endif %}
         </div>
       </div>
 
@@ -228,6 +236,57 @@
     /* ---- Danh sách nguồn tài liệu do Cán bộ tải lên ---- */
     var uploadedSources = [];
     var chatHistory = [];
+    var IS_STAFF = {% if user.is_staff %}true{% else %}false{% endif %};
+    var CSRF_TOKEN = '{{ csrf_token }}';
+
+    /* ---- Mã phiên chat của người hỏi (để nhận câu trả lời của cán bộ) ---- */
+    function storageGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function storageSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    var CLIENT_ID = storageGet('due_chat_client_id');
+    if (!CLIENT_ID || !/^[A-Za-z0-9_-]{8,64}$/.test(CLIENT_ID)) {
+      CLIENT_ID = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+      storageSet('due_chat_client_id', CLIENT_ID);
+    }
+    var seenAnswers = {};
+    try { seenAnswers = JSON.parse(storageGet('due_chat_seen') || '{}') || {}; } catch (e) { seenAnswers = {}; }
+    var pendingCount = 0;
+    var pollTimer = null;
+
+    async function pollStaffAnswers() {
+      try {
+        var res = await fetch('/api/chat/updates/?client_id=' + encodeURIComponent(CLIENT_ID));
+        var json = await res.json();
+        if (json.status !== 'success') return;
+        pendingCount = 0;
+        json.data.forEach(function (q) {
+          if (q.trang_thai === 'cho') { pendingCount++; return; }
+          if (seenAnswers[q.id]) return;
+          seenAnswers[q.id] = 1;
+          appendMessage('staff', '**Trả lời cho câu hỏi:** "' + q.cau_hoi + '"\n\n' + q.tra_loi);
+          chatHistory.push({ role: 'assistant', content: q.tra_loi });
+        });
+        storageSet('due_chat_seen', JSON.stringify(seenAnswers));
+      } catch (e) {}
+      schedulePoll();
+    }
+
+    function schedulePoll() {
+      clearTimeout(pollTimer);
+      if (pendingCount > 0) pollTimer = setTimeout(pollStaffAnswers, 5000);
+    }
+
+    async function refreshStaffBadge() {
+      if (!IS_STAFF) return;
+      try {
+        var res = await fetch('/api/can-bo/cau-hoi/?trang_thai=cho');
+        var json = await res.json();
+        var b = document.getElementById('staff-pending-badge');
+        if (b && json.status === 'success') {
+          b.textContent = json.pending_count + ' chờ';
+          b.classList.toggle('hidden', json.pending_count === 0);
+        }
+      } catch (e) {}
+    }
 
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, function (c) {
@@ -253,7 +312,7 @@
 
       document.getElementById('sources-count-badge').textContent = 'Đang xử lý...';
       try {
-        var res = await fetch('/api/tailieu/upload/', { method: 'POST', body: fd });
+        var res = await fetch('/api/tailieu/upload/', { method: 'POST', body: fd, headers: { 'X-CSRFToken': CSRF_TOKEN } });
         var json = await res.json();
         if (json.status !== 'success') throw new Error(json.message);
         var errs = json.data.filter(function (d) { return d.error; });
@@ -276,7 +335,7 @@
 
     async function removeSource(id) {
       if (!confirm('Xóa tài liệu này khỏi cơ sở tri thức?')) return;
-      await fetch('/api/tailieu/' + id + '/delete/', { method: 'POST' });
+      await fetch('/api/tailieu/' + id + '/delete/', { method: 'POST', headers: { 'X-CSRFToken': CSRF_TOKEN } });
       loadSources();
     }
 
@@ -298,10 +357,14 @@
         var res = await fetch('/api/chat/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: query, history: chatHistory })
+          body: JSON.stringify({ message: query, history: chatHistory, client_id: CLIENT_ID })
         });
         var json = await res.json();
         removeTypingIndicator(typingId);
+        if (res.status === 429) {
+          appendMessage('assistant', '⚠️ Bạn đang gửi quá nhanh, vui lòng chờ khoảng 1 phút rồi hỏi tiếp nhé.');
+          return;
+        }
         if (json.status !== 'success') {
           appendMessage('assistant', '⚠️ ' + (json.message || 'Có lỗi xảy ra'));
           return;
@@ -310,16 +373,21 @@
         if (json.sources && json.sources.length) {
           text += '\n\n**Nguồn tham khảo:** ' + json.sources.join(', ');
         }
-        appendMessage('assistant', text);
+        appendMessage(json.handoff ? 'handoff' : 'assistant', text);
         chatHistory.push({ role: 'user', content: query });
-        chatHistory.push({ role: 'assistant', content: json.reply });
+        if (!json.handoff) chatHistory.push({ role: 'assistant', content: json.reply });
+        if (json.handoff) { pendingCount++; schedulePoll(); refreshStaffBadge(); }
       } catch (err) {
         removeTypingIndicator(typingId);
         appendMessage('assistant', '⚠️ Không kết nối được máy chủ.');
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadSources);
+    document.addEventListener('DOMContentLoaded', function () {
+      loadSources();
+      pollStaffAnswers();   // nhận câu trả lời cán bộ gửi khi người hỏi đã rời trang
+      refreshStaffBadge();
+    });
 
     function renderSourcesList() {
       var listEl = document.getElementById('sources-list');
@@ -353,9 +421,10 @@
                       '<p class="text-[10px] text-slate-400">' + src.size + ' • Lúc ' + src.date + '</p>' +
                     '</div>' +
                   '</div>' +
+                  (IS_STAFF ?
                   '<button onclick="removeSource(\'' + src.id + '\')" class="w-6 h-6 rounded-md hover:bg-red-50 text-slate-400 hover:text-red-500 flex items-center justify-center transition-colors flex-shrink-0" title="Xóa tài liệu">' +
                     '<span class="material-symbols-outlined text-[16px]">delete</span>' +
-                  '</button>' +
+                  '</button>' : '') +
                 '</div>';
       });
 
@@ -388,6 +457,14 @@
         msgDiv.innerHTML = '<div class="max-w-[85%] rounded-2xl p-3.5 bg-[#0072BC] text-white text-xs sm:text-sm shadow-sm">' +
                            formatted + '</div>' +
                            '<div class="w-7 h-7 rounded-full bg-slate-300 flex items-center justify-center text-xs font-bold text-slate-700 flex-shrink-0">Tôi</div>';
+      } else if (sender === 'staff' || sender === 'handoff') {
+        var isStaff = sender === 'staff';
+        msgDiv.innerHTML = '<div class="w-7 h-7 rounded-full ' + (isStaff ? 'bg-[#00A859]' : 'bg-[#F37021]') + ' flex items-center justify-center text-white text-xs flex-shrink-0 shadow-sm">' +
+                           '<span class="material-symbols-outlined text-[16px]">' + (isStaff ? 'support_agent' : 'forward_to_inbox') + '</span></div>' +
+                           '<div class="max-w-[88%] rounded-2xl p-4 ' + (isStaff ? 'bg-emerald-50 border-emerald-200' : 'bg-orange-50 border-orange-200') + ' border text-slate-800 text-xs sm:text-sm shadow-sm leading-relaxed">' +
+                           '<div class="flex items-center gap-1.5 mb-1.5 text-xs font-semibold ' + (isStaff ? 'text-[#00A859]' : 'text-[#F37021]') + '">' +
+                           (isStaff ? 'Cán bộ tuyển sinh DUE' : 'Đã chuyển cho cán bộ tuyển sinh') +
+                           '</div>' + formatted + '</div>';
       } else {
         msgDiv.innerHTML = '<div class="w-7 h-7 rounded-full bg-gradient-to-tr from-[#F37021] to-[#0072BC] flex items-center justify-center text-white text-xs flex-shrink-0 shadow-sm">' +
                            '<span class="material-symbols-outlined text-[16px]">smart_toy</span></div>' +

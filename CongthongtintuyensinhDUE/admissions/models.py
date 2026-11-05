@@ -661,3 +661,33 @@ class DocumentChunk(models.Model):
 
     def __str__(self):
         return f"{self.source} #{self.chunk_index}"
+
+
+# ========================================================
+# 13. CÂU HỎI CHATBOT CHUYỂN CHO CÁN BỘ TUYỂN SINH
+# ========================================================
+
+class CauHoiChoTraLoi(models.Model):
+    TRANG_THAI_CHOICES = [
+        ('cho', 'Đang chờ cán bộ trả lời'),
+        ('da_tra_loi', 'Đã trả lời'),
+    ]
+
+    client_id = models.CharField(max_length=64, db_index=True, verbose_name="Mã phiên người hỏi")
+    cau_hoi = models.TextField(verbose_name="Câu hỏi")
+    ngu_canh = models.TextField(blank=True, verbose_name="Hội thoại trước đó")
+    tra_loi = models.TextField(blank=True, verbose_name="Câu trả lời của cán bộ")
+    trang_thai = models.CharField(max_length=20, choices=TRANG_THAI_CHOICES, default='cho', db_index=True, verbose_name="Trạng thái")
+    can_bo = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Cán bộ trả lời")
+    da_them_kien_thuc = models.BooleanField(default=False, verbose_name="Đã thêm vào kho kiến thức")
+    ngay_tao = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian hỏi")
+    ngay_tra_loi = models.DateTimeField(null=True, blank=True, verbose_name="Thời gian trả lời")
+
+    class Meta:
+        db_table = 'tuyensinh_cauhoichotraloi'
+        verbose_name = "Câu hỏi chờ cán bộ trả lời"
+        verbose_name_plural = "13. Câu hỏi Chatbot chờ cán bộ trả lời"
+        ordering = ['-ngay_tao']
+
+    def __str__(self):
+        return f"[{self.get_trang_thai_display()}] {self.cau_hoi[:60]}"

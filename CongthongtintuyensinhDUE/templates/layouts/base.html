@@ -1471,23 +1471,7 @@
        FLOATING AI CHATBOT BUBBLE WIDGET
        ==================================================== -->
   {% block floating_chat %}
-  <div class="fixed bottom-6 right-6 z-50 flex items-center justify-center group">
-    <div class="absolute right-full mr-4 bg-white px-4 py-2.5 rounded-2xl shadow-xl shadow-blue-900/10 border border-slate-100 flex-col items-end w-max pointer-events-none hidden md:flex transition-transform duration-200" style="transform: translateX(10px);">
-      <span class="text-xs font-semibold text-slate-500 mb-0.5">Bạn cần hỗ trợ tuyển sinh?</span>
-      <span class="text-sm font-extrabold text-[#0072BC] tracking-tight flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-[#00A859] animate-pulse"></span>
-        Chat ngay với DUE
-      </span>
-      <div class="absolute top-1/2 -right-1.5 -translate-y-1/2 border-y-[6px] border-y-transparent border-l-[6px] border-l-white drop-shadow-sm"></div>
-    </div>
-    <a href="/chatbot/" class="group relative flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-[#003366] via-[#0072BC] to-[#F37021] text-white rounded-full shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 hover:scale-105 transition-all" tabindex="0" title="Chat với AI Tuyển sinh DUE">
-      <div class="absolute inset-0 bg-[#0072BC] rounded-full animate-ping opacity-35 pointer-events-none"></div>
-      <div class="relative z-10 flex flex-col items-center justify-center w-full h-full rounded-full">
-        <span class="material-symbols-outlined text-[26px]">smart_toy</span>
-        <span class="text-[9px] font-extrabold tracking-tighter uppercase -mt-0.5">AI DUE</span>
-      </div>
-    </a>
-  </div>
+  {% include 'partials/chat_widget.html' %}
   {% endblock %}
 
   {% block extra_js %}{% endblock %}

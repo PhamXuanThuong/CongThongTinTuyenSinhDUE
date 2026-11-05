@@ -22,8 +22,12 @@ from .models import (
     KhoaPhongBan,
     BangHocPhi,
     CauHoiHocPhi,
-    ChinhSachHocBong
+    ChinhSachHocBong,
+    TaiLieuTuyenSinh,
+    CauHoiChoTraLoi,
 )
+from django.utils import timezone
+from core.ratelimit import rate_limit
 
 
 def home(request):
@@ -478,6 +482,7 @@ HOLLAND_MAJORS = {
 
 
 @csrf_exempt
+@rate_limit(key_prefix='advisory', max_requests=5, timeout_seconds=60)
 def api_tu_van_huong_nghiep(request):
     """
     API Tiếp nhận bài trắc nghiệm Holland và thông tin cá nhân của học sinh:
@@ -515,7 +520,46 @@ def api_tu_van_huong_nghiep(request):
     sorted_letters = sorted(scores.keys(), key=lambda k: scores[k], reverse=True)
     holland_code = "".join(sorted_letters[:3]) if any(scores.values()) else ""
 
-    # Gợi ý ngành tương ứng với top 3 nhóm
+    # Thông tin bổ sung (học lực, nguyện vọng, điều kiện)
+    EXTRA_FIELDS = [
+        ('grade_level', 'Đang học lớp'),
+        ('subject_combo', 'Tổ hợp môn dự định xét tuyển'),
+        ('expected_score', 'Điểm thi/điểm xét tuyển dự kiến (thang 30)'),
+        ('gpa', 'Điểm trung bình học tập'),
+        ('strong_subjects', 'Môn học giỏi nhất'),
+        ('weak_subjects', 'Môn học yếu nhất'),
+        ('english_level', 'Trình độ tiếng Anh / chứng chỉ'),
+        ('admission_method', 'Phương thức xét tuyển dự định'),
+        ('program_type', 'Chương trình mong muốn'),
+        ('budget', 'Khả năng chi trả học phí/năm'),
+        ('work_style', 'Môi trường làm việc mong muốn'),
+        ('job_priority', 'Ưu tiên khi chọn nghề'),
+        ('considered_majors', 'Ngành đang cân nhắc'),
+        ('family_wish', 'Mong muốn của gia đình'),
+        ('extra_notes', 'Ghi chú thêm'),
+    ]
+    extra = {label: str(data.get(key, '')).strip() for key, label in EXTRA_FIELDS}
+    extra = {k: v for k, v in extra.items() if v}
+
+    profile = {
+        'Giới tính': data.get('gender', ''),
+        'Tỉnh/Thành': data.get('province', ''),
+        'Sở thích': data.get('interests', ''),
+        'Năng lực, điểm mạnh': data.get('strengths', ''),
+        'Định hướng nghề nghiệp': data.get('career_goals', ''),
+        **extra,
+    }
+
+    # Phân tích bằng AI (Gemini nếu có key, ngược lại Ollama). Lỗi thì dùng luật Holland.
+    ai_result = None
+    ai_error = ''
+    try:
+        from . import ai_advisor
+        ai_result = ai_advisor.analyze(profile, scores, holland_code)
+    except Exception as e:
+        ai_error = str(e)
+
+    # Gợi ý ngành tương ứng với top 3 nhóm (phương án dự phòng)
     suggested = []
     seen = set()
     for letter in sorted_letters[:3]:
@@ -528,6 +572,19 @@ def api_tu_van_huong_nghiep(request):
         if len(suggested) >= 6:
             break
 
+    if ai_result:
+        suggested = ai_result['majors']
+        nganh_txt = "\n".join(
+            f"{i+1}. {m['ten']} ({m['ma']}) - {m['phu_hop']}%: {m['ly_do']}" for i, m in enumerate(suggested)
+        )
+        nganh_txt = f"[AI] {ai_result['tong_quan']}\n{nganh_txt}\nLời khuyên: {ai_result['loi_khuyen']}"
+    else:
+        nganh_txt = ", ".join([s['ten'] for s in suggested])
+
+    so_truong = data.get('strengths', '')
+    if extra:
+        so_truong += "\n\n--- THÔNG TIN BỔ SUNG ---\n" + "\n".join(f"{k}: {v}" for k, v in extra.items())
+
     # Lưu vào database
     hoso = HoSoHuongNghiep.objects.create(
         ho_ten=ho_ten,
@@ -539,7 +596,7 @@ def api_tu_van_huong_nghiep(request):
         tinh_thanh=data.get('province', ''),
         dia_chi=data.get('address', ''),
         so_thich=data.get('interests', ''),
-        so_truong=data.get('strengths', ''),
+        so_truong=so_truong,
         muc_tieu_nghe_nghiep=data.get('career_goals', ''),
         diem_r=scores['R'],
         diem_i=scores['I'],
@@ -548,7 +605,7 @@ def api_tu_van_huong_nghiep(request):
         diem_e=scores['E'],
         diem_c=scores['C'],
         ma_holland=holland_code,
-        nganh_de_xuat=", ".join([s['ten'] for s in suggested])
+        nganh_de_xuat=nganh_txt,
     )
 
     return JsonResponse({
@@ -558,7 +615,11 @@ def api_tu_van_huong_nghiep(request):
             'id': hoso.id,
             'holland_code': holland_code,
             'scores': scores,
-            'suggested_majors': suggested
+            'suggested_majors': suggested,
+            'ai': bool(ai_result),
+            'ai_error': ai_error,
+            'tong_quan': ai_result['tong_quan'] if ai_result else '',
+            'loi_khuyen': ai_result['loi_khuyen'] if ai_result else '',
         }
     })
 
@@ -756,6 +817,13 @@ def format_file_size(size_bytes):
         i += 1
     return f"{s:.1f} {size_name[i]}"
 
+def _staff_required_json(request):
+    """Trả về JsonResponse lỗi nếu không phải cán bộ (staff), ngược lại None."""
+    if not (request.user.is_authenticated and request.user.is_staff):
+        return JsonResponse({'status': 'error', 'message': 'Chỉ cán bộ tuyển sinh đã đăng nhập mới được thực hiện.'}, status=403)
+    return None
+
+
 def tailieu_list_api(request):
     """API trả về danh sách các tài liệu đã upload"""
     docs = TaiLieuTuyenSinh.objects.all().order_by('-uploaded_at')
@@ -771,11 +839,14 @@ def tailieu_list_api(request):
         })
     return JsonResponse({'status': 'success', 'data': data})
 
-@csrf_exempt
+
 def tailieu_upload_api(request):
-    """API tiếp nhận upload tài liệu từ Cán bộ tư vấn"""
+    """API tiếp nhận upload tài liệu từ Cán bộ tư vấn (chỉ staff, có CSRF)"""
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Chỉ hỗ trợ phương thức POST'}, status=405)
+    denied = _staff_required_json(request)
+    if denied:
+        return denied
 
     files = request.FILES.getlist('files')
     if not files:
@@ -803,15 +874,18 @@ def tailieu_upload_api(request):
 
     return JsonResponse({
         'status': 'success',
-        'message': f'Đã tải lên {len(saved_items)} tài liệu thành công vào media/tailieu_tuyensinh/',
+        'message': f'Đã tải lên {len(saved_items)} tài liệu',
         'data': saved_items
     })
 
-@csrf_exempt
+
 def tailieu_delete_api(request, doc_id):
-    """API xóa tài liệu"""
+    """API xóa tài liệu (chỉ staff, có CSRF)"""
     if request.method not in ['POST', 'DELETE']:
         return JsonResponse({'status': 'error', 'message': 'Yêu cầu không hợp lệ'}, status=405)
+    denied = _staff_required_json(request)
+    if denied:
+        return denied
 
     try:
         doc = TaiLieuTuyenSinh.objects.get(id=doc_id)
@@ -822,26 +896,130 @@ def tailieu_delete_api(request, doc_id):
     except TaiLieuTuyenSinh.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Tài liệu không tồn tại'}, status=404)
 
+
+HANDOFF_REPLY = (
+    'Câu hỏi này hiện chưa có trong tài liệu của Chatbot nên đã được **chuyển tới cán bộ tuyển sinh DUE**. '
+    'Bạn vui lòng giữ trang này, câu trả lời sẽ hiện ngay trong khung chat khi cán bộ phản hồi. '
+    'Cần gấp, bạn có thể gọi Hotline 0236 3836 169.'
+)
+
+
+def _clean_client_id(value):
+    value = str(value or '')
+    return value if re.fullmatch(r'[A-Za-z0-9_-]{8,64}', value) else ''
+
+
 @csrf_exempt
+@rate_limit(key_prefix='chat', max_requests=15, timeout_seconds=60)
 def chat_api(request):
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Chỉ hỗ trợ POST'}, status=405)
     try:
         body = json.loads(request.body.decode('utf-8'))
-        question = (body.get('message') or '').strip()
+        question = (body.get('message') or '').strip()[:2000]
         history = body.get('history') or []
+        client_id = _clean_client_id(body.get('client_id'))
     except Exception:
         return JsonResponse({'status': 'error', 'message': 'JSON không hợp lệ'}, status=400)
     if not question:
         return JsonResponse({'status': 'error', 'message': 'Câu hỏi trống'}, status=400)
+    if not client_id:
+        return JsonResponse({'status': 'error', 'message': 'Thiếu mã phiên chat'}, status=400)
+
     try:
-        reply, sources = rag.answer(question, history)
-        return JsonResponse({'status': 'success', 'reply': reply, 'sources': sources})
+        reply, sources, found = rag.answer(question, history)
     except Exception as e:
-        return JsonResponse({
-            'status': 'error',
-            'message': f'Không gọi được Ollama: {e}. Hãy kiểm tra Ollama đang chạy và model đã được pull.'
-        }, status=502)
+        # AI lỗi -> vẫn chuyển cho cán bộ để không bỏ sót câu hỏi
+        reply, sources, found = '', [], False
+        print('chat_api AI error:', e)
+
+    if found:
+        return JsonResponse({'status': 'success', 'reply': reply, 'sources': sources, 'handoff': False})
+
+    ngu_canh = "\n".join(f"{m.get('role')}: {m.get('content')}" for m in history[-6:] if isinstance(m, dict))
+    q = CauHoiChoTraLoi.objects.create(client_id=client_id, cau_hoi=question, ngu_canh=ngu_canh[:4000])
+    return JsonResponse({'status': 'success', 'reply': HANDOFF_REPLY, 'sources': [],
+                         'handoff': True, 'pending_id': q.id})
+
+
+def chat_updates_api(request):
+    """Người hỏi lấy các câu trả lời của cán bộ cho phiên chat của mình (polling)."""
+    client_id = _clean_client_id(request.GET.get('client_id'))
+    if not client_id:
+        return JsonResponse({'status': 'error', 'message': 'Thiếu mã phiên chat'}, status=400)
+    items = CauHoiChoTraLoi.objects.filter(client_id=client_id).order_by('ngay_tao')
+    return JsonResponse({'status': 'success', 'data': [{
+        'id': q.id,
+        'cau_hoi': q.cau_hoi,
+        'trang_thai': q.trang_thai,
+        'tra_loi': q.tra_loi if q.trang_thai == 'da_tra_loi' else '',
+    } for q in items]})
+
+
+# ---------- Trang & API dành cho cán bộ tuyển sinh ----------
+def can_bo_hoi_dap_view(request):
+    if not (request.user.is_authenticated and request.user.is_staff):
+        return redirect(f'/admin/login/?next={request.path}')
+    return render(request, 'admissions/can_bo_hoi_dap.html')
+
+
+def can_bo_cau_hoi_api(request):
+    denied = _staff_required_json(request)
+    if denied:
+        return denied
+    trang_thai = request.GET.get('trang_thai', 'cho')
+    qs = CauHoiChoTraLoi.objects.select_related('can_bo')
+    if trang_thai in ('cho', 'da_tra_loi'):
+        qs = qs.filter(trang_thai=trang_thai)
+    qs = qs.order_by('ngay_tao' if trang_thai == 'cho' else '-ngay_tra_loi')[:200]
+    return JsonResponse({
+        'status': 'success',
+        'pending_count': CauHoiChoTraLoi.objects.filter(trang_thai='cho').count(),
+        'data': [{
+            'id': q.id,
+            'cau_hoi': q.cau_hoi,
+            'ngu_canh': q.ngu_canh,
+            'tra_loi': q.tra_loi,
+            'trang_thai': q.trang_thai,
+            'can_bo': (q.can_bo.get_full_name() or q.can_bo.username) if q.can_bo else '',
+            'da_them_kien_thuc': q.da_them_kien_thuc,
+            'ngay_tao': timezone.localtime(q.ngay_tao).strftime('%H:%M %d/%m/%Y'),
+            'ngay_tra_loi': timezone.localtime(q.ngay_tra_loi).strftime('%H:%M %d/%m/%Y') if q.ngay_tra_loi else '',
+        } for q in qs],
+    })
+
+
+def can_bo_tra_loi_api(request, q_id):
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Chỉ hỗ trợ POST'}, status=405)
+    denied = _staff_required_json(request)
+    if denied:
+        return denied
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except Exception:
+        return JsonResponse({'status': 'error', 'message': 'JSON không hợp lệ'}, status=400)
+    tra_loi = (body.get('tra_loi') or '').strip()
+    if not tra_loi:
+        return JsonResponse({'status': 'error', 'message': 'Câu trả lời trống'}, status=400)
+
+    q = get_object_or_404(CauHoiChoTraLoi, id=q_id)
+    q.tra_loi = tra_loi
+    q.trang_thai = 'da_tra_loi'
+    q.can_bo = request.user
+    q.ngay_tra_loi = timezone.now()
+
+    msg = 'Đã gửi câu trả lời'
+    if body.get('them_kien_thuc') and not q.da_them_kien_thuc:
+        try:
+            rag.add_knowledge(q.cau_hoi, tra_loi)
+            q.da_them_kien_thuc = True
+            msg += ' và thêm vào kho kiến thức của Chatbot'
+        except Exception as e:
+            msg += f' (chưa thêm được vào kho kiến thức: {e})'
+    q.save()
+    return JsonResponse({'status': 'success', 'message': msg})
+
 
 def chatbot_view(request):
     return render(request, 'admissions/chatbot.html')
