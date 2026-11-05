@@ -19,11 +19,13 @@ venv.bak/
 # ==========================================
 # Dữ liệu & Database (SQLite, Dump, Backup)
 # ==========================================
-*.sqlite3
+# Allow database to deploy to Vercel
+!CongthongtintuyensinhDUE/# db.sqlite3
 *.db
-db.sqlite3
-*.sqlite3-journal
-db.sqlite3.bak
+# db.sqlite3
+# Allow database to deploy to Vercel
+!CongthongtintuyensinhDUE/# db.sqlite3-journal
+# db.sqlite3.bak
 # ==========================================
 # Python bytecode & cache
 # ==========================================
