@@ -1,0 +1,573 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ lcd.name|default:faculty.lien_chi_doan }} - Đoàn Thanh Niên DUE{% endblock %}
+
+{% block nav_sinhvien %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block extra_head %}
+<style>
+  .lcd-glass-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 30, 64, 0.04);
+    transition: all 0.25s ease;
+  }
+  .lcd-glass-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 8px 24px rgba(0, 30, 64, 0.08);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+
+  <!-- ====================================================
+       1. BREADCRUMB & HERO BANNER LIÊN CHI ĐOÀN
+       ==================================================== -->
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4 mb-4">
+    
+    <!-- Breadcrumb -->
+    <nav class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
+      <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa &amp; Viện Đào Tạo</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/khoa/{{ faculty.id }}/" class="hover:text-primary-container transition-colors">{{ faculty.name }}</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/lien-chi-doan/" class="hover:text-primary-container transition-colors">Liên Chi Đoàn</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-secondary-container font-semibold truncate max-w-[200px] sm:max-w-none">{{ lcd.name|default:"Chi tiết LCĐ" }}</span>
+    </nav>
+
+    <!-- Hero Card Liên Chi Đoàn -->
+    <div class="rounded-3xl bg-gradient-to-r from-[#001e40] via-[#003366] to-[#be123c] p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+      <!-- Glow decoration -->
+      <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-rose-500/20 blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-blue-500/15 blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10">
+        <!-- Top Tags -->
+        <div class="flex flex-wrap items-center gap-2.5 mb-5">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">flag</span>
+            Đoàn TNCS Hồ Chí Minh DUE
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-semibold backdrop-blur-sm border border-white/20">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            {{ lcd.term|default:"Nhiệm kỳ 2024–2027" }}
+          </span>
+          <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs">
+            Trực thuộc: {{ faculty.name }}
+          </span>
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+          <!-- Logo Khoa / Badge Đoàn -->
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white p-3 shrink-0 shadow-lg border border-white/30 flex items-center justify-center">
+            <img 
+              src="{{ faculty.logo_url }}" 
+              alt="{{ lcd.name }}" 
+              class="w-full h-full object-contain"
+              onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';"
+            />
+          </div>
+
+          <!-- Titles -->
+          <div class="space-y-2 max-w-3xl">
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-headline-lg tracking-tight leading-tight text-white drop-shadow-sm">
+              {{ lcd.name|default:faculty.lien_chi_doan }}
+            </h1>
+            <p class="text-amber-300 font-semibold text-base sm:text-lg italic tracking-wide">
+              &ldquo;Tuổi trẻ {{ faculty.short_name|default:faculty.name }} - Bản lĩnh, Sáng tạo, Tiên phong, Hội nhập&rdquo;
+            </p>
+            <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+              Cánh tay nối dài của Đoàn trường ĐH Kinh tế – ĐH Đà Nẵng tại {{ faculty.name }}. Nơi quy tụ những trái tim nhiệt huyết, rèn luyện kỹ năng và kiến tạo các giá trị cộng đồng.
+            </p>
+          </div>
+        </div>
+
+        <!-- Hero Bottom Action Buttons & Key Figures -->
+        <div class="pt-6 border-t border-white/15 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-3">
+            <a href="/khoa/{{ faculty.id }}/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm backdrop-blur-sm border border-white/20 transition-all hover:scale-105">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              <span>Về trang Khoa đào tạo</span>
+            </a>
+
+            {% if lcd.fanpage %}
+            <a href="{{ lcd.fanpage }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+              <span>Fanpage LCĐ</span>
+            </a>
+            {% endif %}
+
+            {% if lcd.messenger %}
+            <a href="{{ lcd.messenger }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#0084FF] to-[#00C6FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+              <span>Nhắn tin tư vấn</span>
+            </a>
+            {% endif %}
+
+            <a href="#hoat-dong" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
+              <span>Xem hoạt động</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+            </a>
+          </div>
+
+          <!-- Quick Stats Figures -->
+          <div class="flex items-center gap-3 text-xs font-medium">
+            <div class="bg-white/10 px-3.5 py-1.5 rounded-xl border border-white/10 backdrop-blur-sm">
+              <span class="text-amber-300 font-bold text-base block">{{ lcd.committee|length|default:15 }}+</span>
+              <span class="text-slate-300">Ủy viên BCH</span>
+            </div>
+            <div class="bg-white/10 px-3.5 py-1.5 rounded-xl border border-white/10 backdrop-blur-sm">
+              <span class="text-green-300 font-bold text-base block">{{ lcd.activities|length|default:5 }}+</span>
+              <span class="text-slate-300">Phong trào/năm</span>
+            </div>
+            <div class="bg-white/10 px-3.5 py-1.5 rounded-xl border border-white/10 backdrop-blur-sm">
+              <span class="text-sky-300 font-bold text-base block">{{ faculty_clubs|length|default:1 }}</span>
+              <span class="text-slate-300">CLB trực thuộc</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ====================================================
+       2. NỘI DUNG CHÍNH (Cấu trúc 2 cột: Cột trái 8 phần + Cột phải 4 phần)
+       ==================================================== -->
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- CỘT TRÁI (8 Cột): TOÀN BỘ NỘI DUNG CHUYÊN SÂU VỀ LIÊN CHI ĐOÀN -->
+      <div class="lg:col-span-8 space-y-8">
+
+        <!-- MỤC 1: TỔNG QUAN & SỨ MỆNH PHONG TRÀO -->
+        <section class="lcd-glass-card p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[24px]">flag</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Tổng quan tổ chức Đoàn</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Sứ Mệnh &amp; Tôn Chỉ Phong Trào</h2>
+            </div>
+          </div>
+
+          <div class="prose prose-slate max-w-none text-slate-600 text-sm sm:text-base leading-relaxed space-y-4">
+            <p>{{ lcd.intro }}</p>
+            <p>
+              Với tôn chỉ lấy đoàn viên sinh viên làm trung tâm, Liên Chi Đoàn <strong>{{ faculty.name }}</strong> không ngừng đổi mới phương thức hoạt động, gắn phong trào Đoàn với chuyên môn đào tạo, bồi dưỡng kỹ năng thực chiến và tạo bệ phóng giúp sinh viên tự tin hội nhập thị trường lao động quốc tế.
+            </p>
+          </div>
+
+          <!-- 3 Trụ cột hoạt động trọng tâm -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-slate-100">
+            <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-100">
+              <div class="flex items-center gap-2 text-rose-900 font-bold text-sm mb-1.5">
+                <span class="material-symbols-outlined text-[20px] text-rose-600">school</span>
+                <span>Học thuật &amp; NCKH</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Đẩy mạnh các cuộc thi học thuật chuyên ngành, câu lạc bộ học tập và phong trào NCKH trong sinh viên.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-blue-50/70 border border-blue-100">
+              <div class="flex items-center gap-2 text-blue-900 font-bold text-sm mb-1.5">
+                <span class="material-symbols-outlined text-[20px] text-blue-600">volunteer_activism</span>
+                <span>Xung kích tình nguyện</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Tổ chức các chiến dịch Mùa hè xanh, Tiếp sức mùa thi, Đêm nhạc gây quỹ thiện nguyện và Ngày hội Giọt hồng DUE.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-100">
+              <div class="flex items-center gap-2 text-amber-900 font-bold text-sm mb-1.5">
+                <span class="material-symbols-outlined text-[20px] text-amber-600">military_tech</span>
+                <span>Sinh viên 5 tốt</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Rèn luyện toàn diện về Đạo đức - Học tập - Thể lực - Tình nguyện - Hội nhập, tạo nguồn phát triển Đảng viên trẻ.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- MỤC 2: BAN CHẤP HÀNH LIÊN CHI ĐOÀN (ĐẠI BIỂU NHIỆM KỲ) -->
+        <section class="lcd-glass-card p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[24px]">badge</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Cơ cấu tổ chức</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">
+                Ban Chấp Hành Liên Chi Đoàn (Nhiệm kỳ {{ lcd.term|default:'2024–2027' }})
+              </h2>
+            </div>
+          </div>
+
+          <!-- Cặp Lãnh đạo chủ chốt: Bí thư & Phó bí thư -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+            
+            <!-- Bí thư LCĐ -->
+            <div class="p-4 rounded-2xl bg-gradient-to-tr from-rose-50 via-white to-red-50 border-2 border-rose-200/80 shadow-sm relative overflow-hidden">
+              <span class="material-symbols-outlined text-rose-300/40 text-[72px] absolute -right-2 -bottom-2 pointer-events-none">star</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-rose-700 bg-rose-100/80 px-2.5 py-0.5 rounded-full inline-block mb-2">
+                Bí thư Liên chi đoàn
+              </span>
+              <h3 class="font-bold text-slate-900 text-base leading-snug">
+                {{ lcd.secretary|default:"Đang cập nhật" }}
+              </h3>
+              <p class="text-xs text-slate-500 mt-1">Phụ trách chung công tác Đoàn &amp; Phong trào thanh niên</p>
+            </div>
+
+            <!-- Các Phó Bí thư LCĐ -->
+            {% if lcd.deputies %}
+              {% for dep in lcd.deputies %}
+              <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm hover:border-rose-300 transition-colors">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full inline-block mb-2">
+                  Phó Bí thư Liên chi đoàn
+                </span>
+                <h3 class="font-bold text-slate-900 text-base leading-snug">
+                  {{ dep }}
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">Phụ trách công tác chuyên môn, học thuật và phong trào</p>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm sm:col-span-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full inline-block mb-2">
+                  Phó Bí thư Liên chi đoàn
+                </span>
+                <h3 class="font-bold text-slate-900 text-base leading-snug">
+                  Đang cập nhật danh sách nhiệm kỳ mới
+                </h3>
+              </div>
+            {% endif %}
+
+          </div>
+
+          <!-- Danh sách các Ủy viên Ban Chấp Hành -->
+          {% if lcd.committee %}
+          <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80">
+            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-rose-600 text-[18px]">groups</span>
+              Ủy viên Ban Chấp Hành ({{ lcd.committee|length }} Đồng chí):
+            </h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+              {% for mem in lcd.committee %}
+              <div class="p-2.5 rounded-xl bg-white border border-slate-200/70 shadow-xs flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                <span class="text-xs font-semibold text-slate-700 truncate" title="{{ mem }}">{{ mem }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </section>
+
+
+        <!-- MỤC 3: THÀNH TÍCH & BẰNG KHEN NỔI BẬT -->
+        {% if lcd.achievements %}
+        <section class="lcd-glass-card p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[24px]">military_tech</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Dấu ấn thi đua</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Thành Tích &amp; Khen Thưởng Tiêu Biểu</h2>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            {% for ach in lcd.achievements %}
+            <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/70 hover:bg-amber-50 transition-colors flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                <span class="material-symbols-outlined text-[18px]">stars</span>
+              </div>
+              <div>
+                <p class="text-xs sm:text-sm font-semibold text-amber-950 leading-relaxed">{{ ach }}</p>
+                <span class="text-[11px] text-amber-700 font-medium">Bằng khen &amp; Giấy khen thành tích xuất sắc</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
+
+        <!-- MỤC 4: CÁC HOẠT ĐỘNG TIÊU BIỂU & PHONG TRÀO THƯỜNG NIÊN -->
+        <section id="hoat-dong" class="lcd-glass-card p-6 sm:p-8 scroll-mt-36">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[24px]">event_available</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Đời sống thanh niên sôi nổi</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Chuỗi Hoạt Động &amp; Sự Kiện Thường Niên</h2>
+            </div>
+          </div>
+
+          {% if lcd.activities %}
+          <div class="space-y-3.5">
+            {% for act in lcd.activities %}
+            <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white hover:border-rose-300 hover:shadow-md transition-all">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-1.5">
+                <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-600 shrink-0"></span>
+                  <span>{{ act.title|default:act }}</span>
+                </h3>
+                {% if act.date %}
+                <span class="text-xs font-mono font-semibold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200 self-start sm:self-auto">
+                  {{ act.date }}
+                </span>
+                {% endif %}
+              </div>
+              {% if act.desc %}
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed pl-4 border-l-2 border-rose-200 ml-1">
+                {{ act.desc }}
+              </p>
+              {% elif act.summary %}
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed pl-4 border-l-2 border-rose-200 ml-1">
+                {{ act.summary }}
+              </p>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-sm text-slate-500 italic">Đang cập nhật lịch hoạt động và phong trào thanh niên của nhiệm kỳ.</p>
+          {% endif %}
+        </section>
+
+
+        <!-- MỤC 5: THƯ VIỆN HÌNH ẢNH HOẠT ĐỘNG CỦA LIÊN CHI ĐOÀN -->
+        {% if lcd.images %}
+        <section class="lcd-glass-card p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[24px]">photo_library</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-purple-700">Khoảnh khắc nhiệt huyết</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Thư Viện Ảnh Hoạt Động Của Liên Chi Đoàn</h2>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% for img in lcd.images %}
+            <div class="group relative rounded-2xl overflow-hidden bg-slate-100 shadow-sm border border-slate-200 aspect-[16/10]">
+              <img 
+                src="{{ img.url }}" 
+                alt="{{ img.caption }}" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_gallery_1.jpg';"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-black/20 to-transparent flex items-end p-4">
+                <span class="text-xs font-medium text-white drop-shadow leading-snug">{{ img.caption }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
+
+        <!-- MỤC 6: CÂU LẠC BỘ & ĐỘI NHÓM TRỰC THUỘC KHOA -->
+        {% if faculty_clubs %}
+        <section class="lcd-glass-card p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[24px]">groups</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-blue-700">Môi trường rèn luyện thực chiến</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Câu Lạc Bộ &amp; Đội Nhóm Sinh Viên Trực Thuộc</h2>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% for c in faculty_clubs %}
+            <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-md transition-all flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-3 mb-2.5">
+                  {% if c.logo_url %}
+                  <img src="{{ c.logo_url }}" alt="{{ c.name }}" class="w-10 h-10 rounded-xl object-contain bg-slate-50 border border-slate-100 p-1" />
+                  {% else %}
+                  <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">CLB</div>
+                  {% endif %}
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-sm leading-snug">{{ c.name }}</h3>
+                    <span class="text-[11px] text-slate-400">{{ c.category|default:"Học thuật chuyên sâu" }}</span>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-3">{{ c.desc }}</p>
+              </div>
+
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-[11px] text-slate-400">Trực thuộc LCĐ Khoa</span>
+                <a href="/clb/{{ c.id }}/" class="text-blue-600 hover:text-blue-800 text-xs font-bold flex items-center gap-1">
+                  <span>Khám phá CLB</span>
+                  <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
+      </div>
+
+
+      <!-- CỘT PHẢI (4 Cột): SIDEBAR THÔNG TIN LIÊN HỆ, KHOA & QUICK SWITCHER -->
+      <div class="lg:col-span-4 space-y-6">
+
+        <!-- CARD 1: KẾT NỐI MẠNG XÃ HỘI VỚI LIÊN CHI ĐOÀN -->
+        <div class="lcd-glass-card p-6">
+          <div class="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
+            <span class="material-symbols-outlined text-rose-600 text-[22px]">contact_support</span>
+            <h3 class="font-bold text-slate-900 text-base">Liên Hệ Liên Chi Đoàn</h3>
+          </div>
+
+          <div class="space-y-3.5 text-xs text-slate-600 mb-6">
+            <div class="flex items-start gap-2.5">
+              <span class="material-symbols-outlined text-slate-400 text-[18px] shrink-0 mt-0.5">location_on</span>
+              <div>
+                <span class="text-slate-400 block text-[11px]">Văn phòng Đoàn:</span>
+                <span class="font-semibold text-slate-800">Tầng 1 Nhà Đa Năng / Văn phòng Khoa, 71 Ngũ Hành Sơn, Đà Nẵng</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-2.5">
+              <span class="material-symbols-outlined text-slate-400 text-[18px] shrink-0 mt-0.5">person</span>
+              <div>
+                <span class="text-slate-400 block text-[11px]">Bí thư Liên chi đoàn:</span>
+                <span class="font-bold text-rose-700">{{ lcd.secretary|default:"Đang cập nhật" }}</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-2.5">
+              <span class="material-symbols-outlined text-slate-400 text-[18px] shrink-0 mt-0.5">verified_user</span>
+              <div>
+                <span class="text-slate-400 block text-[11px]">Đoàn cấp trên:</span>
+                <span class="font-semibold text-slate-800">Đoàn Thanh niên - Hội Sinh viên Trường ĐH Kinh tế</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Các nút hành động mạng xã hội -->
+          <div class="space-y-2.5">
+            {% if lcd.fanpage %}
+            <a 
+              href="{{ lcd.fanpage }}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-xs shadow-sm transition-all hover:scale-[1.02]"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+              <span>Ghé thăm Fanpage LCĐ</span>
+            </a>
+            {% endif %}
+
+            {% if lcd.messenger %}
+            <a 
+              href="{{ lcd.messenger }}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#0084FF] to-[#00C6FF] hover:opacity-95 text-white font-bold text-xs shadow-sm transition-all hover:scale-[1.02]"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+              <span>Nhắn tin Messenger LCĐ</span>
+            </a>
+            {% endif %}
+
+            <div class="flex items-center gap-2 pt-2">
+              {% if lcd.instagram %}
+              <a href="{{ lcd.instagram }}" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-pink-50 text-pink-700 hover:bg-pink-100 text-xs font-semibold transition-colors">
+                <span class="material-symbols-outlined text-[16px]">photo_camera</span>
+                <span>Instagram</span>
+              </a>
+              {% endif %}
+
+              {% if lcd.tiktok %}
+              <a href="{{ lcd.tiktok }}" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 text-xs font-semibold transition-colors">
+                <span class="material-symbols-outlined text-[16px]">videocam</span>
+                <span>TikTok</span>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+
+        <!-- CARD 2: VỀ TRANG KHOA CHUYÊN MÔN -->
+        <div class="lcd-glass-card p-6 bg-gradient-to-br from-blue-50/60 to-indigo-50/40 border border-blue-100">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="material-symbols-outlined text-[#003366] text-[20px]">school</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#003366]">Đơn vị đào tạo</span>
+          </div>
+
+          <h3 class="font-bold text-slate-900 text-base mb-2">{{ faculty.name }}</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Khám phá chi tiết chương trình đào tạo, học vị, danh sách {{ faculty.majors_2026|length }} chuyên ngành năm 2026 và đội ngũ giảng viên của Khoa.
+          </p>
+
+          <a 
+            href="/khoa/{{ faculty.id }}/" 
+            class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white font-bold text-xs shadow-md transition-all hover:scale-[1.02]"
+          >
+            <span>Xem Trang Khoa Đào Tạo</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </a>
+        </div>
+
+
+        <!-- CARD 3: CHUYỂN NHANH SANG LCĐ CÁC KHOA KHÁC (Quick Switcher) -->
+        <div class="lcd-glass-card p-6">
+          <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+            <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-rose-600 text-[18px]">swap_horiz</span>
+              Liên Chi Đoàn các Khoa khác
+            </h3>
+            <a href="/lien-chi-doan/" class="text-[11px] font-bold text-rose-600 hover:underline">Tất cả</a>
+          </div>
+
+          <div class="space-y-2">
+            {% for other in other_faculties %}
+            <a 
+              href="/lien-chi-doan/{{ other.id }}/" 
+              class="flex items-center justify-between p-2.5 rounded-xl hover:bg-rose-50/60 transition-colors group"
+            >
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span class="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 text-xs font-bold">
+                  <span class="material-symbols-outlined text-[15px]">flag</span>
+                </span>
+                <span class="text-xs font-semibold text-slate-700 group-hover:text-rose-700 truncate">
+                  {{ other.lcd.name|default:other.name }}
+                </span>
+              </div>
+              <span class="material-symbols-outlined text-slate-300 group-hover:text-rose-600 text-[16px] shrink-0">chevron_right</span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</main>
+{% endblock %}
