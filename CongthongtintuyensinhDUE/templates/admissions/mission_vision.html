@@ -1,0 +1,246 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Sứ Mạng & Tầm Nhìn - Trường Đại học Kinh tế, ĐH Đà Nẵng (DUE){% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+  <main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+    <!-- Top Ambient Background Glows -->
+    <div class="relative w-full overflow-hidden pb-16">
+      <div class="absolute -top-40 right-1/4 w-[500px] h-[500px] rounded-full bg-secondary-container/10 blur-[130px] pointer-events-none"></div>
+      <div class="absolute top-20 -left-20 w-[420px] h-[420px] rounded-full bg-primary-container/5 blur-[120px] pointer-events-none"></div>
+
+      <!-- Banner Header Section (Căn giữa) -->
+      <section class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-12">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
+          <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span>Giới thiệu</span>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span class="text-secondary-container font-semibold">Sứ mạng, tầm nhìn</span>
+        </nav>
+
+        <div class="border-b border-outline-variant/30 pb-8 text-center flex flex-col items-center">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-secondary-fixed/70 border border-secondary/20 text-on-secondary-fixed-variant text-xs font-semibold mb-3">
+            <span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+            Định hướng chiến lược &amp; Giá trị cốt lõi
+          </div>
+          <h1 class="font-display-hero text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface tracking-tight">
+            Sứ Mạng, Tầm Nhìn &amp; Giá Trị Cốt Lõi
+          </h1>
+          <p class="text-on-surface-variant text-base sm:text-lg max-w-2xl mt-3 leading-relaxed mx-auto">
+            Kim chỉ nam định hướng mọi hoạt động đào tạo, nghiên cứu khoa học và kiến tạo giá trị cho cộng đồng của Trường Đại học Kinh tế – Đại học Đà Nẵng.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section: Sứ mạng & Tầm nhìn Cards -->
+      <section class="max-w-7xl mx-auto px-6 lg:px-12 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+          
+          <!-- Card Sứ mạng -->
+          <div class="rounded-3xl p-8 sm:p-10 bg-gradient-to-br from-primary-container to-primary text-white shadow-xl relative overflow-hidden flex flex-col justify-between group hover:shadow-2xl transition-all">
+            <div class="absolute -right-10 -bottom-10 w-52 h-52 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center mb-6 border border-white/20">
+                <span class="material-symbols-outlined text-[30px] text-secondary-fixed">flag</span>
+              </div>
+              <span class="text-xs uppercase font-bold tracking-widest text-secondary-fixed block mb-2">MISSION</span>
+              <h2 class="text-2xl sm:text-3xl font-bold font-headline-sm mb-5 leading-snug">Sứ Mạng Của DUE</h2>
+              <blockquote class="text-white/90 text-base sm:text-lg leading-relaxed border-l-4 border-secondary-container pl-4 my-2 italic">
+                "Chúng tôi kiến tạo môi trường học thuật tiên tiến và nhân văn; thúc đẩy, khám phá, ứng dụng và chuyển giao tri thức gắn với biến đổi số, đổi mới sáng tạo và phát triển bền vững; nâng cao năng lực học tập suốt đời; nuôi dưỡng và phát triển tài năng phục vụ sự phát triển của cộng đồng."
+              </blockquote>
+            </div>
+            <div class="relative z-10 pt-6 mt-6 border-t border-white/10 text-xs text-white/60 flex items-center justify-between">
+              <span>Công bố chính thức tại due.udn.vn</span>
+              <span class="font-bold text-white/80">Trường Đại học Kinh tế</span>
+            </div>
+          </div>
+
+          <!-- Card Tầm nhìn -->
+          <div class="rounded-3xl p-8 sm:p-10 bg-surface-container-lowest border border-outline-variant/40 shadow-xl flex flex-col justify-between group hover:shadow-2xl transition-all">
+            <div>
+              <div class="w-14 h-14 rounded-2xl bg-secondary-fixed text-secondary-container flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-[30px]">visibility</span>
+              </div>
+              <span class="text-xs uppercase font-bold tracking-widest text-secondary-container block mb-2">VISION</span>
+              <h2 class="text-2xl sm:text-3xl font-bold font-headline-sm text-on-surface mb-5 leading-snug">Tầm Nhìn Chiến Lược</h2>
+              <blockquote class="text-on-surface-variant text-base sm:text-lg leading-relaxed border-l-4 border-secondary-container pl-4 my-2 italic font-medium">
+                "Khát vọng của chúng tôi là trở thành trường đại học hàng đầu Việt Nam, đóng góp vào sự thịnh vượng của cộng đồng ASEAN và tri thức nhân loại."
+              </blockquote>
+              <p class="text-sm text-on-surface-variant/80 mt-4 leading-relaxed">
+                Nhà trường hướng đến xây dựng hệ sinh thái đại học thông minh, tiên phong kiểm định quốc tế AUN-QA và mở rộng liên kết với các trường đại học danh tiếng trên toàn cầu.
+              </p>
+            </div>
+
+            <div class="pt-6 mt-6 border-t border-outline-variant/30 flex items-center justify-between text-xs text-outline">
+              <span>Định hướng vươn tầm ASEAN</span>
+              <span class="font-bold text-primary-container">DUE - Since 1975</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: 5 Giá trị cốt lõi chi tiết -->
+      <section class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <span class="text-xs uppercase tracking-wider font-bold text-secondary-container block mb-2">Văn hóa tổ chức</span>
+          <h2 class="font-headline-lg text-2xl sm:text-3xl lg:text-4xl font-bold text-on-surface tracking-tight">Hệ Thống 5 Giá Trị Cốt Lõi</h2>
+          <p class="text-on-surface-variant text-sm sm:text-base mt-2">Nền tảng chuẩn mực định hình tư duy, hành động và phong cách của cán bộ, giảng viên và sinh viên DUE</p>
+        </div>
+
+        <!-- Hàng trên: 3 thẻ (Chính trực - Xanh ngọc, Hợp tác - Cam đào, Tôn trọng - Xanh lục) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          
+          <!-- Giá trị 1: Chính trực (Xanh ngọc / Emerald Cyan) -->
+          <div class="relative overflow-hidden rounded-3xl p-7 bg-[#f2faf7] border border-[#d2efe5] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+            <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#00a884]/10 blur-2xl pointer-events-none"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-[#00a884] text-white flex items-center justify-center mb-5 shadow-md shadow-[#00a884]/20 group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[28px]">verified_user</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-800 mb-3 group-hover:text-[#008f6f] transition-colors">1. Chính Trực</h3>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Tôn trọng sự thật, đề cao tính minh bạch, sự liêm chính trong học thuật, nghiên cứu khoa học cũng như mọi hoạt động quản trị của Nhà trường.
+              </p>
+              <ul class="space-y-1.5 text-xs text-slate-500 pt-1">
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#00a884]"></span>
+                  <span>Trung thực &amp; khách quan</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#00a884]"></span>
+                  <span>Minh bạch trong mọi quy trình</span>
+                </li>
+              </ul>
+            </div>
+            <div class="relative z-10 pt-4 mt-5 border-t border-[#d2efe5] text-xs font-bold text-[#008f6f] uppercase tracking-wider">
+              Liêm chính học thuật
+            </div>
+          </div>
+
+          <!-- Giá trị 2: Hợp tác (Cam đào / Warm Orange) -->
+          <div class="relative overflow-hidden rounded-3xl p-7 bg-[#fff6f0] border border-[#ffdecb] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+            <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#ea580c]/10 blur-2xl pointer-events-none"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-[#ea580c] text-white flex items-center justify-center mb-5 shadow-md shadow-[#ea580c]/20 group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[28px]">groups</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-800 mb-3 group-hover:text-[#c2410c] transition-colors">2. Hợp Tác</h3>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Đề cao tinh thần làm việc nhóm, chia sẻ tri thức, đồng lòng hỗ trợ lẫn nhau giữa thầy và trò, kết nối chặt chẽ cùng doanh nghiệp và cộng đồng xã hội.
+              </p>
+              <ul class="space-y-1.5 text-xs text-slate-500 pt-1">
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#ea580c]"></span>
+                  <span>Gắn kết thầy trò &amp; đồng nghiệp</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#ea580c]"></span>
+                  <span>Đồng hành cùng doanh nghiệp</span>
+                </li>
+              </ul>
+            </div>
+            <div class="relative z-10 pt-4 mt-5 border-t border-[#ffdecb] text-xs font-bold text-[#c2410c] uppercase tracking-wider">
+              Đoàn kết &amp; Đồng hành
+            </div>
+          </div>
+
+          <!-- Giá trị 3: Tôn trọng (Xanh lá cây / Fresh Green) -->
+          <div class="relative overflow-hidden rounded-3xl p-7 bg-[#f3f9f2] border border-[#d8ecd6] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+            <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#16a34a]/10 blur-2xl pointer-events-none"></div>
+            <div class="relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-[#16a34a] text-white flex items-center justify-center mb-5 shadow-md shadow-[#16a34a]/20 group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[28px]">diversity_1</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-800 mb-3 group-hover:text-[#15803d] transition-colors">3. Tôn Trọng</h3>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Tôn trọng phẩm giá, năng lực cá nhân, lắng nghe đa chiều, chấp nhận sự khác biệt và gìn giữ, bảo vệ môi trường tự nhiên bền vững.
+              </p>
+              <ul class="space-y-1.5 text-xs text-slate-500 pt-1">
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#16a34a]"></span>
+                  <span>Lắng nghe &amp; chấp nhận khác biệt</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#16a34a]"></span>
+                  <span>Bảo vệ môi trường tự nhiên</span>
+                </li>
+              </ul>
+            </div>
+            <div class="relative z-10 pt-4 mt-5 border-t border-[#d8ecd6] text-xs font-bold text-[#15803d] uppercase tracking-wider">
+              Bình đẳng &amp; Nhân văn
+            </div>
+          </div>
+        </div>
+
+        <!-- Hàng dưới: 2 thẻ (Cảm thông - Xanh dương & Sáng tạo - Vàng hổ phách) CĂN GIỮA TRANG -->
+        <div class="flex justify-center">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full lg:max-w-[calc(66.666667%+0.5rem)]">
+            
+            <!-- Giá trị 4: Cảm thông (Xanh dương / Deep Sky Blue) -->
+            <div class="relative overflow-hidden rounded-3xl p-7 bg-[#f0f6ff] border border-[#cfe2ff] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+              <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#0284c7]/10 blur-2xl pointer-events-none"></div>
+              <div class="relative z-10">
+                <div class="w-14 h-14 rounded-2xl bg-[#0284c7] text-white flex items-center justify-center mb-5 shadow-md shadow-[#0284c7]/20 group-hover:scale-105 transition-transform">
+                  <span class="material-symbols-outlined text-[28px]">volunteer_activism</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3 group-hover:text-[#0369a1] transition-colors">4. Cảm Thông</h3>
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                  Thúc đẩy tinh thần sẻ chia, thấu cảm, tinh thần thiện nguyện và trách nhiệm xã hội sâu sắc đối với cộng đồng và người học có hoàn cảnh khó khăn.
+                </p>
+                <ul class="space-y-1.5 text-xs text-slate-500 pt-1">
+                  <li class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#0284c7]"></span>
+                    <span>Thấu hiểu &amp; chia sẻ yêu thương</span>
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#0284c7]"></span>
+                    <span>Trách nhiệm cao với cộng đồng</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="relative z-10 pt-4 mt-5 border-t border-[#cfe2ff] text-xs font-bold text-[#0369a1] uppercase tracking-wider">
+                Sẻ chia &amp; Trách nhiệm
+              </div>
+            </div>
+
+            <!-- Giá trị 5: Sáng tạo (Vàng hổ phách / Warm Amber Gold) -->
+            <div class="relative overflow-hidden rounded-3xl p-7 bg-[#fef9ee] border border-[#fbe5b5] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+              <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#d97706]/10 blur-2xl pointer-events-none"></div>
+              <div class="relative z-10">
+                <div class="w-14 h-14 rounded-2xl bg-[#d97706] text-white flex items-center justify-center mb-5 shadow-md shadow-[#d97706]/20 group-hover:scale-105 transition-transform">
+                  <span class="material-symbols-outlined text-[28px]">lightbulb</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3 group-hover:text-[#b45309] transition-colors">5. Sáng Tạo</h3>
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                  Không ngừng đổi mới, khuyến khích tư duy phản biện, đam mê nghiên cứu khám phá tri thức mới, chủ động ứng dụng công nghệ số và thích ứng nhanh chóng với kỷ nguyên 4.0.
+                </p>
+                <ul class="space-y-1.5 text-xs text-slate-500 pt-1">
+                  <li class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#d97706]"></span>
+                    <span>Đổi mới tư duy &amp; phản biện</span>
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#d97706]"></span>
+                    <span>Tiên phong ứng dụng công nghệ số</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="relative z-10 pt-4 mt-5 border-t border-[#fbe5b5] text-xs font-bold text-[#b45309] uppercase tracking-wider">
+                Đột phá &amp; Tiên phong
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+{% endblock %}

@@ -1,69 +1,24 @@
 """
-URL configuration for CongthongtintuyensinhDUE project.
+Root URL configuration for CongthongtintuyensinhDUE project.
+Strictly acts as top-level router without hosting views directly.
 """
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from tuyensinh import views as tuyensinh_views
-from . import views
 
 urlpatterns = [
+    # Django Admin site
     path('admin/', admin.site.urls),
 
-    # Tuyển sinh app routes (home, auth, giới thiệu, phương thức, điểm chuẩn, chỉ tiêu, loại hình, api)
-    path('', include('tuyensinh.urls')),
+    # University Portal app (Faculties, Youth Union, Clubs, Student Life, Enrollment Guide)
+    path('', include('portal.urls')),
 
-    # Khoa & Đơn vị đào tạo 2026 (từ nhánh main)
-    path('khoa/', views.khoa_overview_view, name='khoa'),
-    path('khoa/<str:code>/', views.khoa_detail_view, name='khoa_detail'),
-    path('khoa/<str:code>/lien-chi-doan/', views.lien_chi_doan_detail_view, name='khoa_lcd_detail'),
-    path('khoa/<str:code>/lcd/', views.lien_chi_doan_detail_view, name='khoa_lcd_detail_short'),
+    # Admissions app primary namespace
+    path('', include('admissions.urls', namespace='admissions')),
 
-    # Liên Chi Đoàn riêng biệt (từ nhánh main)
-    path('lien-chi-doan/', views.lien_chi_doan_overview_view, name='lien_chi_doan_list'),
-    path('lien-chi-doan/<str:code>/', views.lien_chi_doan_detail_view, name='lien_chi_doan_detail'),
-    path('lcd/', views.lien_chi_doan_overview_view, name='lcd_list'),
-    path('lcd/<str:code>/', views.lien_chi_doan_detail_view, name='lcd_detail'),
-
-    # Học phí (từ nhánh main)
-    path('hoc-phi/', tuyensinh_views.hoc_phi_view, name='hoc_phi'),
-    path('api/tinh-hoc-phi/', tuyensinh_views.tinh_hoc_phi_api, name='api_tinh_hoc_phi'),
-
-    # Hướng nghiệp & Chatbot (từ nhánh main)
-    path('career-advisory/', views.career_advisory, name='career_advisory'),
-    path('chatbot/', views.chatbot, name='chatbot'),
-
-    # Dành cho sinh viên & Tiện ích nội trú (từ nhánh main)
-    path('ky-tuc-xa/', views.ky_tuc_xa_view, name='ky_tuc_xa'),
-    path('ktx/', views.ky_tuc_xa_view, name='ktx'),
-    path('hoat-dong-doan/', views.hoat_dong_doan_view, name='hoat_dong_doan'),
-    path('doan-thanh-nien/', views.hoat_dong_doan_view, name='doan_thanh_nien'),
-
-    # Câu lạc bộ & Dành cho sinh viên (từ nhánh main)
-    path('clb/', views.clb_view, name='clb'),
-    path('clb/<str:club_id>/', views.clb_detail_view, name='clb_detail'),
-    path('cau-lac-bo/', views.clb_view, name='cau_lac_bo'),
-    path('cau-lac-bo/<str:club_id>/', views.clb_detail_view, name='cau_lac_bo_detail'),
-    path('sinh-vien/', views.sinh_vien_view, name='sinh_vien'),
-
-    # Hướng dẫn nhập học & Lịch trình tân sinh viên (trang riêng biệt)
-    path('huong-dan-nhap-hoc/', views.huong_dan_nhap_hoc_view, name='huong_dan_nhap_hoc'),
-    path('enrollment-guide/', views.huong_dan_nhap_hoc_view, name='enrollment_guide'),
-    path('lich-trinh-tan-sinh-vien/', views.lich_trinh_tan_sinh_vien_view, name='lich_trinh_tan_sinh_vien'),
-    path('freshman-schedule/', views.lich_trinh_tan_sinh_vien_view, name='freshman_schedule'),
-
-    # API endpoints (từ nhánh main)
-    path('api/khoa/', views.api_khoa_list, name='api_khoa_list'),
-    path('api/khoa/<str:code>/', views.api_khoa_detail, name='api_khoa_detail'),
-    path('api/clb/', views.api_clb_list, name='api_clb_list'),
-    
-    # API endpoints
-    path('api/chat/', tuyensinh_views.chat_api, name='api_chat'),
-    path('api/khoa/<str:code>/', tuyensinh_views.khoa_detail_api, name='api_khoa_detail'),
-    path('api/tailieu/', tuyensinh_views.tailieu_list_api, name='api_tailieu_list'),
-    path('api/tailieu/upload/', tuyensinh_views.tailieu_upload_api, name='api_tailieu_upload'),
-    path('api/tailieu/<int:doc_id>/delete/', tuyensinh_views.tailieu_delete_api, name='api_tailieu_delete'),
+    # Backward compatibility namespace for templates referencing {% url 'tuyensinh:...' %}
+    path('', include('admissions.urls', namespace='tuyensinh')),
 ]
 
 if settings.DEBUG:

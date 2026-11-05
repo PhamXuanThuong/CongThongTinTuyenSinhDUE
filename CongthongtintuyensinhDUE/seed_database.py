@@ -5,7 +5,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CongthongtintuyensinhDUE.settin
 import django
 django.setup()
 
-from tuyensinh.models import LoaiHinhDaoTao, PhuongThucXetTuyen, NganhDaoTao, DiemChuan, CauHoiThuongGap, TinTuc
+from admissions.models import LoaiHinhDaoTao, PhuongThucXetTuyen, NganhDaoTao, DiemChuan, CauHoiThuongGap, TinTuc
 
 print("--- SEEDING BACKEND DATABASE ---")
 
@@ -102,7 +102,7 @@ lh_tp = LoaiHinhDaoTao.objects.get(ma_loai_hinh='toan_phan')
 lh_bp = LoaiHinhDaoTao.objects.get(ma_loai_hinh='ban_phan')
 lh_tc = LoaiHinhDaoTao.objects.get(ma_loai_hinh='tieu_chuan')
 
-with open('chitieutuyensinh.html', 'r', encoding='utf-8') as f:
+with open('templates/chitieutuyensinh.html', 'r', encoding='utf-8') as f:
     chitieu_html = f.read()
 
 # Parse tbody rows
@@ -153,7 +153,7 @@ if tbody_match:
 print(f"Seeded/Updated {NganhDaoTao.objects.count()} NganhDaoTao records.")
 
 # 4. ĐIỂM CHUẨN CÁC NĂM TỪ diemchuancacnam.html
-with open('diemchuancacnam.html', 'r', encoding='utf-8') as f:
+with open('templates/diemchuancacnam.html', 'r', encoding='utf-8') as f:
     diem_html = f.read()
 
 tbody_d = re.search(r'<tbody[^>]*>(.*?)</tbody>', diem_html, re.DOTALL)

@@ -8,7 +8,7 @@ sys.path.append(r'e:\CongThongTinTuyenSinhDUE\CongthongtintuyensinhDUE')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CongthongtintuyensinhDUE.settings')
 django.setup()
 
-from tuyensinh.models import KhoaPhongBan, ChuyenNganh, BangHocPhi, CauHoiHocPhi
+from admissions.models import KhoaPhongBan, ChuyenNganh, BangHocPhi, CauHoiHocPhi
 
 def build_dataset():
     records = []

@@ -1,0 +1,444 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Hệ Thống Ký Túc Xá Sinh Viên - Trường Đại học Kinh tế DUE{% endblock %}
+
+{% block nav_sinhvien %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block extra_head %}
+<style>
+  .ktx-card {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ktx-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px -4px rgba(0, 168, 89, 0.12);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
+
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
+      <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/sinh-vien/" class="hover:text-primary-container transition-colors">Dành cho sinh viên</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-secondary-container font-semibold">Ký túc xá sinh viên</span>
+    </nav>
+
+    <!-- Header Hero Banner -->
+    <div class="bg-gradient-to-r from-[#003366] via-[#004f8c] to-[#00A859] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden mb-12">
+      <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-emerald-400/20 blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-blue-400/20 blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 text-white text-xs font-bold mb-4 backdrop-blur-sm border border-white/20">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          Đời sống nội trú sinh viên DUE &amp; ĐH Đà Nẵng
+        </div>
+
+        <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-headline-lg tracking-tight mb-3">
+          Hệ Thống Ký Túc Xá Sinh Viên DUE
+        </h1>
+
+        <p class="text-slate-100 text-sm sm:text-base leading-relaxed mb-6">
+          Môi trường sống <strong>an toàn, tiện nghi, văn minh và tiết kiệm tối đa chi phí</strong> dành cho sinh viên và tân sinh viên DUE. Với vị trí liền kề giảng đường, hệ thống phòng khép kín trang bị điều hòa, wifi tốc độ cao và an ninh 24/7, Ký túc xá là ngôi nhà thứ hai lý tưởng để bạn an tâm học tập.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium">
+          <a href="#bang-gia" class="flex items-center gap-2 bg-[#fd761a] hover:bg-[#ea6509] text-white px-5 py-2.5 rounded-full shadow-md transition-all hover:scale-105 font-bold">
+            <span class="material-symbols-outlined text-[18px]">payments</span>
+            <span>Bảng giá &amp; Loại phòng</span>
+          </a>
+          <a href="#dang-ky" class="flex items-center gap-2 bg-white text-[#003366] hover:bg-slate-100 px-5 py-2.5 rounded-full shadow-md transition-all hover:scale-105 font-bold">
+            <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+            <span>Hướng dẫn đăng ký</span>
+          </a>
+          <div class="flex items-center gap-2 bg-white/10 px-4 py-2.5 rounded-full border border-white/15">
+            <span class="font-bold text-amber-300">2.500+</span> Chỗ nội trú
+          </div>
+          <div class="flex items-center gap-2 bg-white/10 px-4 py-2.5 rounded-full border border-white/15">
+            <span class="font-bold text-emerald-300">Chỉ từ 250k</span> / tháng
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         1. GIỚI THIỆU 2 KHU KÝ TÚC XÁ CHÍNH
+         ==================================================== -->
+    <div class="mb-14">
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider">Vị trí thuận tiện</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-headline-lg mt-2 mb-3">
+          Hai Khu Ký Túc Xá Phục Vụ Sinh Viên DUE
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+          Tùy theo nhu cầu và sở thích, sinh viên có thể lựa chọn đăng ký nội trú tại KTX Khu Đông (nằm ngay sát khuôn viên trường) hoặc KTX Tập trung Thành phố.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- KHU 1: KTX KHU ĐÔNG NGŨ HÀNH SƠN -->
+        <div class="ktx-card rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-blue-100 text-[#003366] font-bold text-xs uppercase">
+                Đi bộ 3 phút đến trường
+              </span>
+              <span class="text-xs text-emerald-600 font-bold flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Ưu tiên Tân sinh viên K50K
+              </span>
+            </div>
+
+            <div class="w-full h-48 rounded-2xl overflow-hidden mb-5 bg-slate-100 relative">
+              <img 
+                src="/static/img/khoa/tcnh_gallery_2.jpg" 
+                alt="KTX Khu Đông DUE" 
+                class="w-full h-full object-cover"
+                onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_cover.jpg';"
+              />
+              <div class="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1 rounded-xl text-xs font-semibold">
+                Khuôn viên KTX Khu Đông
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 mb-2">KTX Khu Đông Ngũ Hành Sơn</h3>
+            <p class="text-xs text-slate-500 mb-4 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span>
+              <span>Đường Doãn Uẩn, Liền kề cổng sau Trường ĐH Kinh tế DUE</span>
+            </p>
+
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-2 mb-6">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[18px] shrink-0 mt-0.5">check_circle</span>
+                <span><strong>Quy mô:</strong> Tòa nhà 6 tầng kiên cố, hơn 1.200 chỗ ở, bảo vệ 24/24.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[18px] shrink-0 mt-0.5">check_circle</span>
+                <span><strong>Trang bị:</strong> Giường tầng chắc chắn, bàn học cá nhân, điều hòa nhiệt độ, bình nóng lạnh.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[18px] shrink-0 mt-0.5">check_circle</span>
+                <span><strong>Tiện ích liền kề:</strong> Căng tin sinh viên, sân bóng mini cỏ nhân tạo, thư viện tự học.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div>
+              <span class="text-[11px] text-slate-400 block uppercase font-bold">Mức phí nội trú</span>
+              <span class="text-base font-extrabold text-[#00A859]">250.000đ – 450.000đ<span class="text-xs text-slate-500 font-normal">/tháng</span></span>
+            </div>
+            <a href="#dang-ky" class="px-4 py-2 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold transition-colors">
+              Đăng ký khu này
+            </a>
+          </div>
+        </div>
+
+        <!-- KHU 2: KTX TẬP TRUNG THÀNH PHỐ ĐÀ NẴNG -->
+        <div class="ktx-card rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-800 font-bold text-xs uppercase">
+                Hiện đại &amp; Chuẩn Quốc tế
+              </span>
+              <span class="text-xs text-blue-600 font-bold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">directions_bus</span>
+                Tuyến xe buýt tận cổng
+              </span>
+            </div>
+
+            <div class="w-full h-48 rounded-2xl overflow-hidden mb-5 bg-slate-100 relative">
+              <img 
+                src="/static/img/khoa/tcnh_gallery_1.jpg" 
+                alt="KTX Tập trung Sinh viên" 
+                class="w-full h-full object-cover"
+                onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_cover.jpg';"
+              />
+              <div class="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1 rounded-xl text-xs font-semibold">
+                Khu Đô thị KTX Sinh viên TP
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 mb-2">KTX Sinh Viên Tập Trung TP. Đà Nẵng</h3>
+            <p class="text-xs text-slate-500 mb-4 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span>
+              <span>Khu Đô thị Nam Cẩm Lệ / Khu Tây Bắc, kết nối thẳng xe buýt trợ giá đến DUE</span>
+            </p>
+
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-2 mb-6">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[18px] shrink-0 mt-0.5">check_circle</span>
+                <span><strong>Quy mô:</strong> Cụm chung cư cao tầng hiện đại bậc nhất miền Trung với sức chứa 3.000+ sinh viên.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[18px] shrink-0 mt-0.5">check_circle</span>
+                <span><strong>Môi trường:</strong> Ban công thoáng mát, thang máy thẻ từ, khu tự học thông minh có điều hòa.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[18px] shrink-0 mt-0.5">check_circle</span>
+                <span><strong>Sinh hoạt:</strong> Siêu thị tiện lợi, phòng tập Gym, sân thể thao đa môn, máy giặt công cộng.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div>
+              <span class="text-[11px] text-slate-400 block uppercase font-bold">Mức phí nội trú</span>
+              <span class="text-base font-extrabold text-[#00A859]">350.000đ – 650.000đ<span class="text-xs text-slate-500 font-normal">/tháng</span></span>
+            </div>
+            <a href="#dang-ky" class="px-4 py-2 rounded-xl bg-[#00A859] hover:bg-[#008f4c] text-white text-xs font-bold transition-colors">
+              Đăng ký khu này
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         2. BẢNG GIÁ & CÁC LOẠI PHÒNG (MINH BẠCH)
+         ==================================================== -->
+    <div id="bang-gia" class="mb-14 scroll-mt-36">
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <span class="px-3 py-1 rounded-full bg-blue-100 text-[#003366] text-xs font-bold uppercase tracking-wider">Minh bạch &amp; Trợ giá</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-headline-lg mt-2 mb-3">
+          Bảng Giá &amp; Các Loại Phòng Năm Học 2026
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+          Mức phí được Nhà nước và Trường Đại học Kinh tế trợ giá nhằm hỗ trợ tối đa cho sinh viên yên tâm học tập:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Loại 1: Phòng Tiêu Chuẩn 8 Người -->
+        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between hover:border-emerald-300 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">Phổ thông</span>
+              <span class="text-xs text-slate-400 font-mono">8 Sinh viên/phòng</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-1">Phòng Tiêu Chuẩn 8 Giường</h3>
+            <p class="text-xs text-slate-500 mb-4">Lựa chọn tiết kiệm nhất cho sinh viên</p>
+            <div class="text-2xl font-extrabold text-emerald-600 mb-4">
+              250.000đ <span class="text-xs text-slate-400 font-normal">/ tháng / sinh viên</span>
+            </div>
+            <ul class="text-xs text-slate-600 space-y-2 mb-6">
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500 text-[16px]">check</span>
+                <span>Quạt trần &amp; thông gió tự nhiên</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500 text-[16px]">check</span>
+                <span>Nhà vệ sinh &amp; phòng tắm khép kín</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500 text-[16px]">check</span>
+                <span>Bàn học và tủ đồ cá nhân</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500 text-[16px]">check</span>
+                <span>Wifi miễn phí toàn phòng</span>
+              </li>
+            </ul>
+          </div>
+          <a href="#dang-ky" class="w-full text-center py-2.5 rounded-xl border border-emerald-600 text-emerald-700 hover:bg-emerald-50 text-xs font-bold transition-colors">
+            Đăng ký loại 8 người
+          </a>
+        </div>
+
+        <!-- Loại 2: Phòng Tiện Nghi 6 Người (Có Điều Hòa) - Nổi Bật -->
+        <div class="p-6 rounded-3xl bg-gradient-to-b from-emerald-50/60 to-white border-2 border-emerald-500 shadow-lg flex flex-col justify-between relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-emerald-600 text-white text-[11px] font-bold uppercase tracking-wider shadow-sm">
+            Được đăng ký nhiều nhất
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-3 mt-2">
+              <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">Tiện nghi cao</span>
+              <span class="text-xs text-emerald-700 font-mono">6 Sinh viên/phòng</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-1">Phòng Tiện Nghi Điều Hòa</h3>
+            <p class="text-xs text-slate-500 mb-4">Cân bằng hoàn hảo giữa tiện nghi và chi phí</p>
+            <div class="text-2xl font-extrabold text-emerald-600 mb-4">
+              450.000đ <span class="text-xs text-slate-400 font-normal">/ tháng / sinh viên</span>
+            </div>
+            <ul class="text-xs text-slate-600 space-y-2 mb-6">
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[16px]">check</span>
+                <span><strong>Điều hòa nhiệt độ Inverter 2 chiều</strong></span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[16px]">check</span>
+                <span><strong>Bình nước nóng năng lượng mặt trời</strong></span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[16px]">check</span>
+                <span>Nhà vệ sinh khép kín sạch sẽ</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[16px]">check</span>
+                <span>Bàn học cá nhân có giá sách riêng</span>
+              </li>
+            </ul>
+          </div>
+          <a href="#dang-ky" class="w-full text-center py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md transition-all hover:scale-[1.02]">
+            Đăng ký loại 6 người
+          </a>
+        </div>
+
+        <!-- Loại 3: Phòng 4 Người VIP -->
+        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between hover:border-emerald-300 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-bold">Cao cấp VIP</span>
+              <span class="text-xs text-slate-400 font-mono">4 Sinh viên/phòng</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-1">Phòng Cao Cấp 4 Người</h3>
+            <p class="text-xs text-slate-500 mb-4">Không gian rộng rãi, yên tĩnh tối đa</p>
+            <div class="text-2xl font-extrabold text-purple-700 mb-4">
+              650.000đ <span class="text-xs text-slate-400 font-normal">/ tháng / sinh viên</span>
+            </div>
+            <ul class="text-xs text-slate-600 space-y-2 mb-6">
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500 text-[16px]">check</span>
+                <span>Chỉ 4 sinh viên, không gian cực kỳ yên tĩnh</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500 text-[16px]">check</span>
+                <span>Điều hòa + Bình nóng lạnh + Tủ lạnh mini</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500 text-[16px]">check</span>
+                <span>Ban công riêng phơi đồ đón gió biển</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500 text-[16px]">check</span>
+                <span>Ưu tiên sinh viên NCKH &amp; học vượt</span>
+              </li>
+            </ul>
+          </div>
+          <a href="#dang-ky" class="w-full text-center py-2.5 rounded-xl border border-purple-600 text-purple-700 hover:bg-purple-50 text-xs font-bold transition-colors">
+            Đăng ký loại 4 người
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         3. HỆ THỐNG TIỆN ÍCH NỘI KHU KTX
+         ==================================================== -->
+    <div class="mb-14 p-6 sm:p-10 rounded-3xl bg-slate-50 border border-slate-200">
+      <div class="max-w-3xl mb-8">
+        <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase">Hệ sinh thái tiện nghi</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md mt-2">
+          Tiện Ích &amp; Hoạt Động Thể Thao Tại Ký Túc Xá
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mb-3">
+            <span class="material-symbols-outlined text-[22px]">restaurant</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-sm mb-1">Căng Tin &amp; Nhà Ăn 3 Bữa</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Suất ăn 20.000đ – 30.000đ đảm bảo chuẩn Vệ sinh An toàn Thực phẩm của Bộ Y tế.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center mb-3">
+            <span class="material-symbols-outlined text-[22px]">sports_soccer</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-sm mb-1">Sân Thể Thao Đa Năng</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Sân bóng đá cỏ nhân tạo, bóng rổ, cầu lông mở cửa miễn phí cho cư dân KTX rèn luyện.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-3">
+            <span class="material-symbols-outlined text-[22px]">local_laundry_service</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-sm mb-1">Khu Giặt Tự Động</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Hệ thống máy giặt sấy thông minh quẹt mã QR, giặt sạch sấy khô nhanh chóng.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-3">
+            <span class="material-symbols-outlined text-[22px]">shield</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-sm mb-1">An Ninh 24/7</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Camera an ninh toàn khuôn viên, bảo vệ túc trực 24/24, kiểm soát ra vào bằng thẻ từ thông minh.</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         4. QUY TRÌNH & HƯỚNG DẪN ĐĂNG KÝ (STEP-BY-STEP)
+         ==================================================== -->
+    <div id="dang-ky" class="mb-14 scroll-mt-36">
+      <div class="p-6 sm:p-10 rounded-3xl bg-white border border-slate-200 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-6 border-b border-slate-100">
+          <div>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase">Hồ sơ đơn giản</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md mt-2">
+              Quy Trình 3 Bước Đăng Ký Nội Trú KTX
+            </h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#00A859] text-[20px]">phone_in_talk</span>
+            <span class="text-xs text-slate-500 font-medium">Hotline Ban Quản lý KTX: <strong class="text-slate-800">0236 3836 999</strong></span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/70">
+            <div class="w-8 h-8 rounded-full bg-[#003366] text-white flex items-center justify-center font-bold text-sm mb-3">1</div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1.5">Đăng ký trực tuyến</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Điền thông tin và lựa chọn loại phòng mong muốn tại Cổng thông tin Tuyển sinh DUE hoặc liên hệ hotline ban quản lý.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/70">
+            <div class="w-8 h-8 rounded-full bg-[#00A859] text-white flex items-center justify-center font-bold text-sm mb-3">2</div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1.5">Xét duyệt &amp; Báo phòng</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Ban quản lý KTX gửi thông báo kết quả duyệt phòng, số phòng và số giường qua Email &amp; SMS trong vòng 24 giờ.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/70">
+            <div class="w-8 h-8 rounded-full bg-[#fd761a] text-white flex items-center justify-center font-bold text-sm mb-3">3</div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1.5">Nộp hồ sơ &amp; Nhận phòng</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Mang theo CCCD và Giấy báo trúng tuyển đến Văn phòng KTX Khu Đông để ký hợp đồng và nhận chìa khóa phòng.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <p class="text-xs text-slate-500">
+            * Thời gian tiếp nhận đăng ký: Mở liên tục từ ngày công bố điểm chuẩn trúng tuyển đến hết đợt nhập học.
+          </p>
+          <a href="tel:02363836999" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#00A859] hover:bg-[#008f4c] text-white font-bold text-xs shadow-md transition-all hover:scale-105">
+            <span class="material-symbols-outlined text-[18px]">call</span>
+            <span>Gọi Tư Vấn KTX: (0236) 3836 999</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+{% endblock %}
+
