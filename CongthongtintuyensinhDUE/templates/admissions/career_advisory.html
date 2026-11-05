@@ -586,6 +586,113 @@
                 </div>
               </div>
 
+              <!-- 4. HỌC LỰC & NGUYỆN VỌNG XÉT TUYỂN -->
+              <div class="pt-4 border-t border-slate-100 space-y-4">
+                <h3 class="font-heading text-xs font-bold text-[#0072BC] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <span class="w-1.5 h-3.5 rounded bg-[#0072BC]"></span>
+                  4. Học lực & Nguyện vọng xét tuyển
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="grade_level" class="block text-xs font-semibold text-slate-700 mb-1">Bạn đang học lớp</label>
+                    <select id="grade_level" class="adv-input">
+                      <option value="">-- Chọn --</option>
+                      <option>Lớp 10</option><option>Lớp 11</option><option>Lớp 12</option><option>Đã tốt nghiệp THPT</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="subject_combo" class="block text-xs font-semibold text-slate-700 mb-1">Tổ hợp môn dự định xét tuyển</label>
+                    <select id="subject_combo" class="adv-input">
+                      <option value="">-- Chọn --</option>
+                      <option>A00 (Toán, Lý, Hóa)</option><option>A01 (Toán, Lý, Anh)</option>
+                      <option>D01 (Toán, Văn, Anh)</option><option>D07 (Toán, Hóa, Anh)</option>
+                      <option>X25/X26 (tổ hợp mới)</option><option>Chưa xác định</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="expected_score" class="block text-xs font-semibold text-slate-700 mb-1">Điểm xét tuyển dự kiến (thang 30)</label>
+                    <input id="expected_score" type="number" min="0" max="30" step="0.25" placeholder="VD: 24.5" class="adv-input">
+                  </div>
+                  <div>
+                    <label for="gpa" class="block text-xs font-semibold text-slate-700 mb-1">Điểm trung bình học tập gần nhất</label>
+                    <input id="gpa" type="number" min="0" max="10" step="0.1" placeholder="VD: 8.2" class="adv-input">
+                  </div>
+                  <div>
+                    <label for="strong_subjects" class="block text-xs font-semibold text-slate-700 mb-1">Môn học giỏi nhất</label>
+                    <input id="strong_subjects" type="text" maxlength="200" placeholder="VD: Toán, Tiếng Anh" class="adv-input">
+                  </div>
+                  <div>
+                    <label for="weak_subjects" class="block text-xs font-semibold text-slate-700 mb-1">Môn học còn yếu</label>
+                    <input id="weak_subjects" type="text" maxlength="200" placeholder="VD: Vật lý" class="adv-input">
+                  </div>
+                  <div>
+                    <label for="english_level" class="block text-xs font-semibold text-slate-700 mb-1">Trình độ tiếng Anh</label>
+                    <select id="english_level" class="adv-input">
+                      <option value="">-- Chọn --</option>
+                      <option>Cơ bản</option><option>Khá (giao tiếp được)</option>
+                      <option>Có IELTS 5.0 - 5.5</option><option>Có IELTS 6.0 trở lên</option><option>Chứng chỉ khác</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="admission_method" class="block text-xs font-semibold text-slate-700 mb-1">Phương thức xét tuyển dự định</label>
+                    <select id="admission_method" class="adv-input">
+                      <option value="">-- Chọn --</option>
+                      <option>Điểm thi tốt nghiệp THPT</option><option>Xét học bạ</option>
+                      <option>Đánh giá năng lực</option><option>Xét tuyển thẳng/ưu tiên</option><option>Chưa xác định</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="program_type" class="block text-xs font-semibold text-slate-700 mb-1">Chương trình mong muốn</label>
+                    <select id="program_type" class="adv-input">
+                      <option value="">-- Chọn --</option>
+                      <option>Chương trình tiêu chuẩn</option><option>Chương trình học bằng tiếng Anh</option>
+                      <option>Liên kết quốc tế</option><option>Chưa xác định</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="budget" class="block text-xs font-semibold text-slate-700 mb-1">Khả năng chi trả học phí/năm</label>
+                    <select id="budget" class="adv-input">
+                      <option value="">-- Chọn --</option>
+                      <option>Dưới 25 triệu</option><option>25 - 40 triệu</option>
+                      <option>40 - 70 triệu</option><option>Trên 70 triệu</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="work_style" class="block text-xs font-semibold text-slate-700 mb-1">Môi trường làm việc mong muốn</label>
+                    <select id="work_style" class="adv-input">
+                      <option value="">-- Chọn --</option>
+                      <option>Văn phòng, ổn định</option><option>Năng động, di chuyển nhiều</option>
+                      <option>Làm việc với số liệu, máy tính</option><option>Giao tiếp nhiều với con người</option>
+                      <option>Tự kinh doanh, khởi nghiệp</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="job_priority" class="block text-xs font-semibold text-slate-700 mb-1">Ưu tiên nhất khi chọn nghề</label>
+                    <select id="job_priority" class="adv-input">
+                      <option value="">-- Chọn --</option>
+                      <option>Thu nhập cao</option><option>Ổn định lâu dài</option>
+                      <option>Đúng đam mê</option><option>Cơ hội thăng tiến, ra nước ngoài</option><option>Dễ xin việc</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label for="considered_majors" class="block text-xs font-semibold text-slate-700 mb-1">Ngành bạn đang cân nhắc (nếu có)</label>
+                  <input id="considered_majors" type="text" maxlength="300" placeholder="VD: Marketing, Kế toán, Logistics" class="adv-input">
+                </div>
+                <div>
+                  <label for="family_wish" class="block text-xs font-semibold text-slate-700 mb-1">Mong muốn của gia đình</label>
+                  <input id="family_wish" type="text" maxlength="300" placeholder="VD: Bố mẹ muốn em học Tài chính - Ngân hàng" class="adv-input">
+                </div>
+                <div>
+                  <label for="extra_notes" class="block text-xs font-semibold text-slate-700 mb-1">Điều gì khác bạn muốn chia sẻ?</label>
+                  <textarea id="extra_notes" maxlength="1000" rows="2" placeholder="VD: Em muốn học gần nhà, muốn làm việc ở nước ngoài..." class="adv-input"></textarea>
+                </div>
+              </div>
+              <style>
+                .adv-input{width:100%;padding:.625rem .875rem;border-radius:.75rem;border:1px solid #e2e8f0;font-size:.875rem;background:#fff;transition:all .2s}
+                .adv-input:focus{outline:none;box-shadow:0 0 0 2px #0072BC;border-color:transparent}
+              </style>
+
               <!-- Submit button -->
               <div class="pt-4 border-t border-slate-100 flex flex-col items-center">
                 <button type="submit"
@@ -766,9 +873,11 @@
               <div class="flex items-center justify-between mb-4 pb-3 border-b border-blue-100">
                 <div class="flex items-center gap-2.5">
                   <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F37021] to-[#0072BC] text-white font-bold flex items-center justify-center text-sm font-heading">3</div>
-                  <h2 class="font-heading font-bold text-slate-900 text-base sm:text-lg">Top 3 ngành phù hợp tại DUE</h2>
+                  <h2 id="due-majors-title" class="font-heading font-bold text-slate-900 text-base sm:text-lg">Top 3 ngành phù hợp tại DUE</h2>
                 </div>
               </div>
+
+              <div id="ai-summary" class="hidden mb-4 p-4 rounded-2xl bg-blue-50/70 border border-blue-100 text-xs text-slate-700 leading-relaxed"></div>
 
               <div id="due-top-majors-container" class="space-y-3">
                 
@@ -873,7 +982,8 @@
     function showToast() {
       var toast = document.getElementById('toast-notification');
       var progressBar = document.getElementById('toast-progress-bar');
-      
+      if (!toast || !progressBar) return;
+
       if (toastTimeout) {
         clearTimeout(toastTimeout);
       }
@@ -893,6 +1003,7 @@
 
     function hideToast() {
       var toast = document.getElementById('toast-notification');
+      if (!toast) return;
       toast.classList.remove('show-toast');
       toast.classList.add('hide-toast');
       if (toastTimeout) clearTimeout(toastTimeout);
@@ -1087,6 +1198,37 @@
         document.getElementById('profile-filled-state').scrollIntoView({ behavior: 'smooth' });
       }
 
+      // Thông tin bổ sung cho AI
+      var extraIds = ['grade_level','subject_combo','expected_score','gpa','strong_subjects','weak_subjects',
+                      'english_level','admission_method','program_type','budget','work_style','job_priority',
+                      'considered_majors','family_wish','extra_notes'];
+      var extra = {};
+      extraIds.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) extra[id] = el.value.trim();
+      });
+
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+          return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+        });
+      }
+
+      var majorsBox = document.getElementById('due-top-majors-container');
+      var summaryBox = document.getElementById('ai-summary');
+      summaryBox.classList.add('hidden');
+      majorsBox.innerHTML = '<div class="p-6 text-center text-sm text-slate-500">' +
+        '<span class="material-symbols-outlined animate-spin align-middle text-[#0072BC]">progress_activity</span> ' +
+        'AI đang phân tích hồ sơ của bạn, vui lòng chờ trong giây lát...</div>';
+      var submitBtn = document.querySelector('#advisory-form button[type="submit"]');
+      var submitHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-wait');
+        submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span><span>AI ĐANG PHÂN TÍCH...</span>';
+      }
+      majorsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
       // Gui du lieu len Backend API Django
       fetch('/api/tu-van-huong-nghiep/', {
         method: 'POST',
@@ -1111,33 +1253,64 @@
           score_a: scores.A,
           score_s: scores.S,
           score_e: scores.E,
-          score_c: scores.C
+          score_c: scores.C,
+          ...extra
         })
       })
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        if (data && data.status === 'success' && data.data && data.data.suggested_majors) {
-          var majors = data.data.suggested_majors;
-          var container = document.getElementById('due-top-majors-container');
-          if (container && majors.length > 0) {
-            var html = '';
-            majors.slice(0, 3).forEach(function(m, idx) {
-              var colors = ['bg-orange-100 text-[#F37021]', 'bg-blue-100 text-[#0072BC]', 'bg-emerald-100 text-[#00A859]'];
-              var colorClass = colors[idx % 3];
-              html += '<div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">' +
-                      '<div class="w-8 h-8 rounded-xl ' + colorClass + ' flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#' + (idx + 1) + '</div>' +
-                      '<div class="flex-1 min-w-0">' +
-                      '<h4 class="font-heading font-bold text-slate-900 text-sm">' + m.ten + '</h4>' +
-                      '<p class="text-xs text-slate-500 mt-0.5">' + m.khoa + ' • Mã: ' + m.ma + '</p>' +
-                      '<span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-blue-50 text-[#0072BC] text-[10px] font-bold">Điểm chuẩn: ' + m.diem + 'đ</span>' +
-                      '</div></div>';
-            });
-            container.innerHTML = html;
-          }
+        if (!(data && data.status === 'success' && data.data)) {
+          majorsBox.innerHTML = '<p class="text-sm text-red-600">' + esc((data && data.message) || 'Có lỗi xảy ra, vui lòng thử lại.') + '</p>';
+          return;
         }
+        var d = data.data;
+        var majors = d.suggested_majors || [];
+        var isAI = d.ai;
+        document.getElementById('due-majors-title').textContent =
+          isAI ? 'AI đề xuất ' + majors.length + ' ngành phù hợp tại DUE' : 'Top 3 ngành phù hợp tại DUE';
+
+        if (isAI) {
+          summaryBox.innerHTML =
+            '<p class="font-bold text-[#0072BC] mb-1">Nhận xét của AI</p><p>' + esc(d.tong_quan) + '</p>' +
+            (d.loi_khuyen ? '<p class="font-bold text-[#F37021] mt-3 mb-1">Lời khuyên chọn nguyện vọng</p><p>' + esc(d.loi_khuyen) + '</p>' : '');
+          summaryBox.classList.remove('hidden');
+        } else if (d.ai_error) {
+          console.warn('AI không khả dụng, dùng gợi ý theo Holland:', d.ai_error);
+        }
+
+        var colors = ['bg-orange-100 text-[#F37021]', 'bg-blue-100 text-[#0072BC]', 'bg-emerald-100 text-[#00A859]'];
+        var list = isAI ? majors : majors.slice(0, 3);
+        var html = '';
+        list.forEach(function(m, idx) {
+          html += '<div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">' +
+                  '<div class="w-8 h-8 rounded-xl ' + colors[idx % 3] + ' flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#' + (idx + 1) + '</div>' +
+                  '<div class="flex-1 min-w-0">' +
+                  '<div class="flex items-start justify-between gap-2">' +
+                  '<h4 class="font-heading font-bold text-slate-900 text-sm">' + esc(m.ten) + '</h4>' +
+                  (m.phu_hop != null ? '<span class="flex-shrink-0 px-2 py-0.5 bg-emerald-50 text-[#00A859] text-[11px] font-bold">' + esc(m.phu_hop) + '% phù hợp</span>' : '') +
+                  '</div>' +
+                  '<p class="text-xs text-slate-500 mt-0.5">' + esc(m.khoa) + ' • Mã: ' + esc(m.ma) + '</p>' +
+                  (m.ly_do ? '<p class="text-xs text-slate-700 mt-2 leading-relaxed">' + esc(m.ly_do) + '</p>' : '') +
+                  (m.kha_nang ? '<p class="text-xs text-slate-500 mt-1 italic">' + esc(m.kha_nang) + '</p>' : '') +
+                  '<span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-blue-50 text-[#0072BC] text-[10px] font-bold">Điểm chuẩn' +
+                  (m.nam_diem ? ' ' + esc(m.nam_diem) : '') +
+                  (m.phuong_thuc_diem ? ' (' + esc(m.phuong_thuc_diem) + ')' : '') + ': ' + esc(m.diem) + 'đ</span>' +
+                  '</div></div>';
+        });
+        majorsBox.innerHTML = html || '<p class="text-sm text-slate-500">Chưa tìm được ngành phù hợp.</p>';
       })
       .catch(function(err) {
         console.warn('API sync notice:', err);
+        majorsBox.innerHTML = '<p class="text-sm text-red-600">Không kết nối được máy chủ, vui lòng thử lại.</p>';
+      })
+      .finally(function() {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70', 'cursor-wait');
+          submitBtn.innerHTML = submitHtml;
+        }
+        var top = document.getElementById('due-majors-title');
+        if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
       // Trigger modern Sharp Toast notification

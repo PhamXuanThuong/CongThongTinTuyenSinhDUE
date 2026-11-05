@@ -1,0 +1,109 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Trả lời câu hỏi Chatbot - Cán bộ tuyển sinh DUE{% endblock %}
+
+{% block content %}
+<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+  <div class="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-12 py-6">
+
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+      <div>
+        <h1 class="font-heading text-xl sm:text-2xl font-bold text-slate-900">Câu hỏi Chatbot chuyển tới cán bộ</h1>
+        <p class="text-xs text-slate-500 mt-1">Những câu hỏi không có trong tài liệu sẽ hiện ở đây. Câu trả lời của bạn sẽ hiện ngay trong khung chat của người hỏi.</p>
+      </div>
+      <div class="flex gap-2 text-xs font-bold">
+        <button id="tab-cho" onclick="switchTab('cho')" class="px-3 py-2 rounded-lg bg-[#0072BC] text-white">Đang chờ <span id="count-cho"></span></button>
+        <button id="tab-da_tra_loi" onclick="switchTab('da_tra_loi')" class="px-3 py-2 rounded-lg bg-slate-100 text-slate-700">Đã trả lời</button>
+      </div>
+    </div>
+
+    <div id="list" class="space-y-4"></div>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  var CSRF_TOKEN = '{{ csrf_token }}';
+  var currentTab = 'cho';
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function switchTab(tab) {
+    currentTab = tab;
+    ['cho', 'da_tra_loi'].forEach(function (t) {
+      document.getElementById('tab-' + t).className = 'px-3 py-2 rounded-lg ' +
+        (t === tab ? 'bg-[#0072BC] text-white' : 'bg-slate-100 text-slate-700');
+    });
+    load();
+  }
+
+  async function load() {
+    var list = document.getElementById('list');
+    try {
+      var res = await fetch('/api/can-bo/cau-hoi/?trang_thai=' + currentTab);
+      var json = await res.json();
+      if (json.status !== 'success') { list.innerHTML = '<p class="text-sm text-red-600">' + esc(json.message) + '</p>'; return; }
+      document.getElementById('count-cho').textContent = json.pending_count ? '(' + json.pending_count + ')' : '';
+      if (!json.data.length) {
+        list.innerHTML = '<div class="p-8 text-center text-sm text-slate-500 bg-white rounded-2xl border border-slate-200">' +
+          (currentTab === 'cho' ? 'Không có câu hỏi nào đang chờ.' : 'Chưa có câu hỏi nào được trả lời.') + '</div>';
+        return;
+      }
+      // Không vẽ lại khi cán bộ đang gõ dở
+      if (currentTab === 'cho' && document.activeElement && document.activeElement.tagName === 'TEXTAREA') return;
+      list.innerHTML = json.data.map(render).join('');
+    } catch (e) {
+      list.innerHTML = '<p class="text-sm text-red-600">Không tải được danh sách.</p>';
+    }
+  }
+
+  function render(q) {
+    var ctx = q.ngu_canh ? '<details class="mt-2 text-xs text-slate-500"><summary class="cursor-pointer">Xem hội thoại trước đó</summary>' +
+      '<pre class="whitespace-pre-wrap font-sans mt-1 p-2 bg-slate-50 rounded">' + esc(q.ngu_canh) + '</pre></details>' : '';
+    var head = '<div class="flex justify-between gap-2 text-[11px] text-slate-400 mb-1"><span>#' + q.id + ' • Hỏi lúc ' + esc(q.ngay_tao) + '</span>' +
+      (q.da_them_kien_thuc ? '<span class="text-[#00A859] font-bold">Đã thêm vào kho kiến thức</span>' : '') + '</div>';
+    var body;
+    if (q.trang_thai === 'cho') {
+      body = '<textarea id="ans-' + q.id + '" rows="3" class="w-full mt-3 p-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072BC]" placeholder="Nhập câu trả lời cho thí sinh..."></textarea>' +
+        '<div class="flex flex-wrap items-center justify-between gap-2 mt-2">' +
+        '<label class="text-xs text-slate-600 flex items-center gap-1.5"><input type="checkbox" id="kb-' + q.id + '" checked> Thêm vào kho kiến thức để Chatbot tự trả lời lần sau</label>' +
+        '<button onclick="answer(' + q.id + ')" id="btn-' + q.id + '" class="px-4 py-2 rounded-lg bg-[#00A859] text-white text-xs font-bold">Gửi câu trả lời</button></div>';
+    } else {
+      body = '<div class="mt-3 p-3 rounded-xl bg-emerald-50 border border-emerald-100 text-sm text-slate-800 whitespace-pre-wrap">' + esc(q.tra_loi) + '</div>' +
+        '<p class="text-[11px] text-slate-400 mt-1">' + esc(q.can_bo) + ' • ' + esc(q.ngay_tra_loi) + '</p>';
+    }
+    return '<div class="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-sm">' + head +
+      '<p class="text-sm font-semibold text-slate-900 whitespace-pre-wrap">' + esc(q.cau_hoi) + '</p>' + ctx + body + '</div>';
+  }
+
+  async function answer(id) {
+    var text = document.getElementById('ans-' + id).value.trim();
+    if (!text) { document.getElementById('ans-' + id).focus(); return; }
+    var btn = document.getElementById('btn-' + id);
+    btn.disabled = true; btn.textContent = 'Đang gửi...';
+    try {
+      var res = await fetch('/api/can-bo/cau-hoi/' + id + '/tra-loi/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN },
+        body: JSON.stringify({ tra_loi: text, them_kien_thuc: document.getElementById('kb-' + id).checked })
+      });
+      var json = await res.json();
+      if (json.status !== 'success') throw new Error(json.message);
+      document.activeElement && document.activeElement.blur();
+      load();
+    } catch (e) {
+      btn.disabled = false; btn.textContent = 'Gửi câu trả lời';
+      console.warn(e);
+      btn.insertAdjacentHTML('beforebegin', '<span class="text-xs text-red-600">Gửi thất bại: ' + esc(e.message) + '</span>');
+    }
+  }
+
+  load();
+  setInterval(function () { if (currentTab === 'cho') load(); }, 10000);
+</script>
+{% endblock %}

@@ -38,6 +38,12 @@ urlpatterns = [
     path('api/tailieu/', views.tailieu_list_api, name='api_tailieu_list'),
     path('api/tailieu/upload/', views.tailieu_upload_api, name='api_tailieu_upload'),
     path('api/tailieu/<int:doc_id>/delete/', views.tailieu_delete_api, name='api_tailieu_delete'),
+    path('api/chat/updates/', views.chat_updates_api, name='api_chat_updates'),
+
+    # Cán bộ tuyển sinh trả lời câu hỏi Chatbot chuyển tới
+    path('can-bo/hoi-dap/', views.can_bo_hoi_dap_view, name='can_bo_hoi_dap'),
+    path('api/can-bo/cau-hoi/', views.can_bo_cau_hoi_api, name='api_can_bo_cau_hoi'),
+    path('api/can-bo/cau-hoi/<int:q_id>/tra-loi/', views.can_bo_tra_loi_api, name='api_can_bo_tra_loi'),
 
     # Alias Tiếng Anh phụ trợ (Tùy chọn)
     path('history/', views.lich_su_phat_trien, name='history'),

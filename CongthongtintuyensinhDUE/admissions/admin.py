@@ -318,3 +318,18 @@ class TaiLieuTuyenSinhAdmin(admin.ModelAdmin):
     list_display = ('title', 'file', 'file_size', 'uploaded_at', 'is_processed')
     list_filter = ('is_processed', 'uploaded_at')
     search_fields = ('title',)
+
+
+from .models import CauHoiChoTraLoi
+
+
+@admin.register(CauHoiChoTraLoi)
+class CauHoiChoTraLoiAdmin(admin.ModelAdmin):
+    list_display = ('cau_hoi_ngan', 'trang_thai', 'can_bo', 'da_them_kien_thuc', 'ngay_tao', 'ngay_tra_loi')
+    list_filter = ('trang_thai', 'da_them_kien_thuc', 'ngay_tao')
+    search_fields = ('cau_hoi', 'tra_loi')
+    readonly_fields = ('client_id', 'ngu_canh', 'ngay_tao')
+
+    @admin.display(description='Câu hỏi')
+    def cau_hoi_ngan(self, obj):
+        return obj.cau_hoi[:80]

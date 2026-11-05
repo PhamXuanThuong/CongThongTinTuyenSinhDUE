@@ -146,11 +146,32 @@ MAILERS = {
     },
 }
 
+# ===== Đọc biến môi trường từ file .env (nếu có, không commit file này) =====
+_env_file = BASE_DIR.parent / ".env"
+if _env_file.exists():
+    for _line in _env_file.read_text(encoding="utf-8").splitlines():
+        if "=" in _line and not _line.strip().startswith("#"):
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
+
+# ===== GEMINI (tư vấn chọn ngành + chatbot) — để trống key thì dùng Ollama local =====
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3-flash-preview")
+# Chatbot: model rẻ & nhanh. Form tư vấn: model suy luận tốt hơn.
+GEMINI_CHAT_MODEL = os.environ.get("GEMINI_CHAT_MODEL", "gemini-3.1-flash-lite")
+GEMINI_ADVISOR_MODEL = os.environ.get("GEMINI_ADVISOR_MODEL", GEMINI_MODEL)
+# Model dự phòng khi model chính quá tải/treo (thử lần lượt)
+GEMINI_FALLBACK_MODELS = [m.strip() for m in os.environ.get(
+    "GEMINI_FALLBACK_MODELS", "gemini-flash-lite-latest,gemini-3-flash-preview").split(",") if m.strip()]
+GEMINI_TIMEOUT = int(os.environ.get("GEMINI_TIMEOUT", "30"))
+GEMINI_EMBED_MODEL = os.environ.get("GEMINI_EMBED_MODEL", "gemini-embedding-001")
+GEMINI_EMBED_DIM = int(os.environ.get("GEMINI_EMBED_DIM", "768"))
+
 # ===== RAG / OLLAMA =====
-OLLAMA_BASE_URL = "http://localhost:11434"
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
 OLLAMA_EMBED_MODEL = "bge-m3"
 OLLAMA_CHAT_MODEL = "qwen2.5:7b"
-RAG_TOP_K = 5
+RAG_TOP_K = 8
 RAG_MIN_SCORE = 0.35
 RAG_CHUNK_SIZE = 900
 RAG_CHUNK_OVERLAP = 150
