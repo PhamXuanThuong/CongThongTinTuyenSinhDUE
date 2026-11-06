@@ -22,6 +22,8 @@ from .models import (
     CauHoiHocPhi,
     TaiLieuTuyenSinh,
     CauHoiChoTraLoi,
+    ChatSession,
+    ChatMessage,
 )
 from . import rag
 
@@ -103,14 +105,14 @@ def login_view(request):
 
     if request.user.is_authenticated:
         if is_ajax:
-            redirect_url = '/admin/' if request.user.is_staff else ''
+            redirect_url = '/chatbot/' if request.user.is_staff else ''
             return JsonResponse({
                 'status': 'success',
                 'message': f'Bạn đã đăng nhập với tài khoản {request.user.username}.',
                 'redirect_url': redirect_url
             })
         if request.user.is_staff:
-            return redirect('/admin/')
+            return redirect('/chatbot/')
         return redirect('admissions:home')
 
     error_message = None
@@ -137,7 +139,7 @@ def login_view(request):
                 messages.success(request, success_msg)
                 
                 next_url = request.GET.get('next') or request.POST.get('next')
-                redirect_url = next_url or ('/admin/' if user.is_staff else '')
+                redirect_url = next_url or ('/chatbot/' if user.is_staff else '')
                 
                 if is_ajax:
                     return JsonResponse({
@@ -382,45 +384,7 @@ def api_chatbot_legacy(request):
     })
 
 
-HOLLAND_MAJORS = {
-    'E': [
-        {'ten': 'Quản trị kinh doanh', 'khoa': 'Khoa Quản trị kinh doanh', 'ma': '7340101', 'diem': '24.50', 'icon': 'corporate_fare'},
-        {'ten': 'Marketing', 'khoa': 'Khoa Marketing', 'ma': '7340115', 'diem': '25.50', 'icon': 'campaign'},
-        {'ten': 'Kinh doanh quốc tế', 'khoa': 'Khoa Du lịch và KDQT', 'ma': '7340120', 'diem': '25.75', 'icon': 'public'},
-        {'ten': 'Kinh doanh thương mại', 'khoa': 'Khoa TMĐT', 'ma': '7340121', 'diem': '24.25', 'icon': 'storefront'},
-        {'ten': 'Bất động sản', 'khoa': 'Khoa Tài chính - Ngân hàng', 'ma': '7340116', 'diem': '22.00', 'icon': 'real_estate_agent'},
-    ],
-    'C': [
-        {'ten': 'Kế toán doanh nghiệp', 'khoa': 'Khoa Kế toán', 'ma': '7340301', 'diem': '24.25', 'icon': 'calculate'},
-        {'ten': 'Kiểm toán (Chuẩn ACCA)', 'khoa': 'Khoa Kế toán', 'ma': '7340302', 'diem': '25.00', 'icon': 'verified_user'},
-        {'ten': 'Tài chính - Ngân hàng', 'khoa': 'Khoa Tài chính - Ngân hàng', 'ma': '7340201', 'diem': '24.00', 'icon': 'account_balance'},
-        {'ten': 'Công nghệ Tài chính (Fintech)', 'khoa': 'Khoa Tài chính - Ngân hàng', 'ma': '7340205', 'diem': '24.75', 'icon': 'currency_exchange'},
-        {'ten': 'Luật Kinh tế', 'khoa': 'Khoa Luật', 'ma': '7380107', 'diem': '24.50', 'icon': 'gavel'},
-    ],
-    'I': [
-        {'ten': 'Khoa học dữ liệu trong Kinh tế', 'khoa': 'Khoa Thống kê - Tin học', 'ma': '7310108', 'diem': '24.50', 'icon': 'query_stats'},
-        {'ten': 'Thương mại điện tử', 'khoa': 'Khoa TMĐT', 'ma': '7340122', 'diem': '25.25', 'icon': 'shopping_cart'},
-        {'ten': 'Hệ thống thông tin quản lý', 'khoa': 'Khoa TMĐT', 'ma': '7340405', 'diem': '24.00', 'icon': 'lan'},
-        {'ten': 'Kinh tế đầu tư và phát triển', 'khoa': 'Khoa Kinh tế', 'ma': '7310101', 'diem': '23.00', 'icon': 'trending_up'},
-        {'ten': 'Thống kê kinh tế', 'khoa': 'Khoa Thống kê - Tin học', 'ma': '7460117', 'diem': '22.50', 'icon': 'bar_chart'},
-    ],
-    'S': [
-        {'ten': 'Quản trị khách sạn', 'khoa': 'Khoa Du lịch và KDQT', 'ma': '7810201', 'diem': '24.00', 'icon': 'hotel'},
-        {'ten': 'Quản trị dịch vụ du lịch và lữ hành', 'khoa': 'Khoa Du lịch và KDQT', 'ma': '7810103', 'diem': '23.50', 'icon': 'travel_explore'},
-        {'ten': 'Quản trị nhân lực', 'khoa': 'Khoa Quản trị kinh doanh', 'ma': '7340101_02', 'diem': '24.50', 'icon': 'diversity_3'},
-        {'ten': 'Luật học', 'khoa': 'Khoa Luật', 'ma': '7380101', 'diem': '23.50', 'icon': 'balance'},
-    ],
-    'A': [
-        {'ten': 'Truyền thông Marketing tích hợp (IMC)', 'khoa': 'Khoa Marketing', 'ma': '7340115_02', 'diem': '25.50', 'icon': 'podcasts'},
-        {'ten': 'Marketing Số (Digital Marketing)', 'khoa': 'Khoa Marketing', 'ma': '7340115_01', 'diem': '25.75', 'icon': 'ads_click'},
-        {'ten': 'Cử nhân Quốc tế (Liên kết Anh/Úc)', 'khoa': 'Viện Đào tạo Quốc tế', 'ma': '7340101_QT', 'diem': '22.00', 'icon': 'language'},
-    ],
-    'R': [
-        {'ten': 'Quản trị chuỗi cung ứng và logistics', 'khoa': 'Khoa Quản trị kinh doanh', 'ma': '7340101_03', 'diem': '25.50', 'icon': 'local_shipping'},
-        {'ten': 'Hệ thống thông tin quản lý', 'khoa': 'Khoa TMĐT', 'ma': '7340405', 'diem': '24.00', 'icon': 'dns'},
-        {'ten': 'Công nghệ Tài chính (Fintech)', 'khoa': 'Khoa Tài chính - Ngân hàng', 'ma': '7340205', 'diem': '24.75', 'icon': 'payments'},
-    ]
-}
+HOLLAND_MAJORS = {}
 
 
 @csrf_exempt
@@ -494,18 +458,7 @@ def api_career_advisory(request):
     except Exception as e:
         ai_error = str(e)
 
-    suggested = []
-    seen = set()
-    for letter in sorted_letters[:3]:
-        for major in HOLLAND_MAJORS.get(letter, []):
-            if major['ten'] not in seen:
-                seen.add(major['ten'])
-                suggested.append(major)
-            if len(suggested) >= 6:
-                break
-        if len(suggested) >= 6:
-            break
-
+    # Đề xuất ngành: Nếu gọi được AI thì lấy đề xuất từ AI, nếu AI gặp lỗi thì query trực tiếp từ database
     if ai_result:
         suggested = ai_result['majors']
         nganh_txt = "\n".join(
@@ -513,6 +466,21 @@ def api_career_advisory(request):
         )
         nganh_txt = f"[AI] {ai_result['tong_quan']}\n{nganh_txt}\nLời khuyên: {ai_result['loi_khuyen']}"
     else:
+        # Fallback động từ Database (bảng admissions_major):
+        suggested = []
+        db_majors = list(NganhDaoTao.objects.prefetch_related('diem_chuan_cac_nam').all()[:6])
+        for m in db_majors:
+            latest_diem = m.diem_chuan_cac_nam.order_by('-nam').first()
+            suggested.append({
+                'ma': m.ma_nganh,
+                'ten': m.ten_nganh,
+                'khoa': m.khoa,
+                'to_hop': m.to_hop_mon,
+                'diem': f"{latest_diem.diem_trung_tuyen:.2f}" if latest_diem else "—",
+                'phu_hop': 85,
+                'ly_do': f"Ngành đào tạo chính quy thế mạnh của {m.khoa}",
+                'kha_nang': "Phù hợp với nguyện vọng xét tuyển"
+            })
         nganh_txt = ", ".join([s['ten'] for s in suggested])
 
     so_truong = data.get('strengths', '')
@@ -690,18 +658,21 @@ def api_documents_upload(request):
         doc = TaiLieuTuyenSinh(title=f.name, file=f, file_size=format_file_size(f.size))
         doc.save()
         error = ''
+        chunks_count = 0
         try:
-            n = rag.index_document(doc)
+            chunks_count = rag.index_document(doc)
         except Exception as e:
-            n, error = 0, str(e)
+            error = str(e)
+            print(f"Lỗi vector hóa tài liệu {doc.title}: {e}")
+
         saved_items.append({
             'id': doc.id,
             'name': doc.title,
             'size': doc.file_size,
-            'url': doc.file.url,
+            'url': doc.file.url if doc.file else '',
             'date': doc.uploaded_at.strftime('%H:%M - %d/%m/%Y'),
             'is_processed': doc.is_processed,
-            'chunks': n,
+            'chunks': chunks_count,
             'error': error,
         })
 
@@ -731,9 +702,17 @@ def api_documents_delete(request, doc_id):
 
 
 HANDOFF_REPLY = (
-    'Câu hỏi này hiện chưa có trong tài liệu của Chatbot nên đã được **chuyển tới cán bộ tuyển sinh DUE**. '
-    'Bạn vui lòng giữ trang này, câu trả lời sẽ hiện ngay trong khung chat khi cán bộ phản hồi. '
-    'Cần gấp, bạn có thể gọi Hotline 0236 3836 169.'
+    'Câu hỏi này hiện chưa có trong cơ sở dữ liệu của Chatbot nên đã được **chuyển tới cán bộ tuyển sinh DUE** tiếp nhận. '
+    'Bạn có thể xem lại câu trả lời trong mục Lịch sử trò chuyện khi cán bộ phản hồi. '
+    'Nếu cần giải đáp gấp, bạn vui lòng liên hệ Hotline: **0236 3836 169** hoặc **0236 3847 139** nhé!'
+)
+
+UNAUTH_HANDOFF_REPLY = (
+    'Câu hỏi này hiện chưa có trong dữ liệu tự động của Chatbot. '
+    'Vì bạn **chưa đăng nhập tài khoản**, hệ thống không thể lưu lại phiên kết nối để gửi câu trả lời của Cán bộ tuyển sinh cho bạn sau này.\n\n'
+    '👉 **Vui lòng chọn một trong hai cách sau:**\n'
+    '1. [Đăng nhập tài khoản](/dang-nhap/) để câu hỏi được chuyển trực tiếp tới Cán bộ tư vấn và lưu vào lịch sử của bạn.\n'
+    '2. Liên hệ trực tiếp với Ban tuyển sinh DUE qua **Hotline: 0236 3836 169 - 0236 3847 139** hoặc gửi form tại mục **[Đăng ký tư vấn](/dang-ky-tu-van/)** để được hỗ trợ ngay nhé!'
 )
 
 
@@ -745,7 +724,7 @@ def _clean_client_id(value):
 @csrf_exempt
 @rate_limit(key_prefix='chat', max_requests=15, timeout_seconds=60)
 def api_chat(request):
-    """API tiếp nhận chat hội thoại và trả lời theo RAG."""
+    """API tiếp nhận chat hội thoại, duy trì ngữ cảnh (context) và lưu lịch sử vào Database."""
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Chỉ hỗ trợ POST'}, status=405)
     try:
@@ -760,19 +739,118 @@ def api_chat(request):
     if not client_id:
         return JsonResponse({'status': 'error', 'message': 'Thiếu mã phiên chat'}, status=400)
 
+    # Quản lý ChatSession trong database
+    user = request.user if request.user.is_authenticated else None
+    session_obj, created = ChatSession.objects.get_or_create(
+        session_id=client_id,
+        defaults={
+            'user': user,
+            'title': question[:50] + ("..." if len(question) > 50 else "")
+        }
+    )
+    # Nếu session đã tồn tại nhưng trước đó chưa gán user và user vừa đăng nhập
+    if user and not session_obj.user:
+        session_obj.user = user
+        session_obj.save(update_fields=['user'])
+
+    # Lưu câu hỏi của người dùng vào ChatMessage
+    ChatMessage.objects.create(session=session_obj, role='user', content=question)
+
+    # Nạp toàn bộ lịch sử hội thoại trước đó từ database để duy trì Context chính xác
+    db_history = []
+    for msg in session_obj.messages.all().order_by('created_at'):
+        db_history.append({'role': msg.role, 'content': msg.content})
+
     try:
-        reply, sources, found = rag.answer(question, history)
+        reply, sources, found = rag.answer(question, db_history)
     except Exception as e:
         reply, sources, found = '', [], False
         print('chat_api AI error:', e)
 
     if found:
+        # Lưu câu trả lời của AI vào DB
+        ChatMessage.objects.create(session=session_obj, role='assistant', content=reply, sources=sources)
         return JsonResponse({'status': 'success', 'reply': reply, 'sources': sources, 'handoff': False})
 
-    ngu_canh = "\n".join(f"{m.get('role')}: {m.get('content')}" for m in history[-6:] if isinstance(m, dict))
+    # Nếu AI không có thông tin và người dùng CHƯA ĐĂNG NHẬP:
+    # Chặn không chuyển vào hàng chờ cán bộ (tránh spam và tránh trường hợp khách F5 mất kết nối),
+    # đồng thời hướng dẫn khách đăng nhập hoặc gọi hotline.
+    if not request.user.is_authenticated:
+        ChatMessage.objects.create(session=session_obj, role='assistant', content=UNAUTH_HANDOFF_REPLY, sources=[])
+        return JsonResponse({'status': 'success', 'reply': UNAUTH_HANDOFF_REPLY, 'sources': [],
+                             'handoff': False, 'requires_login': True})
+
+    # Nếu ĐÃ ĐĂNG NHẬP: Lưu vào bảng admissions_pending_question để Cán bộ trả lời
+    ngu_canh = "\n".join(f"{m.get('role')}: {m.get('content')}" for m in db_history[-6:])
     q = CauHoiChoTraLoi.objects.create(client_id=client_id, cau_hoi=question, ngu_canh=ngu_canh[:4000])
+    ChatMessage.objects.create(session=session_obj, role='assistant', content=HANDOFF_REPLY, sources=[])
     return JsonResponse({'status': 'success', 'reply': HANDOFF_REPLY, 'sources': [],
                          'handoff': True, 'pending_id': q.id})
+
+
+def api_chat_sessions(request):
+    """API lấy danh sách các phiên chat của người dùng đã đăng nhập."""
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'success', 'sessions': []})
+
+    sessions = ChatSession.objects.filter(user=request.user).order_by('-updated_at')
+    data = [{
+        'session_id': s.session_id,
+        'title': s.title,
+        'created_at': s.created_at.strftime('%H:%M - %d/%m/%Y'),
+        'updated_at': s.updated_at.strftime('%H:%M - %d/%m/%Y'),
+        'message_count': s.messages.count()
+    } for s in sessions]
+    return JsonResponse({'status': 'success', 'sessions': data})
+
+
+def api_chat_session_detail(request, session_id):
+    """API lấy toàn bộ tin nhắn trong một phiên chat cụ thể."""
+    session_id = _clean_client_id(session_id)
+    if not session_id:
+        return JsonResponse({'status': 'error', 'message': 'Mã phiên không hợp lệ'}, status=400)
+
+    try:
+        session_obj = ChatSession.objects.get(session_id=session_id)
+        # Nếu phiên thuộc user khác thì từ chối
+        if session_obj.user and request.user.is_authenticated and session_obj.user != request.user:
+            return JsonResponse({'status': 'error', 'message': 'Không có quyền truy cập'}, status=403)
+
+        messages = [{
+            'role': m.role,
+            'content': m.content,
+            'sources': m.sources or [],
+            'created_at': m.created_at.strftime('%H:%M %d/%m/%Y')
+        } for m in session_obj.messages.all().order_by('created_at')]
+
+        return JsonResponse({
+            'status': 'success',
+            'session': {
+                'session_id': session_obj.session_id,
+                'title': session_obj.title,
+            },
+            'messages': messages
+        })
+    except ChatSession.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Không tìm thấy phiên chat'}, status=404)
+
+
+@csrf_exempt
+def api_chat_session_delete(request, session_id):
+    """API xóa một phiên chat (chỉ chủ sở hữu phiên)."""
+    if request.method not in ['POST', 'DELETE']:
+        return JsonResponse({'status': 'error', 'message': 'Yêu cầu không hợp lệ'}, status=405)
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Chưa đăng nhập'}, status=401)
+
+    session_id = _clean_client_id(session_id)
+    try:
+        session_obj = ChatSession.objects.get(session_id=session_id, user=request.user)
+        session_obj.delete()
+        return JsonResponse({'status': 'success', 'message': 'Đã xóa phiên chat'})
+    except ChatSession.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Phiên chat không tồn tại'}, status=404)
+
 
 
 def api_chat_updates(request):
@@ -854,6 +932,23 @@ def api_officer_reply(request, q_id):
             msg += f' (chưa thêm được vào kho kiến thức: {e})'
     q.save()
     return JsonResponse({'status': 'success', 'message': msg})
+
+
+@csrf_exempt
+def api_officer_delete(request, q_id):
+    """API cán bộ xóa / bỏ qua câu hỏi spam, tào lao."""
+    if request.method not in ['POST', 'DELETE']:
+        return JsonResponse({'status': 'error', 'message': 'Chỉ hỗ trợ POST/DELETE'}, status=405)
+    denied = _staff_required_json(request)
+    if denied:
+        return denied
+
+    try:
+        q = CauHoiChoTraLoi.objects.get(id=q_id)
+        q.delete()
+        return JsonResponse({'status': 'success', 'message': 'Đã xóa câu hỏi khỏi danh sách chờ'})
+    except CauHoiChoTraLoi.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Câu hỏi không tồn tại'}, status=404)
 
 
 def chatbot_view(request):

@@ -1,23 +1,75 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}Trả lời câu hỏi Chatbot - Cán bộ tuyển sinh DUE{% endblock %}
+{% block title %}Bàn làm việc Cán bộ - Xử lý câu hỏi Chatbot DUE{% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
-  <div class="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-12 py-6">
+<main class="w-full pt-44 sm:pt-40 pb-16 bg-[#f8fafc] min-h-screen flex flex-col">
+  <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col">
 
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
-      <div>
-        <h1 class="font-heading text-xl sm:text-2xl font-bold text-slate-900">Câu hỏi Chatbot chuyển tới cán bộ</h1>
-        <p class="text-xs text-slate-500 mt-1">Những câu hỏi không có trong tài liệu sẽ hiện ở đây. Câu trả lời của bạn sẽ hiện ngay trong khung chat của người hỏi.</p>
+    <!-- Top Header Bar -->
+    <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-orange-100 text-[#F37021] flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-[24px]">support_agent</span>
+        </div>
+        <div>
+          <h1 class="font-heading text-base sm:text-lg font-bold text-slate-900 leading-tight">Bàn tiếp nhận câu hỏi Chatbot</h1>
+          <p class="text-xs text-slate-500">Phản hồi thắc mắc thí sinh và duyệt tri thức mới cho AI</p>
+        </div>
       </div>
-      <div class="flex gap-2 text-xs font-bold">
-        <button id="tab-cho" onclick="switchTab('cho')" class="px-3 py-2 rounded-lg bg-[#0072BC] text-white">Đang chờ <span id="count-cho"></span></button>
-        <button id="tab-da_tra_loi" onclick="switchTab('da_tra_loi')" class="px-3 py-2 rounded-lg bg-slate-100 text-slate-700">Đã trả lời</button>
+
+      <div class="flex items-center gap-2">
+        <!-- Tabs trạng thái -->
+        <div class="bg-slate-100 p-1 rounded-xl flex items-center text-xs font-bold">
+          <button id="tab-cho" onclick="switchTab('cho')" class="px-3 py-1.5 rounded-lg bg-[#0072BC] text-white shadow-xs transition-all flex items-center gap-1.5">
+            <span>Đang chờ</span>
+            <span id="badge-cho" class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px] font-extrabold">0</span>
+          </button>
+          <button id="tab-da_tra_loi" onclick="switchTab('da_tra_loi')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">
+            Đã trả lời
+          </button>
+        </div>
+
+        <a href="/chatbot/" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors flex items-center gap-1" title="Mở trang Chatbot">
+          <span class="material-symbols-outlined text-[17px]">chat</span>
+          <span class="hidden sm:inline">Về Chatbot</span>
+        </a>
       </div>
     </div>
 
-    <div id="list" class="space-y-4"></div>
+    <!-- 2-COLUMN WORKSPACE: MASTER - DETAIL -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 items-start">
+      
+      <!-- CỘT TRÁI (4 COLS): DANH SÁCH CÂU HỎI THEO THẺ MASTER -->
+      <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200/90 shadow-xs flex flex-col h-[680px] overflow-hidden">
+        <div class="p-3.5 border-b border-slate-100 bg-slate-50/70 flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px] text-[#0072BC]">format_list_bulleted</span>
+            <span>Danh sách câu hỏi</span>
+          </span>
+          <span id="list-counter" class="text-xs text-slate-400 font-semibold">0 câu</span>
+        </div>
+
+        <!-- List cuộn mượt mà -->
+        <div id="questions-list" class="flex-1 overflow-y-auto p-2.5 space-y-2">
+          <!-- Render danh sách câu hỏi -->
+        </div>
+      </div>
+
+      <!-- CỘT PHẢI (8 COLS): KHÔNG GIAN CHI TIẾT & SOẠN TRẢ LỜI (DETAIL VIEW) -->
+      <div id="detail-pane" class="lg:col-span-8 bg-white rounded-2xl border border-slate-200/90 shadow-xs flex flex-col h-[680px] overflow-hidden">
+        <!-- Render chi tiết câu hỏi được chọn -->
+        <div class="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400">
+          <div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-300 mb-3">
+            <span class="material-symbols-outlined text-[32px]">touch_app</span>
+          </div>
+          <p class="text-sm font-bold text-slate-700">Chọn một câu hỏi từ danh sách bên trái</p>
+          <p class="text-xs text-slate-400 mt-1">Nội dung chi tiết, hội thoại trước đó và ô trả lời sẽ hiển thị tại đây.</p>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </main>
 {% endblock %}
@@ -26,6 +78,8 @@
 <script>
   var CSRF_TOKEN = '{{ csrf_token }}';
   var currentTab = 'cho';
+  var questionsData = [];
+  var selectedId = null;
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -35,75 +89,227 @@
 
   function switchTab(tab) {
     currentTab = tab;
+    selectedId = null;
     ['cho', 'da_tra_loi'].forEach(function (t) {
-      document.getElementById('tab-' + t).className = 'px-3 py-2 rounded-lg ' +
-        (t === tab ? 'bg-[#0072BC] text-white' : 'bg-slate-100 text-slate-700');
+      var btn = document.getElementById('tab-' + t);
+      if (t === tab) {
+        btn.className = 'px-3 py-1.5 rounded-lg bg-[#0072BC] text-white shadow-xs transition-all flex items-center gap-1.5';
+      } else {
+        btn.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all';
+      }
     });
-    load();
+    loadQuestions();
   }
 
-  async function load() {
-    var list = document.getElementById('list');
+  async function loadQuestions() {
     try {
       var res = await fetch('/api/can-bo/cau-hoi/?trang_thai=' + currentTab);
       var json = await res.json();
-      if (json.status !== 'success') { list.innerHTML = '<p class="text-sm text-red-600">' + esc(json.message) + '</p>'; return; }
-      document.getElementById('count-cho').textContent = json.pending_count ? '(' + json.pending_count + ')' : '';
-      if (!json.data.length) {
-        list.innerHTML = '<div class="p-8 text-center text-sm text-slate-500 bg-white rounded-2xl border border-slate-200">' +
-          (currentTab === 'cho' ? 'Không có câu hỏi nào đang chờ.' : 'Chưa có câu hỏi nào được trả lời.') + '</div>';
-        return;
+      if (json.status !== 'success') return;
+
+      questionsData = json.data || [];
+      document.getElementById('badge-cho').textContent = json.pending_count || '0';
+      document.getElementById('list-counter').textContent = questionsData.length + ' câu';
+
+      renderQuestionsList();
+
+      // Nếu có câu hỏi và chưa chọn câu nào, tự động chọn câu đầu tiên
+      if (questionsData.length > 0) {
+        var stillExists = questionsData.some(function (q) { return q.id === selectedId; });
+        if (!selectedId || !stillExists) {
+          selectQuestion(questionsData[0].id);
+        } else {
+          renderDetailPane();
+        }
+      } else {
+        selectedId = null;
+        renderDetailPane();
       }
-      // Không vẽ lại khi cán bộ đang gõ dở
-      if (currentTab === 'cho' && document.activeElement && document.activeElement.tagName === 'TEXTAREA') return;
-      list.innerHTML = json.data.map(render).join('');
-    } catch (e) {
-      list.innerHTML = '<p class="text-sm text-red-600">Không tải được danh sách.</p>';
-    }
+    } catch (e) {}
   }
 
-  function render(q) {
-    var ctx = q.ngu_canh ? '<details class="mt-2 text-xs text-slate-500"><summary class="cursor-pointer">Xem hội thoại trước đó</summary>' +
-      '<pre class="whitespace-pre-wrap font-sans mt-1 p-2 bg-slate-50 rounded">' + esc(q.ngu_canh) + '</pre></details>' : '';
-    var head = '<div class="flex justify-between gap-2 text-[11px] text-slate-400 mb-1"><span>#' + q.id + ' • Hỏi lúc ' + esc(q.ngay_tao) + '</span>' +
-      (q.da_them_kien_thuc ? '<span class="text-[#00A859] font-bold">Đã thêm vào kho kiến thức</span>' : '') + '</div>';
-    var body;
-    if (q.trang_thai === 'cho') {
-      body = '<textarea id="ans-' + q.id + '" rows="3" class="w-full mt-3 p-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072BC]" placeholder="Nhập câu trả lời cho thí sinh..."></textarea>' +
-        '<div class="flex flex-wrap items-center justify-between gap-2 mt-2">' +
-        '<label class="text-xs text-slate-600 flex items-center gap-1.5"><input type="checkbox" id="kb-' + q.id + '" checked> Thêm vào kho kiến thức để Chatbot tự trả lời lần sau</label>' +
-        '<button onclick="answer(' + q.id + ')" id="btn-' + q.id + '" class="px-4 py-2 rounded-lg bg-[#00A859] text-white text-xs font-bold">Gửi câu trả lời</button></div>';
+  function renderQuestionsList() {
+    var listEl = document.getElementById('questions-list');
+    if (!questionsData.length) {
+      listEl.innerHTML = '<div class="py-16 text-center text-slate-400 text-xs">' +
+        '<span class="material-symbols-outlined text-[32px] text-slate-300 block mb-2">' +
+        (currentTab === 'cho' ? 'check_circle' : 'inventory_2') + '</span>' +
+        '<p class="font-bold text-slate-600">' + (currentTab === 'cho' ? 'Không có câu hỏi chờ' : 'Chưa có câu trả lời nào') + '</p>' +
+        '</div>';
+      return;
+    }
+
+    var html = '';
+    questionsData.forEach(function (q) {
+      var isSelected = q.id === selectedId;
+      html += '<div onclick="selectQuestion(' + q.id + ')" class="p-3 rounded-xl cursor-pointer transition-all duration-150 border text-xs flex flex-col gap-1.5 group ' +
+        (isSelected 
+          ? 'bg-blue-50/90 border-[#0072BC] shadow-xs ring-1 ring-blue-400/20' 
+          : 'bg-slate-50/60 border-slate-200/70 hover:bg-slate-100/80 hover:border-slate-300') + '">' +
+        '<div class="flex items-center justify-between text-[11px]">' +
+          '<span class="text-slate-400 font-medium text-[11px] flex items-center gap-1">' +
+            '<span class="material-symbols-outlined text-[13px] ' + (isSelected ? 'text-[#0072BC]' : 'text-slate-400') + '">schedule</span>' +
+            '<span>' + esc(q.ngay_tao) + '</span>' +
+          '</span>' +
+        '</div>' +
+        '<p class="font-semibold leading-relaxed line-clamp-2 ' + (isSelected ? 'text-[#0072BC]' : 'text-slate-800') + '">' +
+          esc(q.cau_hoi) +
+        '</p>' +
+        (q.da_them_kien_thuc ? '<span class="text-[10px] text-[#00A859] font-bold flex items-center gap-0.5 mt-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Đã nạp tri thức</span>' : '') +
+      '</div>';
+    });
+    listEl.innerHTML = html;
+  }
+
+  function selectQuestion(id) {
+    selectedId = id;
+    renderQuestionsList();
+    renderDetailPane();
+  }
+
+  function renderDetailPane() {
+    var pane = document.getElementById('detail-pane');
+    if (!selectedId) {
+      pane.innerHTML = '<div class="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400">' +
+        '<div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-300 mb-3">' +
+          '<span class="material-symbols-outlined text-[32px]">touch_app</span>' +
+        '</div>' +
+        '<p class="text-sm font-bold text-slate-700">Chọn một câu hỏi từ danh sách bên trái</p>' +
+      '</div>';
+      return;
+    }
+
+    var q = questionsData.find(function (item) { return item.id === selectedId; });
+    if (!q) return;
+
+    var isPending = q.trang_thai === 'cho';
+
+    // Header của Detail Pane
+    var topBar = '<div class="p-4 border-b border-slate-100 bg-slate-50/70 flex items-center justify-between gap-3">' +
+      '<div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium">' +
+        '<span class="material-symbols-outlined text-[16px] text-slate-400">event</span>' +
+        '<span>Thời gian gửi: <strong>' + esc(q.ngay_tao) + '</strong></span>' +
+      '</div>' +
+      '<div class="flex items-center gap-2">' +
+        (isPending ? 
+          '<button onclick="deleteCurrentQuestion(' + q.id + ')" class="px-2.5 py-1 rounded-lg text-xs font-bold text-red-600 hover:bg-red-50 border border-red-200 transition-colors flex items-center gap-1" title="Xóa bỏ câu hỏi spam, tào lao">' +
+            '<span class="material-symbols-outlined text-[15px]">delete_sweep</span>' +
+            '<span>Xóa câu hỏi</span>' +
+          '</button>' : '') +
+      '</div>' +
+    '</div>';
+
+    // Nội dung câu hỏi và hội thoại trước đó
+    var conversationContext = q.ngu_canh ? 
+      '<div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 font-mono whitespace-pre-wrap max-h-40 overflow-y-auto leading-relaxed">' +
+        esc(q.ngu_canh) +
+      '</div>' : '<p class="text-xs text-slate-400 italic">Không có tin nhắn trước đó</p>';
+
+    var contentArea = '<div class="flex-1 overflow-y-auto p-5 space-y-4">' +
+      '<div>' +
+        '<p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Câu hỏi của thí sinh:</p>' +
+        '<div class="p-4 rounded-xl bg-orange-50/60 border border-orange-200/80 text-sm font-bold text-slate-900 leading-relaxed">' +
+          esc(q.cau_hoi) +
+        '</div>' +
+      '</div>' +
+      '<div>' +
+        '<p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Hội thoại trước đó của thí sinh:</p>' +
+        conversationContext +
+      '</div>' +
+    '</div>';
+
+    // Phần soạn trả lời hoặc kết quả đã trả lời
+    var footerArea = '';
+    if (isPending) {
+      footerArea = '<div class="p-4 border-t border-slate-100 bg-white space-y-3">' +
+        '<div>' +
+          '<label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">' +
+            '<span>Soạn câu trả lời gửi đến khung chat thí sinh:</span>' +
+            '<span class="text-[11px] text-slate-400 font-normal">Hỗ trợ Markdown cơ bản</span>' +
+          '</label>' +
+          '<textarea id="detail-ans" rows="4" class="w-full p-3 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0072BC] focus:ring-2 focus:ring-blue-100 transition-all resize-none" placeholder="Nhập câu trả lời cụ thể, đúng trọng tâm cho thí sinh..."></textarea>' +
+        '</div>' +
+        '<div class="flex items-center justify-between gap-3 pt-1">' +
+          '<label class="cursor-pointer text-xs text-slate-700 flex items-center gap-2 select-none hover:text-[#00A859] transition-colors">' +
+            '<input type="checkbox" id="detail-kb" checked class="w-4 h-4 rounded text-[#00A859] focus:ring-[#00A859] cursor-pointer">' +
+            '<span>Duyệt câu trả lời này vào <strong>Kho tri thức Chatbot</strong> (AI tự trả lời lần sau)</span>' +
+          '</label>' +
+          '<button onclick="submitDetailAnswer(' + q.id + ')" id="detail-submit-btn" class="px-5 py-2.5 rounded-xl bg-[#00A859] hover:bg-[#008f4c] text-white text-xs font-bold shadow-xs hover:shadow transition-all flex items-center gap-1.5 flex-shrink-0">' +
+            '<span class="material-symbols-outlined text-[17px]">send</span>' +
+            '<span>Gửi câu trả lời</span>' +
+          '</button>' +
+        '</div>' +
+      '</div>';
     } else {
-      body = '<div class="mt-3 p-3 rounded-xl bg-emerald-50 border border-emerald-100 text-sm text-slate-800 whitespace-pre-wrap">' + esc(q.tra_loi) + '</div>' +
-        '<p class="text-[11px] text-slate-400 mt-1">' + esc(q.can_bo) + ' • ' + esc(q.ngay_tra_loi) + '</p>';
+      footerArea = '<div class="p-4 border-t border-slate-100 bg-emerald-50/50 space-y-2">' +
+        '<div class="flex items-center justify-between text-xs text-slate-500">' +
+          '<span class="font-bold text-[#00A859] flex items-center gap-1">' +
+            '<span class="material-symbols-outlined text-[16px]">verified_user</span>' +
+            '<span>Đã trả lời bởi: ' + esc(q.can_bo || 'Cán bộ tuyển sinh') + '</span>' +
+          '</span>' +
+          '<span>Thời gian: ' + esc(q.ngay_tra_loi) + '</span>' +
+        '</div>' +
+        '<div class="p-3.5 rounded-xl bg-white border border-emerald-200 text-xs sm:text-sm text-slate-800 whitespace-pre-wrap leading-relaxed shadow-xs">' +
+          esc(q.tra_loi) +
+        '</div>' +
+      '</div>';
     }
-    return '<div class="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-sm">' + head +
-      '<p class="text-sm font-semibold text-slate-900 whitespace-pre-wrap">' + esc(q.cau_hoi) + '</p>' + ctx + body + '</div>';
+
+    pane.innerHTML = topBar + contentArea + footerArea;
   }
 
-  async function answer(id) {
-    var text = document.getElementById('ans-' + id).value.trim();
-    if (!text) { document.getElementById('ans-' + id).focus(); return; }
-    var btn = document.getElementById('btn-' + id);
-    btn.disabled = true; btn.textContent = 'Đang gửi...';
+  async function submitDetailAnswer(id) {
+    var text = document.getElementById('detail-ans').value.trim();
+    if (!text) {
+      document.getElementById('detail-ans').focus();
+      return;
+    }
+    var btn = document.getElementById('detail-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span><span>Đang gửi...</span>';
+
     try {
       var res = await fetch('/api/can-bo/cau-hoi/' + id + '/tra-loi/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN },
-        body: JSON.stringify({ tra_loi: text, them_kien_thuc: document.getElementById('kb-' + id).checked })
+        body: JSON.stringify({
+          tra_loi: text,
+          them_kien_thuc: document.getElementById('detail-kb').checked
+        })
       });
       var json = await res.json();
       if (json.status !== 'success') throw new Error(json.message);
-      document.activeElement && document.activeElement.blur();
-      load();
+      await loadQuestions();
     } catch (e) {
-      btn.disabled = false; btn.textContent = 'Gửi câu trả lời';
-      console.warn(e);
-      btn.insertAdjacentHTML('beforebegin', '<span class="text-xs text-red-600">Gửi thất bại: ' + esc(e.message) + '</span>');
+      alert('Lỗi: ' + e.message);
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[17px]">send</span><span>Gửi câu trả lời</span>';
     }
   }
 
-  load();
-  setInterval(function () { if (currentTab === 'cho') load(); }, 10000);
+  async function deleteCurrentQuestion(id) {
+    if (!confirm('Bạn có chắc muốn xóa câu hỏi này khỏi danh sách (câu hỏi spam, tào lao)?')) return;
+    try {
+      var res = await fetch('/api/can-bo/cau-hoi/' + id + '/delete/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': CSRF_TOKEN }
+      });
+      var json = await res.json();
+      if (json.status !== 'success') throw new Error(json.message);
+      selectedId = null;
+      await loadQuestions();
+    } catch (e) {
+      alert('Lỗi: ' + e.message);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    loadQuestions();
+    setInterval(function () {
+      if (currentTab === 'cho' && (!document.activeElement || document.activeElement.tagName !== 'TEXTAREA')) {
+        loadQuestions();
+      }
+    }, 15000);
+  });
 </script>
 {% endblock %}

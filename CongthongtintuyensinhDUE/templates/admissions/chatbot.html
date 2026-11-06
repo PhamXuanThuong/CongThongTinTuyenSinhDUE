@@ -37,54 +37,88 @@
     <div class="max-w-7xl w-full mx-auto px-6 lg:px-12 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       
       <!-- ==============================================
-           PANEL 1: NGUỒN TÀI LIỆU (CÁN BỘ TƯ VẤN UPLOAD) - 3 COLS
+           PANEL 1 (BÊN TRÁI): NGUỒN TÀI LIỆU (NẾU LÀ CÁN BỘ) & LỊCH SỬ CHAT - 3 COLS
            ============================================== -->
-      <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-        <!-- Panel Header -->
-        <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-[20px] text-[#0072BC]">folder_open</span>
-            <h3 class="font-heading text-sm font-bold text-slate-800">Nguồn tài liệu</h3>
-          </div>
-          <span id="sources-count-badge" class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">0 tệp</span>
-        </div>
+      <div class="lg:col-span-3 space-y-4 flex flex-col h-[720px]">
 
-        <div class="p-4 space-y-4">
-          {% if user.is_staff %}
-          <!-- Upload Box dành cho Cán bộ tư vấn -->
-          <div class="p-4 rounded-xl border-2 border-dashed border-slate-200 hover:border-[#0072BC] bg-slate-50/50 hover:bg-blue-50/30 transition-all text-center">
-            <input type="file" id="staff-file-input" multiple onchange="handleStaffUpload(event)" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.md,.xlsx">
+        {% if user.is_staff %}
+        <!-- Box 1 (Dành cho Cán bộ tư vấn): TẢI LÊN & QUẢN LÝ TÀI LIỆU -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col flex-shrink-0">
+          <div class="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-[#0072BC]">cloud_upload</span>
+              <h3 class="font-heading text-xs font-bold text-slate-800 uppercase tracking-wide">Tài liệu tư vấn</h3>
+            </div>
+            <span id="sources-count-badge" class="px-2 py-0.5 rounded-full bg-blue-50 text-[#0072BC] text-[11px] font-bold">0 tệp</span>
+          </div>
+
+          <div class="p-3 space-y-3">
+            <div class="p-3 rounded-xl border-2 border-dashed border-slate-200 hover:border-[#0072BC] bg-slate-50/50 hover:bg-blue-50/30 transition-all text-center">
+              <input type="file" id="staff-file-input" multiple onchange="handleStaffUpload(event)" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.md,.xlsx">
+              <label for="staff-file-input" class="cursor-pointer block">
+                <span class="material-symbols-outlined text-[20px] text-[#0072BC]">upload_file</span>
+                <p class="text-xs font-bold text-[#0072BC] mt-0.5">Tải lên tệp mới</p>
+                <p class="text-[10px] text-slate-400">PDF, DOCX, XLSX, CSV, TXT, MD</p>
+              </label>
+            </div>
             
-            <label for="staff-file-input" class="cursor-pointer block">
-              <div class="w-10 h-10 mx-auto rounded-full bg-blue-100 text-[#0072BC] flex items-center justify-center mb-2">
-                <span class="material-symbols-outlined text-[22px]">cloud_upload</span>
+            <!-- Danh sách tài liệu rút gọn -->
+            <div id="sources-empty-state" class="py-2 text-center text-slate-400 text-xs">Chưa có tài liệu tải lên</div>
+            <div id="sources-list" class="max-h-[120px] overflow-y-auto space-y-1.5 hidden pr-1"></div>
+            
+            <!-- Nút bấm vào trang Duyệt & Trả lời câu hỏi đang chờ -->
+            <a href="/can-bo/hoi-dap/" class="flex items-center justify-between p-2.5 rounded-xl bg-orange-50 border border-orange-200 hover:bg-orange-100/70 transition-all text-xs font-bold text-[#F37021] group">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">support_agent</span>
+                <span>Câu hỏi chờ xử lý</span>
               </div>
-              <p class="text-xs font-bold text-[#0072BC]">Tải lên tài liệu mới</p>
-              <p class="text-[10px] text-slate-400 mt-0.5">PDF, DOCX, XLSX, CSV, TXT, MD</p>
-            </label>
-          </div>
-          {% endif %}
+              <span id="staff-pending-badge" class="px-2 py-0.5 rounded-full bg-[#F37021] text-white text-[10px] font-extrabold shadow-sm">0</span>
+            </a>
 
-          <!-- Empty State (Khi chưa có file tải lên) -->
-          <div id="sources-empty-state" class="py-6 px-2 text-center text-slate-400">
-            <span class="material-symbols-outlined text-[28px] mb-1 text-slate-300">hourglass_empty</span>
-            <p class="text-xs font-medium text-slate-600">Chưa có nguồn tài liệu</p>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Box 2: LỊCH SỬ PHIÊN HỘI THOẠI (Đặt phía dưới Box upload nếu là cán bộ, hoặc full panel bên trái nếu là thí sinh) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col flex-1">
+          <div class="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-[#F37021]">history</span>
+              <h3 class="font-heading text-xs font-bold text-slate-800 uppercase tracking-wide">Lịch sử trò chuyện</h3>
+            </div>
+            <button onclick="createNewSession()" title="Tạo cuộc hội thoại mới" class="p-1 rounded-lg hover:bg-slate-200 text-[#0072BC] transition-colors flex items-center gap-1 text-xs font-bold">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+              <span>Mới</span>
+            </button>
           </div>
 
-          <!-- File list (Rendered dynamically khi cán bộ upload) -->
-          <div id="sources-list" class="space-y-2 hidden"></div>
+          <div class="p-3 flex-1 flex flex-col overflow-hidden">
+            {% if user.is_authenticated %}
+              <!-- Danh sách phiên chat của thí sinh / cán bộ -->
+              <div id="chat-sessions-list" class="flex-1 overflow-y-auto space-y-1.5 pr-1">
+                <div class="py-8 text-center text-slate-400 text-xs">
+                  <span class="material-symbols-outlined text-[24px] text-slate-300 block mb-1">chat_bubble_outline</span>
+                  Chưa có phiên chat nào
+                </div>
+              </div>
+            {% else %}
+              <!-- Khách vãng lai chưa đăng nhập -->
+              <div class="flex-1 flex flex-col items-center justify-center text-center p-4 text-slate-500 space-y-3">
+                <div class="w-12 h-12 rounded-full bg-orange-50 text-[#F37021] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[24px]">lock</span>
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-slate-700">Lịch sử trò chuyện</p>
+                  <p class="text-[11px] text-slate-400 mt-1">Đăng nhập tài khoản để tạo các phiên chat.</p>
+                </div>
+                <a href="{% url 'admissions:login' %}" class="px-3.5 py-1.5 rounded-lg bg-[#0072BC] hover:bg-[#005a96] text-white text-xs font-bold transition-all shadow-sm">
+                  Đăng nhập ngay
+                </a>
+              </div>
+            {% endif %}
+          </div>
         </div>
 
-        <!-- Role tag -->
-        <div class="p-3 bg-slate-50 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-[15px] text-[#F37021]">admin_panel_settings</span>
-          {% if user.is_staff %}
-            <a href="/can-bo/hoi-dap/" class="font-bold text-[#0072BC] hover:underline">Trả lời câu hỏi đang chờ</a>
-            <span id="staff-pending-badge" class="ml-auto px-1.5 py-0.5 rounded-full bg-red-100 text-red-600 font-bold hidden"></span>
-          {% else %}
-            <span>Tài liệu do cán bộ tuyển sinh DUE cung cấp</span>
-          {% endif %}
-        </div>
       </div>
 
       <!-- ==============================================
@@ -224,11 +258,16 @@
     /* ---- Mã phiên chat của người hỏi (để nhận câu trả lời của cán bộ) ---- */
     function storageGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
     function storageSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-    var CLIENT_ID = storageGet('due_chat_client_id');
+
+    // Kiểm tra nếu chuyển từ ChatWidget sang qua URL param
+    var urlParams = new URLSearchParams(window.location.search);
+    var urlSessionId = urlParams.get('session_id');
+
+    var CLIENT_ID = urlSessionId || storageGet('due_chat_client_id');
     if (!CLIENT_ID || !/^[A-Za-z0-9_-]{8,64}$/.test(CLIENT_ID)) {
       CLIENT_ID = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
-      storageSet('due_chat_client_id', CLIENT_ID);
     }
+    storageSet('due_chat_client_id', CLIENT_ID);
     var seenAnswers = {};
     try { seenAnswers = JSON.parse(storageGet('due_chat_seen') || '{}') || {}; } catch (e) { seenAnswers = {}; }
     var pendingCount = 0;
@@ -264,8 +303,12 @@
         var json = await res.json();
         var b = document.getElementById('staff-pending-badge');
         if (b && json.status === 'success') {
-          b.textContent = json.pending_count + ' chờ';
-          b.classList.toggle('hidden', json.pending_count === 0);
+          b.textContent = json.pending_count;
+          if (json.pending_count > 0) {
+            b.className = 'px-2 py-0.5 rounded-full bg-red-500 text-white text-[10px] font-extrabold shadow-sm animate-pulse';
+          } else {
+            b.className = 'px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 text-[10px] font-bold';
+          }
         }
       } catch (e) {}
     }
@@ -352,22 +395,153 @@
           return;
         }
         var text = json.reply;
-        if (json.sources && json.sources.length) {
-          text += '\n\n**Nguồn tham khảo:** ' + json.sources.join(', ');
-        }
         appendMessage(json.handoff ? 'handoff' : 'assistant', text);
         chatHistory.push({ role: 'user', content: query });
         if (!json.handoff) chatHistory.push({ role: 'assistant', content: json.reply });
         if (json.handoff) { pendingCount++; schedulePoll(); refreshStaffBadge(); }
+        loadChatSessions(); // Cập nhật lại tiêu đề phiên chat trên sidebar
+
+        // Cảnh báo nén ngữ cảnh khi phiên chat quá dài (> 12 tin nhắn)
+        if (chatHistory.length >= 12 && !document.getElementById('dc-context-notice')) {
+          var notice = document.createElement('div');
+          notice.id = 'dc-context-notice';
+          notice.className = 'p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[11px] flex items-center justify-between gap-2 shadow-xs';
+          notice.innerHTML = '<div class="flex items-center gap-1.5 min-w-0">' +
+                             '<span class="material-symbols-outlined text-[16px] text-amber-600 flex-shrink-0">auto_fix_high</span>' +
+                             '<span>Phiên trò chuyện đang dài, hệ thống đang tự động nén ngữ cảnh để AI xử lý mượt mà.</span>' +
+                             '</div>' +
+                             '<button onclick="createNewSession()" class="px-2 py-0.5 rounded-md bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] whitespace-nowrap">Tạo chat mới</button>';
+          var list = document.getElementById('messages-list');
+          list.appendChild(notice);
+          scrollToBottom();
+        }
       } catch (err) {
         removeTypingIndicator(typingId);
         appendMessage('assistant', '⚠️ Không kết nối được máy chủ.');
       }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      loadSources();
-      pollStaffAnswers();   // nhận câu trả lời cán bộ gửi khi người hỏi đã rời trang
+    /* ---- Quản lý danh sách phiên chat ---- */
+    async function loadChatSessions() {
+      if (!Boolean('{% if user.is_authenticated %}1{% endif %}')) return;
+      try {
+        var res = await fetch('/api/chat/sessions/');
+        var json = await res.json();
+        if (json.status !== 'success') return;
+        renderChatSessions(json.sessions);
+      } catch (e) {}
+    }
+
+    function renderChatSessions(sessions) {
+      var listEl = document.getElementById('chat-sessions-list');
+      if (!listEl) return;
+      if (!sessions || sessions.length === 0) {
+        listEl.innerHTML = '<div class="py-8 text-center text-slate-400 text-xs">' +
+                           '<span class="material-symbols-outlined text-[24px] text-slate-300 block mb-1">chat_bubble_outline</span>' +
+                           'Chưa có phiên chat nào</div>';
+        return;
+      }
+
+      var html = '';
+      sessions.forEach(function (s) {
+        var isActive = s.session_id === CLIENT_ID;
+        html += '<div onclick="switchSession(\'' + s.session_id + '\')" class="p-2.5 rounded-xl cursor-pointer transition-all duration-200 border text-xs flex items-center justify-between group ' +
+                (isActive 
+                  ? 'bg-gradient-to-r from-blue-50 to-indigo-50/80 border-[#0072BC] shadow-sm text-[#0072BC] font-semibold ring-1 ring-blue-400/30' 
+                  : 'bg-white border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 hover:shadow-xs text-slate-700') + '">' +
+                  '<div class="flex items-center gap-2.5 min-w-0 flex-1">' +
+                    '<div class="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 ' + (isActive ? 'bg-[#0072BC] text-white shadow-xs' : 'bg-slate-100 text-slate-400 group-hover:text-slate-600') + '">' +
+                      '<span class="material-symbols-outlined text-[15px]">chat</span>' +
+                    '</div>' +
+                    '<div class="min-w-0 flex-1">' +
+                      '<p class="truncate text-xs ' + (isActive ? 'text-[#0072BC] font-bold' : 'text-slate-800') + '">' + escapeHtml(s.title) + '</p>' +
+                      '<p class="text-[10px] text-slate-400 font-normal mt-0.5">' + s.updated_at + '</p>' +
+                    '</div>' +
+                  '</div>' +
+                  '<button onclick="event.stopPropagation(); deleteSession(\'' + s.session_id + '\')" class="w-6 h-6 rounded-lg hover:bg-red-50 text-slate-300 hover:text-red-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all flex-shrink-0" title="Xóa phiên">' +
+                    '<span class="material-symbols-outlined text-[15px]">delete</span>' +
+                  '</button>' +
+                '</div>';
+      });
+      listEl.innerHTML = html;
+    }
+
+    async function switchSession(sid) {
+      if (sid === CLIENT_ID) return;
+      CLIENT_ID = sid;
+      storageSet('due_chat_client_id', CLIENT_ID);
+      chatHistory = [];
+      document.getElementById('messages-list').innerHTML = '';
+      var sug = document.getElementById('suggestions-block');
+      if (sug) sug.style.display = 'none';
+
+      try {
+        var res = await fetch('/api/chat/sessions/' + encodeURIComponent(sid) + '/');
+        var json = await res.json();
+        if (json.status === 'success') {
+          var label = document.getElementById('current-session-label');
+          if (label) label.textContent = json.session.title;
+
+          json.messages.forEach(function (m) {
+            var text = m.content;
+            appendMessage(m.role, text);
+            chatHistory.push({ role: m.role, content: m.content });
+          });
+        }
+      } catch (e) {}
+      loadChatSessions();
+    }
+
+    function createNewSession() {
+      CLIENT_ID = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+      storageSet('due_chat_client_id', CLIENT_ID);
+      chatHistory = [];
+      document.getElementById('messages-list').innerHTML = '';
+      var label = document.getElementById('current-session-label');
+      if (label) label.textContent = 'Mới';
+      var sug = document.getElementById('suggestions-block');
+      if (sug) sug.style.display = 'block';
+      loadChatSessions();
+    }
+
+    async function deleteSession(sid) {
+      if (!confirm('Bạn có chắc muốn xóa phiên trò chuyện này?')) return;
+      try {
+        await fetch('/api/chat/sessions/' + encodeURIComponent(sid) + '/delete/', {
+          method: 'POST',
+          headers: { 'X-CSRFToken': CSRF_TOKEN }
+        });
+        if (sid === CLIENT_ID) createNewSession();
+        else loadChatSessions();
+      } catch (e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      if (IS_STAFF) loadSources();
+      await loadChatSessions();
+
+      // Nếu đang có phiên chat (ví dụ từ widget chuyển sang), tự động load tin nhắn của phiên đó
+      if (CLIENT_ID) {
+        try {
+          var res = await fetch('/api/chat/sessions/' + encodeURIComponent(CLIENT_ID) + '/');
+          var json = await res.json();
+          if (json.status === 'success' && json.messages && json.messages.length > 0) {
+            var label = document.getElementById('current-session-label');
+            if (label) label.textContent = json.session.title;
+            var sug = document.getElementById('suggestions-block');
+            if (sug) sug.style.display = 'none';
+
+            chatHistory = [];
+            document.getElementById('messages-list').innerHTML = '';
+            json.messages.forEach(function (m) {
+              appendMessage(m.role, m.content);
+              chatHistory.push({ role: m.role, content: m.content });
+            });
+          }
+        } catch (e) {}
+      }
+
+      pollStaffAnswers();
       refreshStaffBadge();
     });
 
@@ -451,8 +625,6 @@
                            '<div class="max-w-[88%] rounded-2xl p-4 bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm shadow-sm leading-relaxed">' +
                            '<div class="flex items-center gap-1.5 mb-1.5 text-xs text-slate-400 font-semibold">' +
                            '<span class="text-[#0072BC]">AI DUE Assistant</span>' +
-                           '<span>•</span>' +
-                           '<span>Xác thực</span>' +
                            '</div>' +
                            formatted + '</div>';
       }

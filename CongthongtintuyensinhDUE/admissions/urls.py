@@ -38,8 +38,14 @@ urlpatterns = [
     path('api/tailieu/<int:doc_id>/delete/', views.api_documents_delete, name='api_documents_delete'),
     path('api/chat/updates/', views.api_chat_updates, name='api_chat_updates'),
 
+    # Quản lý phiên chat và lịch sử hội thoại
+    path('api/chat/sessions/', views.api_chat_sessions, name='api_chat_sessions'),
+    path('api/chat/sessions/<str:session_id>/', views.api_chat_session_detail, name='api_chat_session_detail'),
+    path('api/chat/sessions/<str:session_id>/delete/', views.api_chat_session_delete, name='api_chat_session_delete'),
+
     # Cán bộ tuyển sinh trả lời câu hỏi Chatbot chuyển tới
     path('can-bo/hoi-dap/', views.officer_qa_view, name='officer_qa'),
     path('api/can-bo/cau-hoi/', views.api_officer_questions, name='api_officer_questions'),
     path('api/can-bo/cau-hoi/<int:q_id>/tra-loi/', views.api_officer_reply, name='api_officer_reply'),
+    path('api/can-bo/cau-hoi/<int:q_id>/delete/', views.api_officer_delete, name='api_officer_delete'),
 ]
