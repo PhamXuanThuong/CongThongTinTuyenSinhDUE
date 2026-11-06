@@ -1,7 +1,6 @@
-import os
-import json
 from typing import List, Dict, Any, Optional
-from django.conf import settings
+from portal.models import Faculty, Department
+from admissions.models import CauLacBo
 
 FACULTY_NAMES: Dict[str, str] = {
     'tcnh': 'Khoa Tài chính - Ngân hàng',
@@ -17,112 +16,64 @@ FACULTY_NAMES: Dict[str, str] = {
 
 
 def get_departments() -> List[Dict[str, Any]]:
-    """Loads all university administrative and functional departments."""
-    pb_path = os.path.join(settings.BASE_DIR, 'data', 'phongban.json')
-    if not os.path.exists(pb_path):
-        return []
-    with open(pb_path, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    """Loads all university administrative and functional departments directly from database."""
+    departments = Department.objects.filter(is_active=True).order_by('order', 'id')
+    return [d.to_dict() for d in departments]
 
 
 def get_faculties() -> List[Dict[str, Any]]:
-    """Loads and formats all faculty and institute records with images and urls."""
-    khoa_path = os.path.join(settings.BASE_DIR, 'data', 'khoa.json')
-    if not os.path.exists(khoa_path):
-        return []
-
-    with open(khoa_path, 'r', encoding='utf-8') as f:
-        faculties = json.load(f)
-        for fac in faculties:
-            fid = fac.get('id')
-            fac['logo_url'] = f'/static/img/khoa/{fid}_logo.png'
-            fac['cover_url'] = f'/static/img/khoa/{fid}_cover.jpg'
-            fac['detail_url'] = f'/khoa/{fid}/'
-            fac['lcd_url'] = f'/lien-chi-doan/{fid}/'
-
-            # Format gallery assets
-            if 'gallery' in fac and isinstance(fac['gallery'], list):
-                for g in fac['gallery']:
-                    if isinstance(g, dict) and 'url' in g:
-                        if not g['url'].startswith('/'):
-                            g['url'] = f'/static/img/khoa/{os.path.basename(g["url"])}'
-
-            # Format LCD data
-            if 'lcd' in fac and isinstance(fac['lcd'], dict):
-                fac['lcd']['detail_url'] = f'/lien-chi-doan/{fid}/'
-                fac['lcd']['faculty_id'] = fid
-                fac['lcd']['faculty_name'] = fac.get('name')
-                fac['lcd']['color'] = fac.get('color', 'bg-blue-600')
-                fac['lcd']['gradient'] = fac.get('gradient', 'from-blue-600 to-indigo-700')
-                if 'images' in fac['lcd'] and isinstance(fac['lcd']['images'], list):
-                    for img in fac['lcd']['images']:
-                        if isinstance(img, dict) and 'url' in img:
-                            if not img['url'].startswith('/'):
-                                img['url'] = f'/static/img/lcd/{os.path.basename(img["url"])}'
-        return faculties
+    """Loads and formats all faculty and institute records directly from database."""
+    faculties = Faculty.objects.filter(is_active=True).order_by('order', 'id')
+    return [f.to_dict() for f in faculties]
 
 
 def get_faculty_by_code(code: str) -> Optional[Dict[str, Any]]:
-    """Finds a faculty by code or aliases."""
-    faculties = get_faculties()
+    """Finds a faculty by code or aliases from database."""
     clean_code = code.strip().rstrip('/').lower()
 
-    for fac in faculties:
-        fid = fac.get('id', '').lower()
-        aliases = [a.lower() for a in fac.get('aliases', [])]
-        if fid == clean_code or clean_code in aliases:
-            return fac
+    # Thử tìm trực tiếp theo code
+    faculty = Faculty.objects.filter(code__iexact=clean_code, is_active=True).first()
+    if faculty:
+        return faculty.to_dict()
 
+    # Thử tìm dạng gạch dưới hoặc gạch nối
     norm_code = clean_code.replace('-', '_')
-    for fac in faculties:
-        if fac.get('id', '').replace('-', '_') == norm_code:
-            return fac
+    faculty = Faculty.objects.filter(code__iexact=norm_code, is_active=True).first()
+    if faculty:
+        return faculty.to_dict()
+
+    alt_norm_code = clean_code.replace('_', '-')
+    faculty = Faculty.objects.filter(code__iexact=alt_norm_code, is_active=True).first()
+    if faculty:
+        return faculty.to_dict()
+
+    # Nếu không tìm thấy bằng code chính, quét qua danh sách aliases
+    for f in Faculty.objects.filter(is_active=True):
+        aliases = [str(a).lower() for a in (f.aliases or [])]
+        if clean_code in aliases or norm_code in aliases:
+            return f.to_dict()
 
     return None
 
 
 def get_clubs() -> List[Dict[str, Any]]:
-    """Loads clubs from database or fallback to json."""
-    try:
-        from admissions.models import CauLacBo
-        db_clubs = list(CauLacBo.objects.filter(is_active=True).order_by('order', 'id'))
-        if db_clubs:
-            return [c.to_dict() for c in db_clubs]
-    except Exception:
-        pass
-
-    clb_path = os.path.join(settings.BASE_DIR, 'data', 'clb.json')
-    if os.path.exists(clb_path):
-        with open(clb_path, 'r', encoding='utf-8') as f:
-            clubs = json.load(f)
-            for c in clubs:
-                if c.get('logo'):
-                    c['logo_url'] = f'/static/img/clb/{os.path.basename(c["logo"])}'
-                else:
-                    c['logo_url'] = None
-
-                if c.get('cover'):
-                    c['cover_url'] = f'/static/img/clb/{os.path.basename(c["cover"])}'
-                else:
-                    c['cover_url'] = None
-
-                if c.get('gallery'):
-                    for g in c['gallery']:
-                        if isinstance(g, dict) and 'url' in g:
-                            if not g['url'].startswith('/'):
-                                g['url'] = f"/static/img/clb/{os.path.basename(g['url'])}"
-
-                fid = c.get('faculty_id')
-                c['faculty_name'] = FACULTY_NAMES.get(fid, 'Cấp trường') if fid else 'Cấp trường (Đoàn – Hội)'
-            return clubs
-    return []
+    """Loads clubs from database."""
+    db_clubs = list(CauLacBo.objects.filter(is_active=True).order_by('order', 'id'))
+    return [c.to_dict() for c in db_clubs]
 
 
 def get_club_by_id(club_id: str) -> Optional[Dict[str, Any]]:
-    """Finds club by id or alias."""
-    clubs = get_clubs()
+    """Finds club by slug or alias directly from database."""
     clean_id = club_id.strip().rstrip('/')
-    for c in clubs:
-        if c.get('id') == clean_id or clean_id in c.get('aliases', []):
-            return c
+    # Thử tìm theo slug trước
+    club = CauLacBo.objects.filter(slug__iexact=clean_id, is_active=True).first()
+    if club:
+        return club.to_dict()
+
+    # Tìm trong aliases
+    for c in CauLacBo.objects.filter(is_active=True):
+        aliases = [str(a).lower() for a in (c.aliases or [])]
+        if clean_id.lower() in aliases:
+            return c.to_dict()
+
     return None

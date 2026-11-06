@@ -85,7 +85,7 @@
     <div class="flex flex-col lg:flex-row lg:items-end gap-6 justify-between">
       <div class="max-w-2xl">
         <h1 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mt-3 leading-tight">
-          Tìm ngành học <span class="text-[#0072BC]">hợp với bạn</span> tại DUE
+          Tìm <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC]">Ngành học</span> hợp với bạn tại DUE<br>
         </h1>
         <p class="text-slate-600 mt-3 leading-relaxed">
           Trả lời vài câu hỏi về tính cách, sở thích và học lực. Trợ lý AI sẽ đối chiếu với các ngành của
@@ -103,7 +103,7 @@
       <section id="wizard" class="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
         <div class="px-5 sm:px-8 pt-6 pb-5 border-b border-slate-100">
           <ol id="stepper" class="flex items-center justify-between gap-2">
-            <li class="stepper-item flex items-center gap-2.5" data-i="0"><span class="stepper-dot">1</span><span class="stepper-label hidden sm:block text-sm font-semibold text-slate-400">Về bạn</span></li>
+            <li class="stepper-item flex items-center gap-2.5" data-i="0"><span class="stepper-dot">1</span><span class="stepper-label hidden sm:block text-sm font-semibold text-slate-400">Bản thân</span></li>
             <li class="h-px flex-1 bg-slate-200"></li>
             <li class="stepper-item flex items-center gap-2.5" data-i="1"><span class="stepper-dot">2</span><span class="stepper-label hidden sm:block text-sm font-semibold text-slate-400">Tính cách</span></li>
             <li class="h-px flex-1 bg-slate-200"></li>
@@ -118,7 +118,7 @@
           <!-- BƯỚC 1 -->
           <div class="adv-step fade-in" data-step="0">
             <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900">Chào bạn 👋 Mình làm quen nhé!</h2>
-            <p class="text-sm text-slate-500 mt-1 mb-6">Thông tin này giúp cán bộ tuyển sinh liên hệ tư vấn thêm nếu bạn cần. Chúng tôi không chia sẻ cho bên thứ ba.</p>
+            <p class="text-sm text-slate-500 mt-1 mb-6">Thông tin này giúp trợ lý có thể tư vấn cụ thể cho bạn. Chúng tôi cam kết không chia sẻ thông tin này cho bên thứ ba.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div class="sm:col-span-2">
                 <label class="adv-label" for="full_name">Họ và tên của bạn</label>
@@ -147,12 +147,12 @@
               </div>
               <div>
                 <label class="adv-label" for="email">Email</label>
-                <input id="email" class="adv-field" type="email" autocomplete="email" placeholder="ban@gmail.com" data-required data-email data-name="email">
+                <input id="email" class="adv-field" type="email" autocomplete="email" placeholder="abc@gmail.com" data-required data-email data-name="email">
                 <p class="adv-err">Email chưa đúng định dạng.</p>
               </div>
               <div>
                 <label class="adv-label" for="high_school">Trường THPT</label>
-                <input id="high_school" class="adv-field" type="text" placeholder="THPT Phan Châu Trinh" data-required data-min="2" data-name="tên trường THPT">
+                <input id="high_school" class="adv-field" type="text" placeholder="Chu Văn An" data-required data-min="2" data-name="tên trường THPT">
                 <p class="adv-err">Bạn đang học trường nào?</p>
               </div>
               <div>
@@ -161,7 +161,7 @@
                 <p class="adv-err">Chọn tỉnh/thành bạn đang sống.</p>
               </div>
               <div class="sm:col-span-2">
-                <label class="adv-label" for="address">Địa chỉ <span class="font-normal text-slate-400">(không bắt buộc)</span></label>
+                <label class="adv-label" for="address">Địa chỉ</label>
                 <input id="address" class="adv-field" type="text" autocomplete="street-address" placeholder="Số nhà, đường, phường/xã">
               </div>
             </div>

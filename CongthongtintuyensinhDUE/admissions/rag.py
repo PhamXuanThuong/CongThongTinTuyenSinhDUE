@@ -260,12 +260,48 @@ ANSWER_SCHEMA = {
 }
 
 
+def _compress_history(history, max_turns=6, max_chars=3000):
+    """
+    Nén ngữ cảnh hội thoại khi phiên chat quá dài:
+    - Nếu lịch sử ngắn (<= max_turns): Giữ nguyên.
+    - Nếu lịch sử dài (> max_turns): Tóm tắt các lượt trao đổi cũ hơn thành 1 bản tóm tắt súc tích,
+      và chỉ giữ nguyên vẹn các lượt hội thoại gần nhất.
+    """
+    if not history:
+        return []
+
+    valid_msgs = [m for m in history if m.get("role") in ("user", "assistant") and m.get("content")]
+    if len(valid_msgs) <= max_turns:
+        return valid_msgs
+
+    # Tách thành: các tin nhắn cũ cần tóm tắt và các tin nhắn gần nhất
+    older = valid_msgs[:-max_turns]
+    recent = valid_msgs[-max_turns:]
+
+    # Tạo tóm tắt cô đọng cho các tin cũ
+    summary_lines = []
+    for m in older:
+        speaker = "Thí sinh" if m["role"] == "user" else "Tư vấn"
+        content = m["content"].strip().replace("\n", " ")
+        # Cắt ngắn mỗi câu cũ tối đa 120 ký tự để tiết kiệm context
+        if len(content) > 120:
+            content = content[:117] + "..."
+        summary_lines.append(f"- {speaker}: {content}")
+
+    compressed_summary = "[TÓM TẮT HỘI THOẠI TRƯỚC ĐÓ]:\n" + "\n".join(summary_lines)
+    if len(compressed_summary) > max_chars:
+        compressed_summary = compressed_summary[:max_chars - 3] + "..."
+
+    # Ghép lại: 1 thông điệp tóm tắt của user + các tin nhắn gần nhất
+    return [{"role": "user", "content": compressed_summary}] + recent
+
+
 def _build_messages(question, history, context):
+    compressed_history = _compress_history(history)
     turns = []
-    for m in (history or [])[-6:]:
-        if m.get("role") in ("user", "assistant") and m.get("content"):
-            turns.append((m["role"], m["content"]))
-    turns.append(("user", f"NGỮ CẢNH:\n{context}\n\nCÂU HỎI: {question}"))
+    for m in compressed_history:
+        turns.append((m["role"], m["content"]))
+    turns.append(("user", f"NGỮ CẢNH TÀI LIỆU:\n{context}\n\nCÂU HỎI HIỆN TẠI: {question}"))
     return turns
 
 

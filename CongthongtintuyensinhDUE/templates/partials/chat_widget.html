@@ -41,7 +41,7 @@
         <button type="button" data-dc-reset class="w-8 h-8 rounded-xl hover:bg-white/15 flex items-center justify-center" title="Cuộc trò chuyện mới">
           <span class="material-symbols-outlined text-[19px]">refresh</span>
         </button>
-        <a href="/chatbot/" class="w-8 h-8 rounded-xl hover:bg-white/15 hidden sm:flex items-center justify-center" title="Mở toàn trang">
+        <a href="javascript:void(0)" onclick="openFullscreenChat()" class="w-8 h-8 rounded-xl hover:bg-white/15 hidden sm:flex items-center justify-center" title="Mở toàn trang">
           <span class="material-symbols-outlined text-[19px]">open_in_full</span>
         </a>
         <button type="button" data-dc-close class="w-8 h-8 rounded-xl hover:bg-white/15 flex items-center justify-center" title="Đóng">
@@ -162,6 +162,11 @@
     $('dcIconOpen').classList.remove('hidden'); $('dcIconClose').classList.add('hidden');
     $('dcHint').classList.remove('md:hidden');
   }
+
+  window.openFullscreenChat = function () {
+    sSet('due_chat_client_id', CID);
+    window.location.href = '/chatbot/?session_id=' + encodeURIComponent(CID);
+  };
   function scrollEnd() { scroller.scrollTop = scroller.scrollHeight; }
 
   function add(kind, text, sources) {
@@ -177,12 +182,8 @@
         handoff: { av: 'bg-[#F37021]', ic: 'forward_to_inbox', box: 'bg-orange-50 border-orange-200', label: '<p class="text-[11px] font-bold text-[#F37021] mb-1">Đã chuyển cho cán bộ</p>' },
         error:   { av: 'bg-slate-400', ic: 'error', box: 'bg-slate-50 border-slate-200', label: '' }
       }[kind];
-      var src = sources && sources.length
-        ? '<div class="mt-2 pt-2 border-t border-slate-100 flex flex-wrap gap-1">' + sources.map(function (s) {
-            return '<span class="px-2 py-0.5 rounded-full bg-slate-100 text-[10.5px] text-slate-500">' + esc(s.replace(/^(Website DUE|Tài liệu tuyển sinh): /, '')) + '</span>';
-          }).join('') + '</div>' : '';
       wrap.innerHTML = '<div class="shrink-0 w-7 h-7 rounded-xl ' + cfg.av + ' text-white flex items-center justify-center mt-0.5"><span class="material-symbols-outlined text-[16px]">' + cfg.ic + '</span></div>' +
-        '<div class="dc-bubble max-w-[85%] rounded-2xl rounded-tl-md px-3.5 py-2.5 border ' + cfg.box + ' text-slate-800 text-[13.5px] leading-relaxed shadow-sm">' + cfg.label + md(text) + src + '</div>';
+        '<div class="dc-bubble max-w-[85%] rounded-2xl rounded-tl-md px-3.5 py-2.5 border ' + cfg.box + ' text-slate-800 text-[13.5px] leading-relaxed shadow-sm">' + cfg.label + md(text) + '</div>';
     }
     list.appendChild(wrap);
     // Câu trả lời dài: cuộn tới đầu câu trả lời thay vì cuối

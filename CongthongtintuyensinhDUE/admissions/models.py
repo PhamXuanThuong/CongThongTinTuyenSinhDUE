@@ -20,7 +20,7 @@ class TinTuc(models.Model):
     noi_bat = models.BooleanField(default=True, verbose_name="Hiển thị trang chủ")
 
     class Meta:
-        db_table = 'tuyensinh_tintuc'
+        db_table = 'admissions_news'
         verbose_name = "Bản tin tuyển sinh và sự kiện"
         verbose_name_plural = "1. Quản lý Tin tức và sự kiện"
         ordering = ['-ngay_dang', '-id']
@@ -50,7 +50,7 @@ class LoaiHinhDaoTao(models.Model):
     thu_tu = models.PositiveIntegerField(default=1, verbose_name="Thứ tự hiển thị")
 
     class Meta:
-        db_table = 'tuyensinh_loaihinhdaotao'
+        db_table = 'admissions_training_type'
         verbose_name = "Loại hình đào tạo"
         verbose_name_plural = "2. Loại hình đào tạo"
         ordering = ['thu_tu']
@@ -73,7 +73,7 @@ class NganhDaoTao(models.Model):
     mo_ta = models.TextField(blank=True, verbose_name="Mô tả ngành và cơ hội việc làm")
 
     class Meta:
-        db_table = 'tuyensinh_nganhdaotao'
+        db_table = 'admissions_major'
         verbose_name = "Ngành đào tạo và chỉ tiêu"
         verbose_name_plural = "3. Danh mục Ngành và chỉ tiêu tuyển sinh"
         ordering = ['ma_nganh']
@@ -99,7 +99,7 @@ class DiemChuan(models.Model):
     ghi_chu = models.CharField(max_length=255, blank=True, verbose_name="Ghi chú")
 
     class Meta:
-        db_table = 'tuyensinh_diemchuan'
+        db_table = 'admissions_benchmark'
         verbose_name = "Điểm chuẩn theo năm"
         verbose_name_plural = "4. Điểm chuẩn trúng tuyển các năm"
         ordering = ['-nam', 'nganh__ma_nganh', 'phuong_thuc']
@@ -119,7 +119,7 @@ class PhuongThucXetTuyen(models.Model):
     thu_tu = models.PositiveIntegerField(default=1, verbose_name="Thứ tự hiển thị")
 
     class Meta:
-        db_table = 'tuyensinh_phuongthucxettuyen'
+        db_table = 'admissions_method'
         verbose_name = "Phương thức xét tuyển"
         verbose_name_plural = "5. Phương thức xét tuyển 2026"
         ordering = ['thu_tu']
@@ -150,7 +150,7 @@ class CauHoiThuongGap(models.Model):
     kich_hoat = models.BooleanField(default=True, verbose_name="Kích hoạt trợ lý AI / Chatbot")
 
     class Meta:
-        db_table = 'tuyensinh_cauhoithuonggap'
+        db_table = 'admissions_faq'
         verbose_name = "Hỏi đáp và tri thức Chatbot"
         verbose_name_plural = "6. Tri thức Chatbot và hỏi đáp tự động"
         ordering = ['id']
@@ -179,7 +179,7 @@ class TuVanTuyenSinh(models.Model):
     ngay_cap_nhat = models.DateTimeField(auto_now=True, verbose_name="Cập nhật lần cuối")
 
     class Meta:
-        db_table = 'tuyensinh_tuvantuyensinh'
+        db_table = 'admissions_counseling_request'
         verbose_name = "Yêu cầu tư vấn tuyển sinh"
         verbose_name_plural = "7. Yêu cầu tư vấn của Thí sinh"
         ordering = ['-ngay_gui']
@@ -245,7 +245,7 @@ class KhoaPhongBan(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Hiển thị")
 
     class Meta:
-        db_table = 'tuyensinh_khoaphongban'
+        db_table = 'admissions_faculty_department_legacy'
         verbose_name = "Khoa / Phòng Ban"
         verbose_name_plural = "Danh sách Khoa và phòng Ban"
         ordering = ["order", "id"]
@@ -286,7 +286,7 @@ class ChuyenNganh(models.Model):
     order = models.PositiveIntegerField(default=0, verbose_name="Thứ tự")
 
     class Meta:
-        db_table = 'tuyensinh_chuyennganh'
+        db_table = 'admissions_specialization'
         verbose_name = "Chuyên ngành đào tạo"
         verbose_name_plural = "Danh sách Chuyên ngành"
         ordering = ["order", "id"]
@@ -319,7 +319,7 @@ class BangHocPhi(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Kích hoạt")
 
     class Meta:
-        db_table = 'tuyensinh_banghocphi'
+        db_table = 'admissions_tuition_fee'
         verbose_name = "Mức học phí"
         verbose_name_plural = "Bảng học phí các năm"
         ordering = ["order", "id"]
@@ -335,7 +335,7 @@ class CauHoiHocPhi(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Hiển thị")
 
     class Meta:
-        db_table = 'tuyensinh_cauhoihocphi'
+        db_table = 'admissions_tuition_faq'
         verbose_name = "Câu hỏi thường gặp học phí"
         verbose_name_plural = "Danh sách FAQ học phí"
         ordering = ["order", "id"]
@@ -357,7 +357,7 @@ class ChinhSachHocBong(models.Model):
     order = models.PositiveIntegerField(default=0, verbose_name="Thứ tự")
 
     class Meta:
-        db_table = 'tuyensinh_chinhsachhocbong'
+        db_table = 'admissions_scholarship'
         verbose_name = "Chính sách học bổng / Miễn giảm"
         verbose_name_plural = "Danh sách Chính sách học bổng"
         ordering = ["order", "id"]
@@ -368,7 +368,7 @@ class ChinhSachHocBong(models.Model):
 
 class TaiLieuTuyenSinh(models.Model):
     title = models.CharField(max_length=255, verbose_name="Tên tài liệu")
-    file = models.FileField(upload_to="tailieu_tuyensinh/", verbose_name="Tệp đính kèm")
+    file = models.FileField(upload_to="file_upload/", verbose_name="Tệp đính kèm")
     file_size = models.CharField(
         max_length=50, blank=True, verbose_name="Kích thước tệp"
     )
@@ -378,7 +378,7 @@ class TaiLieuTuyenSinh(models.Model):
     is_processed = models.BooleanField(default=False, verbose_name="Đã nạp vào AI")
 
     class Meta:
-        db_table = 'tuyensinh_tailieutuyensinh'
+        db_table = 'admissions_uploaded_file'
         verbose_name = "Tài liệu Tuyển sinh"
         verbose_name_plural = "Nguồn tài liệu Tuyển sinh (Cán bộ upload)"
         ordering = ["-uploaded_at"]
@@ -437,7 +437,7 @@ class CauLacBo(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Kích hoạt")
 
     class Meta:
-        db_table = 'tuyensinh_caulacbo'
+        db_table = 'admissions_club'
         verbose_name = "Câu lạc bộ / Đội / Nhóm"
         verbose_name_plural = "8. Quản lý Câu lạc bộ – Đội – Nhóm (CLB)"
         ordering = ['order', 'name']
@@ -530,7 +530,7 @@ class DangKyCLB(models.Model):
     ngay_nop = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian nộp đơn")
 
     class Meta:
-        db_table = 'tuyensinh_dangkyclb'
+        db_table = 'admissions_club_registration'
         verbose_name = "Đơn đăng ký tham gia CLB"
         verbose_name_plural = "9. Đơn đăng ký thành viên CLB"
         ordering = ['-ngay_nop']
@@ -578,7 +578,7 @@ class HoSoHuongNghiep(models.Model):
     ngay_tao = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian thực hiện")
 
     class Meta:
-        db_table = 'tuyensinh_hosohuongnghiep'
+        db_table = 'admissions_career_profile'
         verbose_name = "Hồ sơ trắc nghiệm hướng nghiệp"
         verbose_name_plural = "10. Hồ sơ Trắc nghiệm Hướng nghiệp Holland"
         ordering = ['-ngay_tao']
@@ -602,7 +602,7 @@ class HuongDanNhapHoc(models.Model):
     kich_hoat = models.BooleanField(default=True, verbose_name="Kích hoạt")
 
     class Meta:
-        db_table = 'tuyensinh_huongdannhaphoc'
+        db_table = 'admissions_admission_guide'
         verbose_name = "Hướng dẫn nhập học tân SV"
         verbose_name_plural = "11. Cẩm nang Hướng dẫn Nhập học Khóa mới"
         ordering = ['thu_tu', 'id']
@@ -632,7 +632,7 @@ class LichTrinhTanSinhVien(models.Model):
     kich_hoat = models.BooleanField(default=True, verbose_name="Kích hoạt")
 
     class Meta:
-        db_table = 'tuyensinh_lichtrinhtansinhvien'
+        db_table = 'admissions_freshman_schedule'
         verbose_name = "Mốc lịch trình tân sinh viên"
         verbose_name_plural = "12. Lịch trình sự kiện Tân sinh viên"
         ordering = ['thu_tu', 'id']
@@ -657,7 +657,7 @@ class DocumentChunk(models.Model):
 
 
     class Meta:
-        db_table = 'tuyensinh_documentchunk'
+        db_table = 'admissions_document_chunk'
 
     def __str__(self):
         return f"{self.source} #{self.chunk_index}"
@@ -684,10 +684,67 @@ class CauHoiChoTraLoi(models.Model):
     ngay_tra_loi = models.DateTimeField(null=True, blank=True, verbose_name="Thời gian trả lời")
 
     class Meta:
-        db_table = 'tuyensinh_cauhoichotraloi'
+        db_table = 'admissions_pending_question'
         verbose_name = "Câu hỏi chờ cán bộ trả lời"
         verbose_name_plural = "13. Câu hỏi Chatbot chờ cán bộ trả lời"
         ordering = ['-ngay_tao']
 
     def __str__(self):
         return f"[{self.get_trang_thai_display()}] {self.cau_hoi[:60]}"
+
+
+# ========================================================
+# 14. LỊCH SỬ CHAT VÀ PHIÊN TRÒ CHUYỆN CỦA NGƯỜI DÙNG
+# ========================================================
+
+class ChatSession(models.Model):
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="chat_sessions",
+        verbose_name="Người dùng"
+    )
+    session_id = models.CharField(max_length=100, unique=True, db_index=True, verbose_name="Mã phiên chat")
+    title = models.CharField(max_length=255, default="Cuộc trò chuyện mới", verbose_name="Tiêu đề phiên chat")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian tạo")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Cập nhật gần nhất")
+
+    class Meta:
+        db_table = 'admissions_chat_session'
+        verbose_name = "Phiên hội thoại Chatbot"
+        verbose_name_plural = "14. Phiên hội thoại Chatbot"
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return f"{self.title} ({self.session_id})"
+
+
+class ChatMessage(models.Model):
+    ROLE_CHOICES = [
+        ('user', 'Người dùng'),
+        ('assistant', 'Trợ lý AI DUE'),
+        ('officer', 'Cán bộ tư vấn'),
+    ]
+
+    session = models.ForeignKey(
+        ChatSession,
+        on_delete=models.CASCADE,
+        related_name="messages",
+        verbose_name="Phiên chat"
+    )
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, verbose_name="Vai trò")
+    content = models.TextField(verbose_name="Nội dung tin nhắn")
+    sources = models.JSONField(default=list, blank=True, verbose_name="Nguồn trích dẫn")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian gửi")
+
+    class Meta:
+        db_table = 'admissions_chat_message'
+        verbose_name = "Tin nhắn Chatbot"
+        verbose_name_plural = "Tin nhắn Chatbot"
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"[{self.role}] {self.content[:50]}"
+
