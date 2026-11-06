@@ -6,1315 +6,906 @@
 
 {% block extra_head %}
 <style>
-  @keyframes marquee {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-50%); }
+  #adv { --blue:#0072BC; --navy:#003366; --orange:#F37021; --green:#00A859; }
+  #adv .adv-step[hidden] { display:none !important; }
+  #adv .fade-in { animation: advIn .35s ease both; }
+  @keyframes advIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
+
+  #adv .adv-field { width:100%; padding:.75rem 1rem; border-radius:.875rem; border:1.5px solid #e2e8f0; background:#fff;
+    font-size:.9375rem; color:#0f172a; transition: border-color .15s, box-shadow .15s; }
+  #adv .adv-field::placeholder { color:#94a3b8; }
+  #adv input[type=number]::-webkit-outer-spin-button, #adv input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  #adv input[type=number] { -moz-appearance:textfield; appearance:textfield; }
+  #adv .adv-field:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 4px rgba(0,114,188,.12); }
+  #adv .adv-field.is-invalid { border-color:#ef4444; box-shadow:0 0 0 4px rgba(239,68,68,.1); }
+  #adv .adv-label { display:block; font-size:.875rem; font-weight:600; color:#334155; margin-bottom:.375rem; }
+  #adv .req-star { color:#ef4444; font-weight:700; margin-left:.2rem; }
+  #adv .adv-err { font-size:.75rem; color:#dc2626; margin-top:.375rem; display:none; }
+  #adv .is-invalid ~ .adv-err, #adv .adv-err.show { display:block; }
+
+  #adv .chip { display:inline-flex; align-items:center; gap:.375rem; padding:.5rem .875rem; border-radius:9999px;
+    border:1.5px solid #e2e8f0; background:#fff; font-size:.8125rem; font-weight:500; color:#334155;
+    cursor:pointer; transition: all .15s; user-select:none; }
+  #adv .chip:hover { border-color:#94a3b8; }
+  #adv .chip[aria-pressed="true"] { border-color:var(--blue); background:#eff6ff; color:var(--blue); font-weight:600; }
+  #adv .chip[aria-pressed="true"]::before { content:'✓'; font-weight:700; }
+  #adv .chip-suggest { border-style:dashed; color:#475569; font-size:.75rem; padding:.375rem .75rem; }
+  #adv .chip-suggest:hover { border-color:var(--orange); color:var(--orange); }
+  #adv .chip-suggest.used { opacity:.45; pointer-events:none; }
+
+  #adv .quiz-opt { width:100%; text-align:left; display:flex; align-items:center; gap:.875rem; padding:1rem 1.125rem;
+    border-radius:1rem; border:1.5px solid #e2e8f0; background:#fff; transition: all .15s; cursor:pointer; }
+  #adv .quiz-opt:hover { border-color:var(--blue); transform: translateY(-1px); box-shadow:0 6px 18px -10px rgba(0,51,102,.35); }
+  #adv .quiz-opt[aria-pressed="true"] { border-color:var(--green); background:#f0fdf6; box-shadow:0 0 0 3px rgba(0,168,89,.15); }
+  #adv .quiz-opt .key { flex-shrink:0; width:2rem; height:2rem; border-radius:.625rem; display:flex; align-items:center;
+    justify-content:center; font-weight:700; font-size:.8125rem; background:#f1f5f9; color:#475569; }
+  #adv .quiz-opt[aria-pressed="true"] .key { background:var(--green); color:#fff; }
+
+  #adv .stepper-dot { width:2.25rem; height:2.25rem; border-radius:9999px; display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:.875rem; border:2px solid #e2e8f0; color:#94a3b8; background:#fff; transition: all .2s; flex-shrink:0; }
+  #adv .stepper-item.active .stepper-dot { border-color:var(--blue); color:var(--blue); box-shadow:0 0 0 5px rgba(0,114,188,.12); }
+  #adv .stepper-item.done .stepper-dot { border-color:var(--green); background:var(--green); color:#fff; }
+  #adv .stepper-item.active .stepper-label { color:#0f172a; }
+  #adv .stepper-item.done .stepper-label { color:#334155; }
+
+  #adv .orbit { position:relative; width:7rem; height:7rem; }
+  #adv .orbit::before, #adv .orbit::after { content:''; position:absolute; inset:0; border-radius:9999px; border:3px solid transparent; }
+  #adv .orbit::before { border-top-color:var(--blue); border-right-color:var(--blue); animation: spin 1.4s linear infinite; }
+  #adv .orbit::after { inset:.75rem; border-bottom-color:var(--orange); border-left-color:var(--orange); animation: spin 1.1s linear infinite reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #adv .load-step { display:flex; align-items:center; gap:.75rem; font-size:.875rem; color:#94a3b8; transition: color .3s; }
+  #adv .load-step .ic { width:1.5rem; height:1.5rem; border-radius:9999px; border:2px solid #e2e8f0; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:.75rem; transition: all .3s; }
+  #adv .load-step.run { color:#0f172a; font-weight:600; }
+  #adv .load-step.run .ic { border-color:var(--blue); border-top-color:transparent; animation: spin .8s linear infinite; }
+  #adv .load-step.ok { color:#334155; }
+  #adv .load-step.ok .ic { border-color:var(--green); background:var(--green); color:#fff; animation:none; }
+  #adv .shimmer { background: linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 37%,#f1f5f9 63%); background-size:400% 100%; animation: shim 1.4s ease infinite; }
+  @keyframes shim { 0% { background-position:100% 50%; } 100% { background-position:0 50%; } }
+
+  #adv .ring { --p:0; width:4.25rem; height:4.25rem; border-radius:9999px; flex-shrink:0; display:grid; place-items:center;
+    background: conic-gradient(var(--c, var(--green)) calc(var(--p)*1%), #e2e8f0 0); }
+  #adv .ring > span { width:3.4rem; height:3.4rem; border-radius:9999px; background:#fff; display:grid; place-items:center;
+    font-weight:800; font-size:.95rem; color:#0f172a; font-family:'Space Grotesk', sans-serif; }
+  #adv .bar { height:.5rem; border-radius:9999px; background:#eef2f7; overflow:hidden; }
+  #adv .bar > i { display:block; height:100%; border-radius:9999px; width:0; transition: width 1s cubic-bezier(.2,.8,.2,1); }
+
+  @media print {
+    header, footer, nav, #dueChat, #adv .no-print { display:none !important; }
+    #adv .print-full { grid-column: 1 / -1 !important; }
   }
-  .marquee-track {
-    display: inline-flex;
-    white-space: nowrap;
-    animation: marquee 25s linear infinite;
-  }
-  .marquee-track:hover {
-    animation-play-state: paused;
-  }
-  /* Option card active effect */
-  .holland-option-card input:checked + .holland-option-content {
-    border-color: #00A859 !important;
-    background: #f0faf4 !important;
-    box-shadow: 0 0 0 1.5px #00A859 !important;
-  }
-  .holland-option-card input:checked + .holland-option-content .holland-badge {
-    background: #00A859 !important;
-    color: #ffffff !important;
-  }
-  /* Sharp Toast styling */
-  #toast-notification {
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  #toast-notification.show {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  @media (prefers-reduced-motion: reduce) { #adv * { animation:none !important; transition:none !important; } }
 </style>
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main id="adv" class="w-full pt-28 sm:pt-32 pb-20 bg-gradient-to-b from-slate-50 via-white to-white min-h-screen">
 
-    <!-- 2. Hero Section Header (Font Space Grotesk) -->
-    <section class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-6 text-center">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0072BC] text-xs font-bold tracking-wider uppercase mb-3">
-        <span class="w-2 h-2 rounded-full bg-[#00A859]"></span>
-        AI DUE CAREER ADVISORY
+  <section class="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 no-print">
+    <div class="flex flex-col lg:flex-row lg:items-end gap-6 justify-between">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#0072BC] text-xs font-bold tracking-wide">
+          <span class="material-symbols-outlined text-[16px]">auto_awesome</span> Tư vấn bằng AI · Miễn phí · ~5 phút
+        </span>
+        <h1 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mt-3 leading-tight">
+          Tìm ngành học <span class="text-[#0072BC]">hợp với bạn</span> tại DUE
+        </h1>
+        <p class="text-slate-600 mt-3 leading-relaxed">
+          Trả lời vài câu hỏi về tính cách, sở thích và học lực. Trợ lý AI sẽ đối chiếu với các ngành của
+          <strong class="text-slate-800">Trường Đại học Kinh tế – ĐH Đà Nẵng</strong> và gợi ý những lựa chọn phù hợp nhất kèm lý do.
+        </p>
       </div>
-      <h1 class="font-heading text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
-        HỆ THỐNG TƯ VẤN <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC]">CHỌN NGÀNH HỌC</span>
-      </h1>
-      <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-        Nhập thông tin cá nhân và hoàn thành bài kiểm tra nghề nghiệp Holland để nhận định hướng chuyên sâu, tìm ra ngành học phù hợp nhất tại <strong>Trường Đại học Kinh tế - ĐH Đà Nẵng</strong>.
-      </p>
-
-      <!-- Tri-color indicator bar -->
-      <div class="flex items-center justify-center gap-2 mt-4">
-        <div class="h-1.5 w-12 rounded-full bg-[#F37021]"></div>
-        <div class="h-1.5 w-12 rounded-full bg-[#00A859]"></div>
-        <div class="h-1.5 w-12 rounded-full bg-[#0072BC]"></div>
+      <div class="flex gap-3 text-xs">
+        <div class="px-4 py-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <p class="font-heading text-xl font-bold text-[#0072BC]">43</p><p class="text-slate-500">chương trình đào tạo</p>
+        </div>
+        <div class="px-4 py-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <p class="font-heading text-xl font-bold text-[#00A859]">4</p><p class="text-slate-500">bước đơn giản</p>
+        </div>
+        <div class="px-4 py-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <p class="font-heading text-xl font-bold text-[#F37021]">AI</p><p class="text-slate-500">phân tích cá nhân hóa</p>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 3. Main Form & Result Grid -->
-    <section class="max-w-7xl mx-auto px-6 lg:px-12 pb-20">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        <!-- ==============================================
-             LEFT COLUMN: Form nhập thông tin học sinh
-             ============================================== -->
-        <div class="lg:col-span-7 bg-white rounded-3xl shadow-lg border border-slate-200/80 overflow-hidden">
-          
-          <!-- Card Top Accent Gradient (Cam - Xanh lá - Xanh dương) -->
-          <div class="h-2 w-full bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC]"></div>
+  <div class="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 items-start">
 
-          <div class="p-6 sm:p-8">
-            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-              <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-[#F37021] font-bold">
-                <span class="material-symbols-outlined text-[24px]">assignment_ind</span>
-              </div>
-              <div>
-                <h2 class="font-heading text-lg sm:text-xl font-bold text-slate-900">Nhập thông tin học sinh</h2>
-                <p class="text-xs sm:text-sm text-slate-500">Điền đầy đủ thông tin để hệ thống phân tích và đề xuất ngành học phù hợp nhất.</p>
-              </div>
-            </div>
+    <div class="lg:col-span-8 xl:col-span-9 print-full">
 
-            <!-- Form -->
-            <form id="advisory-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
-              
-              <!-- 1. THÔNG TIN CÁ NHÂN -->
-              <div>
-                <h3 class="font-heading text-xs font-bold text-[#0072BC] uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                  <span class="w-1.5 h-3.5 rounded bg-[#0072BC]"></span>
-                  1. Thông tin cá nhân
-                </h3>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <!-- Họ và tên -->
-                  <div class="sm:col-span-2">
-                    <label for="full_name" class="block text-xs font-semibold text-slate-700 mb-1">Họ và tên <span class="text-red-500">*</span></label>
-                    <input type="text" id="full_name" name="full_name" required minlength="2" maxlength="255" placeholder="Ví dụ: Nguyễn Văn An"
-                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
-                  </div>
-
-                  <!-- Giới tính -->
-                  <div>
-                    <label for="gender" class="block text-xs font-semibold text-slate-700 mb-1">Giới tính <span class="text-red-500">*</span></label>
-                    <select id="gender" name="gender" required
-                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
-                      <option value="Nam">Nam</option>
-                      <option value="Nữ">Nữ</option>
-                      <option value="Khác">Khác</option>
-                    </select>
-                  </div>
-
-                  <!-- Ngày sinh -->
-                  <div>
-                    <label for="date_of_birth" class="block text-xs font-semibold text-slate-700 mb-1">Ngày sinh <span class="text-red-500">*</span></label>
-                    <input type="date" id="date_of_birth" name="date_of_birth" required
-                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
-                  </div>
-
-                  <!-- Số điện thoại -->
-                  <div>
-                    <label for="phone_number" class="block text-xs font-semibold text-slate-700 mb-1">Số điện thoại <span class="text-red-500">*</span></label>
-                    <input type="tel" id="phone_number" name="phone_number" required pattern="0[0-9]{9}" minlength="10" maxlength="10" placeholder="0987654321"
-                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
-                  </div>
-
-                  <!-- Email -->
-                  <div>
-                    <label for="email" class="block text-xs font-semibold text-slate-700 mb-1">Email <span class="text-red-500">*</span></label>
-                    <input type="email" id="email" name="email" required placeholder="hocsinh@gmail.com"
-                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
-                  </div>
-
-                  <!-- Trường THPT -->
-                  <div>
-                    <label for="high_school" class="block text-xs font-semibold text-slate-700 mb-1">Trường THPT <span class="text-red-500">*</span></label>
-                    <input type="text" id="high_school" name="high_school" required minlength="3" maxlength="255" placeholder="THPT Phan Châu Trinh"
-                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
-                  </div>
-
-                  <!-- Tỉnh / Thành phố -->
-                  <div>
-                    <label for="province" class="block text-xs font-semibold text-slate-700 mb-1">Tỉnh / Thành phố <span class="text-red-500">*</span></label>
-                    <select id="province" name="province" required
-                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
-                      <option value="" disabled selected>Chọn tỉnh/thành</option>
-                      <option value="Đà Nẵng">Đà Nẵng</option>
-                      <option value="Quảng Nam">Quảng Nam</option>
-                      <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
-                      <option value="Quảng Ngãi">Quảng Ngãi</option>
-                      <option value="Bình Định">Bình Định</option>
-                      <option value="Hà Nội">Hà Nội</option>
-                      <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
-                      <option value="Quảng Trị">Quảng Trị</option>
-                      <option value="Quảng Bình">Quảng Bình</option>
-                      <option value="Hà Tĩnh">Hà Tĩnh</option>
-                      <option value="Nghệ An">Nghệ An</option>
-                      <option value="Thanh Hóa">Thanh Hóa</option>
-                      <option value="Phú Yên">Phú Yên</option>
-                      <option value="Khánh Hòa">Khánh Hòa</option>
-                      <option value="Ninh Thuận">Ninh Thuận</option>
-                      <option value="Bình Thuận">Bình Thuận</option>
-                      <option value="Kon Tum">Kon Tum</option>
-                      <option value="Gia Lai">Gia Lai</option>
-                      <option value="Đắk Lắk">Đắk Lắk</option>
-                      <option value="Đắk Nông">Đắk Nông</option>
-                      <option value="Lâm Đồng">Lâm Đồng</option>
-                      <option value="Bình Phước">Bình Phước</option>
-                      <option value="Tây Ninh">Tây Ninh</option>
-                      <option value="Bình Dương">Bình Dương</option>
-                      <option value="Đồng Nai">Đồng Nai</option>
-                      <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
-                      <option value="Long An">Long An</option>
-                      <option value="Tiền Giang">Tiền Giang</option>
-                      <option value="Bến Tre">Bến Tre</option>
-                      <option value="Trà Vinh">Trà Vinh</option>
-                      <option value="Vĩnh Long">Vĩnh Long</option>
-                      <option value="Đồng Tháp">Đồng Tháp</option>
-                      <option value="An Giang">An Giang</option>
-                      <option value="Kiên Giang">Kiên Giang</option>
-                      <option value="Cần Thơ">Cần Thơ</option>
-                      <option value="Hậu Giang">Hậu Giang</option>
-                      <option value="Sóc Trăng">Sóc Trăng</option>
-                      <option value="Bạc Liêu">Bạc Liêu</option>
-                      <option value="Cà Mau">Cà Mau</option>
-                      <option value="Vĩnh Phúc">Vĩnh Phúc</option>
-                      <option value="Bắc Ninh">Bắc Ninh</option>
-                      <option value="Quảng Ninh">Quảng Ninh</option>
-                      <option value="Hải Dương">Hải Dương</option>
-                      <option value="Hải Phòng">Hải Phòng</option>
-                      <option value="Hưng Yên">Hưng Yên</option>
-                      <option value="Thái Bình">Thái Bình</option>
-                      <option value="Hà Nam">Hà Nam</option>
-                      <option value="Nam Định">Nam Định</option>
-                      <option value="Ninh Bình">Ninh Bình</option>
-                      <option value="Hà Giang">Hà Giang</option>
-                      <option value="Cao Bằng">Cao Bằng</option>
-                      <option value="Bắc Kạn">Bắc Kạn</option>
-                      <option value="Tuyên Quang">Tuyên Quang</option>
-                      <option value="Lào Cai">Lào Cai</option>
-                      <option value="Yên Bái">Yên Bái</option>
-                      <option value="Thái Nguyên">Thái Nguyên</option>
-                      <option value="Lạng Sơn">Lạng Sơn</option>
-                      <option value="Bắc Giang">Bắc Giang</option>
-                      <option value="Phú Thọ">Phú Thọ</option>
-                      <option value="Điện Biên">Điện Biên</option>
-                      <option value="Lai Châu">Lai Châu</option>
-                      <option value="Sơn La">Sơn La</option>
-                      <option value="Hòa Bình">Hòa Bình</option>
-                    </select>
-                  </div>
-
-                  <!-- Địa chỉ -->
-                  <div class="sm:col-span-2">
-                    <label for="address" class="block text-xs font-semibold text-slate-700 mb-1">Địa chỉ chi tiết <span class="text-red-500">*</span></label>
-                    <input type="text" id="address" name="address" required minlength="3" maxlength="255" placeholder="Số nhà, tên đường, phường/xã, quận/huyện"
-                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all">
-                  </div>
-                </div>
-              </div>
-
-              <!-- 2. TRẮC NGHIỆM NGHỀ NGHIỆP HOLLAND (KHÔNG CHỌN SẴN, ĐÁP ÁN A, B, C, D, E, F) -->
-              <div class="pt-4 border-t border-slate-100">
-                <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 sm:p-5 mb-5">
-                  <div class="flex items-center gap-2 mb-1">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#00A859]"></span>
-                    <h3 class="font-heading text-sm sm:text-base font-bold text-[#00A859]">Trắc nghiệm nghề nghiệp Holland (RIASEC)</h3>
-                  </div>
-                  <p class="text-xs text-slate-600">Chọn <strong>đúng 01 đáp án</strong> ở mỗi câu hỏi phản ánh chính xác nhất tính cách và sở thích của bạn (chưa có lựa chọn mặc định):</p>
-                </div>
-
-                <!-- Holland Questions Container -->
-                <div class="space-y-6">
-
-                  <!-- Câu 1 -->
-                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
-                      <span class="text-[#0072BC]">Câu 1:</span> Nếu được chọn một hoạt động cho buổi ngoại khóa, bạn sẽ thích:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q1" value="R" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
-                          <span>Tham gia lắp ráp, làm thí nghiệm hoặc hoạt động ngoài trời.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q1" value="I" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
-                          <span>Tìm hiểu một chủ đề mới và giải thích lại cho người khác.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q1" value="A" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
-                          <span>Làm poster, quay video hoặc sáng tạo nội dung.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q1" value="S" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
-                          <span>Tham gia hoạt động tình nguyện, hỗ trợ mọi người.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q1" value="E" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
-                          <span>Tổ chức trò chơi và điều phối cả nhóm.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q1" value="C" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
-                          <span>Lên danh sách, sắp xếp công việc cho mọi người.</span>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <!-- Câu 2 -->
-                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
-                      <span class="text-[#0072BC]">Câu 2:</span> Khi làm bài tập nhóm, bạn thường:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q2" value="R" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
-                          <span>Làm phần thực hành hoặc phần cần làm cụ thể.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q2" value="I" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
-                          <span>Phân tích đề và tìm cách giải quyết.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q2" value="A" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
-                          <span>Nghĩ ý tưởng mới cho nhóm.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q2" value="S" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
-                          <span>Kết nối mọi người để nhóm làm việc vui vẻ.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q2" value="E" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
-                          <span>Đứng ra phân chia nhiệm vụ và thúc đẩy tiến độ.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q2" value="C" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
-                          <span>Ghi chép và kiểm tra lại để tránh sai sót.</span>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <!-- Câu 3 -->
-                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
-                      <span class="text-[#0072BC]">Câu 3:</span> Bạn cảm thấy vui nhất khi:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q3" value="R" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
-                          <span>Tự tay làm ra một sản phẩm cụ thể.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q3" value="I" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
-                          <span>Giải được một câu hỏi/bài tập khó.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q3" value="A" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
-                          <span>Được thể hiện cá tính và ý tưởng của mình.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q3" value="S" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
-                          <span>Giúp ai đó giải quyết vấn đề.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q3" value="E" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
-                          <span>Đạt thành tích hoặc dẫn đầu.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q3" value="C" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
-                          <span>Hoàn thành công việc gọn gàng, đúng kế hoạch.</span>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <!-- Câu 4 -->
-                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
-                      <span class="text-[#0072BC]">Câu 4:</span> Nếu có một vấn đề xảy ra, bạn thường:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q4" value="R" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
-                          <span>Thử làm ngay để xem cách nào hiệu quả.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q4" value="I" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
-                          <span>Nghĩ kỹ xem vì sao nó xảy ra.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q4" value="A" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
-                          <span>Tìm cách làm khác đi cho sáng tạo hơn.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q4" value="S" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
-                          <span>Hỏi ý kiến mọi người rồi cùng xử lý.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q4" value="E" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
-                          <span>Quyết định nhanh và bắt tay thực hiện.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q4" value="C" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
-                          <span>Viết ra từng bước để giải quyết.</span>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <!-- Câu 5 -->
-                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
-                      <span class="text-[#0072BC]">Câu 5:</span> Bạn thích môi trường học tập/làm việc:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q5" value="R" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
-                          <span>Năng động, có hoạt động thực tế.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q5" value="I" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
-                          <span>Yên tĩnh để tập trung suy nghĩ.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q5" value="A" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
-                          <span>Tự do, không quá gò bó.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q5" value="S" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
-                          <span>Có nhiều người để trò chuyện, hợp tác.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q5" value="E" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
-                          <span>Có mục tiêu rõ ràng và thử thách cao.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q5" value="C" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
-                          <span>Có kế hoạch cụ thể và mọi thứ rõ ràng.</span>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <!-- Câu 6 -->
-                  <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80">
-                    <p class="font-heading text-sm font-bold text-slate-800 mb-3">
-                      <span class="text-[#0072BC]">Câu 6:</span> Bạn bè thường nhận xét bạn là người:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q6" value="R" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">A</span>
-                          <span>Thực tế, làm được việc.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q6" value="I" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">B</span>
-                          <span>Suy nghĩ logic, hay đặt câu hỏi "vì sao".</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q6" value="A" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">C</span>
-                          <span>Sáng tạo, nhiều ý tưởng lạ.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q6" value="S" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">D</span>
-                          <span>Dễ gần, biết lắng nghe.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q6" value="E" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">E</span>
-                          <span>Năng nổ, thích dẫn dắt.</span>
-                        </div>
-                      </label>
-                      <label class="holland-option-card relative cursor-pointer">
-                        <input type="radio" name="holland_q6" value="C" class="hidden">
-                        <div class="holland-option-content flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all text-xs text-slate-700">
-                          <span class="holland-badge w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center flex-shrink-0 text-xs">F</span>
-                          <span>Cẩn thận, làm việc có tổ chức.</span>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <!-- 3. ĐỊNH HƯỚNG & NĂNG LỰC CÁ NHÂN -->
-              <div class="pt-4 border-t border-slate-100 space-y-4">
-                <h3 class="font-heading text-xs font-bold text-[#F37021] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <span class="w-1.5 h-3.5 rounded bg-[#F37021]"></span>
-                  3. Định hướng & Năng lực
-                </h3>
-
-                <!-- Sở thích -->
-                <div>
-                  <label for="interests" class="block text-xs font-semibold text-slate-700 mb-1">
-                    Sở thích cá nhân của bạn là gì? <span class="text-red-500">*</span>
-                  </label>
-                  <textarea id="interests" name="interests" required minlength="5" maxlength="1000" rows="3"
-                    placeholder="Ví dụ: Thích công nghệ, kinh doanh trực tuyến, thiết kế, giao tiếp và ngoại ngữ..."
-                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all"></textarea>
-                </div>
-
-                <!-- Năng lực / Điểm mạnh -->
-                <div>
-                  <label for="strengths" class="block text-xs font-semibold text-slate-700 mb-1">
-                    Năng lực, điểm mạnh của bạn là gì? <span class="text-red-500">*</span>
-                  </label>
-                  <textarea id="strengths" name="strengths" required minlength="5" maxlength="1000" rows="3"
-                    placeholder="Ví dụ: Tư duy logic toán học, khả năng thuyết trình trước đám đông, biết lắng nghe và làm việc nhóm..."
-                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all"></textarea>
-                </div>
-
-                <!-- Định hướng lĩnh vực -->
-                <div>
-                  <label for="career_goals" class="block text-xs font-semibold text-slate-700 mb-1">
-                    Bạn có định hướng muốn làm việc ở lĩnh vực nào không? <span class="text-red-500">*</span>
-                  </label>
-                  <textarea id="career_goals" name="career_goals" required minlength="5" maxlength="1000" rows="3"
-                    placeholder="Ví dụ: Muốn làm việc trong lĩnh vực Tài chính số, Trí tuệ nhân tạo, Marketing, Logistics..."
-                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent transition-all"></textarea>
-                </div>
-              </div>
-
-              <!-- 4. HỌC LỰC & NGUYỆN VỌNG XÉT TUYỂN -->
-              <div class="pt-4 border-t border-slate-100 space-y-4">
-                <h3 class="font-heading text-xs font-bold text-[#0072BC] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <span class="w-1.5 h-3.5 rounded bg-[#0072BC]"></span>
-                  4. Học lực & Nguyện vọng xét tuyển
-                </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label for="grade_level" class="block text-xs font-semibold text-slate-700 mb-1">Bạn đang học lớp</label>
-                    <select id="grade_level" class="adv-input">
-                      <option value="">-- Chọn --</option>
-                      <option>Lớp 10</option><option>Lớp 11</option><option>Lớp 12</option><option>Đã tốt nghiệp THPT</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="subject_combo" class="block text-xs font-semibold text-slate-700 mb-1">Tổ hợp môn dự định xét tuyển</label>
-                    <select id="subject_combo" class="adv-input">
-                      <option value="">-- Chọn --</option>
-                      <option>A00 (Toán, Lý, Hóa)</option><option>A01 (Toán, Lý, Anh)</option>
-                      <option>D01 (Toán, Văn, Anh)</option><option>D07 (Toán, Hóa, Anh)</option>
-                      <option>X25/X26 (tổ hợp mới)</option><option>Chưa xác định</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="expected_score" class="block text-xs font-semibold text-slate-700 mb-1">Điểm xét tuyển dự kiến (thang 30)</label>
-                    <input id="expected_score" type="number" min="0" max="30" step="0.25" placeholder="VD: 24.5" class="adv-input">
-                  </div>
-                  <div>
-                    <label for="gpa" class="block text-xs font-semibold text-slate-700 mb-1">Điểm trung bình học tập gần nhất</label>
-                    <input id="gpa" type="number" min="0" max="10" step="0.1" placeholder="VD: 8.2" class="adv-input">
-                  </div>
-                  <div>
-                    <label for="strong_subjects" class="block text-xs font-semibold text-slate-700 mb-1">Môn học giỏi nhất</label>
-                    <input id="strong_subjects" type="text" maxlength="200" placeholder="VD: Toán, Tiếng Anh" class="adv-input">
-                  </div>
-                  <div>
-                    <label for="weak_subjects" class="block text-xs font-semibold text-slate-700 mb-1">Môn học còn yếu</label>
-                    <input id="weak_subjects" type="text" maxlength="200" placeholder="VD: Vật lý" class="adv-input">
-                  </div>
-                  <div>
-                    <label for="english_level" class="block text-xs font-semibold text-slate-700 mb-1">Trình độ tiếng Anh</label>
-                    <select id="english_level" class="adv-input">
-                      <option value="">-- Chọn --</option>
-                      <option>Cơ bản</option><option>Khá (giao tiếp được)</option>
-                      <option>Có IELTS 5.0 - 5.5</option><option>Có IELTS 6.0 trở lên</option><option>Chứng chỉ khác</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="admission_method" class="block text-xs font-semibold text-slate-700 mb-1">Phương thức xét tuyển dự định</label>
-                    <select id="admission_method" class="adv-input">
-                      <option value="">-- Chọn --</option>
-                      <option>Điểm thi tốt nghiệp THPT</option><option>Xét học bạ</option>
-                      <option>Đánh giá năng lực</option><option>Xét tuyển thẳng/ưu tiên</option><option>Chưa xác định</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="program_type" class="block text-xs font-semibold text-slate-700 mb-1">Chương trình mong muốn</label>
-                    <select id="program_type" class="adv-input">
-                      <option value="">-- Chọn --</option>
-                      <option>Chương trình tiêu chuẩn</option><option>Chương trình học bằng tiếng Anh</option>
-                      <option>Liên kết quốc tế</option><option>Chưa xác định</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="budget" class="block text-xs font-semibold text-slate-700 mb-1">Khả năng chi trả học phí/năm</label>
-                    <select id="budget" class="adv-input">
-                      <option value="">-- Chọn --</option>
-                      <option>Dưới 25 triệu</option><option>25 - 40 triệu</option>
-                      <option>40 - 70 triệu</option><option>Trên 70 triệu</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="work_style" class="block text-xs font-semibold text-slate-700 mb-1">Môi trường làm việc mong muốn</label>
-                    <select id="work_style" class="adv-input">
-                      <option value="">-- Chọn --</option>
-                      <option>Văn phòng, ổn định</option><option>Năng động, di chuyển nhiều</option>
-                      <option>Làm việc với số liệu, máy tính</option><option>Giao tiếp nhiều với con người</option>
-                      <option>Tự kinh doanh, khởi nghiệp</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="job_priority" class="block text-xs font-semibold text-slate-700 mb-1">Ưu tiên nhất khi chọn nghề</label>
-                    <select id="job_priority" class="adv-input">
-                      <option value="">-- Chọn --</option>
-                      <option>Thu nhập cao</option><option>Ổn định lâu dài</option>
-                      <option>Đúng đam mê</option><option>Cơ hội thăng tiến, ra nước ngoài</option><option>Dễ xin việc</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label for="considered_majors" class="block text-xs font-semibold text-slate-700 mb-1">Ngành bạn đang cân nhắc (nếu có)</label>
-                  <input id="considered_majors" type="text" maxlength="300" placeholder="VD: Marketing, Kế toán, Logistics" class="adv-input">
-                </div>
-                <div>
-                  <label for="family_wish" class="block text-xs font-semibold text-slate-700 mb-1">Mong muốn của gia đình</label>
-                  <input id="family_wish" type="text" maxlength="300" placeholder="VD: Bố mẹ muốn em học Tài chính - Ngân hàng" class="adv-input">
-                </div>
-                <div>
-                  <label for="extra_notes" class="block text-xs font-semibold text-slate-700 mb-1">Điều gì khác bạn muốn chia sẻ?</label>
-                  <textarea id="extra_notes" maxlength="1000" rows="2" placeholder="VD: Em muốn học gần nhà, muốn làm việc ở nước ngoài..." class="adv-input"></textarea>
-                </div>
-              </div>
-              <style>
-                .adv-input{width:100%;padding:.625rem .875rem;border-radius:.75rem;border:1px solid #e2e8f0;font-size:.875rem;background:#fff;transition:all .2s}
-                .adv-input:focus{outline:none;box-shadow:0 0 0 2px #0072BC;border-color:transparent}
-              </style>
-
-              <!-- Submit button -->
-              <div class="pt-4 border-t border-slate-100 flex flex-col items-center">
-                <button type="submit"
-                  class="font-heading w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#F37021] via-[#00A859] to-[#0072BC] hover:opacity-95 text-white font-bold text-base shadow-xl shadow-orange-500/20 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2">
-                  <span class="material-symbols-outlined text-[20px]">send</span>
-                  <span>GỬI HỆ THỐNG</span>
-                </button>
-                <p class="text-xs text-slate-400 mt-2 text-center">Hệ thống sẽ tổng hợp hồ sơ và xuất kết quả tư vấn ngay sau khi bạn nhấn gửi.</p>
-              </div>
-
-            </form>
-          </div>
+      <!-- ---------- WIZARD ---------- -->
+      <section id="wizard" class="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
+        <div class="px-5 sm:px-8 pt-6 pb-5 border-b border-slate-100">
+          <ol id="stepper" class="flex items-center justify-between gap-2">
+            <li class="stepper-item flex items-center gap-2.5" data-i="0"><span class="stepper-dot">1</span><span class="stepper-label hidden sm:block text-sm font-semibold text-slate-400">Về bạn</span></li>
+            <li class="h-px flex-1 bg-slate-200"></li>
+            <li class="stepper-item flex items-center gap-2.5" data-i="1"><span class="stepper-dot">2</span><span class="stepper-label hidden sm:block text-sm font-semibold text-slate-400">Tính cách</span></li>
+            <li class="h-px flex-1 bg-slate-200"></li>
+            <li class="stepper-item flex items-center gap-2.5" data-i="2"><span class="stepper-dot">3</span><span class="stepper-label hidden sm:block text-sm font-semibold text-slate-400">Sở thích</span></li>
+            <li class="h-px flex-1 bg-slate-200"></li>
+            <li class="stepper-item flex items-center gap-2.5" data-i="3"><span class="stepper-dot">4</span><span class="stepper-label hidden sm:block text-sm font-semibold text-slate-400">Học lực</span></li>
+          </ol>
         </div>
 
-        <!-- ==============================================
-             RIGHT COLUMN: Kết quả phân tích & Tư vấn
-             ============================================== -->
-        <div class="lg:col-span-5 space-y-6">
-          
-          <!-- 1. TÓM TẮT HỒ SƠ -->
-          <div class="bg-white rounded-3xl shadow-lg border border-slate-200/80 overflow-hidden">
-            <div class="h-1.5 w-full bg-[#0072BC]"></div>
-            
-            <div class="p-6">
-              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#0072BC] font-bold flex items-center justify-center text-sm font-heading">1</div>
-                  <h2 class="font-heading font-bold text-slate-900 text-base sm:text-lg">Tóm tắt hồ sơ</h2>
-                </div>
-                <span id="profile-status-badge" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-500 text-xs font-semibold">Chưa có dữ liệu</span>
+        <form id="advForm" novalidate class="px-5 sm:px-8 lg:px-10 py-7">
+
+          <!-- BƯỚC 1 -->
+          <div class="adv-step fade-in" data-step="0">
+            <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900">Chào bạn 👋 Mình làm quen nhé!</h2>
+            <p class="text-sm text-slate-500 mt-1 mb-6">Thông tin này giúp cán bộ tuyển sinh liên hệ tư vấn thêm nếu bạn cần. Chúng tôi không chia sẻ cho bên thứ ba.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div class="sm:col-span-2">
+                <label class="adv-label" for="full_name">Họ và tên của bạn</label>
+                <input id="full_name" class="adv-field" type="text" autocomplete="name" placeholder="Nguyễn Văn An" data-required data-min="2" data-name="họ và tên">
+                <p class="adv-err">Bạn cho mình biết tên nhé.</p>
               </div>
-
-              <!-- EMPTY STATE (trước khi gửi) -->
-              <div id="profile-empty-state" class="py-12 px-4 text-center">
-                <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
-                  <span class="material-symbols-outlined text-[32px]">folder_open</span>
-                </div>
-                <h4 class="font-heading font-bold text-slate-700 text-sm mb-1">Chưa có thông tin hồ sơ</h4>
-                <p class="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
-                  Vui lòng điền đầy đủ các thông tin ở biểu mẫu bên trái và nhấn <strong class="text-[#F37021]">Gửi hệ thống</strong> để lưu lại và xem tóm tắt hồ sơ của bạn.
-                </p>
-              </div>
-
-              <!-- FILLED STATE (sau khi gửi) -->
-              <div id="profile-filled-state" class="hidden space-y-4">
-                
-                <!-- Info Grid -->
-                <div class="bg-slate-50 rounded-2xl p-4 text-xs space-y-2 border border-slate-100 font-medium">
-                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
-                    <span class="text-slate-500">Họ và tên:</span>
-                    <span id="res-full-name" class="font-bold text-slate-800 text-right">-</span>
-                  </div>
-                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
-                    <span class="text-slate-500">Giới tính:</span>
-                    <span id="res-gender" class="font-semibold text-slate-800 text-right">-</span>
-                  </div>
-                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
-                    <span class="text-slate-500">Ngày sinh:</span>
-                    <span id="res-dob" class="font-semibold text-slate-800 text-right">-</span>
-                  </div>
-                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
-                    <span class="text-slate-500">Số điện thoại:</span>
-                    <span id="res-phone" class="font-semibold text-slate-800 text-right">-</span>
-                  </div>
-                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
-                    <span class="text-slate-500">Email:</span>
-                    <span id="res-email" class="font-semibold text-slate-800 text-right break-all">-</span>
-                  </div>
-                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
-                    <span class="text-slate-500">Trường THPT:</span>
-                    <span id="res-school" class="font-semibold text-slate-800 text-right">-</span>
-                  </div>
-                  <div class="flex justify-between border-b border-slate-200/60 pb-1.5">
-                    <span class="text-slate-500">Tỉnh / Thành phố:</span>
-                    <span id="res-province" class="font-semibold text-slate-800 text-right">-</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-slate-500">Địa chỉ:</span>
-                    <span id="res-address" class="font-semibold text-slate-800 text-right">-</span>
-                  </div>
-                </div>
-
-                <!-- Interests & Goals -->
-                <div class="space-y-2 text-xs">
-                  <div class="p-3 bg-orange-50/60 border border-orange-100 rounded-xl">
-                    <span class="font-heading font-bold text-[#F37021] block mb-0.5">Sở thích cá nhân:</span>
-                    <p id="res-interests" class="text-slate-700 leading-relaxed">-</p>
-                  </div>
-                  <div class="p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl">
-                    <span class="font-heading font-bold text-[#00A859] block mb-0.5">Năng lực, điểm mạnh:</span>
-                    <p id="res-strengths" class="text-slate-700 leading-relaxed">-</p>
-                  </div>
-                  <div class="p-3 bg-blue-50/60 border border-blue-100 rounded-xl">
-                    <span class="font-heading font-bold text-[#0072BC] block mb-0.5">Định hướng nghề nghiệp:</span>
-                    <p id="res-goals" class="text-slate-700 leading-relaxed">-</p>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-          <!-- 2. NGÀNH PHÙ HỢP TẠI CÁC TRƯỜNG -->
-          <div class="bg-white rounded-3xl shadow-lg border border-slate-200/80 overflow-hidden">
-            <div class="h-1.5 w-full bg-[#00A859]"></div>
-
-            <div class="p-6">
-              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-[#00A859] font-bold flex items-center justify-center text-sm font-heading">2</div>
-                  <h2 class="font-heading font-bold text-slate-900 text-base sm:text-lg">Ngành phù hợp tại các trường</h2>
-                </div>
-                <span class="px-2.5 py-1 rounded-none bg-emerald-100 text-[#00A859] text-[11px] font-bold">Mô hình Holland</span>
-              </div>
-
-              <!-- Holland Score Pills -->
-              <div class="mb-4">
-                <div class="text-xs text-slate-500 mb-2 font-semibold">Kết quả phân tích RIASEC của bạn:</div>
-                <div class="flex flex-wrap gap-2 text-xs">
-                  <span id="pill-code" class="px-3 py-1.5 rounded-none bg-[#0072BC] text-white font-bold font-heading">Mã Holland: -</span>
-                  <span id="pill-r" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">R: 0</span>
-                  <span id="pill-i" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">I: 0</span>
-                  <span id="pill-a" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">A: 0</span>
-                  <span id="pill-s" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">S: 0</span>
-                  <span id="pill-e" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">E: 0</span>
-                  <span id="pill-c" class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">C: 0</span>
-                </div>
-              </div>
-
-              <!-- Personality Description -->
-              <div class="space-y-3 mb-4">
-                <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
-                  <h4 class="font-heading font-bold text-[#0072BC] mb-1">Nhóm Thực tế - Kỹ thuật (R)</h4>
-                  <p class="text-slate-600 leading-relaxed">Thực tế, ưa hành động cụ thể, tỉ mỉ, thích khám phá và thao tác với hệ thống công việc rõ ràng.</p>
-                </div>
-                <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
-                  <h4 class="font-heading font-bold text-[#00A859] mb-1">Nhóm Xã hội (S)</h4>
-                  <p class="text-slate-600 leading-relaxed">Quảng giao, biết lắng nghe, kiên nhẫn, thích tương tác, hỗ trợ và làm việc cùng đồng đội.</p>
-                </div>
-                <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs">
-                  <h4 class="font-heading font-bold text-[#F37021] mb-1">Nhóm Nghệ thuật (A)</h4>
-                  <p class="text-slate-600 leading-relaxed">Sáng tạo, giàu cảm xúc, linh hoạt và luôn dồi dào ý tưởng mới lạ trong công việc.</p>
-                </div>
-              </div>
-
-              <!-- Phù hợp khối công việc -->
-              <div class="mb-4">
-                <h4 class="font-heading text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Khối công việc phù hợp:</h4>
-                <div class="flex flex-wrap gap-1.5 text-[11px]">
-                  <span class="px-2.5 py-1 rounded-none bg-blue-50 text-[#0072BC] font-semibold border border-blue-100">Kinh tế & Quản trị kinh doanh</span>
-                  <span class="px-2.5 py-1 rounded-none bg-orange-50 text-[#F37021] font-semibold border border-orange-100">Marketing & Truyền thông</span>
-                  <span class="px-2.5 py-1 rounded-none bg-emerald-50 text-[#00A859] font-semibold border border-emerald-100">Công nghệ & Trí tuệ nhân tạo</span>
-                  <span class="px-2.5 py-1 rounded-none bg-slate-100 text-slate-700 font-semibold">Tài chính - Ngân hàng số</span>
-                </div>
-              </div>
-
-              <!-- Các trường phù hợp -->
               <div>
-                <h4 class="font-heading text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Các trường đại học phù hợp:</h4>
-                <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
-                  <li><strong class="text-[#0072BC]">Trường Đại học Kinh tế - ĐH Đà Nẵng (DUE)</strong></li>
-                  <li>Trường Đại học Kinh tế Quốc dân (NEU)</li>
-                  <li>Trường Đại học Ngoại thương (FTU)</li>
-                  <li>Trường Đại học Kinh tế TP. Hồ Chí Minh (UEH)</li>
-                  <li>Trường Đại học Bách khoa - ĐH Đà Nẵng</li>
-                </ul>
+                <span class="adv-label">Giới tính</span>
+                <div class="flex gap-2 flex-wrap" data-chips="gender" data-required>
+                  <button type="button" class="chip" data-value="Nam">Nam</button>
+                  <button type="button" class="chip" data-value="Nữ">Nữ</button>
+                  <button type="button" class="chip" data-value="Khác">Khác</button>
+                </div>
+                <input type="hidden" id="gender">
+                <p class="adv-err">Chọn một lựa chọn nhé.</p>
               </div>
-
-            </div>
-          </div>
-
-          <!-- 3. TOP 3 NGÀNH PHÙ HỢP TẠI DUE -->
-          <div class="bg-gradient-to-br from-white to-blue-50/50 rounded-3xl shadow-lg border border-blue-200/80 overflow-hidden">
-            <div class="h-1.5 w-full bg-gradient-to-r from-[#F37021] to-[#0072BC]"></div>
-
-            <div class="p-6">
-              <div class="flex items-center justify-between mb-4 pb-3 border-b border-blue-100">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F37021] to-[#0072BC] text-white font-bold flex items-center justify-center text-sm font-heading">3</div>
-                  <h2 id="due-majors-title" class="font-heading font-bold text-slate-900 text-base sm:text-lg">Top 3 ngành phù hợp tại DUE</h2>
-                </div>
+              <div>
+                <label class="adv-label" for="date_of_birth">Ngày sinh</label>
+                <input id="date_of_birth" class="adv-field" type="date" max="2012-12-31" data-required data-msg-required="Vui lòng chọn ngày sinh.">
+                <p class="adv-err">Vui lòng chọn ngày sinh.</p>
               </div>
-
-              <div id="ai-summary" class="hidden mb-4 p-4 rounded-2xl bg-blue-50/70 border border-blue-100 text-xs text-slate-700 leading-relaxed"></div>
-
-              <div id="due-top-majors-container" class="space-y-3">
-                
-                <!-- Ngành 1 -->
-                <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-orange-100 text-[#F37021] flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#1</div>
-                  <div>
-                    <h4 class="font-heading font-bold text-slate-900 text-sm">Marketing & Thương mại điện tử</h4>
-                    <p class="text-xs text-slate-500 mt-0.5">Phù hợp tính cách sáng tạo, thích giao tiếp và năng động dẫn đầu.</p>
-                    <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-emerald-50 text-[#00A859] text-[10px] font-bold">Chuẩn Quốc tế AUN-QA</span>
-                  </div>
-                </div>
-
-                <!-- Ngành 2 -->
-                <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-blue-100 text-[#0072BC] flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#2</div>
-                  <div>
-                    <h4 class="font-heading font-bold text-slate-900 text-sm">Khoa học dữ liệu & Kinh tế số</h4>
-                    <p class="text-xs text-slate-500 mt-0.5">Dành cho bạn đam mê kỹ thuật thực hành, tư duy logic và ứng dụng công nghệ 4.0.</p>
-                    <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-blue-50 text-[#0072BC] text-[10px] font-bold">Ngành mũi nhọn 2026</span>
-                  </div>
-                </div>
-
-                <!-- Ngành 3 -->
-                <div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-emerald-100 text-[#00A859] flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#3</div>
-                  <div>
-                    <h4 class="font-heading font-bold text-slate-900 text-sm">Kinh doanh quốc tế</h4>
-                    <p class="text-xs text-slate-500 mt-0.5">Môi trường toàn cầu, giao thoa văn hóa, phát triển kỹ năng đàm phán và lãnh đạo.</p>
-                    <span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-orange-50 text-[#F37021] text-[10px] font-bold">98.5% Việc làm</span>
-                  </div>
-                </div>
-
+              <div>
+                <label class="adv-label" for="phone_number">Số điện thoại</label>
+                <input id="phone_number" class="adv-field" type="tel" inputmode="numeric" autocomplete="tel" placeholder="0987 654 321" data-required data-phone data-name="số điện thoại">
+                <p class="adv-err">Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.</p>
               </div>
-
-            </div>
-          </div>
-
-          <!-- 4. THÔNG TIN CHI TIẾT TẠI DUE -->
-          <div class="bg-white rounded-3xl shadow-lg border border-slate-200/80 p-6">
-            <div class="flex items-center gap-2.5 mb-4 pb-3 border-b border-slate-100">
-              <div class="w-8 h-8 rounded-lg bg-orange-100 text-[#F37021] font-bold flex items-center justify-center text-sm font-heading">4</div>
-              <h2 class="font-heading font-bold text-slate-900 text-base sm:text-lg">Kênh thông tin tuyển sinh DUE</h2>
-            </div>
-            
-            <div class="space-y-3 text-xs">
-              <div class="flex items-center gap-3">
-                <span class="w-7 h-7 rounded-none bg-blue-50 text-[#1877F2] flex items-center justify-center flex-shrink-0 border border-blue-100">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.52-.14-2.858-.14C11.83 2 10 3.69 10 6.64v2.86H7v4h3V22h4v-8.5z"/></svg>
-                </span>
-                <div>
-                  <span class="text-slate-400 block text-[10px]">Fanpage tuyển sinh:</span>
-                  <a href="https://facebook.com/FaceDue" target="_blank" class="font-bold text-[#0072BC] hover:underline">facebook.com/FaceDue</a>
-                </div>
+              <div>
+                <label class="adv-label" for="email">Email</label>
+                <input id="email" class="adv-field" type="email" autocomplete="email" placeholder="ban@gmail.com" data-required data-email data-name="email">
+                <p class="adv-err">Email chưa đúng định dạng.</p>
               </div>
-
-              <div class="flex items-center gap-3">
-                <span class="w-7 h-7 rounded-none bg-emerald-50 text-[#00A859] flex items-center justify-center flex-shrink-0 border border-emerald-100">
-                  <span class="material-symbols-outlined text-[16px]">language</span>
-                </span>
-                <div>
-                  <span class="text-slate-400 block text-[10px]">Cổng thông tin tuyển sinh:</span>
-                  <a href="https://tuyensinh.due.udn.vn" target="_blank" class="font-bold text-[#00A859] hover:underline">tuyensinh.due.udn.vn</a>
-                </div>
+              <div>
+                <label class="adv-label" for="high_school">Trường THPT</label>
+                <input id="high_school" class="adv-field" type="text" placeholder="THPT Phan Châu Trinh" data-required data-min="2" data-name="tên trường THPT">
+                <p class="adv-err">Bạn đang học trường nào?</p>
               </div>
-
-              <div class="flex items-center gap-3">
-                <span class="w-7 h-7 rounded-none bg-orange-50 text-[#F37021] flex items-center justify-center flex-shrink-0 border border-orange-100">
-                  <span class="material-symbols-outlined text-[16px]">call</span>
-                </span>
-                <div>
-                  <span class="text-slate-400 block text-[10px]">Hotline tư vấn tuyển sinh:</span>
-                  <a href="tel:02363836169" class="font-bold text-[#F37021]">0236 3836 169 - 0236 3847 139</a>
-                </div>
+              <div>
+                <label class="adv-label" for="province">Tỉnh / Thành phố</label>
+                <select id="province" class="adv-field" data-required data-msg-required="Vui lòng chọn tỉnh/thành phố."><option value="">Chọn tỉnh/thành</option></select>
+                <p class="adv-err">Chọn tỉnh/thành bạn đang sống.</p>
               </div>
-
-              <div class="flex items-center gap-3">
-                <span class="w-7 h-7 rounded-none bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0 border border-purple-100">
-                  <span class="material-symbols-outlined text-[16px]">mail</span>
-                </span>
-                <div>
-                  <span class="text-slate-400 block text-[10px]">Email hỗ trợ:</span>
-                  <a href="mailto:tuyensinh@due.edu.vn" class="font-bold text-slate-700 hover:underline">tuyensinh@due.edu.vn</a>
-                </div>
+              <div class="sm:col-span-2">
+                <label class="adv-label" for="address">Địa chỉ <span class="font-normal text-slate-400">(không bắt buộc)</span></label>
+                <input id="address" class="adv-field" type="text" autocomplete="street-address" placeholder="Số nhà, đường, phường/xã">
               </div>
             </div>
           </div>
 
+          <!-- BƯỚC 2 -->
+          <div class="adv-step" data-step="1" hidden>
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900">Bạn là người như thế nào?</h2>
+                <p class="text-sm text-slate-500 mt-1">Chọn đáp án giống bạn nhất, không có đúng hay sai. Dựa trên mô hình nghề nghiệp Holland.</p>
+              </div>
+              <span id="quizCounter" class="shrink-0 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">1/6</span>
+            </div>
+            <div class="flex gap-1.5 mt-5" id="quizDots"></div>
+            <div id="quizBox" class="mt-6 min-h-[22rem]"></div>
+            <p class="adv-err" id="quizErr">Bạn còn câu chưa trả lời.</p>
+          </div>
+
+          <!-- BƯỚC 3 -->
+          <div class="adv-step" data-step="2" hidden>
+            <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900">Điều gì khiến bạn hứng thú?</h2>
+            <p class="text-sm text-slate-500 mt-1 mb-6">Viết tự nhiên như đang kể với bạn bè. Bấm vào gợi ý để thêm nhanh. Càng cụ thể, AI tư vấn càng chính xác.</p>
+            <div class="space-y-6">
+              <div>
+                <label class="adv-label" for="interests">Bạn thích làm gì lúc rảnh, hay quan tâm điều gì?</label>
+                <textarea id="interests" class="adv-field" rows="3" maxlength="1000" placeholder="Ví dụ: Mình hay xem video về công nghệ, thích bán hàng online, đọc sách kinh doanh..." data-required data-min="2" data-name="sở thích của bạn"></textarea>
+                <div class="flex flex-wrap gap-1.5 mt-2" data-suggest="interests">
+                  <button type="button" class="chip chip-suggest">+ Công nghệ, máy tính</button>
+                  <button type="button" class="chip chip-suggest">+ Kinh doanh, bán hàng</button>
+                  <button type="button" class="chip chip-suggest">+ Sáng tạo nội dung, mạng xã hội</button>
+                  <button type="button" class="chip chip-suggest">+ Du lịch, khám phá</button>
+                  <button type="button" class="chip chip-suggest">+ Tìm hiểu tài chính, đầu tư</button>
+                  <button type="button" class="chip chip-suggest">+ Đọc sách, tranh luận xã hội</button>
+                </div>
+                <p class="adv-err">Chia sẻ thêm một chút nhé (ít nhất 5 ký tự).</p>
+              </div>
+              <div>
+                <label class="adv-label" for="strengths">Bạn làm tốt điều gì nhất?</label>
+                <textarea id="strengths" class="adv-field" rows="3" maxlength="1000" placeholder="Ví dụ: Mình giỏi Toán, tính cẩn thận, nói chuyện trước đám đông khá tự tin..." data-required data-min="2" data-name="điểm mạnh của bạn"></textarea>
+                <div class="flex flex-wrap gap-1.5 mt-2" data-suggest="strengths">
+                  <button type="button" class="chip chip-suggest">+ Tư duy logic, giỏi tính toán</button>
+                  <button type="button" class="chip chip-suggest">+ Giao tiếp, thuyết trình</button>
+                  <button type="button" class="chip chip-suggest">+ Cẩn thận, tỉ mỉ</button>
+                  <button type="button" class="chip chip-suggest">+ Ngoại ngữ tốt</button>
+                  <button type="button" class="chip chip-suggest">+ Lãnh đạo, tổ chức nhóm</button>
+                  <button type="button" class="chip chip-suggest">+ Viết lách, sáng tạo</button>
+                </div>
+                <p class="adv-err">Chia sẻ thêm một chút nhé (ít nhất 5 ký tự).</p>
+              </div>
+              <div>
+                <label class="adv-label" for="career_goals">Sau này bạn muốn làm công việc gì?</label>
+                <textarea id="career_goals" class="adv-field" rows="2" maxlength="1000" placeholder="Ví dụ: Muốn làm ở ngân hàng hoặc tự mở công ty riêng. Chưa rõ thì ghi 'chưa xác định'." data-required data-min="2" data-msg-required="Bạn muốn làm công việc gì? Chưa rõ thì ghi “chưa xác định” nhé."></textarea>
+                <p class="adv-err">Chưa rõ thì ghi "chưa xác định" nhé.</p>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <span class="adv-label">Môi trường làm việc bạn thích</span>
+                  <div class="flex flex-wrap gap-2" data-chips="work_style">
+                    <button type="button" class="chip" data-value="Văn phòng, ổn định">Văn phòng, ổn định</button>
+                    <button type="button" class="chip" data-value="Năng động, di chuyển nhiều">Năng động, đi nhiều</button>
+                    <button type="button" class="chip" data-value="Làm việc với số liệu, máy tính">Số liệu, máy tính</button>
+                    <button type="button" class="chip" data-value="Giao tiếp nhiều với con người">Gặp gỡ nhiều người</button>
+                    <button type="button" class="chip" data-value="Tự kinh doanh, khởi nghiệp">Tự kinh doanh</button>
+                  </div>
+                  <input type="hidden" id="work_style">
+                </div>
+                <div>
+                  <span class="adv-label">Điều bạn ưu tiên nhất khi chọn nghề</span>
+                  <div class="flex flex-wrap gap-2" data-chips="job_priority">
+                    <button type="button" class="chip" data-value="Thu nhập cao">Thu nhập cao</button>
+                    <button type="button" class="chip" data-value="Ổn định lâu dài">Ổn định</button>
+                    <button type="button" class="chip" data-value="Đúng đam mê">Đúng đam mê</button>
+                    <button type="button" class="chip" data-value="Cơ hội thăng tiến, ra nước ngoài">Thăng tiến, ra nước ngoài</button>
+                    <button type="button" class="chip" data-value="Dễ xin việc">Dễ xin việc</button>
+                  </div>
+                  <input type="hidden" id="job_priority">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BƯỚC 4 -->
+          <div class="adv-step" data-step="3" hidden>
+            <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900">Học lực & nguyện vọng</h2>
+            <p class="text-sm text-slate-500 mt-1 mb-6">Giúp AI đánh giá khả năng trúng tuyển. Chưa chắc thì cứ bỏ qua, bạn vẫn nhận được gợi ý.</p>
+            <div class="space-y-6">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div>
+                  <span class="adv-label">Bạn đang học</span>
+                  <div class="flex flex-wrap gap-2" data-chips="grade_level">
+                    <button type="button" class="chip" data-value="Lớp 10">Lớp 10</button>
+                    <button type="button" class="chip" data-value="Lớp 11">Lớp 11</button>
+                    <button type="button" class="chip" data-value="Lớp 12">Lớp 12</button>
+                    <button type="button" class="chip" data-value="Đã tốt nghiệp THPT">Đã tốt nghiệp</button>
+                  </div>
+                  <input type="hidden" id="grade_level">
+                </div>
+                <div>
+                  <label class="adv-label" for="expected_score">Điểm xét tuyển dự kiến</label>
+                  <div class="relative">
+                    <input id="expected_score" class="adv-field pr-14" type="number" min="0" max="30" step="0.25" inputmode="decimal" placeholder="24.5" data-range="0,30">
+                    <span class="absolute right-4 top-[1.4rem] -translate-y-1/2 text-xs text-slate-400">/ 30</span>
+                    <p class="adv-err">Điểm từ 0 đến 30.</p>
+                  </div>
+                </div>
+                <div>
+                  <label class="adv-label" for="gpa">Điểm trung bình học tập</label>
+                  <div class="relative">
+                    <input id="gpa" class="adv-field pr-14" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="8.2" data-range="0,10">
+                    <span class="absolute right-4 top-[1.4rem] -translate-y-1/2 text-xs text-slate-400">/ 10</span>
+                    <p class="adv-err">Điểm từ 0 đến 10.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <span class="adv-label">Tổ hợp môn dự định xét tuyển</span>
+                <div class="flex flex-wrap gap-2" data-chips="subject_combo">
+                  <button type="button" class="chip" data-value="A00 (Toán, Lý, Hóa)">A00 · Toán Lý Hóa</button>
+                  <button type="button" class="chip" data-value="A01 (Toán, Lý, Anh)">A01 · Toán Lý Anh</button>
+                  <button type="button" class="chip" data-value="D01 (Toán, Văn, Anh)">D01 · Toán Văn Anh</button>
+                  <button type="button" class="chip" data-value="D07 (Toán, Hóa, Anh)">D07 · Toán Hóa Anh</button>
+                  <button type="button" class="chip" data-value="X25 (Toán, GDKT&PL, Anh)">X25 · Toán GDKT&amp;PL Anh</button>
+                  <button type="button" class="chip" data-value="X26 (Toán, Tin, Anh)">X26 · Toán Tin Anh</button>
+                  <button type="button" class="chip" data-value="Chưa xác định">Chưa xác định</button>
+                </div>
+                <input type="hidden" id="subject_combo">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <span class="adv-label">Môn bạn học tốt nhất <span class="font-normal text-slate-400">(chọn nhiều)</span></span>
+                  <div class="flex flex-wrap gap-2" data-chips="strong_subjects" data-multi>
+                    <button type="button" class="chip" data-value="Toán">Toán</button><button type="button" class="chip" data-value="Ngữ văn">Văn</button>
+                    <button type="button" class="chip" data-value="Tiếng Anh">Anh</button><button type="button" class="chip" data-value="Vật lý">Lý</button>
+                    <button type="button" class="chip" data-value="Hóa học">Hóa</button><button type="button" class="chip" data-value="Tin học">Tin</button>
+                    <button type="button" class="chip" data-value="Lịch sử">Sử</button><button type="button" class="chip" data-value="Địa lý">Địa</button>
+                    <button type="button" class="chip" data-value="GDKT&PL">GDKT&amp;PL</button>
+                  </div>
+                  <input type="hidden" id="strong_subjects">
+                </div>
+                <div>
+                  <span class="adv-label">Môn bạn còn yếu <span class="font-normal text-slate-400">(chọn nhiều)</span></span>
+                  <div class="flex flex-wrap gap-2" data-chips="weak_subjects" data-multi>
+                    <button type="button" class="chip" data-value="Toán">Toán</button><button type="button" class="chip" data-value="Ngữ văn">Văn</button>
+                    <button type="button" class="chip" data-value="Tiếng Anh">Anh</button><button type="button" class="chip" data-value="Vật lý">Lý</button>
+                    <button type="button" class="chip" data-value="Hóa học">Hóa</button><button type="button" class="chip" data-value="Tin học">Tin</button>
+                    <button type="button" class="chip" data-value="Lịch sử">Sử</button><button type="button" class="chip" data-value="Địa lý">Địa</button>
+                    <button type="button" class="chip" data-value="GDKT&PL">GDKT&amp;PL</button>
+                  </div>
+                  <input type="hidden" id="weak_subjects">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <span class="adv-label">Trình độ tiếng Anh</span>
+                  <div class="flex flex-wrap gap-2" data-chips="english_level">
+                    <button type="button" class="chip" data-value="Cơ bản">Cơ bản</button>
+                    <button type="button" class="chip" data-value="Khá (giao tiếp được)">Giao tiếp được</button>
+                    <button type="button" class="chip" data-value="Có IELTS 5.0 - 5.5">IELTS 5.0–5.5</button>
+                    <button type="button" class="chip" data-value="Có IELTS 6.0 trở lên">IELTS 6.0+</button>
+                    <button type="button" class="chip" data-value="Chứng chỉ khác">Chứng chỉ khác</button>
+                  </div>
+                  <input type="hidden" id="english_level">
+                </div>
+                <div>
+                  <span class="adv-label">Học phí gia đình có thể chi trả / năm</span>
+                  <div class="flex flex-wrap gap-2" data-chips="budget">
+                    <button type="button" class="chip" data-value="Dưới 25 triệu">&lt; 25 triệu</button>
+                    <button type="button" class="chip" data-value="25 - 40 triệu">25–40 triệu</button>
+                    <button type="button" class="chip" data-value="40 - 70 triệu">40–70 triệu</button>
+                    <button type="button" class="chip" data-value="Trên 70 triệu">&gt; 70 triệu</button>
+                  </div>
+                  <input type="hidden" id="budget">
+                </div>
+              </div>
+
+              <details class="group rounded-2xl border border-slate-200 bg-slate-50/60">
+                <summary class="list-none cursor-pointer px-5 py-4 flex items-center justify-between text-sm font-semibold text-slate-700">
+                  <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px] text-[#0072BC]">tune</span>Thêm chi tiết để tư vấn sát hơn <span class="font-normal text-slate-400 hidden sm:inline">(không bắt buộc)</span></span>
+                  <span class="material-symbols-outlined text-slate-400 transition group-open:rotate-180">expand_more</span>
+                </summary>
+                <div class="px-5 pb-5 space-y-5">
+                  <div>
+                    <span class="adv-label">Phương thức xét tuyển dự định</span>
+                    <div class="flex flex-wrap gap-2" data-chips="admission_method">
+                      <button type="button" class="chip" data-value="Điểm thi tốt nghiệp THPT">Điểm thi THPT</button>
+                      <button type="button" class="chip" data-value="Xét học bạ">Học bạ + tiếng Anh</button>
+                      <button type="button" class="chip" data-value="Đánh giá năng lực">Đánh giá năng lực</button>
+                      <button type="button" class="chip" data-value="Xét tuyển thẳng/ưu tiên">Tuyển thẳng</button>
+                      <button type="button" class="chip" data-value="Chưa xác định">Chưa rõ</button>
+                    </div>
+                    <input type="hidden" id="admission_method">
+                  </div>
+                  <div>
+                    <span class="adv-label">Chương trình mong muốn</span>
+                    <div class="flex flex-wrap gap-2" data-chips="program_type">
+                      <button type="button" class="chip" data-value="Chương trình tiêu chuẩn">Tiêu chuẩn</button>
+                      <button type="button" class="chip" data-value="Chương trình học bằng tiếng Anh">Học bằng tiếng Anh</button>
+                      <button type="button" class="chip" data-value="Liên kết quốc tế">Liên kết quốc tế</button>
+                      <button type="button" class="chip" data-value="Chưa xác định">Chưa rõ</button>
+                    </div>
+                    <input type="hidden" id="program_type">
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label class="adv-label" for="considered_majors">Ngành bạn đang cân nhắc</label>
+                      <input id="considered_majors" class="adv-field" type="text" maxlength="300" placeholder="Marketing, Kế toán...">
+                    </div>
+                    <div>
+                      <label class="adv-label" for="family_wish">Gia đình mong muốn bạn học gì?</label>
+                      <input id="family_wish" class="adv-field" type="text" maxlength="300" placeholder="Bố mẹ muốn mình học Tài chính...">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="adv-label" for="extra_notes">Điều gì khác bạn muốn chia sẻ?</label>
+                    <textarea id="extra_notes" class="adv-field" rows="2" maxlength="1000" placeholder="Muốn học gần nhà, muốn đi du học sau này..."></textarea>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-3 mt-8 pt-6 border-t border-slate-100">
+            <button type="button" id="btnBack" class="invisible inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span> Quay lại
+            </button>
+            <p id="draftNote" class="hidden sm:block text-xs text-slate-400"></p>
+            <button type="submit" id="btnNext" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0072BC] hover:opacity-95 text-white text-sm font-bold shadow-lg shadow-blue-600/25 transition active:scale-[.98]">
+              <span id="btnNextText">Tiếp tục</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ---------- CHỜ AI ---------- -->
+      <section id="loading" hidden class="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-900/5 p-6 sm:p-10">
+        <div class="flex flex-col sm:flex-row items-center gap-8">
+          <div class="orbit shrink-0 grid place-items-center">
+            <span class="material-symbols-outlined text-[34px] text-[#0072BC]">neurology</span>
+          </div>
+          <div class="flex-1 w-full">
+            <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900 text-center sm:text-left">AI đang phân tích hồ sơ của <span id="loadName">bạn</span></h2>
+            <p class="text-sm text-slate-500 mt-1 text-center sm:text-left">Thường mất 10–20 giây. Đừng tắt trang nhé.</p>
+            <ul class="mt-6 space-y-3.5" id="loadSteps">
+              <li class="load-step"><span class="ic"></span>Đọc thông tin và sở thích của bạn</li>
+              <li class="load-step"><span class="ic"></span>Phân tích nhóm tính cách Holland</li>
+              <li class="load-step"><span class="ic"></span>Đối chiếu 43 chương trình đào tạo của DUE</li>
+              <li class="load-step"><span class="ic"></span>So sánh với điểm chuẩn các năm</li>
+              <li class="load-step"><span class="ic"></span>Viết lời khuyên dành riêng cho bạn</li>
+            </ul>
+          </div>
         </div>
+        <div class="mt-8 grid gap-3">
+          <div class="h-20 rounded-2xl shimmer"></div>
+          <div class="h-20 rounded-2xl shimmer"></div>
+          <div class="h-20 rounded-2xl shimmer opacity-60"></div>
+        </div>
+        <p id="loadTip" class="mt-6 text-center text-xs text-slate-500 italic transition-opacity duration-500"></p>
+      </section>
 
+      <!-- ---------- KẾT QUẢ ---------- -->
+      <section id="result" hidden class="space-y-6"></section>
+    </div>
+
+    <aside class="lg:col-span-4 xl:col-span-3 space-y-5 lg:sticky lg:top-40 no-print">
+      <div class="rounded-3xl bg-gradient-to-br from-[#003366] via-[#0072BC] to-[#0a8fd8] text-white p-6 shadow-xl shadow-blue-900/20 relative overflow-hidden">
+        <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-white/10"></div>
+        <h3 class="font-heading font-bold text-lg relative">Bạn sẽ nhận được</h3>
+        <ul class="mt-4 space-y-3 text-sm text-blue-50 relative">
+          <li class="flex gap-3"><span class="material-symbols-outlined text-[20px] text-[#7dd3a8]">psychology</span>Nhận xét về tính cách và thế mạnh của bạn</li>
+          <li class="flex gap-3"><span class="material-symbols-outlined text-[20px] text-[#7dd3a8]">school</span>3–5 ngành phù hợp nhất tại DUE kèm % phù hợp</li>
+          <li class="flex gap-3"><span class="material-symbols-outlined text-[20px] text-[#7dd3a8]">query_stats</span>Đánh giá khả năng trúng tuyển theo điểm chuẩn</li>
+          <li class="flex gap-3"><span class="material-symbols-outlined text-[20px] text-[#7dd3a8]">tips_and_updates</span>Lời khuyên sắp xếp nguyện vọng</li>
+        </ul>
       </div>
-    </section>
-
-  </main>
+      <div class="rounded-3xl bg-white border border-slate-200 p-6">
+        <h3 class="font-heading font-bold text-slate-900">Cần người tư vấn trực tiếp?</h3>
+        <div class="mt-4 space-y-1 text-sm">
+          <a href="tel:02363836169" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition">
+            <span class="w-9 h-9 rounded-xl bg-orange-50 text-[#F37021] grid place-items-center"><span class="material-symbols-outlined text-[20px]">call</span></span>
+            <span><span class="block text-xs text-slate-500">Hotline tuyển sinh</span><span class="font-semibold text-slate-800">0236 3836 169</span></span>
+          </a>
+          <a href="mailto:tuyensinh@due.edu.vn" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition">
+            <span class="w-9 h-9 rounded-xl bg-blue-50 text-[#0072BC] grid place-items-center"><span class="material-symbols-outlined text-[20px]">mail</span></span>
+            <span><span class="block text-xs text-slate-500">Email</span><span class="font-semibold text-slate-800">tuyensinh@due.edu.vn</span></span>
+          </a>
+          <a href="https://facebook.com/FaceDue" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-[#00A859] grid place-items-center"><span class="material-symbols-outlined text-[20px]">forum</span></span>
+            <span><span class="block text-xs text-slate-500">Fanpage tuyển sinh</span><span class="font-semibold text-slate-800">facebook.com/FaceDue</span></span>
+          </a>
+        </div>
+      </div>
+      <p class="text-[11px] text-slate-400 leading-relaxed px-2">Kết quả do AI gợi ý, mang tính tham khảo. Thông tin tuyển sinh chính thức xem tại due.udn.vn.</p>
+    </aside>
+  </div>
+</main>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    /* ---- Toast logic (Không bo góc) ---- */
-    var toastTimeout = null;
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $('advForm');
+  var STEP = 0, LAST = 3, quizIndex = 0;
 
-    function showToast() {
-      var toast = document.getElementById('toast-notification');
-      var progressBar = document.getElementById('toast-progress-bar');
-      if (!toast || !progressBar) return;
+  var PROVINCES = ['Đà Nẵng','Quảng Nam','Thừa Thiên Huế','Quảng Ngãi','Bình Định','Quảng Trị','Quảng Bình','Hà Tĩnh','Nghệ An','Thanh Hóa','Phú Yên','Khánh Hòa','Ninh Thuận','Bình Thuận','Kon Tum','Gia Lai','Đắk Lắk','Đắk Nông','Lâm Đồng','Hà Nội','TP. Hồ Chí Minh','Bình Phước','Tây Ninh','Bình Dương','Đồng Nai','Bà Rịa - Vũng Tàu','Long An','Tiền Giang','Bến Tre','Trà Vinh','Vĩnh Long','Đồng Tháp','An Giang','Kiên Giang','Cần Thơ','Hậu Giang','Sóc Trăng','Bạc Liêu','Cà Mau','Vĩnh Phúc','Bắc Ninh','Quảng Ninh','Hải Dương','Hải Phòng','Hưng Yên','Thái Bình','Hà Nam','Nam Định','Ninh Bình','Hà Giang','Cao Bằng','Bắc Kạn','Tuyên Quang','Lào Cai','Yên Bái','Thái Nguyên','Lạng Sơn','Bắc Giang','Phú Thọ','Điện Biên','Lai Châu','Sơn La','Hòa Bình'];
+  var QUIZ = [
+    { q: 'Nếu được chọn một hoạt động cho buổi ngoại khóa, bạn sẽ thích…', o: [
+      ['R','Lắp ráp, làm thí nghiệm hoặc hoạt động ngoài trời'],['I','Tìm hiểu một chủ đề mới rồi giải thích lại cho mọi người'],
+      ['A','Làm poster, quay video hoặc sáng tạo nội dung'],['S','Tham gia tình nguyện, hỗ trợ mọi người'],
+      ['E','Tổ chức trò chơi và điều phối cả nhóm'],['C','Lên danh sách, sắp xếp công việc cho mọi người']]},
+    { q: 'Khi làm bài tập nhóm, bạn thường…', o: [
+      ['R','Nhận phần thực hành, phần cần làm cụ thể'],['I','Phân tích đề và tìm cách giải quyết'],
+      ['A','Nghĩ ra ý tưởng mới cho nhóm'],['S','Kết nối mọi người để nhóm làm việc vui vẻ'],
+      ['E','Phân chia nhiệm vụ và thúc đẩy tiến độ'],['C','Ghi chép, kiểm tra lại để tránh sai sót']]},
+    { q: 'Bạn cảm thấy vui nhất khi…', o: [
+      ['R','Tự tay làm ra một sản phẩm cụ thể'],['I','Giải được một bài toán, câu hỏi khó'],
+      ['A','Được thể hiện cá tính và ý tưởng riêng'],['S','Giúp ai đó giải quyết được vấn đề'],
+      ['E','Đạt thành tích hoặc dẫn đầu'],['C','Hoàn thành công việc gọn gàng, đúng kế hoạch']]},
+    { q: 'Khi gặp một vấn đề, bạn thường…', o: [
+      ['R','Thử làm ngay để xem cách nào hiệu quả'],['I','Nghĩ kỹ xem vì sao nó xảy ra'],
+      ['A','Tìm một cách làm khác, sáng tạo hơn'],['S','Hỏi ý kiến mọi người rồi cùng xử lý'],
+      ['E','Quyết định nhanh và bắt tay thực hiện'],['C','Viết ra từng bước để giải quyết']]},
+    { q: 'Môi trường học tập, làm việc bạn thích nhất là…', o: [
+      ['R','Năng động, có nhiều hoạt động thực tế'],['I','Yên tĩnh để tập trung suy nghĩ'],
+      ['A','Tự do, không quá gò bó'],['S','Có nhiều người để trò chuyện, hợp tác'],
+      ['E','Có mục tiêu rõ ràng và thử thách cao'],['C','Có kế hoạch cụ thể, mọi thứ rõ ràng']]},
+    { q: 'Bạn bè thường nhận xét bạn là người…', o: [
+      ['R','Thực tế, làm được việc'],['I','Logic, hay đặt câu hỏi "vì sao"'],
+      ['A','Sáng tạo, nhiều ý tưởng lạ'],['S','Dễ gần, biết lắng nghe'],
+      ['E','Năng nổ, thích dẫn dắt'],['C','Cẩn thận, làm việc có tổ chức']]}
+  ];
+  var HOLLAND = {
+    R: { n: 'Kỹ thuật – Thực tế', c: '#64748b', d: 'thích làm việc cụ thể, thực hành và thấy được kết quả' },
+    I: { n: 'Nghiên cứu – Phân tích', c: '#0072BC', d: 'tò mò, thích phân tích, giải quyết vấn đề bằng logic' },
+    A: { n: 'Nghệ thuật – Sáng tạo', c: '#a855f7', d: 'giàu ý tưởng, thích tự do thể hiện bản thân' },
+    S: { n: 'Xã hội – Hỗ trợ', c: '#00A859', d: 'thân thiện, thích giúp đỡ và làm việc với con người' },
+    E: { n: 'Quản lý – Kinh doanh', c: '#F37021', d: 'năng động, thích dẫn dắt, thuyết phục và chinh phục mục tiêu' },
+    C: { n: 'Nghiệp vụ – Tổ chức', c: '#0f766e', d: 'cẩn thận, ngăn nắp, làm việc có quy trình rõ ràng' }
+  };
+  var TIPS = [
+    'Mẹo: Bạn được đăng ký tối đa 15 nguyện vọng trên hệ thống của Bộ GD&ĐT.',
+    'DUE có 3 loại hình đào tạo: Tiêu chuẩn, Bán phần tiếng Anh và Toàn phần tiếng Anh.',
+    'Có IELTS từ 5.5 trở lên giúp bạn mở rộng lựa chọn chương trình học bằng tiếng Anh.',
+    'Năm 2026, DUE có quỹ học bổng hơn 10 tỷ đồng cho tân sinh viên tài năng.'
+  ];
+  var answers = QUIZ.map(function () { return null; });
 
-      if (toastTimeout) {
-        clearTimeout(toastTimeout);
-      }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function sGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function sSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function sDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
 
-      // Reset animation on bar
-      progressBar.classList.remove('toast-progress-active');
-      void progressBar.offsetWidth; // trigger reflow
-      progressBar.classList.add('toast-progress-active');
-
-      toast.classList.remove('hide-toast');
-      toast.classList.add('show-toast');
-
-      toastTimeout = setTimeout(function () {
-        hideToast();
-      }, 3500);
+  /* ---- Dấu * đỏ cho ô bắt buộc ---- */
+  form.querySelectorAll('[data-required]').forEach(function (el) {
+    var label = el.id ? form.querySelector('label[for="' + el.id + '"]') : null;
+    if (!label) label = el.parentElement.querySelector('.adv-label');
+    if (label && !label.querySelector('.req-star')) {
+      label.insertAdjacentHTML('beforeend', '<span class="req-star" aria-hidden="true">*</span>');
+      if (el.id) el.setAttribute('aria-required', 'true');
     }
+  });
+  form.querySelectorAll('.adv-step').forEach(function (step) {
+    if (!step.querySelector('.req-star')) return;
+    var intro = step.querySelector('h2 + p');
+    if (intro) intro.insertAdjacentHTML('beforeend', ' <span class="whitespace-nowrap text-slate-400">(<span class="req-star" style="margin-left:0">*</span> là thông tin bắt buộc)</span>');
+  });
 
-    function hideToast() {
-      var toast = document.getElementById('toast-notification');
-      if (!toast) return;
-      toast.classList.remove('show-toast');
-      toast.classList.add('hide-toast');
-      if (toastTimeout) clearTimeout(toastTimeout);
-    }
+  var sel = $('province');
+  PROVINCES.forEach(function (p) { var o = document.createElement('option'); o.value = o.textContent = p; sel.appendChild(o); });
 
-    /* ---- Dropdown Nav ---- */
-    (function () {
-      var btn      = document.getElementById('nav-ttts-btn');
-      var dropdown = document.getElementById('nav-ttts-dropdown');
-      var chevron  = document.getElementById('nav-ttts-chevron');
-      var isOpen   = false;
-
-      function positionDropdown() {
-        var rect = btn.getBoundingClientRect();
-        dropdown.style.top  = (rect.bottom + 6) + 'px';
-        dropdown.style.left = rect.left + 'px';
-      }
-
-      function openDropdown() {
-        positionDropdown();
-        isOpen = true;
-        dropdown.style.display = 'block';
-        chevron.style.transform = 'rotate(180deg)';
-        btn.setAttribute('aria-expanded', 'true');
-      }
-      function closeDropdown() {
-        isOpen = false;
-        dropdown.style.display = 'none';
-        chevron.style.transform = '';
-        btn.setAttribute('aria-expanded', 'false');
-      }
-
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        isOpen ? closeDropdown() : openDropdown();
+  /* ---- Chip ---- */
+  function syncChip(group) {
+    var vals = Array.prototype.filter.call(group.querySelectorAll('.chip'), function (x) { return x.getAttribute('aria-pressed') === 'true'; })
+      .map(function (x) { return x.dataset.value; });
+    $(group.dataset.chips).value = vals.join(', ');
+  }
+  function setChipGroup(group, value) {
+    var list = value ? String(value).split(', ') : [];
+    group.querySelectorAll('.chip').forEach(function (b) { b.setAttribute('aria-pressed', list.indexOf(b.dataset.value) > -1 ? 'true' : 'false'); });
+  }
+  document.querySelectorAll('[data-chips]').forEach(function (group) {
+    var multi = group.hasAttribute('data-multi');
+    group.querySelectorAll('.chip').forEach(function (b) {
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () {
+        var on = b.getAttribute('aria-pressed') !== 'true';
+        if (!multi) group.querySelectorAll('.chip').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        syncChip(group);
+        var err = group.parentElement.querySelector('.adv-err'); if (err) err.classList.remove('show');
+        saveDraft();
       });
-      document.addEventListener('click', function (e) {
-        if (!dropdown.contains(e.target) && e.target !== btn) closeDropdown();
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeDropdown();
-      });
-    })();
-
-    /* ---- Modal Hướng dẫn nhập học ---- */
-        /* ---- Modal 1: Hướng dẫn nhập học ---- */
-    var _hdBackdrop = document.getElementById('huong-dan-modal-backdrop');
-    var _hdModal    = document.getElementById('huong-dan-modal');
-
-    function openHuongDanModal() {
-      document.getElementById('nav-ttts-dropdown').style.display = 'none';
-      _hdBackdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          _hdModal.style.opacity   = '1';
-          _hdModal.style.transform = 'scale(1) translateY(0)';
-        });
-      });
-    }
-
-    function closeHuongDanModal() {
-      _hdModal.style.opacity   = '0';
-      _hdModal.style.transform = 'scale(0.97) translateY(12px)';
-      setTimeout(function () {
-        _hdBackdrop.style.display = 'none';
-        document.body.style.overflow = '';
-      }, 220);
-    }
-
-    if (_hdBackdrop) {
-      _hdBackdrop.addEventListener('click', function (e) {
-        if (e.target === _hdBackdrop) closeHuongDanModal();
-      });
-    }
-
-    /* ---- Modal 2: Lịch trình của Tân sinh viên ---- */
-    var _ltBackdrop = document.getElementById('lich-trinh-modal-backdrop');
-    var _ltModal    = document.getElementById('lich-trinh-modal');
-
-    function openLichTrinhModal() {
-      document.getElementById('nav-ttts-dropdown').style.display = 'none';
-      _ltBackdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          _ltModal.style.opacity   = '1';
-          _ltModal.style.transform = 'scale(1) translateY(0)';
-        });
-      });
-    }
-
-    function closeLichTrinhModal() {
-      _ltModal.style.opacity   = '0';
-      _ltModal.style.transform = 'scale(0.97) translateY(12px)';
-      setTimeout(function () {
-        _ltBackdrop.style.display = 'none';
-        document.body.style.overflow = '';
-      }, 220);
-    }
-
-    if (_ltBackdrop) {
-      _ltBackdrop.addEventListener('click', function (e) {
-        if (e.target === _ltBackdrop) closeLichTrinhModal();
-      });
-    }
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        if (_hdBackdrop && _hdBackdrop.style.display === 'flex') closeHuongDanModal();
-        if (_ltBackdrop && _ltBackdrop.style.display === 'flex') closeLichTrinhModal();
-      }
     });
+  });
 
-    /* ---- FORM SUBMIT & HOLLAND SCORING ---- */
-    function handleFormSubmit(event) {
-      event.preventDefault();
-
-      // Collect form values
-      var fullName   = document.getElementById('full_name').value.trim();
-      var gender     = document.getElementById('gender').value;
-      var dob        = document.getElementById('date_of_birth').value;
-      var phone      = document.getElementById('phone_number').value.trim();
-      var email      = document.getElementById('email').value.trim();
-      var school     = document.getElementById('high_school').value.trim();
-      var province   = document.getElementById('province').value;
-      var address    = document.getElementById('address').value.trim();
-      var interests  = document.getElementById('interests').value.trim();
-      var strengths  = document.getElementById('strengths').value.trim();
-      var goals      = document.getElementById('career_goals').value.trim();
-
-      // Format date
-      var formattedDob = dob;
-      if (dob) {
-        var parts = dob.split('-');
-        if (parts.length === 3) formattedDob = parts[2] + '/' + parts[1] + '/' + parts[0];
-      }
-
-      // Populate right card 1 (Tóm tắt hồ sơ)
-      document.getElementById('res-full-name').textContent = fullName;
-      document.getElementById('res-gender').textContent    = gender;
-      document.getElementById('res-dob').textContent       = formattedDob;
-      document.getElementById('res-phone').textContent     = phone;
-      document.getElementById('res-email').textContent     = email;
-      document.getElementById('res-school').textContent    = school;
-      document.getElementById('res-province').textContent  = province;
-      document.getElementById('res-address').textContent   = address;
-      document.getElementById('res-interests').textContent = interests;
-      document.getElementById('res-strengths').textContent = strengths;
-      document.getElementById('res-goals').textContent     = goals;
-
-      // Calculate Holland RIASEC Scores
-      var scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-      var answeredCount = 0;
-      for (var i = 1; i <= 6; i++) {
-        var selected = document.querySelector('input[name="holland_q' + i + '"]:checked');
-        if (selected && selected.value) {
-          scores[selected.value] = (scores[selected.value] || 0) + 1;
-          answeredCount++;
-        }
-      }
-
-      // Update RIASEC Pills
-      document.getElementById('pill-r').textContent = 'R: ' + scores.R;
-      document.getElementById('pill-i').textContent = 'I: ' + scores.I;
-      document.getElementById('pill-a').textContent = 'A: ' + scores.A;
-      document.getElementById('pill-s').textContent = 'S: ' + scores.S;
-      document.getElementById('pill-e').textContent = 'E: ' + scores.E;
-      document.getElementById('pill-c').textContent = 'C: ' + scores.C;
-
-      // Find top 3 Holland letters if any answered
-      if (answeredCount > 0) {
-        var sortedKeys = Object.keys(scores).sort(function(a, b) {
-          return scores[b] - scores[a];
-        });
-        var hollandCode = sortedKeys.slice(0, 3).join('');
-        document.getElementById('pill-code').textContent = 'Mã Holland: ' + hollandCode;
-      } else {
-        document.getElementById('pill-code').textContent = 'Mã Holland: Chưa làm trắc nghiệm';
-      }
-
-      // Switch state from Empty to Filled
-      document.getElementById('profile-empty-state').classList.add('hidden');
-      document.getElementById('profile-filled-state').classList.remove('hidden');
-      
-      var badge = document.getElementById('profile-status-badge');
-      badge.textContent = 'Đã lưu hồ sơ';
-      badge.className = 'px-2.5 py-1 rounded-none bg-emerald-100 text-[#00A859] text-xs font-bold';
-
-      // Smooth scroll to results on mobile
-      if (window.innerWidth < 1024) {
-        document.getElementById('profile-filled-state').scrollIntoView({ behavior: 'smooth' });
-      }
-
-      // Thông tin bổ sung cho AI
-      var extraIds = ['grade_level','subject_combo','expected_score','gpa','strong_subjects','weak_subjects',
-                      'english_level','admission_method','program_type','budget','work_style','job_priority',
-                      'considered_majors','family_wish','extra_notes'];
-      var extra = {};
-      extraIds.forEach(function(id) {
-        var el = document.getElementById(id);
-        if (el) extra[id] = el.value.trim();
+  document.querySelectorAll('[data-suggest]').forEach(function (box) {
+    var ta = $(box.dataset.suggest);
+    box.querySelectorAll('.chip-suggest').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.textContent.replace(/^\+\s*/, '');
+        ta.value = ta.value.trim() ? ta.value.trim().replace(/[.,;]$/, '') + ', ' + t.toLowerCase() : t;
+        b.classList.add('used'); validField(ta); ta.focus(); saveDraft();
       });
+    });
+  });
 
-      function esc(s) {
-        return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
-          return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-        });
-      }
-
-      var majorsBox = document.getElementById('due-top-majors-container');
-      var summaryBox = document.getElementById('ai-summary');
-      summaryBox.classList.add('hidden');
-      majorsBox.innerHTML = '<div class="p-6 text-center text-sm text-slate-500">' +
-        '<span class="material-symbols-outlined animate-spin align-middle text-[#0072BC]">progress_activity</span> ' +
-        'AI đang phân tích hồ sơ của bạn, vui lòng chờ trong giây lát...</div>';
-      var submitBtn = document.querySelector('#advisory-form button[type="submit"]');
-      var submitHtml = submitBtn ? submitBtn.innerHTML : '';
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.classList.add('opacity-70', 'cursor-wait');
-        submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span><span>AI ĐANG PHÂN TÍCH...</span>';
-      }
-      majorsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      // Gui du lieu len Backend API Django
-      fetch('/api/tu-van-huong-nghiep/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({
-          full_name: fullName,
-          gender: gender,
-          date_of_birth: dob,
-          phone_number: phone,
-          email: email,
-          high_school: school,
-          province: province,
-          address: address,
-          interests: interests,
-          strengths: strengths,
-          career_goals: goals,
-          score_r: scores.R,
-          score_i: scores.I,
-          score_a: scores.A,
-          score_s: scores.S,
-          score_e: scores.E,
-          score_c: scores.C,
-          ...extra
-        })
-      })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (!(data && data.status === 'success' && data.data)) {
-          majorsBox.innerHTML = '<p class="text-sm text-red-600">' + esc((data && data.message) || 'Có lỗi xảy ra, vui lòng thử lại.') + '</p>';
-          return;
-        }
-        var d = data.data;
-        var majors = d.suggested_majors || [];
-        var isAI = d.ai;
-        document.getElementById('due-majors-title').textContent =
-          isAI ? 'AI đề xuất ' + majors.length + ' ngành phù hợp tại DUE' : 'Top 3 ngành phù hợp tại DUE';
-
-        if (isAI) {
-          summaryBox.innerHTML =
-            '<p class="font-bold text-[#0072BC] mb-1">Nhận xét của AI</p><p>' + esc(d.tong_quan) + '</p>' +
-            (d.loi_khuyen ? '<p class="font-bold text-[#F37021] mt-3 mb-1">Lời khuyên chọn nguyện vọng</p><p>' + esc(d.loi_khuyen) + '</p>' : '');
-          summaryBox.classList.remove('hidden');
-        } else if (d.ai_error) {
-          console.warn('AI không khả dụng, dùng gợi ý theo Holland:', d.ai_error);
-        }
-
-        var colors = ['bg-orange-100 text-[#F37021]', 'bg-blue-100 text-[#0072BC]', 'bg-emerald-100 text-[#00A859]'];
-        var list = isAI ? majors : majors.slice(0, 3);
-        var html = '';
-        list.forEach(function(m, idx) {
-          html += '<div class="p-4 rounded-2xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all flex items-start gap-3">' +
-                  '<div class="w-8 h-8 rounded-xl ' + colors[idx % 3] + ' flex items-center justify-center font-bold flex-shrink-0 text-sm font-heading">#' + (idx + 1) + '</div>' +
-                  '<div class="flex-1 min-w-0">' +
-                  '<div class="flex items-start justify-between gap-2">' +
-                  '<h4 class="font-heading font-bold text-slate-900 text-sm">' + esc(m.ten) + '</h4>' +
-                  (m.phu_hop != null ? '<span class="flex-shrink-0 px-2 py-0.5 bg-emerald-50 text-[#00A859] text-[11px] font-bold">' + esc(m.phu_hop) + '% phù hợp</span>' : '') +
-                  '</div>' +
-                  '<p class="text-xs text-slate-500 mt-0.5">' + esc(m.khoa) + ' • Mã: ' + esc(m.ma) + '</p>' +
-                  (m.ly_do ? '<p class="text-xs text-slate-700 mt-2 leading-relaxed">' + esc(m.ly_do) + '</p>' : '') +
-                  (m.kha_nang ? '<p class="text-xs text-slate-500 mt-1 italic">' + esc(m.kha_nang) + '</p>' : '') +
-                  '<span class="inline-block mt-1.5 px-2 py-0.5 rounded-none bg-blue-50 text-[#0072BC] text-[10px] font-bold">Điểm chuẩn' +
-                  (m.nam_diem ? ' ' + esc(m.nam_diem) : '') +
-                  (m.phuong_thuc_diem ? ' (' + esc(m.phuong_thuc_diem) + ')' : '') + ': ' + esc(m.diem) + 'đ</span>' +
-                  '</div></div>';
-        });
-        majorsBox.innerHTML = html || '<p class="text-sm text-slate-500">Chưa tìm được ngành phù hợp.</p>';
-      })
-      .catch(function(err) {
-        console.warn('API sync notice:', err);
-        majorsBox.innerHTML = '<p class="text-sm text-red-600">Không kết nối được máy chủ, vui lòng thử lại.</p>';
-      })
-      .finally(function() {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.classList.remove('opacity-70', 'cursor-wait');
-          submitBtn.innerHTML = submitHtml;
-        }
-        var top = document.getElementById('due-majors-title');
-        if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  /* ---- Trắc nghiệm ---- */
+  function renderQuiz() {
+    var q = QUIZ[quizIndex];
+    $('quizCounter').textContent = (quizIndex + 1) + '/' + QUIZ.length;
+    $('quizDots').innerHTML = QUIZ.map(function (_, i) {
+      var cls = answers[i] ? 'bg-[#00A859]' : (i === quizIndex ? 'bg-[#0072BC]' : 'bg-slate-200');
+      return '<button type="button" data-q="' + i + '" aria-label="Câu ' + (i + 1) + '" class="h-1.5 flex-1 rounded-full transition ' + cls + '"></button>';
+    }).join('');
+    $('quizBox').innerHTML =
+      '<div class="fade-in"><p class="text-xs font-bold text-[#0072BC] uppercase tracking-wider">Câu ' + (quizIndex + 1) + '</p>' +
+      '<h3 class="font-heading text-lg sm:text-xl font-bold text-slate-900 mt-1 mb-5">' + esc(q.q) + '</h3>' +
+      '<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">' + q.o.map(function (o, i) {
+        return '<button type="button" class="quiz-opt" data-v="' + o[0] + '" aria-pressed="' + (answers[quizIndex] === o[0]) + '">' +
+          '<span class="key">' + 'ABCDEF'[i] + '</span><span class="text-sm text-slate-700 leading-snug">' + esc(o[1]) + '</span></button>';
+      }).join('') + '</div>' +
+      '<div class="flex justify-between mt-5 text-sm">' +
+        '<button type="button" id="qPrev" class="text-slate-500 hover:text-slate-800 font-semibold ' + (quizIndex ? '' : 'invisible') + '">← Câu trước</button>' +
+        '<button type="button" id="qNext" class="text-[#0072BC] font-semibold ' + (answers[quizIndex] && quizIndex < QUIZ.length - 1 ? '' : 'invisible') + '">Câu sau →</button>' +
+      '</div></div>';
+    $('quizBox').querySelectorAll('.quiz-opt').forEach(function (b) {
+      b.addEventListener('click', function () {
+        answers[quizIndex] = b.dataset.v;
+        $('quizErr').classList.remove('show'); saveDraft();
+        $('quizBox').querySelectorAll('.quiz-opt').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        setTimeout(function () {
+          var next = answers.findIndex(function (a, i) { return !a && i > quizIndex; });
+          if (next === -1) next = answers.findIndex(function (a) { return !a; });
+          if (next > -1) { quizIndex = next; renderQuiz(); } else { renderQuiz(); go(STEP + 1); }
+        }, 280);
       });
+    });
+    $('quizDots').querySelectorAll('button').forEach(function (d) { d.addEventListener('click', function () { quizIndex = +d.dataset.q; renderQuiz(); }); });
+    var p = $('qPrev'), n = $('qNext');
+    p && p.addEventListener('click', function () { quizIndex--; renderQuiz(); });
+    n && n.addEventListener('click', function () { quizIndex++; renderQuiz(); });
+  }
 
-      // Trigger modern Sharp Toast notification
-      showToast();
+  /* ---- Kiểm tra ---- */
+  // Trả về thông báo lỗi cụ thể cho từng trường hợp, rỗng nếu hợp lệ
+  function fieldError(el) {
+    var v = (el.value || '').trim();
+    var name = el.dataset.name || 'thông tin này';
+    if (!v) return el.hasAttribute('data-required') ? (el.dataset.msgRequired || ('Vui lòng nhập ' + name + '.')) : '';
+    if (el.dataset.min && v.length < +el.dataset.min)
+      return 'Cần ít nhất ' + el.dataset.min + ' ký tự (bạn mới nhập ' + v.length + ').';
+    if (el.type === 'date') {
+      var y = parseInt(v.slice(0, 4), 10), now = new Date().getFullYear();
+      if (isNaN(y)) return 'Ngày sinh chưa hợp lệ.';
+      if (y > now - 13) return 'Năm sinh có vẻ chưa đúng, bạn kiểm tra lại nhé (học sinh THPT thường sinh trước ' + (now - 13) + ').';
+      if (y < now - 60) return 'Năm sinh có vẻ chưa đúng, bạn kiểm tra lại nhé.';
     }
-  </script>
+    if (el.hasAttribute('data-phone')) {
+      var digits = v.replace(/[\s.\-]/g, '');
+      if (!/^\d+$/.test(digits)) return 'Số điện thoại chỉ gồm chữ số.';
+      if (digits[0] !== '0') return 'Số điện thoại phải bắt đầu bằng số 0.';
+      if (digits.length !== 10) return 'Số điện thoại cần đủ 10 chữ số (bạn đang nhập ' + digits.length + ').';
+    }
+    if (el.hasAttribute('data-email') && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))
+      return 'Email chưa đúng định dạng, ví dụ: ten@gmail.com';
+    if (el.dataset.range) {
+      var r = el.dataset.range.split(',').map(Number), n = parseFloat(v.replace(',', '.'));
+      if (isNaN(n)) return 'Vui lòng nhập một con số.';
+      if (n < r[0] || n > r[1]) return 'Điểm phải nằm trong khoảng ' + r[0] + ' – ' + r[1] + '.';
+    }
+    return '';
+  }
+  function errBox(el) {
+    var box = el.parentElement.querySelector('.adv-err');
+    if (!box && el.parentElement.parentElement) box = el.parentElement.parentElement.querySelector('.adv-err');
+    return box;
+  }
+  function validField(el) {
+    var msg = fieldError(el), box = errBox(el);
+    el.classList.toggle('is-invalid', !!msg);
+    el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    if (box) {
+      if (msg) box.innerHTML = '<span class="inline-flex items-start gap-1"><span class="material-symbols-outlined text-[15px] leading-4">error</span><span>' + esc(msg) + '</span></span>';
+      box.classList.toggle('show', !!msg);
+    }
+    return !msg;
+  }
+  function validateStep(i) {
+    var box = form.querySelector('[data-step="' + i + '"]'), ok = true, first = null;
+    box.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(function (el) {
+      if (!validField(el)) { ok = false; first = first || el; }
+    });
+    box.querySelectorAll('[data-chips][data-required]').forEach(function (g) {
+      var err = g.parentElement.querySelector('.adv-err');
+      if (!$(g.dataset.chips).value) { ok = false; err.classList.add('show'); first = first || g; } else err.classList.remove('show');
+    });
+    if (i === 1) {
+      var miss = answers.findIndex(function (a) { return !a; });
+      if (miss > -1) { ok = false; quizIndex = miss; renderQuiz(); $('quizErr').classList.add('show'); }
+    }
+    if (first) { first.scrollIntoView({ behavior: 'smooth', block: 'center' }); if (first.focus) first.focus({ preventScroll: true }); }
+    return ok;
+  }
+  form.querySelectorAll('.adv-field').forEach(function (el) {
+    el.addEventListener('blur', function () { if (el.value) validField(el); });
+    el.addEventListener('input', function () { if (el.classList.contains('is-invalid')) validField(el); saveDraft(); });
+  });
+
+  /* ---- Chuyển bước ---- */
+  function go(i) {
+    STEP = Math.max(0, Math.min(LAST, i));
+    form.querySelectorAll('.adv-step').forEach(function (s) {
+      var on = +s.dataset.step === STEP;
+      s.hidden = !on;
+      if (on) { s.classList.remove('fade-in'); void s.offsetWidth; s.classList.add('fade-in'); }
+    });
+    document.querySelectorAll('.stepper-item').forEach(function (it) {
+      var k = +it.dataset.i;
+      it.classList.toggle('active', k === STEP);
+      it.classList.toggle('done', k < STEP);
+      it.querySelector('.stepper-dot').innerHTML = k < STEP ? '<span class="material-symbols-outlined text-[18px]">check</span>' : (k + 1);
+    });
+    $('btnBack').classList.toggle('invisible', STEP === 0);
+    $('btnNextText').textContent = STEP === LAST ? 'Xem gợi ý từ AI' : 'Tiếp tục';
+    $('btnNext').style.background = STEP === LAST ? 'linear-gradient(90deg,#F37021,#0072BC)' : '';
+    if (STEP === 1) renderQuiz();
+    var top = $('wizard').getBoundingClientRect().top + window.scrollY - 170;
+    if (window.scrollY > top) window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+  document.querySelectorAll('.stepper-item').forEach(function (it) {
+    it.style.cursor = 'pointer';
+    it.addEventListener('click', function () { var k = +it.dataset.i; if (k < STEP) go(k); });
+  });
+  $('btnBack').addEventListener('click', function () { go(STEP - 1); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validateStep(STEP)) return;
+    if (STEP < LAST) go(STEP + 1); else submit();
+  });
+
+  /* ---- Lưu nháp ---- */
+  var FIELDS = ['full_name','gender','date_of_birth','phone_number','email','high_school','province','address','interests','strengths','career_goals',
+    'work_style','job_priority','grade_level','subject_combo','expected_score','gpa','strong_subjects','weak_subjects','english_level','admission_method',
+    'program_type','budget','considered_majors','family_wish','extra_notes'];
+  var draftTimer;
+  function saveDraft() {
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(function () {
+      var d = { answers: answers };
+      FIELDS.forEach(function (f) { d[f] = $(f).value; });
+      sSet('due_advisory_draft', JSON.stringify(d));
+      $('draftNote').textContent = 'Đã tự lưu nháp';
+    }, 400);
+  }
+  (function loadDraft() {
+    var d; try { d = JSON.parse(sGet('due_advisory_draft') || 'null'); } catch (e) { d = null; }
+    if (!d) return;
+    FIELDS.forEach(function (f) { if (d[f] != null) $(f).value = d[f]; });
+    if (Array.isArray(d.answers)) answers = QUIZ.map(function (_, i) { return d.answers[i] || null; });
+    document.querySelectorAll('[data-chips]').forEach(function (g) { setChipGroup(g, $(g.dataset.chips).value); });
+    $('draftNote').textContent = 'Đã khôi phục bản nháp trước đó';
+  })();
+
+  /* ---- Chờ AI ---- */
+  var loadTimer, tipTimer;
+  function startLoading(name) {
+    $('loadName').textContent = (name || '').trim().replace(/\s+/g, ' ') || 'bạn';
+    $('wizard').hidden = true; $('result').hidden = true; $('loading').hidden = false;
+    window.scrollTo({ top: $('loading').getBoundingClientRect().top + window.scrollY - 170, behavior: 'smooth' });
+    var steps = $('loadSteps').children, k = 0;
+    Array.prototype.forEach.call(steps, function (s) { s.className = 'load-step'; s.querySelector('.ic').textContent = ''; });
+    (function tick() {
+      if (k > 0) { steps[k - 1].className = 'load-step ok'; steps[k - 1].querySelector('.ic').textContent = '✓'; }
+      if (k < steps.length - 1) { steps[k].className = 'load-step run'; k++; loadTimer = setTimeout(tick, 2600); }
+      else { steps[k].className = 'load-step run'; }   // bước cuối chạy tới khi có kết quả
+    })();
+    var t = 0; $('loadTip').textContent = TIPS[0]; $('loadTip').style.opacity = 1;
+    tipTimer = setInterval(function () {
+      t = (t + 1) % TIPS.length; $('loadTip').style.opacity = 0;
+      setTimeout(function () { $('loadTip').textContent = TIPS[t]; $('loadTip').style.opacity = 1; }, 400);
+    }, 4500);
+  }
+  function stopLoading() {
+    clearTimeout(loadTimer); clearInterval(tipTimer);
+    Array.prototype.forEach.call($('loadSteps').children, function (s) { s.className = 'load-step ok'; s.querySelector('.ic').textContent = '✓'; });
+  }
+
+  function submit() {
+    var scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+    answers.forEach(function (a) { if (a) scores[a]++; });
+    var payload = {};
+    FIELDS.forEach(function (f) { payload[f] = $(f).value.trim(); });
+    payload.phone_number = payload.phone_number.replace(/[\s.\-]/g, '');   // khớp với phần kiểm tra
+    ['expected_score', 'gpa'].forEach(function (f) { payload[f] = payload[f].replace(',', '.'); });
+    Object.keys(scores).forEach(function (k) { payload['score_' + k.toLowerCase()] = scores[k]; });
+
+    var started = Date.now();
+    startLoading(payload.full_name);
+    fetch('/api/tu-van-huong-nghiep/', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify(payload)
+    })
+    .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; }); })
+    .then(function (res) {
+      setTimeout(function () {
+        stopLoading();
+        if (res.status === 429) return showError('Bạn vừa gửi khá nhiều lần. Vui lòng chờ khoảng 1 phút rồi thử lại nhé.');
+        if (!res.body || res.body.status !== 'success') return showError((res.body && res.body.message) || 'Có lỗi xảy ra, bạn thử lại nhé.');
+        sDel('due_advisory_draft');
+        setTimeout(function () { renderResult(res.body.data, payload, scores); }, 450);
+      }, Math.max(0, 2500 - (Date.now() - started)));
+    })
+    .catch(function () { stopLoading(); showError('Không kết nối được máy chủ. Bạn kiểm tra mạng rồi thử lại nhé.'); });
+  }
+
+  function showError(msg) {
+    $('loading').hidden = true; $('wizard').hidden = false;
+    var box = document.createElement('div');
+    box.className = 'fade-in mb-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-sm text-red-700 flex gap-3 items-start';
+    box.innerHTML = '<span class="material-symbols-outlined text-[20px]">error</span><span>' + esc(msg) + '</span>';
+    form.prepend(box); setTimeout(function () { box.remove(); }, 8000);
+  }
+
+  /* ---- Kết quả ---- */
+  function chanceTone(text) {
+    var t = (text || '').toLowerCase();
+    if (/chưa có|tham khảo/.test(t)) return ['bg-slate-50 text-slate-600 border-slate-200', 'info'];
+    if (/cạnh tranh|sát|thấp hơn|khó|thử thách/.test(t)) return ['bg-amber-50 text-amber-800 border-amber-200', 'balance'];
+    if (/rất cao|an toàn|vượt|dư|cao/.test(t)) return ['bg-emerald-50 text-emerald-700 border-emerald-200', 'trending_up'];
+    return ['bg-blue-50 text-[#0072BC] border-blue-200', 'insights'];
+  }
+
+  function renderResult(d, payload, scores) {
+    var majors = d.suggested_majors || [], isAI = !!d.ai;
+    var order = Object.keys(scores).sort(function (a, b) { return scores[b] - scores[a]; });
+    var max = scores[order[0]] || 1, top = order[0];
+    var first = (payload.full_name || '').trim().replace(/\s+/g, ' ') || 'Bạn';
+    var ringColors = ['#00A859', '#0072BC', '#F37021', '#a855f7', '#0f766e'];
+    var html = '';
+
+    html += '<div class="fade-in rounded-3xl overflow-hidden bg-white border border-slate-200 shadow-xl shadow-slate-900/5">' +
+      '<div class="bg-gradient-to-r from-[#003366] via-[#0072BC] to-[#0a8fd8] text-white px-6 sm:px-8 py-7 relative overflow-hidden">' +
+        '<div class="absolute -right-12 -bottom-16 w-56 h-56 rounded-full bg-white/10"></div>' +
+        '<p class="text-xs font-bold uppercase tracking-wider text-blue-100 relative">Kết quả tư vấn' + (isAI ? ' · Phân tích bởi AI' : '') + '</p>' +
+        '<h2 class="font-heading text-2xl sm:text-3xl font-bold mt-1 relative">' + esc(first) + ' thuộc nhóm ' + esc(HOLLAND[top].n) + '</h2>' +
+        '<p class="text-blue-50 text-sm mt-2 max-w-xl relative">Người thuộc nhóm này thường ' + esc(HOLLAND[top].d) + '.</p>' +
+        '<span class="inline-flex mt-4 px-3 py-1 rounded-full bg-white/15 ring-1 ring-white/25 text-xs font-bold relative">Mã Holland của bạn: ' + esc(d.holland_code || order.slice(0, 3).join('')) + '</span>' +
+      '</div>' +
+      '<div class="px-6 sm:px-8 py-6 grid sm:grid-cols-2 gap-x-8 gap-y-3">' + order.map(function (k) {
+        return '<div><div class="flex justify-between text-xs mb-1"><span class="font-semibold text-slate-700">' + k + ' · ' + esc(HOLLAND[k].n) + '</span>' +
+          '<span class="text-slate-400">' + scores[k] + '/6</span></div><div class="bar"><i data-w="' + (scores[k] / max * 100) + '" style="background:' + HOLLAND[k].c + '"></i></div></div>';
+      }).join('') + '</div></div>';
+
+    if (isAI && d.tong_quan) {
+      html += '<div class="fade-in rounded-3xl bg-white border border-slate-200 p-6 sm:p-7 flex gap-4">' +
+        '<span class="shrink-0 w-11 h-11 rounded-2xl bg-blue-50 text-[#0072BC] grid place-items-center"><span class="material-symbols-outlined">psychology</span></span>' +
+        '<div><h3 class="font-heading font-bold text-slate-900">Nhận xét về bạn</h3><p class="text-sm text-slate-600 leading-relaxed mt-1.5">' + esc(d.tong_quan) + '</p></div></div>';
+    } else if (!isAI) {
+      html += '<div class="fade-in rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 flex gap-3">' +
+        '<span class="material-symbols-outlined text-[20px]">info</span><span>Trợ lý AI đang bận nên các gợi ý dưới đây được lấy theo kết quả trắc nghiệm tính cách. Bạn có thể thử lại sau ít phút để nhận phân tích chi tiết hơn.</span></div>';
+    }
+
+    html += '<div class="fade-in"><div class="flex items-end justify-between mb-3 px-1"><h3 class="font-heading text-xl font-bold text-slate-900">' +
+      (isAI ? majors.length + ' ngành phù hợp nhất với bạn' : 'Các ngành gợi ý') + '</h3><span class="text-xs text-slate-400 hidden sm:inline">Xếp theo mức độ phù hợp</span></div><div class="space-y-4">';
+    majors.forEach(function (m, i) {
+      var pct = m.phu_hop != null && m.phu_hop !== '' ? Math.round(m.phu_hop) : null, tone = chanceTone(m.kha_nang);
+      var score = m.diem && m.diem !== '—' ? m.diem : null;
+      html += '<article class="rounded-3xl bg-white border ' + (i === 0 ? 'border-[#0072BC]/40 ring-4 ring-[#0072BC]/5' : 'border-slate-200') + ' p-5 sm:p-6 hover:shadow-lg transition">' +
+        '<div class="flex gap-4 items-center">' +
+          (pct != null ? '<div class="ring" style="--p:' + pct + ';--c:' + ringColors[i % 5] + '"><span>' + pct + '%</span></div>'
+                       : '<div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#0072BC] grid place-items-center font-heading font-bold shrink-0">#' + (i + 1) + '</div>') +
+          '<div class="flex-1 min-w-0">' +
+            '<div class="flex flex-wrap items-center gap-2">' + (i === 0 ? '<span class="px-2 py-0.5 rounded-full bg-[#F37021] text-white text-[10px] font-bold uppercase">Phù hợp nhất</span>' : '') +
+              '<span class="text-[11px] font-semibold text-slate-400">Mã ' + esc(m.ma) + (m.khoa ? ' · ' + esc(m.khoa) : '') + '</span></div>' +
+            '<h4 class="font-heading text-base sm:text-lg font-bold text-slate-900 mt-1 leading-snug">' + esc(m.ten) + '</h4>' +
+          '</div></div>' +
+        (m.ly_do ? '<p class="text-sm text-slate-600 leading-relaxed mt-4">' + esc(m.ly_do) + '</p>' : '') +
+        '<div class="flex flex-wrap gap-2 mt-4">' +
+          (score ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold"><span class="material-symbols-outlined text-[15px]">leaderboard</span>Điểm chuẩn' + (m.nam_diem ? ' ' + esc(m.nam_diem) : '') + ': ' + esc(score) + (m.phuong_thuc_diem ? ' (' + esc(m.phuong_thuc_diem) + ')' : '') + '</span>' : '') +
+          (m.to_hop ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold"><span class="material-symbols-outlined text-[15px]">menu_book</span>' + esc(m.to_hop) + '</span>' : '') +
+        '</div>' +
+        (m.kha_nang ? '<div class="mt-3 px-3.5 py-2.5 rounded-2xl border text-xs leading-relaxed flex gap-2 ' + tone[0] + '"><span class="material-symbols-outlined text-[16px]">' + tone[1] + '</span><span>' + esc(m.kha_nang) + '</span></div>' : '') +
+        '<div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap gap-2 no-print">' +
+          '<button type="button" data-ask="' + esc(m.ten) + '" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 text-[#0072BC] text-xs font-bold hover:bg-blue-100 transition"><span class="material-symbols-outlined text-[16px]">chat</span>Hỏi thêm về ngành này</button>' +
+        '</div></article>';
+    });
+    html += '</div></div>';
+
+    if (isAI && d.loi_khuyen) {
+      html += '<div class="fade-in rounded-3xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 p-6 sm:p-7 flex gap-4">' +
+        '<span class="shrink-0 w-11 h-11 rounded-2xl bg-[#F37021] text-white grid place-items-center"><span class="material-symbols-outlined">tips_and_updates</span></span>' +
+        '<div><h3 class="font-heading font-bold text-slate-900">Lời khuyên chọn nguyện vọng</h3><p class="text-sm text-slate-700 leading-relaxed mt-1.5">' + esc(d.loi_khuyen) + '</p></div></div>';
+    }
+
+    html += '<div class="fade-in flex flex-wrap gap-3 no-print">' +
+      '<button type="button" id="btnRestart" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50"><span class="material-symbols-outlined text-[18px]">restart_alt</span>Làm lại từ đầu</button>' +
+      '<button type="button" id="btnEdit" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50"><span class="material-symbols-outlined text-[18px]">edit</span>Sửa câu trả lời</button>' +
+      '<button type="button" id="btnPrint" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50"><span class="material-symbols-outlined text-[18px]">print</span>In / Lưu PDF</button>' +
+      '<a href="tel:02363836169" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#00A859] text-white text-sm font-bold hover:opacity-95"><span class="material-symbols-outlined text-[18px]">support_agent</span>Gọi cán bộ tư vấn</a>' +
+    '</div><p class="text-xs text-slate-400 px-1">Kết quả mang tính tham khảo. Hồ sơ của bạn đã được lưu để cán bộ tuyển sinh DUE hỗ trợ thêm khi cần.</p>';
+
+    var box = $('result');
+    box.innerHTML = html;
+    $('loading').hidden = true; box.hidden = false;
+    window.scrollTo({ top: box.getBoundingClientRect().top + window.scrollY - 170, behavior: 'smooth' });
+    setTimeout(function () { box.querySelectorAll('.bar > i').forEach(function (b) { b.style.width = b.dataset.w + '%'; }); }, 150);
+
+    box.querySelectorAll('[data-ask]').forEach(function (b) {
+      b.addEventListener('click', function () { askChat('Cho em hỏi thêm về ngành ' + b.dataset.ask + ': học những gì, ra trường làm gì và học phí bao nhiêu?'); });
+    });
+    $('btnRestart').addEventListener('click', function () { sDel('due_advisory_draft'); window.location.reload(); });
+    $('btnEdit').addEventListener('click', function () { box.hidden = true; $('wizard').hidden = false; go(0); });
+    $('btnPrint').addEventListener('click', function () { window.print(); });
+  }
+
+  function askChat(q) {
+    var t = $('dcToggle'), input = $('dcInput'), f = $('dcForm');
+    if (!t || !input || !f) { window.location.href = '/chatbot/'; return; }
+    if (t.getAttribute('aria-expanded') !== 'true') t.click();
+    setTimeout(function () {
+      input.value = q;
+      if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event('submit', { cancelable: true }));
+    }, 300);
+  }
+
+  go(0);
+})();
+</script>
 {% endblock %}
