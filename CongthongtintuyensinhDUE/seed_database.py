@@ -13,7 +13,7 @@ print("--- SEEDING BACKEND DATABASE ---")
 loai_hinh_list = [
     {
         'ma_loai_hinh': 'toan_phan',
-        'ten_loai_hinh': 'Toàn phần Tiếng Anh (DUE-Elite & DUE-Global)',
+        'ten_loai_hinh': 'Toàn phần Tiếng Anh (DUE-Elite và DUE-Global)',
         'mo_ta': '100% các học phần chuyên môn được giảng dạy hoàn toàn bằng tiếng Anh. Giáo trình chuẩn quốc tế cập nhật từ các đại học hàng đầu thế giới.',
         'ngon_ngu': '100% Tiếng Anh',
         'thoi_gian_dao_tao': '4 năm (8 học kỳ)',
@@ -63,7 +63,7 @@ pt_list = [
     },
     {
         'ma_phuong_thuc': 'PT2',
-        'ten_phuong_thuc': 'Xét tuyển kết hợp Năng lực Tiếng Anh & Thành tích học bạ THPT',
+        'ten_phuong_thuc': 'Xét tuyển kết hợp Năng lực Tiếng Anh và thành tích học bạ THPT',
         'doi_tuong_ap_dung': 'Thí sinh có chứng chỉ IELTS >= 5.5, TOEFL iBT >= 46, VSTEP Bậc 4 hoặc đạt giải HSG cấp Tỉnh/Thành phố kết hợp điểm học bạ 3 năm THPT.',
         'chuong_trinh_ap_dung': 'Chương trình Toàn phần và Bán phần Tiếng Anh',
         'nguyen_tac_xet': 'Điểm xét tuyển = Điểm quy đổi Tiếng Anh + Tổng điểm TBM 3 môn tổ hợp + Điểm ưu tiên.',
@@ -257,7 +257,7 @@ tin_tuc_data = [
         'noi_bat': True
     },
     {
-        'tieu_de': 'Chuỗi Workshop Định hướng nghề nghiệp & Khám phá ngành học cùng giảng viên DUE',
+        'tieu_de': 'Chuỗi Workshop Định hướng nghề nghiệp và khám phá ngành học cùng giảng viên DUE',
         'slug': 'workshop-dinh-huong-nghe-nghiep-2026',
         'the_loai': 'workshop',
         'hinh_anh': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80',

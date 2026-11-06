@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}Khoa Đào Tạo & Đơn Vị Chuyên Môn - Trường Đại học Kinh tế (DUE) 2026{% endblock %}
+{% block title %}Khoa Đào Tạo và đơn Vị Chuyên Môn - Trường Đại học Kinh tế (DUE) 2026{% endblock %}
 
 {% block nav_khoa %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
 
@@ -17,29 +17,25 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
 
-    <!-- Breadcrumb & Header Hero -->
+    <!-- Breadcrumb và header Hero -->
     <div class="mb-10">
       <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
         <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
         <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-        <span class="text-secondary-container font-semibold">Khoa &amp; Phòng ban</span>
+        <span class="text-secondary-container font-semibold">Khoa và phòng ban</span>
       </nav>
       
       <div class="bg-gradient-to-r from-[#001e40] via-[#003366] to-[#004b73] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
         <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
         <div class="relative z-10 max-w-3xl">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 text-white text-xs font-semibold mb-4 backdrop-blur-sm border border-white/15">
-            <span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span>
-            Cơ cấu Đào tạo Tuyển sinh Đại học Khóa 50K - Năm 2026
-          </div>
           <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-headline-lg tracking-tight mb-3">
-            Hệ Thống Khoa &amp; Viện Đào Tạo DUE
+            Hệ Thống Khoa và viện Đào Tạo DUE
           </h1>
           <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6">
-            Khám phá <strong>8 Khoa chuyên môn và Viện Đào tạo Quốc tế</strong> với 39 ngành &amp; chuyên ngành đào tạo đạt chuẩn quốc tế AUN-QA. Bấm vào từng khoa để khám phá <strong>chương trình đào tạo chi tiết, học vị, cơ hội nghề nghiệp và liên hệ trực tiếp với Thầy/Cô tư vấn</strong>.
+            Khám phá <strong>8 Khoa chuyên môn và Viện Đào tạo Quốc tế</strong> với 39 ngành và chuyên ngành đào tạo đạt chuẩn quốc tế AUN-QA. Bấm vào từng khoa để khám phá <strong>chương trình đào tạo chi tiết, học vị, cơ hội nghề nghiệp và liên hệ trực tiếp với Thầy/Cô tư vấn</strong>.
           </p>
           <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium">
             <a href="https://www.facebook.com/FaceDue" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-[#1877F2] hover:bg-[#166fe5] text-white px-4 py-2.5 rounded-full shadow-md transition-all">
@@ -57,7 +53,7 @@
       </div>
     </div>
 
-    <!-- Thanh tìm kiếm & Lọc nhanh theo Khối ngành -->
+    <!-- Thanh tìm kiếm và lọc nhanh theo Khối ngành -->
     <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
       <!-- Search Input -->
       <div class="relative w-full md:w-80">
@@ -76,16 +72,16 @@
           Tất cả ({{ faculty_count }})
         </button>
         <button class="filter-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-filter="kinh-te-tai-chinh">
-          Tài chính &amp; Kinh tế
+          Tài chính và kinh tế
         </button>
         <button class="filter-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-filter="quan-tri-du-lich">
-          Quản trị &amp; Du lịch
+          Quản trị và du lịch
         </button>
         <button class="filter-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-filter="cong-nghe-so">
-          Công nghệ số &amp; TMĐT
+          Công nghệ số và TMĐT
         </button>
         <button class="filter-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-filter="luat-ly-luan">
-          Luật &amp; Lý luận
+          Luật và lý luận
         </button>
         <button class="filter-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-filter="quoc-te">
           Quốc tế
@@ -95,7 +91,7 @@
 
 
     <!-- ====================================================
-         DANH SÁCH 9 KHOA & VIỆN ĐÀO TẠO NĂM 2026
+         DANH SÁCH 9 KHOA và VIỆN ĐÀO TẠO NĂM 2026
          (Mỗi thẻ chuyển thẳng sang trang riêng /khoa/<id>/)
          ==================================================== -->
     <div class="mb-20">
@@ -212,7 +208,7 @@
 
 
     <!-- ====================================================
-         HỆ THỐNG PHÒNG BAN CHỨC NĂNG & TRUNG TÂM HỖ TRỢ
+         HỆ THỐNG PHÒNG BAN CHỨC NĂNG và TRUNG TÂM HỖ TRỢ
          ==================================================== -->
     <section class="pt-16 border-t border-slate-200">
       <div class="text-center max-w-3xl mx-auto mb-12">
@@ -221,19 +217,19 @@
           Hỗ trợ sinh viên 24/7
         </div>
         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-headline-lg tracking-tight mb-3">
-          Phòng Ban Chức Năng &amp; Trung Tâm DUE
+          Phòng Ban Chức Năng và trung Tâm DUE
         </h2>
         <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
           Đội ngũ các phòng ban chuyên trách luôn sẵn sàng hỗ trợ tân sinh viên và sinh viên về học vụ, học phí, học bổng, cơ sở vật chất, hoạt động phong trào và việc làm.
         </p>
       </div>
 
-      <!-- Grid 9 Phòng Ban Chức Năng & Trung Tâm -->
+      <!-- Grid 9 Phòng Ban Chức Năng và trung Tâm -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {% for pb in phongban_list %}
         <div class="p-6 rounded-3xl bg-white border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
           <div>
-            <!-- Header Badge & Icon -->
+            <!-- Header Badge và icon -->
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md {{ pb.color|default:'bg-[#003366]' }} group-hover:scale-105 transition-transform">
                 <span class="material-symbols-outlined text-[24px]">{{ pb.icon|default:'apartment' }}</span>
@@ -243,7 +239,7 @@
               </span>
             </div>
 
-            <!-- Name & Tagline -->
+            <!-- Name và tagline -->
             <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#003366] transition-colors mb-1.5 leading-snug">
               {{ pb.name }}
             </h3>

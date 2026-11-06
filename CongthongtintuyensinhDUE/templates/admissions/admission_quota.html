@@ -16,7 +16,7 @@
 
 {% block content %}
 <!-- Main Content -->
-  <main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+  <main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
     <!-- Top Glows -->
     <div class="relative w-full overflow-hidden">
       <div class="absolute -top-40 right-1/4 w-[550px] h-[550px] rounded-full bg-secondary-container/10 blur-[130px] pointer-events-none"></div>
@@ -39,17 +39,12 @@
           <div class="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"></div>
           
           <div class="relative z-10 max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-semibold tracking-wide mb-5">
-              <span class="flex h-2 w-2 rounded-full bg-secondary-container animate-pulse"></span>
-              Đề Án Tuyển Sinh Đại Học Chính Quy Năm 2026
-            </div>
-            
             <h1 class="font-display-hero text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-white mb-4">
               Chỉ Tiêu Các Chương Trình <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-200">Năm 2026</span>
             </h1>
             
             <p class="font-body-md text-base sm:text-lg text-slate-200 leading-relaxed mb-6">
-              Trường Đại học Kinh tế – Đại học Đà Nẵng (DUE) công bố chỉ tiêu tuyển sinh cho <strong>37 chương trình &amp; chuyên ngành đào tạo</strong> thuộc 3 loại hình đào tạo chính quy cùng chương trình Cử nhân liên kết quốc tế.
+              Trường Đại học Kinh tế – Đại học Đà Nẵng (DUE) công bố chỉ tiêu tuyển sinh cho <strong>37 chương trình và chuyên ngành đào tạo</strong> thuộc 3 loại hình đào tạo chính quy cùng chương trình Cử nhân liên kết quốc tế.
             </p>
 
             <!-- KPI Summary Cards -->
@@ -62,17 +57,14 @@
               <div>
                 <p class="text-xs text-slate-300 uppercase font-medium">Toàn phần Tiếng Anh</p>
                 <p class="text-2xl sm:text-3xl font-bold text-white font-display-hero">360</p>
-                <p class="text-[11px] text-slate-300">Elite &amp; Global (4 CT)</p>
               </div>
               <div>
                 <p class="text-xs text-slate-300 uppercase font-medium">Bán phần Tiếng Anh</p>
                 <p class="text-2xl sm:text-3xl font-bold text-white font-display-hero">1.240</p>
-                <p class="text-[11px] text-slate-300">Professional (13 CT)</p>
               </div>
               <div>
                 <p class="text-xs text-slate-300 uppercase font-medium">Chương trình Tiêu chuẩn</p>
                 <p class="text-2xl sm:text-3xl font-bold text-secondary-container font-display-hero">1.985</p>
-                <p class="text-[11px] text-slate-300">Standard (19 ngành)</p>
               </div>
             </div>
           </div>
@@ -82,7 +74,7 @@
       <!-- BỘ LỌC CHƯƠNG TRÌNH VÀ TÌM KIẾM -->
       <section class="max-w-7xl mx-auto px-6 lg:px-12 py-6">
         <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 shadow-sm border border-outline-variant/40 space-y-4">
-          <!-- Hàng trên: Nhãn bộ lọc & Ô tìm kiếm -->
+          <!-- Hàng trên: Nhãn bộ lọc và ô tìm kiếm -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-primary-container text-xl">filter_alt</span>
@@ -142,7 +134,7 @@
                 <tr class="bg-primary text-white text-xs uppercase font-bold tracking-wider">
                   <th class="p-3.5 w-12 text-center">STT</th>
                   <th class="p-3.5 min-w-[130px] text-center">Mã xét tuyển</th>
-                  <th class="p-3.5 min-w-[320px]">Tên ngành - Chương trình &amp; Chuyên ngành</th>
+                  <th class="p-3.5 min-w-[320px]">Tên ngành - Chương trình và chuyên ngành</th>
                   <th class="p-3.5 min-w-[160px] text-center bg-[#002a54] text-slate-200">Phương thức áp dụng</th>
                   <th class="p-3.5 min-w-[120px] text-center bg-secondary-container text-white">Chỉ tiêu</th>
                 </tr>
@@ -153,7 +145,7 @@
                 <tr class="group-header bg-purple-50/80 font-bold text-purple-950 border-t-2 border-purple-200" data-cat="toan-phan">
                   <td class="p-3 text-center font-bold text-purple-700"><span class="material-symbols-outlined text-[18px]">language</span></td>
                   <td colspan="3" class="p-3 uppercase text-xs tracking-wider">
-                    LOẠI HÌNH ĐÀO TẠO TOÀN PHẦN TIẾNG ANH (DUE-Elite &amp; DUE-Global)
+                    LOẠI HÌNH ĐÀO TẠO TOÀN PHẦN TIẾNG ANH (DUE-Elite và DUE-Global)
                   </td>
                   <td class="p-3 text-center text-purple-900 font-bold">360</td>
                 </tr>
@@ -638,7 +630,7 @@
           <div class="mt-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-700 space-y-2">
             <p><strong>Ghi chú về Phương thức xét tuyển:</strong></p>
             <ul class="list-disc list-inside space-y-1 text-slate-600">
-              <li><strong>PT 1:</strong> Xét tuyển thẳng theo Quy chế của Bộ GD&ĐT &amp; Đề án trường.</li>
+              <li><strong>PT 1:</strong> Xét tuyển thẳng theo Quy chế của Bộ GD&ĐT và đề án trường.</li>
               <li><strong>PT 2:</strong> Xét tuyển kết hợp giữa năng lực tiếng Anh (IELTS, TOEFL, VSTEP) và học bạ THPT 3 năm.</li>
               <li><strong>PT 3:</strong> Xét tuyển dựa trên kết quả thi tốt nghiệp THPT năm 2026.</li>
               <li><strong>PT 4:</strong> Xét tuyển dựa trên kết quả kỳ thi Đánh giá năng lực của ĐHQG TP. Hồ Chí Minh năm 2026.</li>

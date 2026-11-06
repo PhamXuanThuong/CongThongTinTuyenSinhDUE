@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
     <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
 
       <!-- Breadcrumbs -->
@@ -27,18 +27,14 @@
         <span class="text-secondary-container font-semibold">Học phí tuyển sinh 2026</span>
       </nav>
 
-      <!-- Banner Tiêu đề & Giới thiệu ngắn -->
+      <!-- Banner Tiêu đề và giới thiệu ngắn -->
       <div class="relative bg-gradient-to-br from-primary-container via-[#004080] to-[#00274d] rounded-3xl p-8 sm:p-12 text-white shadow-xl overflow-hidden mb-12">
         <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-sky-400/10 blur-3xl pointer-events-none"></div>
         <div class="absolute right-10 top-10 w-48 h-48 rounded-full bg-orange-400/10 blur-2xl pointer-events-none"></div>
 
         <div class="relative z-10 max-w-3xl">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sky-200 text-xs font-semibold uppercase tracking-wider mb-4">
-            <span class="material-symbols-outlined text-[16px] text-sky-300">payments</span>
-            Học phí công khai & minh bạch
-          </div>
           <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 leading-tight">
-            Chính Sách & Khung Học Phí Đại Học Chính Quy Khóa 2026
+            Chính Sách và khung Học Phí Đại Học Chính Quy Khóa 2026
           </h1>
           <p class="text-sky-100/90 text-sm sm:text-base leading-relaxed">
             Trường Đại học Kinh tế - Đại học Đà Nẵng áp dụng chính sách học phí ổn định, lộ trình tăng hợp lý theo đúng quy định của Chính phủ, đi kèm quỹ học bổng và hỗ trợ tài chính toàn diện dành cho sinh viên.
@@ -194,13 +190,13 @@
       <!-- 3 CỘT: CHÍNH SÁCH HỌC BỔNG - MIỄN GIẢM - PHƯƠNG THỨC NỘP -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         
-        <!-- Cột 1: Học bổng Tuyển sinh & Khuyến khích -->
+        <!-- Cột 1: Học bổng Tuyển sinh và khuyến khích -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div>
             <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
               <span class="material-symbols-outlined text-[28px]">military_tech</span>
             </div>
-            <h3 class="font-bold text-slate-900 text-lg mb-2">Học bổng & Tài trợ</h3>
+            <h3 class="font-bold text-slate-900 text-lg mb-2">Học bổng và tài trợ</h3>
             <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-4">
               Nhà trường dành hàng chục tỷ đồng mỗi năm cho quỹ học bổng:
             </p>
@@ -215,7 +211,7 @@
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-amber-500 font-bold">✓</span>
-                <span><strong>Học bổng Doanh nghiệp & Cựu sinh viên:</strong> Trao tặng hàng trăm suất hàng năm.</span>
+                <span><strong>Học bổng Doanh nghiệp và cựu sinh viên:</strong> Trao tặng hàng trăm suất hàng năm.</span>
               </li>
             </ul>
           </div>
@@ -224,13 +220,13 @@
           </div>
         </div>
 
-        <!-- Cột 2: Miễn giảm & Hỗ trợ vay vốn -->
+        <!-- Cột 2: Miễn giảm và hỗ trợ vay vốn -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
           <div>
             <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
               <span class="material-symbols-outlined text-[28px]">volunteer_activism</span>
             </div>
-            <h3 class="font-bold text-slate-900 text-lg mb-2">Chính sách Miễn giảm & Vay vốn</h3>
+            <h3 class="font-bold text-slate-900 text-lg mb-2">Chính sách Miễn giảm và vay vốn</h3>
             <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-4">
               Hỗ trợ tối đa cho sinh viên có hoàn cảnh khó khăn:
             </p>
@@ -348,7 +344,7 @@
 
   <!-- SCRIPT TÍNH TOÁN HỌC PHÍ DỰ KIẾN TỰ ĐỘNG -->
   <script>
-    const tuitionData = {{ tuition_rates_json|safe }};
+    const tuitionData = JSON.parse('{{ tuition_rates_json|escapejs }}');
 
     const calcProgram = document.getElementById('calcProgram');
     const calcYear = document.getElementById('calcYear');

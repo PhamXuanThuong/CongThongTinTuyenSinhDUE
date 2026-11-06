@@ -26,6 +26,11 @@ venv.bak/
 # Allow database to deploy to Vercel
 !CongthongtintuyensinhDUE/# db.sqlite3-journal
 # db.sqlite3.bak
+# SQLite temporary files and backups
+*.sqlite3-shm
+*.sqlite3-wal
+*.sqlite3.bak
+*.bak
 # ==========================================
 # Python bytecode & cache
 # ==========================================

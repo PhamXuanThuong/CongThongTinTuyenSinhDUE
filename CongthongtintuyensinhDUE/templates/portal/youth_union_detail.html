@@ -21,10 +21,10 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
 
   <!-- ====================================================
-       1. BREADCRUMB & HERO BANNER LIÊN CHI ĐOÀN
+       1. BREADCRUMB và HERO BANNER LIÊN CHI ĐOÀN
        ==================================================== -->
   <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4 mb-4">
     
@@ -32,7 +32,7 @@
     <nav class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
       <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa &amp; Viện Đào Tạo</a>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa và viện Đào Tạo</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
       <a href="/khoa/{{ faculty.id }}/" class="hover:text-primary-container transition-colors">{{ faculty.name }}</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
@@ -88,7 +88,7 @@
           </div>
         </div>
 
-        <!-- Hero Bottom Action Buttons & Key Figures -->
+        <!-- Hero Bottom Action Buttons và key Figures -->
         <div class="pt-6 border-t border-white/15 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <!-- Action Buttons -->
           <div class="flex flex-wrap items-center gap-3">
@@ -148,7 +148,7 @@
       <!-- CỘT TRÁI (8 Cột): TOÀN BỘ NỘI DUNG CHUYÊN SÂU VỀ LIÊN CHI ĐOÀN -->
       <div class="lg:col-span-8 space-y-8">
 
-        <!-- MỤC 1: TỔNG QUAN & SỨ MỆNH PHONG TRÀO -->
+        <!-- MỤC 1: TỔNG QUAN và SỨ MỆNH PHONG TRÀO -->
         <section class="lcd-glass-card p-6 sm:p-8">
           <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
@@ -156,7 +156,7 @@
             </div>
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Tổng quan tổ chức Đoàn</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Sứ Mệnh &amp; Tôn Chỉ Phong Trào</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Sứ Mệnh và tôn Chỉ Phong Trào</h2>
             </div>
           </div>
 
@@ -172,7 +172,7 @@
             <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-100">
               <div class="flex items-center gap-2 text-rose-900 font-bold text-sm mb-1.5">
                 <span class="material-symbols-outlined text-[20px] text-rose-600">school</span>
-                <span>Học thuật &amp; NCKH</span>
+                <span>Học thuật và NCKH</span>
               </div>
               <p class="text-xs text-slate-600 leading-relaxed">
                 Đẩy mạnh các cuộc thi học thuật chuyên ngành, câu lạc bộ học tập và phong trào NCKH trong sinh viên.
@@ -216,7 +216,7 @@
             </div>
           </div>
 
-          <!-- Cặp Lãnh đạo chủ chốt: Bí thư & Phó bí thư -->
+          <!-- Cặp Lãnh đạo chủ chốt: Bí thư và phó bí thư -->
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             
             <!-- Bí thư LCĐ -->
@@ -228,7 +228,7 @@
               <h3 class="font-bold text-slate-900 text-base leading-snug">
                 {{ lcd.secretary|default:"Đang cập nhật" }}
               </h3>
-              <p class="text-xs text-slate-500 mt-1">Phụ trách chung công tác Đoàn &amp; Phong trào thanh niên</p>
+              <p class="text-xs text-slate-500 mt-1">Phụ trách chung công tác Đoàn và phong trào thanh niên</p>
             </div>
 
             <!-- Các Phó Bí thư LCĐ -->
@@ -277,7 +277,7 @@
         </section>
 
 
-        <!-- MỤC 3: THÀNH TÍCH & BẰNG KHEN NỔI BẬT -->
+        <!-- MỤC 3: THÀNH TÍCH và BẰNG KHEN NỔI BẬT -->
         {% if lcd.achievements %}
         <section class="lcd-glass-card p-6 sm:p-8">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
@@ -286,7 +286,7 @@
             </div>
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Dấu ấn thi đua</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Thành Tích &amp; Khen Thưởng Tiêu Biểu</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Thành Tích và khen Thưởng Tiêu Biểu</h2>
             </div>
           </div>
 
@@ -298,7 +298,7 @@
               </div>
               <div>
                 <p class="text-xs sm:text-sm font-semibold text-amber-950 leading-relaxed">{{ ach }}</p>
-                <span class="text-[11px] text-amber-700 font-medium">Bằng khen &amp; Giấy khen thành tích xuất sắc</span>
+                <span class="text-[11px] text-amber-700 font-medium">Bằng khen và giấy khen thành tích xuất sắc</span>
               </div>
             </div>
             {% endfor %}
@@ -307,7 +307,7 @@
         {% endif %}
 
 
-        <!-- MỤC 4: CÁC HOẠT ĐỘNG TIÊU BIỂU & PHONG TRÀO THƯỜNG NIÊN -->
+        <!-- MỤC 4: CÁC HOẠT ĐỘNG TIÊU BIỂU và PHONG TRÀO THƯỜNG NIÊN -->
         <section id="hoat-dong" class="lcd-glass-card p-6 sm:p-8 scroll-mt-36">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
             <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
@@ -315,7 +315,7 @@
             </div>
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Đời sống thanh niên sôi nổi</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Chuỗi Hoạt Động &amp; Sự Kiện Thường Niên</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Chuỗi Hoạt Động và sự Kiện Thường Niên</h2>
             </div>
           </div>
 
@@ -384,7 +384,7 @@
         {% endif %}
 
 
-        <!-- MỤC 6: CÂU LẠC BỘ & ĐỘI NHÓM TRỰC THUỘC KHOA -->
+        <!-- MỤC 6: CÂU LẠC BỘ và ĐỘI NHÓM TRỰC THUỘC KHOA -->
         {% if faculty_clubs %}
         <section class="lcd-glass-card p-6 sm:p-8">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
@@ -393,7 +393,7 @@
             </div>
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-blue-700">Môi trường rèn luyện thực chiến</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Câu Lạc Bộ &amp; Đội Nhóm Sinh Viên Trực Thuộc</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Câu Lạc Bộ và đội Nhóm Sinh Viên Trực Thuộc</h2>
             </div>
           </div>
 
@@ -431,7 +431,7 @@
       </div>
 
 
-      <!-- CỘT PHẢI (4 Cột): SIDEBAR THÔNG TIN LIÊN HỆ, KHOA & QUICK SWITCHER -->
+      <!-- CỘT PHẢI (4 Cột): SIDEBAR THÔNG TIN LIÊN HỆ, KHOA và QUICK SWITCHER -->
       <div class="lg:col-span-4 space-y-6">
 
         <!-- CARD 1: KẾT NỐI MẠNG XÃ HỘI VỚI LIÊN CHI ĐOÀN -->

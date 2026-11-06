@@ -34,7 +34,7 @@ def build_dataset():
     })
     current_id += 1
 
-    # 2. CÁC KHOA ĐÀO TẠO & PHÒNG BAN CHỨC NĂNG (TỔNG QUAN)
+    # 2. CÁC KHOA ĐÀO TẠO và PHÒNG BAN CHỨC NĂNG (TỔNG QUAN)
     departments = KhoaPhongBan.objects.all().prefetch_related('majors').order_by('category', 'order', 'id')
     for d in departments:
         category_name = "Khoa Đào Tạo" if d.category == 'khoa' else "Phòng Ban Chức Năng / Trung Tâm"
@@ -70,7 +70,7 @@ def build_dataset():
     for m in majors:
         khoa = m.khoa
         is_faculty = (khoa.category == 'khoa')
-        loai_tt = "Chuyên ngành Đào tạo" if is_faculty else "Hoạt động & Dịch vụ Đơn vị"
+        loai_tt = "Chuyên ngành Đào tạo" if is_faculty else "Hoạt động và dịch vụ Đơn vị"
 
         record_desc = (
             f"Chuyên ngành/định hướng '{m.name}' trực thuộc {khoa.name}. "
@@ -128,7 +128,7 @@ def build_dataset():
             "id": f"KB-HOCPHI-{current_id:03d}",
             "loai_thong_tin": "Bảng Học Phí Chương Trình Đào Tạo",
             "ten_chu_de": f"Học phí chương trình {t.nhom}",
-            "khoa_don_vi_quan_ly": "Phòng Kế hoạch - Tài chính & Ban Tuyển sinh DUE",
+            "khoa_don_vi_quan_ly": "Phòng Kế hoạch - Tài chính và ban Tuyển sinh DUE",
             "ma_dinh_danh_hoac_ma_nganh": t.slug,
             "khau_hieu_dinh_huong": "Công khai, minh bạch theo lộ trình toàn khóa",
             "mo_ta_tong_quan": f"Mức học phí áp dụng cho sinh viên trúng tuyển khóa tuyển sinh năm 2026 đối với chương trình: {t.nhom}. Mức học phí được quy định cụ thể từng năm theo quy định cơ sở giáo dục tự chủ của Chính phủ.",
@@ -160,7 +160,7 @@ def build_dataset():
             "faq_prompts": "Học bổng khuyến khích học tập DUE tính thế nào? Điểm bao nhiêu được học bổng ở DUE? Học bổng xuất sắc được bao nhiêu tiền?"
         },
         {
-            "ten": "Chính sách Học bổng Doanh nghiệp & Cựu sinh viên tài trợ",
+            "ten": "Chính sách Học bổng Doanh nghiệp và cựu sinh viên tài trợ",
             "dinh_huong": "Kết nối doanh nghiệp - Đồng hành cùng thế hệ trẻ",
             "mo_ta": "Hàng trăm suất học bổng tài trợ thường niên từ các ngân hàng (Vietcombank, BIDV, Agribank), các tập đoàn đa quốc gia, công ty kiểm toán Big 4, và mạng lưới cựu sinh viên DUE thành đạt.",
             "chi_tiet": "Mức học bổng từ 5.000.000 VNĐ đến 20.000.000 VNĐ/suất hoặc tài trợ toàn phần khóa học tiếng Anh, tin học quốc tế và cơ hội thực tập, tuyển dụng trực tiếp.",
@@ -192,9 +192,9 @@ def build_dataset():
     for p in scholarship_policies:
         records.append({
             "id": f"KB-CHINHSACH-{current_id:03d}",
-            "loai_thong_tin": "Chính Sách Học Bổng & Hỗ Trợ Sinh Viên",
+            "loai_thong_tin": "Chính Sách Học Bổng và hỗ Trợ Sinh Viên",
             "ten_chu_de": p["ten"],
-            "khoa_don_vi_quan_ly": "Phòng Công tác sinh viên & Phòng Kế hoạch - Tài chính",
+            "khoa_don_vi_quan_ly": "Phòng Công tác sinh viên và phòng Kế hoạch - Tài chính",
             "ma_dinh_danh_hoac_ma_nganh": "chinh-sach-ho-tro",
             "khau_hieu_dinh_huong": p["dinh_huong"],
             "mo_ta_tong_quan": p["mo_ta"],
@@ -209,7 +209,7 @@ def build_dataset():
         })
         current_id += 1
 
-    # 6. HƯỚNG DẪN ĐÓNG HỌC PHÍ & PHƯƠNG THỨC THANH TOÁN
+    # 6. HƯỚNG DẪN ĐÓNG HỌC PHÍ và PHƯƠNG THỨC THANH TOÁN
     payment_methods = [
         {
             "ten": "Quy định Đóng học phí theo Học kỳ và Tín chỉ",
@@ -240,7 +240,7 @@ def build_dataset():
     for pm in payment_methods:
         records.append({
             "id": f"KB-THANHTOAN-{current_id:03d}",
-            "loai_thong_tin": "Phương Thức Nộp Học Phí & Kế Toán",
+            "loai_thong_tin": "Phương Thức Nộp Học Phí và kế Toán",
             "ten_chu_de": pm["ten"],
             "khoa_don_vi_quan_ly": "Phòng Kế hoạch - Tài chính",
             "ma_dinh_danh_hoac_ma_nganh": "thanh-toan-hoc-phi",
@@ -264,9 +264,9 @@ def build_dataset():
             "id": f"KB-FAQ-{current_id:03d}",
             "loai_thong_tin": "Câu Hỏi Thường Gặp (FAQ)",
             "ten_chu_de": f.question,
-            "khoa_don_vi_quan_ly": "Ban Tư vấn Tuyển sinh & Hỗ trợ sinh viên DUE",
+            "khoa_don_vi_quan_ly": "Ban Tư vấn Tuyển sinh và hỗ trợ sinh viên DUE",
             "ma_dinh_danh_hoac_ma_nganh": "faq-tuyen-sinh",
-            "khau_hieu_dinh_huong": "Giải đáp thắc mắc tuyển sinh & học phí 24/7",
+            "khau_hieu_dinh_huong": "Giải đáp thắc mắc tuyển sinh và học phí 24/7",
             "mo_ta_tong_quan": f"Câu hỏi giải đáp: {f.question}",
             "cac_chuyen_nganh_dao_tao": "Áp dụng cho mọi thí sinh và tân sinh viên.",
             "co_hoi_nghe_nghiep_chuc_nang": "Giải tỏa băn khoăn cho phụ huynh và học sinh chuẩn bị xét tuyển vào DUE.",

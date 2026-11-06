@@ -90,7 +90,7 @@ def club_detail_view(request: HttpRequest, club_id: str) -> HttpResponse:
     clubs = selectors.get_clubs()
     club = selectors.get_club_by_id(club_id)
     if not club:
-        return redirect('clb')
+        return redirect('portal:clb')
 
     related = [
         c for c in clubs

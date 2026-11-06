@@ -5,7 +5,7 @@ from django.conf import settings
 
 FACULTY_NAMES: Dict[str, str] = {
     'tcnh': 'Khoa Tài chính - Ngân hàng',
-    'dlkdqt': 'Khoa Du lịch & Kinh doanh quốc tế',
+    'dlkdqt': 'Khoa Du lịch và kinh doanh quốc tế',
     'tmdt_mkt_cns': 'Khoa Thương mại điện tử - Marketing và Công nghệ số',
     'kt': 'Khoa Kinh tế',
     'qtkd': 'Khoa Quản trị kinh doanh',
