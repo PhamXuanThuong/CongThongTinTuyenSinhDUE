@@ -136,36 +136,27 @@
       position: fixed;
       display: none;
       z-index: 9999;
-      width: 380px;
+      width: 330px;
       max-height: 85vh;
       overflow-y: auto;
       background-color: #ffffff;
       border: 1px solid #cbd5e1;
-      border-radius: 16px;
+      border-radius: 14px;
       box-shadow: 0 16px 40px rgba(0, 30, 64, 0.16);
-      padding: 8px;
+      padding: 6px;
       font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     .nav-khoa-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 8px 10px;
-      border-radius: 10px;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
       text-decoration: none;
       transition: background-color .15s ease, transform .15s ease;
     }
     .nav-khoa-item:hover {
       background-color: #f1f5f9;
-    }
-    .nav-khoa-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
     }
     .nav-khoa-text {
       flex: 1;
@@ -315,10 +306,47 @@
           </a>
         </div>
         <div class="flex items-center gap-space-md">
-          <div class="relative hidden md:block w-72">
-            <input class="w-full pl-10 pr-4 py-2 bg-surface-container-low text-on-surface rounded-full font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" placeholder="Tìm kiếm..." type="text">
-            <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+          <!-- Desktop Search Box with Instant Results -->
+          <div class="relative hidden md:block w-80" id="headerSearchBox">
+            <input 
+              id="headerSearchInput"
+              class="w-full pl-10 pr-9 py-2 bg-surface-container-low text-on-surface rounded-full font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all shadow-xs" 
+              placeholder="Tìm ngành, khoa, CLB, học phí..." 
+              type="text"
+              autocomplete="off"
+            >
+            <button 
+              id="headerSearchBtn"
+              type="button"
+              class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px] hover:text-secondary-container cursor-pointer transition-colors"
+              title="Tìm kiếm"
+            >search</button>
+            <button 
+              id="headerSearchClearBtn" 
+              type="button" 
+              class="material-symbols-outlined absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-[18px] hidden cursor-pointer"
+              title="Xóa tìm kiếm"
+            >close</button>
+
+            <!-- Search Dropdown Results -->
+            <div 
+              id="headerSearchResults" 
+              class="absolute left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden hidden z-[99999]"
+              style="width: 440px; max-height: 480px; overflow-y: auto;"
+            >
+              <div id="searchResultsContent" class="p-3"></div>
+            </div>
           </div>
+
+          <!-- Mobile Search Toggle Button -->
+          <button 
+            id="mobileSearchToggle" 
+            type="button"
+            class="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-surface-container-low text-on-surface hover:text-secondary-container transition-all cursor-pointer"
+            title="Tìm kiếm"
+          >
+            <span class="material-symbols-outlined text-[20px]">search</span>
+          </button>
           {% if user.is_authenticated %}
           <div class="relative group">
             <button class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-container text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-primary transition-all cursor-pointer">
@@ -351,6 +379,9 @@
               <button type="button" onclick="toggleDueLoginPopover(event)" class="text-[#0056b3] hover:text-[#003d82] text-xs sm:text-sm font-semibold transition-colors cursor-pointer py-1 px-1">
                 Đăng nhập
               </button>
+              <a href="{% url 'admissions:register' %}" class="hidden sm:inline-flex text-[#fd761a] hover:text-[#e0610f] text-xs sm:text-sm font-semibold transition-colors cursor-pointer py-1 px-1">
+                Đăng ký
+              </a>
               <button type="button" onclick="toggleDueLoginPopover(event)" id="dueAvatarBtn" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-300 flex items-center justify-center transition-all shadow-sm cursor-pointer relative" title="Đăng nhập tài khoản">
                 <svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-5.5-2.2c.3-1.6 1.8-2.8 3.5-2.8h4c1.7 0 3.2 1.2 3.5 2.8A8 8 0 0 1 12 20z"></path>
@@ -419,10 +450,14 @@
                 </form>
               </div>
 
-              <!-- Quên mật khẩu footer section (exact as screenshot) -->
-              <div class="bg-[#f8f9fa] px-4 py-2.5 border-t border-slate-200 mt-3 rounded-b-md text-left">
-                <a href="javascript:void(0)" onclick="alert('Quý thí sinh hoặc cán bộ vui lòng liên hệ Ban Đào tạo và tuyển sinh DUE qua Hotline (0236) 3836 169 để được hỗ trợ cấp lại mật khẩu.')" class="text-xs text-[#0056b3] hover:underline font-normal">
+              <!-- Quên mật khẩu & Đăng ký tài khoản (Ảnh 3) -->
+              <div class="bg-[#f8f9fa] px-4 py-2.5 border-t border-slate-200 mt-3 rounded-b-md flex items-center justify-between text-xs">
+                <a href="javascript:void(0)" onclick="alert('Quý thí sinh hoặc cán bộ vui lòng liên hệ Ban Đào tạo và tuyển sinh DUE qua Hotline (0236) 3836 169 để được hỗ trợ cấp lại mật khẩu.')" class="text-[#0056b3] hover:underline font-normal">
                   Quên mật khẩu?
+                </a>
+                <a href="{% url 'admissions:register' %}" class="text-[#fd761a] hover:text-[#d95d08] hover:underline font-bold flex items-center gap-1" title="Đăng ký tài khoản mới">
+                  <span>Đăng ký</span>
+                  <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </a>
               </div>
             </div>
@@ -458,18 +493,18 @@
               <svg id="nav-ttts-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
-          <!-- KHOA - Dropdown (Cơ cấu mới 2026: 8 Khoa + Viện ĐTQT) -->
+          <!-- KHOA - Bấm vào chuyển ngay sang giao diện /khoa/ (Ảnh 2) -->
           <div class="relative h-full flex items-center" id="nav-khoa">
-            <button
+            <a
+              href="/khoa/"
               class="h-full flex items-center gap-1 font-label-lg text-label-lg uppercase whitespace-nowrap focus:outline-none {% block nav_khoa %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}"
               aria-haspopup="true"
               aria-expanded="false"
               id="nav-khoa-btn"
-              type="button"
             >
               KHOA
               <svg id="nav-khoa-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
+            </a>
           </div>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_hocphi %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="hoc-phi" href="/hoc-phi/">HỌC PHÍ</a>
           <!-- DÀNH CHO SINH VIÊN - Dropdown -->
@@ -488,6 +523,29 @@
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_career %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="tu-van-chon-nganh" href="{% url 'admissions:career_advisory' %}">TƯ VẤN CHỌN NGÀNH</a>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_chatbot %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="chat-ai" href="/chatbot/">CHAT VỚI DUE</a>
         </nav>
+      </div>
+
+      <!-- Mobile Search Bar (Collapsible) -->
+      <div id="mobileSearchBar" class="md:hidden hidden px-2 pb-3 pt-1 border-t border-slate-100">
+        <div class="relative w-full">
+          <input 
+            id="mobileSearchInput" 
+            type="text" 
+            placeholder="Tìm kiếm ngành, khoa, CLB, học phí..." 
+            class="w-full pl-10 pr-9 py-2.5 bg-surface-container-low text-on-surface rounded-full text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-xs"
+            autocomplete="off"
+          >
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+          <button id="mobileSearchClearBtn" type="button" class="material-symbols-outlined absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-[18px] hidden cursor-pointer">close</button>
+          
+          <div 
+            id="mobileSearchResults" 
+            class="absolute left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden hidden z-[99999]"
+            style="max-height: 400px; overflow-y: auto;"
+          >
+            <div id="mobileSearchResultsContent" class="p-3"></div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -606,15 +664,12 @@
     aria-label="Danh mục Khoa đào tạo"
   >
     <div style="padding:6px 10px 8px;border-bottom:1px solid #f1f5f9;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
-      <span style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Khoa và viện Đào Tạo 2026</span>
+      <span style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Khoa và Viện Đào Tạo 2026</span>
       <span style="font-size:11px;font-weight:700;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:999px;">9 Đơn vị</span>
     </div>
     
     <a href="/khoa/tcnh/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#dbeafe;color:#1d4ed8;">
-        <span class="material-symbols-outlined" style="font-size:20px;">account_balance</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Tài chính - Ngân hàng</span>
         <span class="nav-khoa-sub">Tài chính, Ngân hàng, Fintech</span>
@@ -623,9 +678,6 @@
 
     <a href="/khoa/dlkdqt/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#d1fae5;color:#047857;">
-        <span class="material-symbols-outlined" style="font-size:20px;">travel_explore</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Du lịch và kinh doanh quốc tế</span>
         <span class="nav-khoa-sub">Kinh doanh quốc tế, Ngoại thương, Du lịch</span>
@@ -634,9 +686,6 @@
 
     <a href="/khoa/tmdt_mkt_cns/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#ffedd5;color:#c2410c;">
-        <span class="material-symbols-outlined" style="font-size:20px;">hub</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa TMĐT - Marketing và CNS</span>
         <span class="nav-khoa-sub">Marketing số, TMĐT, Kinh tế số</span>
@@ -645,9 +694,6 @@
 
     <a href="/khoa/kt/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#e0e7ff;color:#4338ca;">
-        <span class="material-symbols-outlined" style="font-size:20px;">trending_up</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Kinh tế</span>
         <span class="nav-khoa-sub">Kinh tế đầu tư, Kinh tế phát triển</span>
@@ -656,9 +702,6 @@
 
     <a href="/khoa/qtkd/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#fef3c7;color:#b45309;">
-        <span class="material-symbols-outlined" style="font-size:20px;">corporate_fare</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Quản trị kinh doanh</span>
         <span class="nav-khoa-sub">Quản trị kinh doanh, Quản trị nhân lực</span>
@@ -667,9 +710,6 @@
 
     <a href="/khoa/ketoan/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#ccfbf1;color:#0f766e;">
-        <span class="material-symbols-outlined" style="font-size:20px;">calculate</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Kế toán</span>
         <span class="nav-khoa-sub">Kế toán doanh nghiệp, Kiểm toán ACCA</span>
@@ -678,9 +718,6 @@
 
     <a href="/khoa/llct/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#ffe4e6;color:#be123c;">
-        <span class="material-symbols-outlined" style="font-size:20px;">menu_book</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Lý luận chính trị</span>
         <span class="nav-khoa-sub">Quản lý nhà nước, Kinh tế chính trị</span>
@@ -689,9 +726,6 @@
 
     <a href="/khoa/luat/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#f3e8ff;color:#7e22ce;">
-        <span class="material-symbols-outlined" style="font-size:20px;">gavel</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Luật</span>
         <span class="nav-khoa-sub">Luật kinh tế, Luật tài chính - ngân hàng</span>
@@ -700,9 +734,6 @@
 
     <a href="/khoa/vdtqt/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#cffafe;color:#0e7490;">
-        <span class="material-symbols-outlined" style="font-size:20px;">public</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Viện Đào tạo Quốc tế</span>
         <span class="nav-khoa-sub">Cử nhân quốc tế, Liên kết Anh, Mỹ, Úc</span>
@@ -1029,6 +1060,16 @@
     window.openLoginModal = toggleDueLoginPopover;
     window.closeLoginModal = closeDueLoginPopover;
 
+    // Tự động mở khung Đăng nhập nếu URL có ?login=1 hoặc #login
+    if (window.location.search.includes('login=1') || window.location.hash === '#login') {
+      setTimeout(function() {
+        const popover = document.getElementById('dueLoginPopover');
+        if (popover && popover.classList.contains('hidden')) {
+          toggleDueLoginPopover();
+        }
+      }, 150);
+    }
+
     function quickFillCreds(u, p) {
       const userInp = document.getElementById('p_username');
       const passInp = document.getElementById('p_password');
@@ -1216,12 +1257,19 @@
     }
 
     if (_khoaBtn) {
-      _khoaBtn.addEventListener('click', toggleKhoaDropdown);
+      // Bấm vào chữ KHOA sẽ chuyển ngay sang /khoa/ (Ảnh 2) theo href của thẻ <a>
       _khoaBtn.addEventListener('mouseenter', openKhoaDropdown);
       _khoaBtn.addEventListener('mouseleave', function() {
         setTimeout(function() {
           if (!_khoaDrop.matches(':hover') && !_khoaBtn.matches(':hover')) closeKhoaDropdown();
         }, 220);
+      });
+    }
+    if (_khoaChevron) {
+      _khoaChevron.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleKhoaDropdown();
       });
     }
     if (_khoaDrop) {
@@ -1461,11 +1509,279 @@
         closeDropdown();
         closeKhoaDropdown();
         closeDcsvDropdown();
+        var dsRes = document.getElementById('headerSearchResults');
+        if (dsRes) dsRes.classList.add('hidden');
+        var mbRes = document.getElementById('mobileSearchResults');
+        if (mbRes) mbRes.classList.add('hidden');
         if (_hdBackdrop && _hdBackdrop.style.display === 'flex') closeHuongDanModal();
         if (_ltBackdrop && _ltBackdrop.style.display === 'flex') closeLichTrinhModal();
         if (_svBackdrop && _svBackdrop.style.display === 'flex') closeSinhVienModal();
       }
     });
+
+    /* ====================================================
+       GLOBAL SEARCH FUNCTIONALITY (DESKTOP & MOBILE)
+       ==================================================== */
+    (function() {
+      var portalItems = [
+        // Khoa & Viện Đào Tạo
+        { name: 'Khoa Tài chính - Ngân hàng', sub: 'Tài chính, Ngân hàng, Fintech, Tài chính số', url: '/khoa/tcnh/', type: 'khoa', icon: 'account_balance', badge: 'Khoa' },
+        { name: 'Khoa Du lịch và Kinh doanh quốc tế', sub: 'Kinh doanh quốc tế, Logistics, Ngoại thương, Du lịch', url: '/khoa/dlkdqt/', type: 'khoa', icon: 'travel_explore', badge: 'Khoa' },
+        { name: 'Khoa TMĐT - Marketing và Công nghệ số', sub: 'Marketing số, TMĐT, Kinh tế số, AI & Phân tích dữ liệu', url: '/khoa/tmdt_mkt_cns/', type: 'khoa', icon: 'hub', badge: 'Khoa' },
+        { name: 'Khoa Kinh tế', sub: 'Kinh tế đầu tư, Kinh tế phát triển, Quản lý tài nguyên', url: '/khoa/kt/', type: 'khoa', icon: 'trending_up', badge: 'Khoa' },
+        { name: 'Khoa Quản trị kinh doanh', sub: 'Quản trị kinh doanh, Quản trị nhân lực, Chuỗi cung ứng', url: '/khoa/qtkd/', type: 'khoa', icon: 'corporate_fare', badge: 'Khoa' },
+        { name: 'Khoa Kế toán', sub: 'Kế toán doanh nghiệp, Kiểm toán ACCA, Tài chính kế toán', url: '/khoa/ketoan/', type: 'khoa', icon: 'calculate', badge: 'Khoa' },
+        { name: 'Khoa Lý luận chính trị', sub: 'Quản lý nhà nước, Kinh tế chính trị', url: '/khoa/llct/', type: 'khoa', icon: 'menu_book', badge: 'Khoa' },
+        { name: 'Khoa Luật', sub: 'Luật kinh tế, Luật tài chính - ngân hàng, Pháp luật kinh doanh', url: '/khoa/luat/', type: 'khoa', icon: 'gavel', badge: 'Khoa' },
+        { name: 'Viện Đào tạo Quốc tế', sub: 'Cử nhân quốc tế, Liên kết Anh, Mỹ, Úc, Thụy Sĩ', url: '/khoa/vdtqt/', type: 'khoa', icon: 'public', badge: 'Viện ĐTQT' },
+        
+        // Dành cho sinh viên
+        { name: 'Ký túc xá DUE', sub: 'Phòng nội trú, đăng ký phòng, giá điện nước, Khu D Ngũ Hành Sơn', url: '/ky-tuc-xa/', type: 'sinhvien', icon: 'hotel', badge: 'Ký túc xá' },
+        { name: 'Câu lạc bộ & Đội nhóm', sub: '13+ CLB học thuật, kỹ năng, tình nguyện và nghệ thuật sinh viên', url: '/clb/', type: 'sinhvien', icon: 'groups', badge: 'CLB' },
+        { name: 'Lịch trình Tân sinh viên Khóa 52K', sub: 'Các mốc thời gian: SHCD, gặp GVCN, sinh hoạt lớp, Gala', url: '/lich-trinh-tan-sinh-vien/', type: 'sinhvien', icon: 'calendar_month', badge: 'Lịch trình' },
+        { name: 'Hoạt động Đoàn & Phong trào', sub: 'Phong trào Thanh niên, Tình nguyện Mùa hè xanh, Tiếp sức mùa thi', url: '/hoat-dong-doan/', type: 'sinhvien', icon: 'volunteer_activism', badge: 'Đoàn TN' },
+
+        // Tuyển sinh & Học phí
+        { name: 'Bảng học phí năm 2026', sub: 'Học phí chương trình Tiêu chuẩn, Bán phần và Toàn phần tiếng Anh', url: '/hoc-phi/', type: 'admissions', icon: 'payments', badge: 'Học phí' },
+        { name: 'Chỉ tiêu tuyển sinh 2026', sub: '4.600 chỉ tiêu cho 37 ngành và chuyên ngành đào tạo', url: '/chi-tieu-tuyen-sinh/', type: 'admissions', icon: 'format_list_numbered', badge: 'Chỉ tiêu' },
+        { name: 'Điểm chuẩn các năm (2023 - 2025)', sub: 'Tra cứu điểm chuẩn trúng tuyển theo phương thức THPT và ĐGNL', url: '/diem-chuan-cac-nam/', type: 'admissions', icon: 'military_tech', badge: 'Điểm chuẩn' },
+        { name: 'Phương thức xét tuyển 2026', sub: '4 phương thức tuyển sinh của Trường Đại học Kinh tế', url: '/phuong-thuc-xet-tuyen/', type: 'admissions', icon: 'checklist', badge: 'Phương thức' },
+        { name: 'Tư vấn chọn ngành thông minh', sub: 'Trắc nghiệm tính cách Holland và gợi ý ngành học phù hợp', url: '/huong-nghiep/', type: 'admissions', icon: 'psychology', badge: 'Tư vấn' },
+        { name: 'Chatbot AI Tuyển sinh DUE', sub: 'Trợ lý ảo giải đáp 24/7 toàn bộ thông tin tuyển sinh', url: '/chatbot/', type: 'admissions', icon: 'smart_toy', badge: 'Chatbot' }
+      ];
+
+      function setupSearch(inputEl, resultsEl, contentEl, clearBtn) {
+        if (!inputEl || !resultsEl || !contentEl) return;
+        var debounceTimer = null;
+
+        function closeResults() {
+          resultsEl.classList.add('hidden');
+        }
+
+        function highlight(text, q) {
+          if (!q) return text;
+          try {
+            var re = new RegExp('(' + q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + ')', 'gi');
+            return text.replace(re, '<mark class="bg-amber-200 text-amber-950 font-bold px-0.5 rounded">$1</mark>');
+          } catch(e) {
+            return text;
+          }
+        }
+
+        function executeSearch(query) {
+          var q = (query || '').trim().toLowerCase();
+          if (!q) {
+            closeResults();
+            if (clearBtn) clearBtn.classList.add('hidden');
+            return;
+          }
+
+          if (clearBtn) clearBtn.classList.remove('hidden');
+
+          // Filter local portal items
+          var matchedLocal = portalItems.filter(function(item) {
+            return item.name.toLowerCase().includes(q) || 
+                   item.sub.toLowerCase().includes(q) ||
+                   item.badge.toLowerCase().includes(q);
+          });
+
+          // Fetch majors from API
+          fetch('/api/tra-cuu/?q=' + encodeURIComponent(q))
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+              var majors = (data && data.results) ? data.results : [];
+              renderResults(q, matchedLocal, majors);
+            })
+            .catch(function() {
+              renderResults(q, matchedLocal, []);
+            });
+        }
+
+        function renderResults(q, localItems, majors) {
+          if (localItems.length === 0 && majors.length === 0) {
+            contentEl.innerHTML = 
+              '<div class="py-6 px-4 text-center">' +
+                '<span class="material-symbols-outlined text-slate-300 text-[36px] mb-1">search_off</span>' +
+                '<p class="text-xs font-bold text-slate-700">Không tìm thấy kết quả cho "' + q + '"</p>' +
+                '<p class="text-[11px] text-slate-400 mt-1">Thử từ khóa khác như "marketing", "tài chính", "ký túc xá", "học phí"...</p>' +
+              '</div>';
+            resultsEl.classList.remove('hidden');
+            return;
+          }
+
+          var html = '';
+
+          // 1. Khoa & Viện Đào Tạo
+          var khoaItems = localItems.filter(function(x) { return x.type === 'khoa'; });
+          if (khoaItems.length > 0) {
+            html += '<div class="mb-2">' +
+              '<div class="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">' +
+                '<span class="material-symbols-outlined text-[13px]">account_balance</span> Khoa & Viện Đào Tạo' +
+              '</div>';
+            khoaItems.forEach(function(item) {
+              html += 
+                '<a href="' + item.url + '" class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 transition-colors group text-left">' +
+                  '<div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">' +
+                    '<span class="material-symbols-outlined text-[18px]">' + item.icon + '</span>' +
+                  '</div>' +
+                  '<div class="min-w-0 flex-1">' +
+                    '<div class="text-xs font-bold text-slate-800 group-hover:text-[#003366] truncate">' + highlight(item.name, q) + '</div>' +
+                    '<div class="text-[11px] text-slate-500 truncate">' + item.sub + '</div>' +
+                  '</div>' +
+                  '<span class="material-symbols-outlined text-slate-300 group-hover:text-slate-600 text-[16px]">chevron_right</span>' +
+                '</a>';
+            });
+            html += '</div>';
+          }
+
+          // 2. Ngành & Chuyên ngành đào tạo
+          if (majors.length > 0) {
+            html += '<div class="mb-2 pt-2 border-t border-slate-100">' +
+              '<div class="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">' +
+                '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">school</span> Ngành đào tạo 2026</span>' +
+                '<span class="text-blue-600 font-semibold">' + majors.length + ' ngành</span>' +
+              '</div>';
+            majors.slice(0, 5).forEach(function(m) {
+              var diemTHPT = (m.diem_chuan && m.diem_chuan['2025_THPT']) ? m.diem_chuan['2025_THPT'] : '';
+              html += 
+                '<a href="/chi-tieu-tuyen-sinh/" class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-blue-50/60 transition-colors group text-left">' +
+                  '<div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 font-mono text-[11px] font-bold">' +
+                    m.ma_nganh.slice(0, 4) +
+                  '</div>' +
+                  '<div class="min-w-0 flex-1">' +
+                    '<div class="text-xs font-bold text-slate-800 group-hover:text-blue-800 truncate">' + highlight(m.ten_nganh, q) + '</div>' +
+                    '<div class="text-[11px] text-slate-500 flex items-center gap-2">' +
+                      '<span class="font-mono text-slate-400">' + m.ma_nganh + '</span>' +
+                      '<span>•</span>' +
+                      '<span>CT: <strong>' + m.chi_tieu + '</strong></span>' +
+                      (diemTHPT ? '<span>• Điểm: <strong class="text-rose-600">' + diemTHPT + '</strong></span>' : '') +
+                    '</div>' +
+                  '</div>' +
+                  '<span class="px-2 py-0.5 rounded-md bg-slate-100 text-[10px] font-semibold text-slate-600 shrink-0">Chi tiết</span>' +
+                '</a>';
+            });
+            if (majors.length > 5) {
+              html += '<a href="/chi-tieu-tuyen-sinh/" class="block text-center py-1.5 text-xs text-blue-700 font-bold hover:underline">+ Xem thêm ' + (majors.length - 5) + ' ngành khác</a>';
+            }
+            html += '</div>';
+          }
+
+          // 3. Dành cho sinh viên & Tuyển sinh
+          var otherItems = localItems.filter(function(x) { return x.type !== 'khoa'; });
+          if (otherItems.length > 0) {
+            html += '<div class="pt-2 border-t border-slate-100">' +
+              '<div class="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">' +
+                '<span class="material-symbols-outlined text-[13px]">explore</span> Trang dịch vụ & Sinh viên' +
+              '</div>';
+            otherItems.slice(0, 4).forEach(function(item) {
+              html += 
+                '<a href="' + item.url + '" class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 transition-colors group text-left">' +
+                  '<div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">' +
+                    '<span class="material-symbols-outlined text-[18px]">' + item.icon + '</span>' +
+                  '</div>' +
+                  '<div class="min-w-0 flex-1">' +
+                    '<div class="text-xs font-bold text-slate-800 group-hover:text-[#003366] truncate">' + highlight(item.name, q) + '</div>' +
+                    '<div class="text-[11px] text-slate-500 truncate">' + item.sub + '</div>' +
+                  '</div>' +
+                  '<span class="px-2 py-0.5 rounded-full bg-slate-100 text-[10px] font-semibold text-slate-600 shrink-0">' + item.badge + '</span>' +
+                '</a>';
+            });
+            html += '</div>';
+          }
+
+          contentEl.innerHTML = html;
+          resultsEl.classList.remove('hidden');
+        }
+
+        inputEl.addEventListener('input', function() {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(function() {
+            executeSearch(inputEl.value);
+          }, 220);
+        });
+
+        inputEl.addEventListener('focus', function() {
+          if (this.value.trim().length > 0) {
+            executeSearch(this.value);
+          }
+        });
+
+        inputEl.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            var firstLink = contentEl.querySelector('a');
+            if (firstLink) {
+              window.location.href = firstLink.getAttribute('href');
+            } else {
+              executeSearch(this.value);
+            }
+          } else if (e.key === 'Escape') {
+            closeResults();
+          }
+        });
+
+        if (clearBtn) {
+          clearBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            inputEl.value = '';
+            closeResults();
+            this.classList.add('hidden');
+            inputEl.focus();
+          });
+        }
+
+        document.addEventListener('click', function(e) {
+          if (!inputEl.contains(e.target) && !resultsEl.contains(e.target)) {
+            closeResults();
+          }
+        });
+      }
+
+      // Initialize Desktop Search
+      setupSearch(
+        document.getElementById('headerSearchInput'),
+        document.getElementById('headerSearchResults'),
+        document.getElementById('searchResultsContent'),
+        document.getElementById('headerSearchClearBtn')
+      );
+
+      // Desktop search button click
+      var searchIconBtn = document.getElementById('headerSearchBtn');
+      var searchInput = document.getElementById('headerSearchInput');
+      if (searchIconBtn && searchInput) {
+        searchIconBtn.addEventListener('click', function() {
+          searchInput.focus();
+          if (searchInput.value.trim()) {
+            var firstLink = document.getElementById('searchResultsContent').querySelector('a');
+            if (firstLink) window.location.href = firstLink.getAttribute('href');
+          }
+        });
+      }
+
+      // Mobile Search Toggle
+      var mobileToggle = document.getElementById('mobileSearchToggle');
+      var mobileBar = document.getElementById('mobileSearchBar');
+      if (mobileToggle && mobileBar) {
+        mobileToggle.addEventListener('click', function() {
+          var isHidden = mobileBar.classList.contains('hidden');
+          if (isHidden) {
+            mobileBar.classList.remove('hidden');
+            var mobileInput = document.getElementById('mobileSearchInput');
+            if (mobileInput) mobileInput.focus();
+          } else {
+            mobileBar.classList.add('hidden');
+          }
+        });
+      }
+
+      // Initialize Mobile Search
+      setupSearch(
+        document.getElementById('mobileSearchInput'),
+        document.getElementById('mobileSearchResults'),
+        document.getElementById('mobileSearchResultsContent'),
+        document.getElementById('mobileSearchClearBtn')
+      );
+    })();
   </script>
 
   <!-- ====================================================

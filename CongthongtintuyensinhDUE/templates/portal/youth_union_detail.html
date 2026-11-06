@@ -2,7 +2,7 @@
 
 {% block title %}{{ lcd.name|default:faculty.lien_chi_doan }} - Đoàn Thanh Niên DUE{% endblock %}
 
-{% block nav_sinhvien %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+{% block nav_khoa %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -35,8 +35,6 @@
       <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa và viện Đào Tạo</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
       <a href="/khoa/{{ faculty.id }}/" class="hover:text-primary-container transition-colors">{{ faculty.name }}</a>
-      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <a href="/lien-chi-doan/" class="hover:text-primary-container transition-colors">Liên Chi Đoàn</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
       <span class="text-secondary-container font-semibold truncate max-w-[200px] sm:max-w-none">{{ lcd.name|default:"Chi tiết LCĐ" }}</span>
     </nav>
@@ -541,13 +539,13 @@
               <span class="material-symbols-outlined text-rose-600 text-[18px]">swap_horiz</span>
               Liên Chi Đoàn các Khoa khác
             </h3>
-            <a href="/lien-chi-doan/" class="text-[11px] font-bold text-rose-600 hover:underline">Tất cả</a>
+            <a href="/khoa/" class="text-[11px] font-bold text-rose-600 hover:underline">Xem Khoa</a>
           </div>
 
           <div class="space-y-2">
             {% for other in other_faculties %}
             <a 
-              href="/lien-chi-doan/{{ other.id }}/" 
+              href="/khoa/{{ other.id }}/lien-chi-doan/" 
               class="flex items-center justify-between p-2.5 rounded-xl hover:bg-rose-50/60 transition-colors group"
             >
               <div class="flex items-center gap-2.5 min-w-0">

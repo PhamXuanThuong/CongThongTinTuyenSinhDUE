@@ -3,6 +3,7 @@ import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.db.models import Q, Sum
 from django.views.decorators.csrf import csrf_exempt
@@ -100,7 +101,12 @@ def training_programs_view(request):
 
 
 def login_view(request):
-    """Xử lý Đăng nhập Cổng thông tin Tuyển sinh DUE."""
+    """
+    Xử lý Đăng nhập Cổng thông tin Tuyển sinh DUE.
+    Đã bỏ giao diện trang đăng nhập riêng theo yêu cầu người dùng:
+    - Nếu truy cập GET /dang-nhap/ -> chuyển hướng về trang chủ /?login=1 để đăng nhập tại popover.
+    - Nếu gửi POST -> xử lý xác thực đăng nhập và trả về kết quả JSON/redirect.
+    """
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.POST.get('is_ajax') == '1'
 
     if request.user.is_authenticated:
@@ -115,17 +121,17 @@ def login_view(request):
             return redirect('/chatbot/')
         return redirect('admissions:home')
 
-    error_message = None
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
-        remember_me = request.POST.get('remember_me')
+        remember_me = request.POST.get('remember_me') or request.POST.get('remember') == 'on'
 
         if not username or not password:
             msg = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!"
             if is_ajax:
                 return JsonResponse({'status': 'error', 'message': msg}, status=400)
-            error_message = msg
+            messages.error(request, msg)
+            return redirect('/?login=1')
         else:
             user = authenticate(request, username=username, password=password)
             if user is not None:
@@ -160,9 +166,11 @@ def login_view(request):
                 msg = "Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại!"
                 if is_ajax:
                     return JsonResponse({'status': 'error', 'message': msg}, status=400)
-                error_message = msg
+                messages.error(request, msg)
+                return redirect('/?login=1')
 
-    return render(request, 'auth/login.html', {'error_message': error_message})
+    # Bỏ giao diện login.html - truy cập GET chuyển thẳng về trang chủ kèm cờ mở popover
+    return redirect('/?login=1')
 
 
 def logout_view(request):
@@ -170,6 +178,74 @@ def logout_view(request):
     auth_logout(request)
     messages.info(request, "Bạn đã đăng xuất khỏi Cổng thông tin Tuyển sinh DUE.")
     return redirect('admissions:home')
+
+
+def register_view(request):
+    """Xử lý Đăng ký tài khoản Thí sinh / Sinh viên DUE mới."""
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.POST.get('is_ajax') == '1'
+
+    if request.user.is_authenticated:
+        if is_ajax:
+            return JsonResponse({'status': 'success', 'message': 'Bạn đã đăng nhập.', 'redirect_url': '/'})
+        return redirect('admissions:home')
+
+    error_message = None
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name', '').strip()
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        password = request.POST.get('password', '').strip()
+        confirm_password = request.POST.get('confirm_password', '').strip()
+
+        if not username or not password:
+            msg = "Vui lòng điền đầy đủ Tên đăng nhập và Mật khẩu!"
+            if is_ajax:
+                return JsonResponse({'status': 'error', 'message': msg}, status=400)
+            error_message = msg
+        elif len(password) < 6:
+            msg = "Mật khẩu phải chứa ít nhất 6 ký tự để bảo mật tài khoản!"
+            if is_ajax:
+                return JsonResponse({'status': 'error', 'message': msg}, status=400)
+            error_message = msg
+        elif password != confirm_password:
+            msg = "Mật khẩu xác nhận không khớp. Vui lòng kiểm tra lại!"
+            if is_ajax:
+                return JsonResponse({'status': 'error', 'message': msg}, status=400)
+            error_message = msg
+        elif User.objects.filter(username__iexact=username).exists():
+            msg = f"Tên đăng nhập '{username}' đã tồn tại trên hệ thống. Vui lòng chọn tên khác!"
+            if is_ajax:
+                return JsonResponse({'status': 'error', 'message': msg}, status=400)
+            error_message = msg
+        elif email and User.objects.filter(email__iexact=email).exists():
+            msg = f"Email '{email}' đã được đăng ký tài khoản khác. Vui lòng sử dụng email khác!"
+            if is_ajax:
+                return JsonResponse({'status': 'error', 'message': msg}, status=400)
+            error_message = msg
+        else:
+            # Tạo tài khoản thành công
+            new_user = User.objects.create_user(username=username, email=email, password=password)
+            if full_name:
+                parts = full_name.split(' ', 1)
+                new_user.first_name = parts[0]
+                if len(parts) > 1:
+                    new_user.last_name = parts[1]
+                new_user.save()
+
+            success_msg = f"Đăng ký tài khoản thành công! Chào mừng {full_name or username} đến với Cổng thông tin Tuyển sinh DUE."
+            if is_ajax:
+                return JsonResponse({
+                    'status': 'success',
+                    'message': success_msg,
+                    'redirect_url': '/'
+                })
+            messages.success(request, success_msg)
+            return redirect('admissions:home')
+
+    return render(request, 'auth/register.html', {
+        'error_message': error_message
+    })
 
 
 @csrf_exempt

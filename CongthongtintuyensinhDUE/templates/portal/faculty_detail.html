@@ -119,39 +119,51 @@
         <!-- Hero Bottom Action Buttons và key Stats -->
         <div class="pt-8 border-t border-white/15 mt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           
-          <!-- Quick Buttons (Có nút riêng nổi bật về Liên Chi Đoàn theo yêu cầu người dùng) -->
-          <div class="flex flex-wrap items-center gap-3">
-            {% if faculty.url %}
-            <a href="{{ faculty.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-[#003366] hover:bg-slate-100 font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
-              <span class="material-symbols-outlined text-[18px]">language</span>
-              <span>Website chính thức</span>
-            </a>
-            {% endif %}
+          <!-- Quick Buttons (Hàng 1: Website, LCĐ, Mạng xã hội. Hàng 2: Xem chuyên ngành & Lịch trình TSV ngang hàng) -->
+          <div class="flex flex-col gap-3">
+            <!-- Hàng 1 -->
+            <div class="flex flex-wrap items-center gap-3">
+              {% if faculty.url %}
+              <a href="{{ faculty.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-[#003366] hover:bg-slate-100 font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
+                <span class="material-symbols-outlined text-[18px]">language</span>
+                <span>Website chính thức</span>
+              </a>
+              {% endif %}
 
-            <!-- Nút riêng biệt sang TRANG RIÊNG Liên Chi Đoàn Khoa -->
-            <a href="/lien-chi-doan/{{ faculty.id }}/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#e11d48] to-[#f43f5e] hover:from-[#be123c] hover:to-[#e11d48] text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-500/25 transition-all hover:scale-105 border border-white/20" title="Khám phá trang riêng Liên Chi Đoàn Khoa">
-              <span class="material-symbols-outlined text-[18px] text-amber-300">flag</span>
-              <span>Liên Chi Đoàn Khoa &rarr;</span>
-            </a>
+              <!-- Nút riêng biệt sang TRANG RIÊNG Liên Chi Đoàn Khoa -->
+              <a href="/khoa/{{ faculty.id }}/lien-chi-doan/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#e11d48] to-[#f43f5e] hover:from-[#be123c] hover:to-[#e11d48] text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-500/25 transition-all hover:scale-105 border border-white/20" title="Khám phá trang riêng Liên Chi Đoàn Khoa">
+                <span class="material-symbols-outlined text-[18px] text-amber-300">flag</span>
+                <span>Liên Chi Đoàn Khoa &rarr;</span>
+              </a>
 
-            {% if faculty.contact.fanpage %}
-            <a href="{{ faculty.contact.fanpage }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
-              <span>Fanpage Khoa</span>
-            </a>
-            {% endif %}
+              {% if faculty.contact.fanpage %}
+              <a href="{{ faculty.contact.fanpage }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+                <span>Fanpage Khoa</span>
+              </a>
+              {% endif %}
 
-            {% if faculty.contact.messenger %}
-            <a href="{{ faculty.contact.messenger }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#0084FF] to-[#00C6FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
-              <span>Nhắn tin tư vấn</span>
-            </a>
-            {% endif %}
+              {% if faculty.contact.messenger %}
+              <a href="{{ faculty.contact.messenger }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#0084FF] to-[#00C6FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.517 3.735 7.21V22l3.39-1.86c.91.252 1.88.388 2.875.388 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.066 12.443l-2.573-2.744-5.021 2.744 5.524-5.86 2.64 2.744 4.954-2.744-5.524 5.86z"></path></svg>
+                <span>Nhắn tin tư vấn</span>
+              </a>
+              {% endif %}
+            </div>
 
-            <a href="#chuyen-nganh-2026" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#fd761a] hover:bg-[#e0610f] text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
-              <span>Xem chuyên ngành 2026</span>
-              <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
-            </a>
+            <!-- Hàng 2: Xem chuyên ngành 2026 & Lịch trình Tân sinh viên ngang hàng -->
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="#chuyen-nganh-2026" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#fd761a] hover:bg-[#e0610f] text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105">
+                <span>Xem chuyên ngành 2026</span>
+                <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+              </a>
+
+              <!-- Nút Lịch trình Tân sinh viên ngang hàng với Xem chuyên ngành 2026 -->
+              <a href="/khoa/{{ faculty.id }}/lich-trinh-tan-sinh-vien/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#0d9488] to-[#059669] hover:from-[#0f766e] hover:to-[#047857] text-white font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/25 transition-all hover:scale-105 border border-white/20" title="Lịch trình đón Tân sinh viên Khóa mới của Khoa">
+                <span class="material-symbols-outlined text-[18px] text-yellow-300">calendar_month</span>
+                <span>Lịch trình Tân sinh viên &rarr;</span>
+              </a>
+            </div>
           </div>
 
           <!-- Highlight Figures -->
@@ -565,10 +577,56 @@
 
             <div class="shrink-0 sm:self-center">
               <a 
-                href="/lien-chi-doan/{{ faculty.id }}/" 
+                href="/khoa/{{ faculty.id }}/lien-chi-doan/" 
                 class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-700 hover:to-red-600 text-white text-xs sm:text-sm font-bold shadow-md shadow-rose-500/20 transition-all hover:scale-105"
               >
                 <span>Xem trang riêng LCĐ</span>
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             MỤC 6.5: LỊCH TRÌNH TÂN SINH VIÊN CỦA KHOA (TEASER CARD)
+             ==================================================== -->
+        <section id="lich-trinh-tsv" class="glass-card p-6 sm:p-7 border-l-4 border-l-emerald-600 hover:border-emerald-400 transition-all shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25">
+                <span class="material-symbols-outlined text-[26px]">calendar_month</span>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Khóa 52K • Năm học 2026 - 2027</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Quan trọng</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+                  Lịch Trình Tân Sinh Viên - {{ faculty.name }}
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl">
+                  Theo dõi các mốc quan trọng: Tuần sinh hoạt công dân, gặp mặt Thầy/Cô GVCN & Cố vấn học tập, sinh hoạt lớp bầu ban cán sự và Đêm Gala Chào đón Tân sinh viên riêng của Khoa.
+                </p>
+                <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 pt-1">
+                  <span class="inline-flex items-center gap-1 text-emerald-700 font-semibold">
+                    <span class="material-symbols-outlined text-[14px]">event</span> 16/08: Welcome Day
+                  </span>
+                  <span class="inline-flex items-center gap-1 text-emerald-700 font-semibold">
+                    <span class="material-symbols-outlined text-[14px]">school</span> 18/08: Gặp GVCN & Lớp
+                  </span>
+                  <span class="inline-flex items-center gap-1 text-emerald-700 font-semibold">
+                    <span class="material-symbols-outlined text-[14px]">celebration</span> 23/08: Gala Khoa
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="shrink-0 sm:self-center">
+              <a 
+                href="/khoa/{{ faculty.id }}/lich-trinh-tan-sinh-vien/" 
+                class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-500/20 transition-all hover:scale-105"
+              >
+                <span>Xem lịch trình chi tiết</span>
                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
               </a>
             </div>

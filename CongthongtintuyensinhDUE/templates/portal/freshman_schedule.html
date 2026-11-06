@@ -1,42 +1,623 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}Lịch trình Tân sinh viên - Cổng thông tin tuyển sinh DUE{% endblock %}
+{% block title %}Lịch Trình Tân Sinh Viên Khóa 52K - {{ faculty.name|default:"Trường Đại học Kinh tế (DUE)" }}{% endblock %}
+
+{% block nav_khoa %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Calendar Styles */
+  .cal-day-cell {
+    min-height: 90px;
+    transition: all .15s ease;
+  }
+  .cal-day-cell:hover {
+    background-color: #f8fafc;
+  }
+  .cal-event-chip {
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .cal-event-chip:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  /* Stepper */
+  .milestone-node {
+    transition: all .2s ease;
+  }
+  .milestone-node:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -4px rgba(0, 51, 102, 0.15);
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-12 bg-surface min-h-[calc(100vh-28rem)] flex-1">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
-    <!-- Breadcrumb -->
-    <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
+
+    <!-- 1. BREADCRUMB -->
+    <nav class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
       <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <span>Thông tin tuyển sinh</span>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa và viện Đào Tạo</a>
+      {% if faculty %}
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <span class="text-secondary-container font-semibold">Lịch trình Tân sinh viên</span>
+      <a href="/khoa/{{ faculty.id }}/" class="hover:text-primary-container transition-colors">{{ faculty.name }}</a>
+      {% endif %}
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-secondary-container font-semibold">Lịch trình Tân sinh viên Khóa 52K</span>
     </nav>
 
-    <!-- Header Banner -->
-    <div class="bg-gradient-to-r from-[#003366] via-[#0056b3] to-[#0072BC] rounded-3xl p-6 sm:p-10 text-white shadow-xl mb-8 relative overflow-hidden">
-      <div class="absolute -right-10 -bottom-10 w-60 h-60 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
-      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+
+    <!-- 2. HERO BANNER (ĐÃ BỎ NÚT CỔNG NHẬP HỌC TRỰC TUYẾN THEO YÊU CẦU) -->
+    <div class="bg-gradient-to-r from-[#001e40] via-[#003366] to-[#047857] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden mb-8">
+      <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-emerald-400/15 blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-blue-400/15 blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="max-w-3xl">
+          <!-- Badges -->
+          <div class="flex flex-wrap items-center gap-2 mb-3 text-xs font-semibold">
+            <span class="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-white">
+              Khóa 52K • Năm học 2026 - 2027
+            </span>
+            <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-bold">
+              Lịch trình tương tác
+            </span>
+            {% if faculty %}
+            <span class="px-3 py-1 rounded-full bg-emerald-500/80 text-white border border-white/20">
+              {{ faculty.name }}
+            </span>
+            {% endif %}
+          </div>
+
+          <!-- Title -->
+          <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-3">
+            Lịch Trình Tân Sinh Viên 2026
+          </h1>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed mb-4">
+            Bấm hoặc rê chuột vào từng ngày hoặc cột mốc sự kiện trên lịch để xem thông tin chi tiết: thời gian, địa điểm giảng đường, nội dung và lưu ý chuẩn bị cho tân sinh viên.
+          </p>
+
+          <!-- Quick Actions (Đã bỏ nút Cổng nhập học) -->
+          <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium">
+            {% if faculty %}
+            <a href="/khoa/{{ faculty.id }}/" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold backdrop-blur-md border border-white/20 transition-all">
+              <span class="material-symbols-outlined text-[16px]">school</span>
+              <span>Trang Khoa: {{ faculty.name }}</span>
+            </a>
+            <a href="/khoa/{{ faculty.id }}/lien-chi-doan/" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-600/80 hover:bg-rose-700 text-white font-semibold border border-white/20 transition-all">
+              <span class="material-symbols-outlined text-[16px]">flag</span>
+              <span>Liên Chi Đoàn Khoa</span>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Faculty Logo Card -->
+        {% if faculty %}
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-5 lg:w-64 shrink-0 flex flex-col items-center text-center shadow-lg">
+          <div class="w-16 h-16 rounded-2xl bg-white p-2 shadow-xl border-2 border-white/90 overflow-hidden flex items-center justify-center mb-2">
+            <img 
+              src="{{ faculty.logo_url }}" 
+              alt="{{ faculty.name }}" 
+              class="w-full h-full object-contain"
+              onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';"
+            />
+          </div>
+          <span class="text-[11px] text-amber-300 font-bold block uppercase tracking-wider mb-0.5">Đơn vị chủ trì</span>
+          <h3 class="text-sm font-bold text-white mb-1 leading-snug">{{ faculty.name }}</h3>
+          <p class="text-[11px] text-slate-200 line-clamp-1 italic">&ldquo;{{ faculty.slogan|default:"Chất lượng đào tạo tiên phong" }}&rdquo;</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+
+    <!-- 3. BỘ CHỌN KHOA & THANH ĐIỀU HƯỚNG CHẾ ĐỘ XEM -->
+    <div class="mb-6 bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      
+      <!-- Dropdown Chọn Khoa khác -->
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[#003366] text-[22px]">account_balance</span>
         <div>
-          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight">Lịch Trình Tân Sinh Viên</h1>
-          <p class="text-white/85 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
-            Các mốc thời gian quan trọng: Tuần sinh hoạt công dân đầu khóa, khám sức khỏe, kiểm tra tiếng Anh và lễ khai giảng năm học mới.
+          <label for="selectFacultySchedule" class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Chọn Khoa / Viện xem lịch:</label>
+          <select 
+            id="selectFacultySchedule" 
+            onchange="if(this.value) window.location.href='/khoa/' + this.value + '/lich-trinh-tan-sinh-vien/';"
+            class="mt-0.5 font-bold text-slate-800 text-xs sm:text-sm border-none bg-slate-100 hover:bg-slate-200/80 rounded-xl px-3 py-1.5 focus:ring-2 focus:ring-[#003366] cursor-pointer"
+          >
+            {% for f in faculties %}
+            <option value="{{ f.id }}" {% if faculty and faculty.id == f.id %}selected{% endif %}>
+              {{ f.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <!-- Toggle View Modes (Lịch tháng vs Cột mốc) -->
+      <div class="flex items-center gap-2 p-1 bg-slate-100 rounded-2xl text-xs font-bold">
+        <button id="viewBtnCalendar" type="button" onclick="switchScheduleView('calendar')" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#003366] shadow-sm transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+          <span>Xem Lịch Tháng 8/2026</span>
+        </button>
+        <button id="viewBtnMilestones" type="button" onclick="switchScheduleView('milestones')" class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">timeline</span>
+          <span>Xem Cột Mốc Sự Kiện</span>
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ====================================================
+         VIEW 1: LỊCH THÁNG 8 NĂM 2026 (CALENDAR GRID VIEW)
+         ==================================================== -->
+    <div id="calendarViewContainer" class="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm mb-12">
+      
+      <!-- Calendar Header -->
+      <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-lg">
+            08
+          </div>
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+              Lịch Đón Tân Sinh Viên - Tháng 08/2026
+            </h2>
+            <p class="text-xs text-slate-500">Khóa 52K • {{ faculty.name|default:"Trường Đại học Kinh tế - ĐHĐN" }}</p>
+          </div>
+        </div>
+
+        <!-- Legend Pills -->
+        <div class="hidden lg:flex items-center gap-3 text-[11px] font-semibold text-slate-600">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Trực tuyến</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Toàn trường</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Khoa & Lớp</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Sinh hoạt CD</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Gala Khoa</span>
+        </div>
+      </div>
+
+      <!-- Calendar Table Grid -->
+      <div class="overflow-x-auto">
+        <div class="min-w-[700px]">
+          <!-- Day Names Header -->
+          <div class="grid grid-cols-7 gap-2 mb-2 text-center text-xs font-bold uppercase tracking-wider text-slate-500">
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Hai</div>
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Ba</div>
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Tư</div>
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Năm</div>
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Sáu</div>
+            <div class="py-1 bg-slate-50 rounded-lg text-blue-700">Thứ Bảy</div>
+            <div class="py-1 bg-slate-50 rounded-lg text-rose-700">Chủ Nhật</div>
+          </div>
+
+          <!-- Calendar Days Grid (August 2026 starts on Saturday 1st, 31 days) -->
+          <div class="grid grid-cols-7 gap-2 text-xs">
+            
+            <!-- Empty days before 1st (Mon-Fri) -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">27</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">28</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">29</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">30</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">31</div>
+            
+            <!-- Day 1 & 2 -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">1</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-rose-600">2</span></div>
+
+            <!-- Week 2: Day 3 to 9 -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">3</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">4</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">5</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">6</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">7</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">8</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-rose-600">9</span></div>
+
+            <!-- Week 3: Day 10 to 16 -->
+            <!-- 10 to 15: Event 1 (Xác nhận nhập học) -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-blue-50/40 border border-blue-200">
+              <span class="font-bold text-blue-800">10</span>
+              <button type="button" onclick="openScheduleModal(1)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold truncate block cursor-pointer" title="Bấm xem chi tiết">
+                📝 Kê khai online
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-blue-50/40 border border-blue-200">
+              <span class="font-bold text-blue-800">11</span>
+              <button type="button" onclick="openScheduleModal(1)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-blue-100 text-blue-800 text-[10px] font-medium truncate block cursor-pointer">
+                Nộp hồ sơ online
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-blue-50/40 border border-blue-200">
+              <span class="font-bold text-blue-800">12</span>
+              <button type="button" onclick="openScheduleModal(1)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-blue-100 text-blue-800 text-[10px] font-medium truncate block cursor-pointer">
+                Nộp hồ sơ online
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-blue-50/40 border border-blue-200">
+              <span class="font-bold text-blue-800">13</span>
+              <button type="button" onclick="openScheduleModal(1)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-blue-100 text-blue-800 text-[10px] font-medium truncate block cursor-pointer">
+                Nộp hồ sơ online
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-blue-50/40 border border-blue-200">
+              <span class="font-bold text-blue-800">14</span>
+              <button type="button" onclick="openScheduleModal(1)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-blue-100 text-blue-800 text-[10px] font-medium truncate block cursor-pointer">
+                Nộp hồ sơ online
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-blue-50/40 border border-blue-200">
+              <span class="font-bold text-blue-800">15</span>
+              <button type="button" onclick="openScheduleModal(1)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold truncate block cursor-pointer">
+                Hạn chót kê khai
+              </button>
+            </div>
+            <!-- 16: Event 2 (Welcome Day) -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-amber-50 border-2 border-amber-400 shadow-xs">
+              <span class="font-extrabold text-amber-900 text-sm">16</span>
+              <button type="button" onclick="openScheduleModal(2)" class="cal-event-chip mt-1 w-full text-left p-1.5 rounded-lg bg-[#fd761a] text-white text-[10px] font-extrabold block cursor-pointer shadow-xs" title="Bấm xem chi tiết Ngày hội Chào đón">
+                🎪 Welcome Day!
+              </button>
+            </div>
+
+            <!-- Week 4: Day 17 to 23 -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80">
+              <span class="font-bold text-slate-700">17</span>
+              <span class="text-[10px] text-slate-400 block mt-1">Chuẩn bị hồ sơ</span>
+            </div>
+            <!-- 18: Event 3 & 4 (Gặp GVCN & Sinh hoạt lớp) -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-emerald-50 border-2 border-emerald-400">
+              <span class="font-extrabold text-emerald-900 text-sm">18</span>
+              <button type="button" onclick="openScheduleModal(3)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-emerald-700 text-white text-[10px] font-bold truncate block cursor-pointer" title="Sáng: Gặp mặt GVCN & Khoa">
+                👨‍🏫 Sáng: Gặp GVCN
+              </button>
+              <button type="button" onclick="openScheduleModal(4)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-emerald-600 text-white text-[10px] font-bold truncate block cursor-pointer" title="Chiều: Sinh hoạt lớp & Bầu BCS">
+                👥 Chiều: SH Lớp
+              </button>
+            </div>
+            <!-- 19 to 22: Event 5 (Tuần SHCD) -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-purple-50/50 border border-purple-200">
+              <span class="font-bold text-purple-900">19</span>
+              <button type="button" onclick="openScheduleModal(5)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-purple-600 text-white text-[10px] font-bold truncate block cursor-pointer">
+                🏛️ Tuần SHCD
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-purple-50/50 border border-purple-200">
+              <span class="font-bold text-purple-900">20</span>
+              <button type="button" onclick="openScheduleModal(5)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-purple-100 text-purple-900 text-[10px] font-medium truncate block cursor-pointer">
+                Học Quy chế
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-purple-50/50 border border-purple-200">
+              <span class="font-bold text-purple-900">21</span>
+              <button type="button" onclick="openScheduleModal(5)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-purple-100 text-purple-900 text-[10px] font-medium truncate block cursor-pointer">
+                An ninh & Kỹ năng
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-purple-50/50 border border-purple-200">
+              <span class="font-bold text-purple-900">22</span>
+              <button type="button" onclick="openScheduleModal(5)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-purple-700 text-white text-[10px] font-bold truncate block cursor-pointer">
+                Bài kiểm tra SHCD
+              </button>
+            </div>
+            <!-- 23: Event 6 (Gala Khoa) -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-rose-50 border-2 border-rose-400 shadow-xs">
+              <span class="font-extrabold text-rose-900 text-sm">23</span>
+              <button type="button" onclick="openScheduleModal(6)" class="cal-event-chip mt-1 w-full text-left p-1.5 rounded-lg bg-[#e11d48] text-white text-[10px] font-extrabold block cursor-pointer shadow-xs" title="Bấm xem chi tiết Đêm Gala Khoa">
+                🌟 Gala Chào Tân SV!
+              </button>
+            </div>
+
+            <!-- Week 5: Day 24 to 31 -->
+            <!-- 24: Event 7 (Placement Test) -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-cyan-50/70 border border-cyan-300">
+              <span class="font-bold text-cyan-900">24</span>
+              <button type="button" onclick="openScheduleModal(7)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-cyan-700 text-white text-[10px] font-bold truncate block cursor-pointer">
+                📝 Test Tiếng Anh
+              </button>
+            </div>
+            <!-- 25: Khám sức khỏe & KTX -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-cyan-50/70 border border-cyan-300">
+              <span class="font-bold text-cyan-900">25</span>
+              <button type="button" onclick="openScheduleModal(7)" class="cal-event-chip mt-1 w-full text-left p-1 rounded-lg bg-cyan-100 text-cyan-800 text-[10px] font-bold truncate block cursor-pointer">
+                🏥 Khám SK & KTX
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">26</span><span class="text-[10px] text-slate-400 block mt-1">Cấp TKB cá nhân</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">27</span><span class="text-[10px] text-slate-400 block mt-1">Chuẩn bị giáo trình</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">28</span><span class="text-[10px] text-slate-400 block mt-1">Tham quan thư viện</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-slate-700">29</span></div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-white border border-slate-200/80"><span class="font-bold text-rose-600">30</span></div>
+
+            <!-- Day 31: Event 8 (Khai giảng & Đi học chính khóa) -->
+            <div class="cal-day-cell rounded-2xl p-2 bg-emerald-100 border-2 border-emerald-500 shadow-sm">
+              <span class="font-extrabold text-emerald-950 text-sm">31</span>
+              <button type="button" onclick="openScheduleModal(8)" class="cal-event-chip mt-1 w-full text-left p-1.5 rounded-lg bg-[#047857] text-white text-[10px] font-extrabold block cursor-pointer" title="Bắt đầu học chính khóa HK1">
+                📚 Đi học chính khóa
+              </button>
+            </div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">01/9</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">02/9</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">03/9</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">04/9</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">05/9</div>
+            <div class="cal-day-cell rounded-2xl p-2 bg-slate-50/50 text-slate-300 font-bold border border-slate-100">06/9</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+        <span class="flex items-center gap-1.5 text-blue-700 font-semibold">
+          <span class="material-symbols-outlined text-[16px]">touch_app</span>
+          Bấm vào bất kỳ sự kiện nào trên lịch để xem popup thông tin chi tiết
+        </span>
+        <button type="button" onclick="switchScheduleView('milestones')" class="text-[#003366] hover:underline font-bold">
+          Chuyển sang xem danh sách cột mốc &rarr;
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ====================================================
+         VIEW 2: CÁC CỘT MỐC SỰ KIỆN QUAN TRỌNG (MILESTONES STEPPER)
+         ==================================================== -->
+    <div id="milestonesViewContainer" class="space-y-4 mb-16">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900 leading-snug">
+            8 Cột Mốc Quan Trọng Dành Cho Tân Sinh Viên
+          </h2>
+          <p class="text-xs text-slate-500">Nhấp vào từng cột mốc để mở popup thông tin chi tiết</p>
+        </div>
+        <button type="button" onclick="switchScheduleView('calendar')" class="text-xs font-bold text-[#003366] hover:underline flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+          <span>Xem dạng Lịch tháng</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {% for ev in schedule_events %}
+        <div 
+          onclick="openScheduleModal({{ ev.id }})"
+          class="milestone-node bg-white rounded-3xl p-5 border border-slate-200/90 hover:border-blue-400 shadow-xs cursor-pointer flex flex-col justify-between group"
+        >
+          <div>
+            <!-- Header Badge & Time -->
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border {{ ev.badge_color }}">
+                {{ ev.badge }}
+              </span>
+              <span class="w-2.5 h-2.5 rounded-full" style="background-color: {{ ev.dot_color }};"></span>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#003366] transition-colors leading-snug mb-2 line-clamp-2">
+              {{ ev.title }}
+            </h3>
+
+            <!-- Time Chip -->
+            <div class="flex items-center gap-1.5 text-xs text-rose-700 font-semibold mb-2">
+              <span class="material-symbols-outlined text-[14px]">event</span>
+              <span class="line-clamp-1">{{ ev.time }}</span>
+            </div>
+
+            <!-- Location -->
+            <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mb-3">
+              <span class="material-symbols-outlined text-[14px] text-blue-600">location_on</span>
+              <span class="line-clamp-1">{{ ev.location }}</span>
+            </div>
+          </div>
+
+          <!-- Footer Button -->
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-blue-700 font-bold group-hover:text-secondary-container">
+            <span>Xem chi tiết popup</span>
+            <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         POPUP MODAL THÔNG TIN CHI TIẾT SỰ KIỆN (INTERACTIVE POPUP)
+         ==================================================== -->
+    <div 
+      id="scheduleModalBackdrop" 
+      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[99999] hidden items-center justify-center p-4 transition-opacity"
+      onclick="if(event.target === this) closeScheduleModal();"
+    >
+      <div 
+        id="scheduleModalCard" 
+        class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 relative p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+      >
+        <!-- Close Button -->
+        <button 
+          type="button" 
+          onclick="closeScheduleModal()" 
+          class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+          title="Đóng popup (Phím ESC)"
+        >
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+
+        <!-- Modal Badge & Time -->
+        <div class="flex flex-wrap items-center gap-2 mb-3 pr-10">
+          <span id="modalBadge" class="px-3 py-1 rounded-full text-xs font-bold border bg-blue-50 text-blue-700 border-blue-200">
+            Mốc sự kiện
+          </span>
+          <span id="modalTime" class="inline-flex items-center gap-1 text-xs sm:text-sm font-extrabold text-rose-700 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
+            <span class="material-symbols-outlined text-[16px]">schedule</span>
+            <span>Thời gian</span>
+          </span>
+        </div>
+
+        <!-- Modal Title -->
+        <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold text-slate-900 leading-snug mb-3">
+          Tiêu đề sự kiện
+        </h2>
+
+        <!-- Location Box -->
+        <div class="flex items-center gap-2 text-xs sm:text-sm text-[#0072BC] font-semibold mb-4 bg-sky-50 px-3.5 py-2 rounded-xl border border-sky-100">
+          <span class="material-symbols-outlined text-[20px]">location_on</span>
+          <span id="modalLocation">Địa điểm</span>
+        </div>
+
+        <!-- Content Desc -->
+        <div class="space-y-3 mb-5">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Nội dung chi tiết:</h4>
+          <p id="modalDesc" class="text-slate-700 text-sm sm:text-base leading-relaxed text-justify">
+            Mô tả nội dung chi tiết...
           </p>
         </div>
-        <div class="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
-          <a href="/huong-dan-nhap-hoc/" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/20 transition-all">
-            <span class="material-symbols-outlined text-[18px]">menu_book</span>
-            <span>Xem Hướng dẫn Nhập học</span>
-          </a>
+
+        <!-- Guide Callout -->
+        <div id="modalGuideContainer" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs sm:text-sm text-amber-900 flex items-start gap-3 mb-6">
+          <span class="material-symbols-outlined text-amber-600 text-[20px] shrink-0 mt-0.5">lightbulb</span>
+          <div class="leading-relaxed">
+            <strong class="font-bold">Lưu ý cho Tân sinh viên:</strong>
+            <span id="modalGuide">Hướng dẫn...</span>
+          </div>
+        </div>
+
+        <!-- Thematic Image Thumbnail -->
+        <div class="rounded-2xl overflow-hidden border border-slate-200 h-44 sm:h-52 mb-6">
+          <img id="modalImage" src="" alt="Sự kiện" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+          <span class="text-xs text-slate-500">
+            Khoa: <strong class="text-slate-800">{{ faculty.name|default:"Trường Đại học Kinh tế" }}</strong>
+          </span>
+          <button 
+            type="button" 
+            onclick="closeScheduleModal()" 
+            class="px-5 py-2.5 rounded-full bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer"
+          >
+            Đã hiểu & Đóng
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- 5. HỖ TRỢ & ĐẦU MỐI LIÊN HỆ TÂN SINH VIÊN -->
+    <div class="bg-gradient-to-br from-slate-50 to-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm mt-8">
+      <div class="max-w-2xl mb-6">
+        <h3 class="text-base sm:text-xl font-extrabold text-slate-900 font-headline-md tracking-tight">
+          Đầu Mối Hỗ Trợ Tân Sinh Viên Khóa 52K
+        </h3>
+        <p class="text-slate-600 text-xs sm:text-sm mt-1">
+          Mọi thắc mắc về thời gian, địa điểm giảng đường và lịch sinh hoạt, vui lòng liên hệ Ban Chủ nhiệm Khoa hoặc Phòng Công tác sinh viên.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-blue-700 text-[18px]">school</span>
+            Văn phòng Khoa
+          </div>
+          <p class="text-slate-500 mb-2">{{ faculty.name|default:"Khoa Chuyên môn" }}</p>
+          <div class="font-semibold text-blue-800">Hotline: 0236 3836 169</div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-700 text-[18px]">badge</span>
+            Phòng Công tác sinh viên
+          </div>
+          <p class="text-slate-500 mb-2">Phòng 102 - Nhà Hiệu bộ</p>
+          <div class="font-semibold text-emerald-800">Hotline: 0236 3950 110</div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-rose-700 text-[18px]">flag</span>
+            Đoàn Thanh Niên & CLB
+          </div>
+          <p class="text-slate-500 mb-2">Gala chào tân sinh viên & 13+ CLB</p>
+          <div class="font-semibold text-rose-800">Hotline: 0236 3847 426</div>
         </div>
       </div>
     </div>
 
-    <!-- Main Content Card -->
-    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-md">
-      {% include 'portal/components/freshman_schedule_content.html' %}
-    </div>
   </div>
 </main>
+
+<!-- SCHEDULE EVENTS DATA SCRIPT -->
+<script>
+  const scheduleEventsData = {
+    {% for ev in schedule_events %}
+    {{ ev.id }}: {
+      id: {{ ev.id }},
+      badge: "{{ ev.badge|escapejs }}",
+      time: "{{ ev.time|escapejs }}",
+      title: "{{ ev.title|escapejs }}",
+      location: "{{ ev.location|escapejs }}",
+      desc: "{{ ev.desc|escapejs }}",
+      guide: "{{ ev.guide|escapejs }}",
+      image: "{{ ev.image|escapejs }}",
+      badgeColor: "{{ ev.badge_color|escapejs }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  };
+
+  function switchScheduleView(mode) {
+    const calContainer = document.getElementById('calendarViewContainer');
+    const milesContainer = document.getElementById('milestonesViewContainer');
+    const btnCal = document.getElementById('viewBtnCalendar');
+    const btnMiles = document.getElementById('viewBtnMilestones');
+
+    if (mode === 'milestones') {
+      calContainer.classList.add('hidden');
+      milesContainer.classList.remove('hidden');
+      btnMiles.className = "flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#003366] shadow-sm transition-all cursor-pointer font-bold";
+      btnCal.className = "flex items-center gap-1.5 px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer font-bold";
+    } else {
+      calContainer.classList.remove('hidden');
+      milesContainer.classList.remove('hidden'); // Show both or toggle as needed
+      btnCal.className = "flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#003366] shadow-sm transition-all cursor-pointer font-bold";
+      btnMiles.className = "flex items-center gap-1.5 px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer font-bold";
+    }
+  }
+
+  function openScheduleModal(id) {
+    const ev = scheduleEventsData[id];
+    if (!ev) return;
+
+    document.getElementById('modalBadge').textContent = ev.badge;
+    document.getElementById('modalTime').querySelector('span:last-child').textContent = ev.time;
+    document.getElementById('modalTitle').textContent = ev.title;
+    document.getElementById('modalLocation').textContent = ev.location;
+    document.getElementById('modalDesc').textContent = ev.desc;
+    document.getElementById('modalGuide').textContent = ev.guide;
+    document.getElementById('modalImage').src = ev.image;
+
+    const backdrop = document.getElementById('scheduleModalBackdrop');
+    backdrop.classList.remove('hidden');
+    backdrop.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeScheduleModal() {
+    const backdrop = document.getElementById('scheduleModalBackdrop');
+    backdrop.classList.add('hidden');
+    backdrop.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeScheduleModal();
+    }
+  });
+</script>
 {% endblock %}

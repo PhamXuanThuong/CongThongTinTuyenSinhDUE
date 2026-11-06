@@ -16,8 +16,9 @@ urlpatterns = [
     path('chatbot/', views.chatbot_view, name='chatbot'),
     path('huong-nghiep/', views.career_advisory_view, name='career_advisory'),
 
-    # Xác thực người dùng (Đăng nhập & Đăng xuất)
+    # Xác thực người dùng (Đăng nhập, Đăng ký & Đăng xuất)
     path('dang-nhap/', views.login_view, name='login'),
+    path('dang-ky/', views.register_view, name='register'),
     path('dang-xuat/', views.logout_view, name='logout'),
 
     # Form đăng ký tư vấn tuyển sinh

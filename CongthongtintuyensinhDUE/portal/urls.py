@@ -9,6 +9,7 @@ urlpatterns = [
     path('khoa/<str:code>/', views.faculty_detail_view, name='khoa_detail'),
     path('khoa/<str:code>/lien-chi-doan/', views.faculty_lcd_detail_view, name='khoa_lcd_detail'),
     path('khoa/<str:code>/lcd/', views.faculty_lcd_detail_view, name='khoa_lcd_detail_short'),
+    path('khoa/<str:code>/lich-trinh-tan-sinh-vien/', views.faculty_freshman_schedule_view, name='khoa_freshman_schedule'),
 
     # Liên Chi Đoàn
     path('lien-chi-doan/', views.lcd_overview_view, name='lien_chi_doan_list'),
