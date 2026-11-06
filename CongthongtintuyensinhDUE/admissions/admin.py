@@ -15,7 +15,7 @@ from .models import (
 # Tùy biến tiêu đề Django Admin
 admin.site.site_header = "CỔNG THÔNG TIN TUYỂN SINH DUE - HỆ THỐNG QUẢN TRỊ"
 admin.site.site_title = "Quản trị Tuyển sinh DUE"
-admin.site.index_title = "Bảng điều khiển & Quản trị dữ liệu Tuyển sinh"
+admin.site.index_title = "Bảng điều khiển và quản trị dữ liệu Tuyển sinh"
 
 
 @admin.register(TinTuc)

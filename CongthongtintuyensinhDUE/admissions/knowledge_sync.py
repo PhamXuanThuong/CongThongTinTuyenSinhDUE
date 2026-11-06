@@ -3,7 +3,7 @@
 - Mỗi bản ghi (ngành, điểm chuẩn, học phí, học bổng, FAQ, tin tức...) được chuyển thành văn bản.
 - Chỉ tạo embedding cho nội dung MỚI hoặc ĐÃ THAY ĐỔI; nội dung bị xóa sẽ bị gỡ khỏi kho.
 - Được gọi tự động khi cán bộ lưu/xóa dữ liệu trong admin (signals), hoặc chạy tay:
-      python manage.py sync_kien_thuc
+      python manage.py sync_knowledge
 """
 import hashlib
 import logging

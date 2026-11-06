@@ -38,7 +38,7 @@
 
 {% block content %}
 <!-- Main Content (pt-36 sm:pt-40 tạo khoảng cách thông thoáng hoàn toàn dưới fixed header) -->
-  <main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+  <main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
     <!-- Top Glows -->
     <div class="relative w-full overflow-hidden">
       <div class="absolute -top-40 right-1/4 w-[550px] h-[550px] rounded-full bg-secondary-container/10 blur-[130px] pointer-events-none"></div>
@@ -60,10 +60,6 @@
       <div class="bg-gradient-to-br from-[#002244] via-[#003366] to-[#0a4b8a] rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-xl border border-blue-900/40">
         <div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
         <div class="relative z-10 max-w-4xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-secondary-container text-xs font-bold uppercase tracking-wider mb-4 border border-white/10">
-            <span class="material-symbols-outlined text-sm">school</span>
-            3 LOẠI HÌNH ĐÀO TẠO ĐẠI HỌC CHÍNH QUY NĂM 2026 - MÃ TRƯỜNG DDQ
-          </div>
           <h1 class="text-2xl sm:text-4xl font-headline-lg font-bold mb-4 tracking-tight leading-tight">
             Các Loại Hình Đào Tạo Tại DUE
           </h1>
@@ -92,7 +88,7 @@
               <div>
                 <div class="text-xs uppercase font-bold text-slate-300">Bán phần tiếng Anh</div>
                 <div class="text-lg font-bold text-white">13 Chương trình <span class="text-xs font-normal text-blue-200">(1.240 CT)</span></div>
-                <div class="text-[11px] text-slate-300">Tích hợp ACCA, ICAEW & AI</div>
+                <div class="text-[11px] text-slate-300">Tích hợp ACCA, ICAEW và AI</div>
               </div>
             </div>
 
@@ -101,7 +97,7 @@
                 <span class="material-symbols-outlined text-xl">verified</span>
               </div>
               <div>
-                <div class="text-xs uppercase font-bold text-slate-300">Tiêu chuẩn (Standard)</div>
+                <div class="text-xs uppercase font-bold text-slate-300">Tiêu chuẩn</div>
                 <div class="text-lg font-bold text-white">19 Chương trình <span class="text-xs font-normal text-emerald-200">(1.985 CT)</span></div>
                 <div class="text-[11px] text-slate-300">Chuẩn kiểm định quốc tế AUN-QA</div>
               </div>
@@ -115,7 +111,7 @@
     <!-- TABS NAVIGATION SECTION -->
     <section class="max-w-7xl mx-auto px-6 lg:px-12 mb-6">
       
-      <!-- Hộp chuyển đổi Tab & Ô tìm kiếm -->
+      <!-- Hộp chuyển đổi Tab và ô tìm kiếm -->
       <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 shadow-sm border border-outline-variant/40 space-y-4">
         
         <!-- Hàng 1: Ô tìm kiếm lên trên -->
@@ -140,7 +136,7 @@
 
           <button onclick="switchTab('tieu-chuan')" id="tab-tieu-chuan" class="tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold border border-slate-200 text-slate-700 hover:bg-slate-50 transition-all cursor-pointer whitespace-nowrap">
             <span class="material-symbols-outlined text-base">verified</span>
-            <span>Tiêu chuẩn (Standard)</span>
+            <span>Tiêu chuẩn</span>
             <span class="tab-badge px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-200 text-slate-700">19 ngành</span>
           </button>
         </div>
@@ -176,7 +172,7 @@
                 </div>
                 <div class="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-orange-100 shadow-sm">
                   <span class="material-symbols-outlined text-orange-600">how_to_reg</span>
-                  <span><strong>Phương thức:</strong> PT 1 & PT 2</span>
+                  <span><strong>Phương thức:</strong> PT 1 và PT 2</span>
                 </div>
                 <div class="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-orange-100 shadow-sm">
                   <span class="material-symbols-outlined text-orange-600">workspace_premium</span>
@@ -346,7 +342,7 @@
                 </div>
                 <div class="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-blue-100 shadow-sm">
                   <span class="material-symbols-outlined text-blue-600">assignment_turned_in</span>
-                  <span><strong>Phương thức:</strong> PT 1 & PT 2</span>
+                  <span><strong>Phương thức:</strong> PT 1 và PT 2</span>
                 </div>
               </div>
             </div>
@@ -721,7 +717,7 @@
                 Chương Trình Đạt Chuẩn Kiểm Định Quốc Tế AUN-QA
               </div>
               <h2 class="text-xl sm:text-2xl font-headline-md font-bold text-slate-900 mb-2">
-                Loại Hình Đào Tạo: Tiêu Chuẩn (Standard)
+                Loại Hình Đào Tạo: Tiêu Chuẩn
               </h2>
               <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
                 Chương trình Tiêu chuẩn là loại hình đào tạo chủ lực và lâu đời của DUE, quy tụ 19 ngành và chuyên ngành kinh tế trọng điểm. Chương trình được thiết kế chuẩn mực, linh hoạt, 100% chương trình được kiểm định chất lượng cấp quốc gia và chuẩn Đông Nam Á (AUN-QA). Sinh viên được trang bị kiến thức chuyên môn vững chắc kết hợp ứng dụng công nghệ và kỹ năng số.
@@ -1265,7 +1261,7 @@
                 <th class="py-4 px-5 rounded-tl-2xl w-1/4">Tiêu chí so sánh</th>
                 <th class="py-4 px-5 w-1/4 bg-orange-600 text-white font-bold">Toàn phần tiếng Anh</th>
                 <th class="py-4 px-5 w-1/4 bg-blue-700 text-white font-bold">Bán phần tiếng Anh</th>
-                <th class="py-4 px-5 rounded-tr-2xl w-1/4 bg-emerald-700 text-white font-bold">Tiêu chuẩn (Standard)</th>
+                <th class="py-4 px-5 rounded-tr-2xl w-1/4 bg-emerald-700 text-white font-bold">Tiêu chuẩn</th>
               </tr>
             </thead>
             <tbody class="text-xs sm:text-sm divide-y divide-slate-200">
@@ -1283,27 +1279,21 @@
               </tr>
               <tr class="hover:bg-slate-50/70">
                 <td class="py-3.5 px-5 font-bold text-slate-800 bg-slate-50/60">Phương thức xét tuyển áp dụng</td>
-                <td class="py-3.5 px-5 font-bold text-orange-800">Phương thức 1 & Phương thức 2</td>
-                <td class="py-3.5 px-5 font-bold text-blue-800">Phương thức 1 & Phương thức 2</td>
-                <td class="py-3.5 px-5 font-bold text-emerald-800">Phương thức 1, 3 & 4</td>
+                <td class="py-3.5 px-5 font-bold text-orange-800">Phương thức 1 và phương thức 2</td>
+                <td class="py-3.5 px-5 font-bold text-blue-800">Phương thức 1 và phương thức 2</td>
+                <td class="py-3.5 px-5 font-bold text-emerald-800">Phương thức 1, 3 và 4</td>
               </tr>
               <tr class="hover:bg-slate-50/70">
-                <td class="py-3.5 px-5 font-bold text-slate-800 bg-slate-50/60">Số lượng & Chỉ tiêu tuyển sinh</td>
+                <td class="py-3.5 px-5 font-bold text-slate-800 bg-slate-50/60">Số lượng và chỉ tiêu tuyển sinh</td>
                 <td class="py-3.5 px-5 font-bold text-slate-800">4 chương trình (360 chỉ tiêu)</td>
                 <td class="py-3.5 px-5 font-bold text-slate-800">13 chương trình (1.240 chỉ tiêu)</td>
                 <td class="py-3.5 px-5 font-bold text-slate-800">19 chương trình (1.985 chỉ tiêu)</td>
               </tr>
               <tr class="hover:bg-slate-50/70">
-                <td class="py-3.5 px-5 font-bold text-slate-800 bg-slate-50/60">Chứng chỉ & Giá trị gia tăng</td>
+                <td class="py-3.5 px-5 font-bold text-slate-800 bg-slate-50/60">Chứng chỉ và giá trị gia tăng</td>
                 <td class="py-3.5 px-5 text-slate-700">Học bổng Elite, thực tập tập đoàn đa quốc gia, trao đổi quốc tế</td>
                 <td class="py-3.5 px-5 text-slate-700">Tích hợp tín chỉ nghề nghiệp ICAEW, ACCA, AI trong kinh doanh</td>
                 <td class="py-3.5 px-5 text-slate-700">Đạt chuẩn AUN-QA, chuyên môn thực tiễn vững vàng, mạng lưới cựu SV mạnh</td>
-              </tr>
-              <tr class="hover:bg-slate-50/70">
-                <td class="py-3.5 px-5 font-bold text-slate-800 bg-slate-50/60">Hậu tố mã xét tuyển</td>
-                <td class="py-3.5 px-5 font-mono font-bold text-orange-700">...EL, ...GB</td>
-                <td class="py-3.5 px-5 font-mono font-bold text-blue-700">...PR</td>
-                <td class="py-3.5 px-5 font-mono font-bold text-emerald-700">...ST</td>
               </tr>
             </tbody>
           </table>
@@ -1314,7 +1304,7 @@
     </div>
   </main>
 
-  <!-- JAVASCRIPT ĐIỀU KHIỂN TABS & TÌM KIẾM -->
+  <!-- JAVASCRIPT ĐIỀU KHIỂN TABS và TÌM KIẾM -->
   <script>
     let activeTabId = 'toan-phan';
 

@@ -8,7 +8,7 @@
     ],
     "level": "Trường (trực thuộc Hội SV)",
     "faculty_id": null,
-    "category": "Kỹ năng & Khởi nghiệp",
+    "category": "Kỹ năng và khởi nghiệp",
     "founded": "2006-10-13",
     "slogan": "Học để sẵn sàng khởi nghiệp • Đam mê – Đoàn kết – Đổi mới – Đột phá",
     "description": "CLB Khởi nghiệp Kinh tế (tiền thân là CLB Doanh Nhân Tương Lai) được thành lập ngày 13/10/2006, là một trong những câu lạc bộ học thuật và phong trào đầu tiên trực thuộc Hội Sinh viên Trường Đại học Kinh tế – Đại học Đà Nẵng. Với sứ mệnh trở thành 'vườn ươm' khởi nghiệp ngay trên giảng đường đại học, CLB đồng hành cùng sinh viên biến các ý tưởng kinh doanh sáng tạo thành các dự án thực tế khả thi.",
@@ -17,19 +17,19 @@
     "vision": "Trở thành tổ chức sinh viên dẫn đầu miền Trung về ươm tạo dự án khởi nghiệp và phát triển năng lực doanh chủ trong kỷ nguyên kinh tế số.",
     "departments": [
       {
-        "name": "Ban Chuyên môn & Dự án",
+        "name": "Ban Chuyên môn và dự án",
         "desc": "Nghiên cứu thị trường, thẩm định ý tưởng kinh doanh, hỗ trợ xây dựng mô hình Canvas và lập kế hoạch tài chính cho các dự án khởi nghiệp."
       },
       {
-        "name": "Ban Sự kiện & Đối ngoại",
+        "name": "Ban Sự kiện và đối ngoại",
         "desc": "Lên ý tưởng, vận hành các hội thảo, cuộc thi khởi nghiệp và kết nối mạng lưới cố vấn, doanh nghiệp, nhà tài trợ."
       },
       {
-        "name": "Ban Truyền thông & Kỹ thuật",
+        "name": "Ban Truyền thông và kỹ thuật",
         "desc": "Sản xuất nội dung số, thiết kế đồ họa ấn phẩm, quản trị Fanpage và ghi lại những khoảnh khắc hoạt động của CLB."
       },
       {
-        "name": "Ban Nhân sự & Hậu cần",
+        "name": "Ban Nhân sự và hậu cần",
         "desc": "Gắn kết thành viên, quản lý hoạt động nội bộ, đào tạo kỹ năng mềm và chuẩn bị công tác hậu cần cho các sự kiện."
       }
     ],
@@ -42,7 +42,7 @@
     "recent_activities": [
       "Chung kết Cuộc thi Ý tưởng Khởi nghiệp Đổi mới Sáng tạo DUE 2026",
       "Workshop 'Gen Z Khởi nghiệp số và ứng dụng Trí tuệ Nhân tạo (AI) trong thương mại'",
-      "Tọa đàm Gặp gỡ Doanh nhân thành đạt & Cựu thành viên CLB các thế hệ",
+      "Tọa đàm Gặp gỡ Doanh nhân thành đạt và cựu thành viên CLB các thế hệ",
       "Chiến dịch chào đón Tân sinh viên và Chuỗi ngày hội 'Khởi tạo tương lai cùng DUE'"
     ],
     "achievements": [
@@ -50,7 +50,7 @@
       "Bằng khen của Thành Đoàn Đà Nẵng và Đoàn Đại học Đà Nẵng: Đơn vị xuất sắc trong phong trào Khởi nghiệp sáng tạo",
       "Mạng lưới hơn 1.000 cựu thành viên hiện là Giám đốc doanh nghiệp, Founder startup và quản lý cấp cao tại các tập đoàn"
     ],
-    "recruitment": "Đợt tuyển thành viên Gen mới mở đơn từ tháng 8 đến tháng 10 hàng năm. Tuyển các mảng: Chuyên môn dự án, Sự kiện, Truyền thông & Nhân sự.",
+    "recruitment": "Đợt tuyển thành viên Gen mới mở đơn từ tháng 8 đến tháng 10 hàng năm. Tuyển các mảng: Chuyên môn dự án, Sự kiện, Truyền thông và nhân sự.",
     "recruitment_steps": [
       {
         "step": "Vòng 1",
@@ -59,7 +59,7 @@
       },
       {
         "step": "Vòng 2",
-        "title": "Phỏng vấn cá nhân & Teamwork",
+        "title": "Phỏng vấn cá nhân và teamwork",
         "desc": "Gặp gỡ Ban điều hành, kiểm tra độ phù hợp văn hóa và xử lý tình huống nhóm."
       },
       {
@@ -119,7 +119,7 @@
     ],
     "level": "Trường",
     "faculty_id": "mkt",
-    "category": "Học thuật & Chuyên ngành",
+    "category": "Học thuật và chuyên ngành",
     "founded": "2010-10-31",
     "slogan": "Cho đam mê bay xa • Be a Marpiece",
     "description": "CLB DUE Marketer (tiền thân là DBA Marketer) ra đời ngày 31/10/2010, là câu lạc bộ học thuật chuyên sâu về Marketing hàng đầu tại Đà Nẵng. Hoạt động dưới sự bảo trợ chuyên môn của Khoa Marketing và Đoàn trường Đại học Kinh tế, CLB là nơi hội tụ các bạn trẻ đam mê tiếp thị, truyền thông và xây dựng thương hiệu.",
@@ -140,7 +140,7 @@
         "desc": "Sáng tạo nội dung (Content), thiết kế visual, sản xuất video viral và quản trị các kênh truyền thông của CLB."
       },
       {
-        "name": "Ban Đối ngoại (PR & Sponsorship)",
+        "name": "Ban Đối ngoại (PR và sponsorship)",
         "desc": "Mời diễn giả chuyên gia, tìm kiếm và duy trì mối quan hệ hợp tác với các doanh nghiệp, nhà tài trợ lớn."
       }
     ],
@@ -154,7 +154,7 @@
       "Marketing Battleground: Forge the Core – Hơn 2 tháng tranh tài gay cấn với Gala Day ấn tượng",
       "Đại lễ Kỷ niệm 15 năm thành lập CLB DUE Marketer (2010 – 2025)",
       "Chiến dịch tuyển quân 'Be Marpiece' đón nhận hàng trăm đơn ứng tuyển chất lượng",
-      "Workshop 'Digital Performance Marketing & Xu hướng sáng tạo nội dung trên TikTok'"
+      "Workshop 'Digital Performance Marketing và xu hướng sáng tạo nội dung trên TikTok'"
     ],
     "achievements": [
       "Giải thưởng Câu lạc bộ Học thuật Xuất sắc nhất Trường Đại học Kinh tế 5 năm liên tiếp",
@@ -165,7 +165,7 @@
     "recruitment_steps": [
       {
         "step": "Vòng 1",
-        "title": "CV & Portfolio Submission",
+        "title": "CV và portfolio Submission",
         "desc": "Gửi hồ sơ năng lực và giải một case study tình huống nhỏ."
       },
       {
@@ -180,7 +180,7 @@
       },
       {
         "step": "Vòng 4",
-        "title": "Onboarding & Gala Tân binh",
+        "title": "Onboarding và gala Tân binh",
         "desc": "Chính thức gia nhập ngôi nhà chung DUE Marketer."
       }
     ],
@@ -230,7 +230,7 @@
     ],
     "level": "Trường",
     "faculty_id": null,
-    "category": "Học thuật & Chuyên ngành",
+    "category": "Học thuật và chuyên ngành",
     "founded": "2014-10-03",
     "slogan": "I-DESIGN – DESIGN YOUR LIFE",
     "description": "I-Design Club là câu lạc bộ học thuật chuyên sâu về Thiết kế Đồ họa và Sáng tạo Visual tại Trường Đại học Kinh tế – ĐH Đà Nẵng. Với tôn chỉ 'Không cần giỏi vẽ từ đầu, chỉ cần đam mê sáng tạo', CLB đào tạo từ con số 0 các công cụ thiết kế chuyên nghiệp và rèn luyện tư duy thị giác ứng dụng trong truyền thông hiện đại.",
@@ -243,15 +243,15 @@
         "desc": "Đào tạo các phần mềm Adobe Illustrator, Photoshop, Figma và chịu trách nhiệm thiết kế bộ nhận diện sự kiện."
       },
       {
-        "name": "Ban Video & Kỹ xảo (Motion)",
+        "name": "Ban Video và kỹ xảo (Motion)",
         "desc": "Quay dựng video, sản xuất motion graphics, video recap và hiệu ứng kỹ xảo cho các chiến dịch truyền thông."
       },
       {
-        "name": "Ban Nội dung (Content & Concept)",
+        "name": "Ban Nội dung (Content và concept)",
         "desc": "Lên ý tưởng kịch bản, phát triển câu chuyện thị giác và biên soạn thông điệp cho các ấn phẩm sáng tạo."
       },
       {
-        "name": "Ban Đối ngoại & Nhân sự",
+        "name": "Ban Đối ngoại và nhân sự",
         "desc": "Quản trị fanpage I-Design Media, kết nối các đối tác thiết kế và chăm sóc đời sống tinh thần thành viên."
       }
     ],
@@ -276,7 +276,7 @@
     "recruitment_steps": [
       {
         "step": "Vòng 1",
-        "title": "Nộp đơn & Portfolio (nếu có)",
+        "title": "Nộp đơn và portfolio (nếu có)",
         "desc": "Thể hiện gu thẩm mỹ và lý do muốn học hỏi thiết kế đồ họa."
       },
       {
@@ -291,7 +291,7 @@
       },
       {
         "step": "Vòng 4",
-        "title": "Phân ban & Ra mắt",
+        "title": "Phân ban và ra mắt",
         "desc": "Chính thức gia nhập các ban chuyên môn của I-Design Club."
       }
     ],
@@ -341,7 +341,7 @@
     ],
     "level": "Trường (trực thuộc Hội SV)",
     "faculty_id": null,
-    "category": "Ngoại ngữ & Tiếng Anh",
+    "category": "Ngoại ngữ và tiếng Anh",
     "founded": "2012-09-15",
     "slogan": "SEE The World, Speak Your Word",
     "description": "SEE CLUB (Speak English Easily) là câu lạc bộ tiếng Anh duy nhất trực thuộc Hội Sinh viên Trường Đại học Kinh tế – ĐH Đà Nẵng. Với thông điệp 'SEE The World, Speak Your Word', câu lạc bộ là môi trường năng động để sinh viên rèn luyện phản xạ giao tiếp tiếng Anh tự nhiên, nâng cao kỹ năng thuyết trình quốc tế và kết nối văn hóa toàn cầu.",
@@ -362,7 +362,7 @@
         "desc": "Sản xuất các bài viết song ngữ Việt - Anh, video phát âm chuẩn và quản trị Fanpage 20K người theo dõi."
       },
       {
-        "name": "Ban Nhân sự & Quan hệ Quốc tế",
+        "name": "Ban Nhân sự và quan hệ Quốc tế",
         "desc": "Kết nối sinh viên quốc tế (Lào, Pháp, Nhật...), quản lý hội viên và tổ chức các buổi teambuilding."
       }
     ],
@@ -383,16 +383,16 @@
       "Đạt danh hiệu 'Tập thể sinh viên xuất sắc tiêu biểu' do Hội Sinh viên ĐHĐN trao tặng",
       "Hàng trăm thành viên đạt IELTS 7.0 - 8.5 và giành học bổng du học, trao đổi quốc tế"
     ],
-    "recruitment": "Tuyển quân hàng năm vào tháng 8 – tháng 9. Quy trình gồm: Online Test → Phỏng vấn nhóm & cá nhân → Onboarding.",
+    "recruitment": "Tuyển quân hàng năm vào tháng 8 – tháng 9. Quy trình gồm: Online Test → Phỏng vấn nhóm và cá nhân → Onboarding.",
     "recruitment_steps": [
       {
         "step": "Vòng 1",
-        "title": "Online Application & Test",
+        "title": "Online Application và test",
         "desc": "Nộp đơn trực tuyến và làm bài kiểm tra tiếng Anh đánh giá năng lực cơ bản."
       },
       {
         "step": "Vòng 2",
-        "title": "Teamwork & Speaking Challenge",
+        "title": "Teamwork và speaking Challenge",
         "desc": "Tham gia trò chơi tương tác nhóm và phỏng vấn trực tiếp bằng tiếng Anh."
       },
       {
@@ -452,7 +452,7 @@
     ],
     "level": "Trường",
     "faculty_id": "tmdt_mkt_cns",
-    "category": "Kỹ năng & Khởi nghiệp",
+    "category": "Kỹ năng và khởi nghiệp",
     "founded": "2013-10-27",
     "slogan": "ĐAM MÊ – CỐNG HIẾN – CHIẾN THẮNG",
     "description": "CLB C-RES (Commerce – Relationship – Experience – Skill) là một trong những câu lạc bộ có quy mô và sức ảnh hưởng lớn nhất tại Trường Đại học Kinh tế – ĐH Đà Nẵng. Thành lập ngày 27/10/2013, C-RES nổi tiếng với các sự kiện giao lưu văn hóa quốc tế quy mô cấp Đại học Đà Nẵng, các chiến dịch kinh doanh thực tế và các dự án thiện nguyện lan tỏa giá trị cộng đồng.",
@@ -461,7 +461,7 @@
     "vision": "Xây dựng thương hiệu tổ chức sinh viên hàng đầu về kỹ năng và sự kiện quốc tế tại Đà Nẵng, kết nối sinh viên Việt Nam và bạn bè năm châu.",
     "departments": [
       {
-        "name": "Ban Chuyên môn & Dự án Thương mại",
+        "name": "Ban Chuyên môn và dự án Thương mại",
         "desc": "Nghiên cứu thị trường, lập dự toán tài chính và triển khai các dự án kinh doanh gây quỹ thực tế."
       },
       {
@@ -473,7 +473,7 @@
         "desc": "Sáng tạo visual, viral video, phóng sự thực tế và quản lý Fanpage 24.000 người theo dõi."
       },
       {
-        "name": "Ban Đối ngoại & Tài trợ",
+        "name": "Ban Đối ngoại và tài trợ",
         "desc": "Đàm phán tài trợ với các nhãn hàng lớn, kết nối truyền thông báo chí và đón tiếp các đoàn quốc tế."
       }
     ],
@@ -524,7 +524,7 @@
       "Tình anh em, đồng đội khăng khít 'Một ngày là C-RESer, trọn đời là C-RESer'"
     ],
     "leaders": "Chủ nhiệm: Thanh Nhàn (0363 063 767) • Phó Chủ nhiệm Đối ngoại: Trà My (0961 403 567)",
-    "advisors": "ThS. Nguyễn Thị Bích Thảo (Khoa TMĐT & Marketing)",
+    "advisors": "ThS. Nguyễn Thị Bích Thảo (Khoa TMĐT và marketing)",
     "followers": "24K",
     "contact": {
       "facebook": "https://www.facebook.com/CRESclub.2710",
@@ -563,7 +563,7 @@
     ],
     "level": "Khoa QTKD / Trường",
     "faculty_id": "qtkd",
-    "category": "Kỹ năng & Khởi nghiệp",
+    "category": "Kỹ năng và khởi nghiệp",
     "founded": "2012-11-20",
     "slogan": "K2S Refresh! • Mở khóa tiềm năng, kiến tạo thành công",
     "description": "CLB K2S (Key To Success – 'Nhà Key') là câu lạc bộ phát triển kỹ năng gắn bó với Khoa Quản trị kinh doanh, Trường Đại học Kinh tế – ĐH Đà Nẵng. Với slogan 'K2S Refresh!', CLB đã đào tạo qua 14 thế hệ sinh viên, chú trọng rèn luyện tư duy lãnh đạo, quản lý thời gian, giao tiếp thuyết phục và làm việc nhóm hiệu quả.",
@@ -580,7 +580,7 @@
         "desc": "Lên ý tưởng và thực hiện các chương trình teambuilding, talkshow kỹ năng sống và chuỗi sinh nhật CLB."
       },
       {
-        "name": "Ban Truyền thông (Media & Creative)",
+        "name": "Ban Truyền thông (Media và creative)",
         "desc": "Quản trị hệ sinh thái Fanpage, K2S Confession, Group CTV và kênh TikTok với nội dung truyền cảm hứng."
       },
       {
@@ -624,7 +624,7 @@
       },
       {
         "step": "Vòng 4",
-        "title": "Thực tập dự án & Ra mắt",
+        "title": "Thực tập dự án và ra mắt",
         "desc": "Tham gia vận hành dự án thật trước khi chính thức trở thành Key-er."
       }
     ],
@@ -674,7 +674,7 @@
     ],
     "level": "Trường (trực thuộc Hội SV)",
     "faculty_id": "qtkd",
-    "category": "Học thuật & Chuyên ngành",
+    "category": "Học thuật và chuyên ngành",
     "founded": "2015-05-18",
     "slogan": "HỌC HỎI – SẺ CHIA – THẤU HIỂU",
     "description": "CLB HRM là câu lạc bộ học thuật chuyên sâu về Quản trị Nguồn nhân lực, trực thuộc Hội Sinh viên Trường Đại học Kinh tế – ĐH Đà Nẵng. Với tôn chỉ 'Học hỏi – Sẻ chia – Thấu hiểu', CLB là cầu nối giữa sinh viên với các chuyên gia HR, các doanh nghiệp và tập đoàn tuyển dụng hàng đầu thông qua các cuộc thi giải case nhân sự, workshop chuyên đề và series kết nối việc làm.",
@@ -695,7 +695,7 @@
         "desc": "Phụ trách series 'Kết nối nghề nghiệp', bản tin tuyển dụng thực tập và quản lý hình ảnh câu lạc bộ."
       },
       {
-        "name": "Ban Đối ngoại & Kết nối Doanh nghiệp",
+        "name": "Ban Đối ngoại và kết nối Doanh nghiệp",
         "desc": "Mời giám đốc nhân sự (HRD) từ các tập đoàn lớn làm diễn giả, cố vấn và tìm nguồn tài trợ."
       }
     ],
@@ -720,7 +720,7 @@
     "recruitment_steps": [
       {
         "step": "Vòng 1",
-        "title": "Đơn ứng tuyển & CV",
+        "title": "Đơn ứng tuyển và CV",
         "desc": "Đăng ký trực tuyến, nộp CV và bài luận ngắn về định hướng nghề HR."
       },
       {
@@ -785,7 +785,7 @@
     ],
     "level": "Khoa Luật",
     "faculty_id": "luat",
-    "category": "Học thuật & Chuyên ngành",
+    "category": "Học thuật và chuyên ngành",
     "founded": "2012-08-10",
     "slogan": "Thượng tôn pháp luật – Vững vàng chuyên môn – Tự hào Sinh viên Luật",
     "description": "CLB Khoa học Pháp lý là câu lạc bộ học thuật trực thuộc Khoa Luật, Trường Đại học Kinh tế – ĐH Đà Nẵng. Với tôn chỉ thượng tôn pháp luật và tinh thần công lý, CLB là nơi rèn luyện kỹ năng phân tích luật, tư duy phản biện, kỹ năng tranh tụng thông qua mô hình 'Phiên tòa giả định' danh tiếng và các hội thảo nghiên cứu khoa học pháp lý thực tiễn.",
@@ -794,19 +794,19 @@
     "vision": "Trở thành câu lạc bộ học thuật Luật uy tín hàng đầu miền Trung, cung cấp nguồn nhân lực pháp lý chất lượng cao cho các tòa án, viện kiểm sát và công ty luật.",
     "departments": [
       {
-        "name": "Ban Chuyên môn & Tranh tụng",
+        "name": "Ban Chuyên môn và tranh tụng",
         "desc": "Nghiên cứu hồ sơ vụ án, soạn thảo cáo trạng, bản luận cứ và chuẩn bị kịch bản cho các phiên tòa giả định."
       },
       {
-        "name": "Ban Sự kiện & Tuyên truyền",
+        "name": "Ban Sự kiện và tuyên truyền",
         "desc": "Tổ chức các phiên tòa lưu động, diễn đàn pháp luật học đường và chiến dịch tuyên truyền văn hóa pháp lý."
       },
       {
-        "name": "Ban Truyền thông & Báo chí",
+        "name": "Ban Truyền thông và báo chí",
         "desc": "Sản xuất bản tin pháp luật 'Điểm tin Pháp lý', infographics giải thích điều luật và quản trị Fanpage."
       },
       {
-        "name": "Ban Đối ngoại & Nhân sự",
+        "name": "Ban Đối ngoại và nhân sự",
         "desc": "Kết nối với các Đoàn Luật sư, Tòa án, Viện kiểm sát và chăm sóc đời sống hội viên."
       }
     ],
@@ -896,7 +896,7 @@
     ],
     "level": "Trường",
     "faculty_id": null,
-    "category": "Văn nghệ & Nghệ thuật",
+    "category": "Văn nghệ và nghệ thuật",
     "founded": "2011-04-20",
     "slogan": "Kết nối đam mê • Âm nhạc gắn kết tâm hồn",
     "description": "CLB Guitar DUE ('Nhà G') là câu lạc bộ âm nhạc hàng đầu tại Trường Đại học Kinh tế – ĐH Đà Nẵng. Với slogan 'Kết nối đam mê', Nhà G là mái nhà chung của những bạn trẻ say mê tiếng đàn mộc mạc, nơi chia sẻ cảm xúc, biểu diễn trên các sân khấu lớn và gắn kết các thế hệ sinh viên qua những giai điệu thanh xuân.",
@@ -913,11 +913,11 @@
         "desc": "Luyện thanh, xử lý sắc thái bài hát, hòa giọng và biểu diễn đơn ca, song ca, tốp ca."
       },
       {
-        "name": "Ban Sự kiện & Hậu cần",
+        "name": "Ban Sự kiện và hậu cần",
         "desc": "Chuẩn bị sân khấu, âm thanh, ánh sáng, bán vé và điều phối các đêm Minishow thường niên."
       },
       {
-        "name": "Ban Truyền thông & Media",
+        "name": "Ban Truyền thông và media",
         "desc": "Quay dựng các bản cover acoustic, sản xuất video ca nhạc và quản lý Fanpage 10K theo dõi."
       }
     ],
@@ -938,11 +938,11 @@
       "Giải thưởng cao tại các Liên hoan ban nhạc, nhóm ca sinh viên cấp Đại học Đà Nẵng",
       "Mạng lưới cựu thành viên gắn bó, nhiều bạn hiện là ca sĩ, nhạc công, nghệ sĩ tự do tài năng"
     ],
-    "recruitment": "Tuyển thành viên mới vào đầu mỗi năm học (tháng 9). Tuyển các mảng: Guitar, Vocal, Nhạc cụ khác (Cajon, Piano, Violin), Media & Event.",
+    "recruitment": "Tuyển thành viên mới vào đầu mỗi năm học (tháng 9). Tuyển các mảng: Guitar, Vocal, Nhạc cụ khác (Cajon, Piano, Violin), Media và event.",
     "recruitment_steps": [
       {
         "step": "Vòng 1",
-        "title": "Đăng ký thử giọng & Thử đàn",
+        "title": "Đăng ký thử giọng và thử đàn",
         "desc": "Nộp đơn online và đính kèm video/audio biểu diễn ngắn."
       },
       {
@@ -1007,7 +1007,7 @@
     ],
     "level": "Trường (Đoàn trường)",
     "faculty_id": null,
-    "category": "Văn nghệ & Nghệ thuật",
+    "category": "Văn nghệ và nghệ thuật",
     "founded": "2015-07-30",
     "slogan": "Sống trọn đam mê • Tỏa sáng bản lĩnh trên từng bước nhảy",
     "description": "Đội Văn nghệ Đoàn trường (DUE DANCE) thành lập ngày 30/07/2015, là lực lượng nòng cốt đại diện cho Trường Đại học Kinh tế – ĐH Đà Nẵng tại các chương trình nghệ thuật đỉnh cao của trường, Đại học Đà Nẵng và cấp Thành phố. Đội tập hợp và đào tạo những tài năng xuất sắc ở 4 mảng: Nhảy hiện đại (Dance), Hát (Vocal), Múa dân gian đương đại và Dẫn chương trình (MC).",
@@ -1020,7 +1020,7 @@
         "desc": "Tập luyện các bài nhảy hiện đại, biên đạo vũ đạo sắc bén cho các tiết mục biểu diễn."
       },
       {
-        "name": "Mảng Múa (Dân gian đương đại & Đạo cụ)",
+        "name": "Mảng Múa (Dân gian đương đại và đạo cụ)",
         "desc": "Dàn dựng các tác phẩm múa truyền thống kết hợp hiện đại cho các ngày lễ trọng đại."
       },
       {
@@ -1028,7 +1028,7 @@
         "desc": "Tập luyện thanh nhạc, bè phối cho các ca khúc cách mạng, nhạc trẻ và các bài hát truyền thống trường."
       },
       {
-        "name": "Mảng MC & Hậu đài",
+        "name": "Mảng MC và hậu đài",
         "desc": "Đào tạo kỹ năng dẫn chương trình song ngữ, điều phối sân khấu, quản lý trang phục và âm thanh."
       }
     ],
@@ -1053,7 +1053,7 @@
     "recruitment_steps": [
       {
         "step": "Vòng 1",
-        "title": "Nộp đơn & Video năng khiếu",
+        "title": "Nộp đơn và video năng khiếu",
         "desc": "Gửi thông tin và clip ngắn thể hiện khả năng Nhảy/Hát/Múa/MC."
       },
       {
@@ -1118,7 +1118,7 @@
     ],
     "level": "Trường (trực thuộc Hội SV)",
     "faculty_id": null,
-    "category": "Truyền thông & Cộng đồng",
+    "category": "Truyền thông và cộng đồng",
     "founded": "2014-03-26",
     "slogan": "Nhiệt huyết thanh xuân • Gắn kết yêu thương • Chung tay vì cộng đồng",
     "description": "CLB Sức Trẻ Kinh Tế (thường gọi thân thương là 'Nhà Trẻ') trực thuộc Hội Sinh viên Trường Đại học Kinh tế – ĐH Đà Nẵng, hoạt động sôi nổi trong lĩnh vực phát triển kỹ năng và công tác xã hội thiện nguyện. Nổi tiếng với năng lượng tràn đầy, Nhà Trẻ là đơn vị tổ chức hàng loạt sự kiện thể thao, giải đấu bóng đá mở rộng, giải Pickleball và các lễ hội văn hóa sinh viên đặc sắc.",
@@ -1127,19 +1127,19 @@
     "vision": "Trở thành câu lạc bộ tình nguyện và phong trào sinh viên tiêu biểu nhất tại miền Trung, mang lại giá trị thiết thực cho xã hội.",
     "departments": [
       {
-        "name": "Ban Tình nguyện & Công tác Xã hội",
+        "name": "Ban Tình nguyện và công tác Xã hội",
         "desc": "Khảo sát địa bàn khó khăn, lên kế hoạch chiến dịch tình nguyện và vận động nguồn lực giúp đỡ bà con."
       },
       {
-        "name": "Ban Thể thao & Sự kiện",
+        "name": "Ban Thể thao và sự kiện",
         "desc": "Tổ chức Giải bóng đá truyền thống mở rộng, giải Pickleball 'Dệt Nắng' và lễ hội Halloween 'Quỷ Thôn'."
       },
       {
-        "name": "Ban Truyền thông & Kỹ thuật",
+        "name": "Ban Truyền thông và kỹ thuật",
         "desc": "Sản xuất hình ảnh, video hoạt động thiện nguyện, quản trị website clbsuctrekinhte.com và Fanpage 18K followers."
       },
       {
-        "name": "Ban Nhân sự & Gắn kết",
+        "name": "Ban Nhân sự và gắn kết",
         "desc": "Chăm lo đời sống thành viên, tổ chức sinh nhật câu lạc bộ và điều phối lực lượng tình nguyện viên."
       }
     ],
@@ -1229,7 +1229,7 @@
     ],
     "level": "Trường",
     "faculty_id": null,
-    "category": "Thể dục & Thể thao",
+    "category": "Thể dục và thể thao",
     "founded": "2016-09-10",
     "slogan": "Bền bỉ sức khỏe • Bứt phá đam mê trên từng đường cầu",
     "description": "CLB Cầu Lông DUE (DUE Badminton Club) trực thuộc Hội Sinh viên Trường Đại học Kinh tế – ĐH Đà Nẵng, là nơi hội tụ các tay vợt sinh viên đam mê môn cầu lông. Câu lạc bộ vừa là sân chơi rèn luyện sức khỏe, xả stress sau giờ học, vừa là lực lượng nòng cốt đại diện cho Nhà trường tranh tài tại các giải thi đấu thể thao sinh viên khu vực và toàn quốc.",
@@ -1238,19 +1238,19 @@
     "vision": "Xây dựng câu lạc bộ cầu lông sinh viên có trình độ chuyên môn cao, đạt thành tích dẫn đầu tại các kỳ Đại hội Thể thao Sinh viên.",
     "departments": [
       {
-        "name": "Ban Chuyên môn & Đội tuyển",
+        "name": "Ban Chuyên môn và đội tuyển",
         "desc": "Tổ chức tập luyện thể lực, chiến thuật đánh đơn, đánh đôi và huấn luyện cho các giải đấu lớn."
       },
       {
-        "name": "Ban Tổ chức Giải & Trọng tài",
+        "name": "Ban Tổ chức Giải và trọng tài",
         "desc": "Điều hành các giải đấu nội bộ, giao lưu liên trường và đảm bảo luật thi đấu chuẩn quốc tế."
       },
       {
-        "name": "Ban Truyền thông & Hình ảnh",
+        "name": "Ban Truyền thông và hình ảnh",
         "desc": "Ghi lại những pha cầu đẹp mắt, phát sóng trực tiếp các trận chung kết và cập nhật bảng xếp hạng."
       },
       {
-        "name": "Ban Hậu cần & Phong trào",
+        "name": "Ban Hậu cần và phong trào",
         "desc": "Quản lý sân bãi tập luyện định kỳ, dụng cụ thi đấu và chăm sóc đời sống hội viên."
       }
     ],
@@ -1340,7 +1340,7 @@
     ],
     "level": "Trường",
     "faculty_id": null,
-    "category": "Thể dục & Thể thao",
+    "category": "Thể dục và thể thao",
     "founded": "2013-11-15",
     "slogan": "Nhẫn nại kiên trì • Thượng võ tâm đạo • Khỏe để học tập và bảo vệ Tổ quốc",
     "description": "CLB KarateDo Đại học Kinh tế – ĐHĐN ('Nhà Ka') là câu lạc bộ võ thuật truyền thống uy tín của Nhà trường. Dưới sự huấn luyện của các võ sư đai đen giàu kinh nghiệm, Nhà Ka là nơi sinh viên rèn luyện sức khỏe, học hỏi các kỹ năng tự vệ thực chiến, tôi luyện ý chí kiên định và tinh thần đạo đức võ sĩ đạo Nhật Bản.",
@@ -1349,19 +1349,19 @@
     "vision": "Xây dựng câu lạc bộ võ thuật sinh viên mẫu mực, đào tạo các võ sinh đạt chuẩn thăng đai quốc tế và đoạt thành tích cao.",
     "departments": [
       {
-        "name": "Ban Huấn luyện & Chuyên môn",
+        "name": "Ban Huấn luyện và chuyên môn",
         "desc": "Giảng dạy quyền pháp (Kata), thi đấu đối kháng (Kumite) và các bài quyền tự vệ cận chiến."
       },
       {
-        "name": "Ban Trọng tài & Khảo thí",
+        "name": "Ban Trọng tài và khảo thí",
         "desc": "Điều phối các kỳ thi thăng đai định kỳ, phổ biến luật thi đấu WKF chuẩn quốc tế."
       },
       {
-        "name": "Ban Sự kiện & Giao lưu",
+        "name": "Ban Sự kiện và giao lưu",
         "desc": "Tổ chức các buổi giao lưu võ thuật cùng võ đường các trường đại học bạn trong thành phố."
       },
       {
-        "name": "Ban Truyền thông & Kỹ năng",
+        "name": "Ban Truyền thông và kỹ năng",
         "desc": "Ghi hình các bài biểu diễn võ thuật, quản trị Fanpage và tuyển sinh các khóa mới."
       }
     ],

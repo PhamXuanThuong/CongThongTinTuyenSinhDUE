@@ -74,7 +74,7 @@
   {
     "code": "pb-khhtqt",
     "name": "Phòng Khoa học và Hợp tác Quốc tế",
-    "tagline": "Thúc đẩy nghiên cứu khoa học đỉnh cao & Hội nhập học thuật toàn cầu",
+    "tagline": "Thúc đẩy nghiên cứu khoa học đỉnh cao và hội nhập học thuật toàn cầu",
     "desc": "Quản lý các đề tài nghiên cứu khoa học sinh viên và giảng viên, tổ chức các hội thảo quốc tế lớn và kết nối chương trình trao đổi sinh viên quốc tế (Erasmus+, chuyển tiếp 2+2).",
     "functions": [
       "Quản lý và hỗ trợ kinh phí đề tài Nghiên cứu khoa học sinh viên",
@@ -87,8 +87,8 @@
     "fanpage": "https://www.facebook.com/FaceDue",
     "icon": "public",
     "color": "bg-emerald-600",
-    "badge": "Hợp tác quốc tế & NCKH",
-    "short_name": "Phòng KH & Hợp tác Quốc tế",
+    "badge": "Hợp tác quốc tế và NCKH",
+    "short_name": "Phòng KH và hợp tác Quốc tế",
     "duties": [
       "Quản lý và hỗ trợ kinh phí đề tài Nghiên cứu khoa học sinh viên",
       "Tổ chức các hội thảo học thuật quốc tế và ngày hội sáng tạo trẻ",
@@ -135,7 +135,7 @@
     "fanpage": "https://www.facebook.com/FaceDue",
     "icon": "payments",
     "color": "bg-teal-600",
-    "badge": "Học phí & Tài chính",
+    "badge": "Học phí và tài chính",
     "short_name": "Phòng Kế hoạch - Tài chính",
     "duties": [
       "Hướng dẫn tra cứu và nộp học phí qua cổng thanh toán trực tuyến",
@@ -159,7 +159,7 @@
     "fanpage": "https://www.facebook.com/FaceDue",
     "icon": "apartment",
     "color": "bg-cyan-600",
-    "badge": "Giảng đường & Thiết bị",
+    "badge": "Giảng đường và thiết bị",
     "short_name": "Phòng Cơ sở vật chất",
     "duties": [
       "Quản lý hệ thống giảng đường 100% máy lạnh, máy chiếu và Wifi",
@@ -183,8 +183,8 @@
     "fanpage": "https://www.facebook.com/FaceDue",
     "icon": "local_library",
     "color": "bg-violet-600",
-    "badge": "Thư viện số & Học liệu",
-    "short_name": "Trung tâm Số & Học liệu",
+    "badge": "Thư viện số và học liệu",
+    "short_name": "Trung tâm Số và học liệu",
     "duties": [
       "Thư viện số với hàng triệu đầu sách, giáo trình và tài liệu nghiên cứu",
       "Không gian tự học thông minh, phòng đọc yên tĩnh, điều hòa mát mẻ",
@@ -194,11 +194,11 @@
   {
     "code": "pb-ttnnth",
     "name": "Trung tâm Ngoại ngữ - Tin học",
-    "tagline": "Chuẩn hóa năng lực Ngoại ngữ & Tin học quốc tế (TOEIC, IELTS, MOS)",
+    "tagline": "Chuẩn hóa năng lực Ngoại ngữ và tin học quốc tế (TOEIC, IELTS, MOS)",
     "desc": "Đào tạo, luyện thi và tổ chức các kỳ thi cấp chứng chỉ chuẩn đầu ra ngoại ngữ (Tiếng Anh TOEIC/IELTS, Tiếng Nhật, Tiếng Trung) và chứng chỉ Tin học văn phòng quốc tế MOS cho sinh viên.",
     "functions": [
-      "Tổ chức đào tạo & cấp chứng chỉ tiếng Anh chuẩn đầu ra (TOEIC, IELTS)",
-      "Đào tạo & sát hạch chứng chỉ Tin học văn phòng quốc tế (MOS, IC3)",
+      "Tổ chức đào tạo và cấp chứng chỉ tiếng Anh chuẩn đầu ra (TOEIC, IELTS)",
+      "Đào tạo và sát hạch chứng chỉ Tin học văn phòng quốc tế (MOS, IC3)",
       "Tổ chức các khóa bồi dưỡng kỹ năng công nghệ số ứng dụng"
     ],
     "location": "Tầng 1, Nhà H, 71 Ngũ Hành Sơn, Đà Nẵng",
@@ -210,8 +210,8 @@
     "badge": "Chứng chỉ Ngoại ngữ - Tin học",
     "short_name": "Trung tâm Ngoại ngữ - Tin học",
     "duties": [
-      "Tổ chức đào tạo & cấp chứng chỉ tiếng Anh chuẩn đầu ra (TOEIC, IELTS)",
-      "Đào tạo & sát hạch chứng chỉ Tin học văn phòng quốc tế (MOS, IC3)",
+      "Tổ chức đào tạo và cấp chứng chỉ tiếng Anh chuẩn đầu ra (TOEIC, IELTS)",
+      "Đào tạo và sát hạch chứng chỉ Tin học văn phòng quốc tế (MOS, IC3)",
       "Tổ chức các khóa bồi dưỡng kỹ năng công nghệ số ứng dụng"
     ]
   }

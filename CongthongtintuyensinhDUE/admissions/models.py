@@ -4,9 +4,9 @@ from django.utils.text import slugify
 class TinTuc(models.Model):
     THE_LOAI_CHOICES = [
         ('tuyen_sinh', 'Tuyển sinh'),
-        ('workshop', 'Workshop & Hướng nghiệp'),
-        ('hoc_bong', 'Học bổng & Chính sách'),
-        ('su_kien', 'Sự kiện & Hoạt động'),
+        ('workshop', 'Workshop và hướng nghiệp'),
+        ('hoc_bong', 'Học bổng và chính sách'),
+        ('su_kien', 'Sự kiện và hoạt động'),
     ]
 
     tieu_de = models.CharField(max_length=255, verbose_name="Tiêu đề bài viết")
@@ -21,8 +21,8 @@ class TinTuc(models.Model):
 
     class Meta:
         db_table = 'tuyensinh_tintuc'
-        verbose_name = "Bản tin tuyển sinh & Sự kiện"
-        verbose_name_plural = "1. Quản lý Tin tức & Sự kiện"
+        verbose_name = "Bản tin tuyển sinh và sự kiện"
+        verbose_name_plural = "1. Quản lý Tin tức và sự kiện"
         ordering = ['-ngay_dang', '-id']
 
     def __str__(self):
@@ -42,8 +42,8 @@ class LoaiHinhDaoTao(models.Model):
     ]
     ma_loai_hinh = models.CharField(max_length=50, choices=LOAI_HINH_CHOICES, unique=True, verbose_name="Mã loại hình")
     ten_loai_hinh = models.CharField(max_length=150, verbose_name="Tên loại hình đào tạo")
-    mo_ta = models.TextField(verbose_name="Mô tả đặc điểm & ưu thế")
-    ngon_ngu = models.CharField(max_length=100, default="Tiếng Việt & Tiếng Anh", verbose_name="Ngôn ngữ giảng dạy")
+    mo_ta = models.TextField(verbose_name="Mô tả đặc điểm và ưu thế")
+    ngon_ngu = models.CharField(max_length=100, default="Tiếng Việt và tiếng Anh", verbose_name="Ngôn ngữ giảng dạy")
     thoi_gian_dao_tao = models.CharField(max_length=50, default="4 năm (8 học kỳ)", verbose_name="Thời gian đào tạo")
     bang_cap = models.CharField(max_length=150, default="Cử nhân chính quy", verbose_name="Bằng cấp tốt nghiệp")
     icon = models.CharField(max_length=50, default="school", verbose_name="Biểu tượng Material Symbol")
@@ -70,12 +70,12 @@ class NganhDaoTao(models.Model):
     chi_tieu_tieu_chuan = models.PositiveIntegerField(default=0, verbose_name="Chỉ tiêu Tiêu chuẩn")
     to_hop_mon = models.CharField(max_length=100, default="A00, A01, D01, D07, X25, X26", verbose_name="Tổ hợp xét tuyển")
     hoc_phi_du_kien = models.CharField(max_length=100, blank=True, default="Theo quy định Nhà nước", verbose_name="Học phí dự kiến")
-    mo_ta = models.TextField(blank=True, verbose_name="Mô tả ngành & cơ hội việc làm")
+    mo_ta = models.TextField(blank=True, verbose_name="Mô tả ngành và cơ hội việc làm")
 
     class Meta:
         db_table = 'tuyensinh_nganhdaotao'
-        verbose_name = "Ngành đào tạo & Chỉ tiêu"
-        verbose_name_plural = "3. Danh mục Ngành & Chỉ tiêu tuyển sinh"
+        verbose_name = "Ngành đào tạo và chỉ tiêu"
+        verbose_name_plural = "3. Danh mục Ngành và chỉ tiêu tuyển sinh"
         ordering = ['ma_nganh']
 
     def __str__(self):
@@ -87,7 +87,7 @@ class DiemChuan(models.Model):
         ('THPT', 'Điểm thi tốt nghiệp THPT'),
         ('HOC_BA', 'Xét học bạ THPT kết hợp'),
         ('DGNL', 'Đánh giá năng lực ĐHQG-HCM'),
-        ('XTT', 'Xét tuyển thẳng & Ưu tiên'),
+        ('XTT', 'Xét tuyển thẳng và ưu tiên'),
     ]
 
     nganh = models.ForeignKey(NganhDaoTao, on_delete=models.CASCADE, related_name='diem_chuan_cac_nam', verbose_name="Ngành đào tạo")
@@ -112,9 +112,9 @@ class DiemChuan(models.Model):
 class PhuongThucXetTuyen(models.Model):
     ma_phuong_thuc = models.CharField(max_length=20, unique=True, verbose_name="Mã phương thức (PT1, PT2,...)")
     ten_phuong_thuc = models.CharField(max_length=200, verbose_name="Tên phương thức xét tuyển")
-    doi_tuong_ap_dung = models.TextField(verbose_name="Đối tượng & Điều kiện áp dụng")
+    doi_tuong_ap_dung = models.TextField(verbose_name="Đối tượng và điều kiện áp dụng")
     chuong_trinh_ap_dung = models.CharField(max_length=200, default="Áp dụng các chương trình đào tạo", verbose_name="Chương trình áp dụng")
-    nguyen_tac_xet = models.TextField(blank=True, verbose_name="Nguyên tắc xét tuyển & Cách tính điểm")
+    nguyen_tac_xet = models.TextField(blank=True, verbose_name="Nguyên tắc xét tuyển và cách tính điểm")
     mau_sac = models.CharField(max_length=30, default="blue", verbose_name="Tone màu đại diện (blue, emerald, orange, amber)")
     thu_tu = models.PositiveIntegerField(default=1, verbose_name="Thứ tự hiển thị")
 
@@ -130,13 +130,13 @@ class PhuongThucXetTuyen(models.Model):
 
 class CauHoiThuongGap(models.Model):
     PHAN_LOAI_CHOICES = [
-        ('GioiThieuChung', 'Tổng quan & Giới thiệu'),
+        ('GioiThieuChung', 'Tổng quan và giới thiệu'),
         ('LichSuPhatTrien', 'Lịch sử phát triển'),
-        ('SuMangTamNhin', 'Sứ mạng & Tầm nhìn'),
+        ('SuMangTamNhin', 'Sứ mệnh và tầm nhìn'),
         ('PhuongThucXetTuyen', 'Phương thức xét tuyển'),
-        ('ChiTieuNganhHoc', 'Chỉ tiêu & Ngành học'),
-        ('DiemChuan', 'Điểm chuẩn & Xét tuyển'),
-        ('HocPhiHocBong', 'Học phí & Học bổng'),
+        ('ChiTieuNganhHoc', 'Chỉ tiêu và ngành học'),
+        ('DiemChuan', 'Điểm chuẩn và xét tuyển'),
+        ('HocPhiHocBong', 'Học phí và học bổng'),
         ('Khac', 'Thông tin khác'),
     ]
 
@@ -151,8 +151,8 @@ class CauHoiThuongGap(models.Model):
 
     class Meta:
         db_table = 'tuyensinh_cauhoithuonggap'
-        verbose_name = "Hỏi đáp & Tri thức Chatbot"
-        verbose_name_plural = "6. Tri thức Chatbot & Hỏi đáp tự động"
+        verbose_name = "Hỏi đáp và tri thức Chatbot"
+        verbose_name_plural = "6. Tri thức Chatbot và hỏi đáp tự động"
         ordering = ['id']
 
     def __str__(self):
@@ -247,7 +247,7 @@ class KhoaPhongBan(models.Model):
     class Meta:
         db_table = 'tuyensinh_khoaphongban'
         verbose_name = "Khoa / Phòng Ban"
-        verbose_name_plural = "Danh sách Khoa & Phòng Ban"
+        verbose_name_plural = "Danh sách Khoa và phòng Ban"
         ordering = ["order", "id"]
 
     def __str__(self):
@@ -394,7 +394,7 @@ class TaiLieuTuyenSinh(models.Model):
 class CauLacBo(models.Model):
     FACULTY_CHOICES = [
         ('tcnh', 'Khoa Tài chính - Ngân hàng'),
-        ('dlkdqt', 'Khoa Du lịch & Kinh doanh quốc tế'),
+        ('dlkdqt', 'Khoa Du lịch và kinh doanh quốc tế'),
         ('tmdt_mkt_cns', 'Khoa Thương mại điện tử - Marketing và Công nghệ số'),
         ('kt', 'Khoa Kinh tế'),
         ('qtkd', 'Khoa Quản trị kinh doanh'),
@@ -409,7 +409,7 @@ class CauLacBo(models.Model):
     aliases = models.JSONField(default=list, blank=True, verbose_name="Tên viết tắt / Bí danh")
     level = models.CharField(max_length=100, default="Trường (trực thuộc Hội SV)", verbose_name="Cấp trực thuộc")
     faculty_id = models.CharField(max_length=50, blank=True, null=True, verbose_name="Mã Khoa (nếu thuộc Khoa)")
-    category = models.CharField(max_length=100, default="Kỹ năng & Khởi nghiệp", verbose_name="Lĩnh vực hoạt động")
+    category = models.CharField(max_length=100, default="Kỹ năng và khởi nghiệp", verbose_name="Lĩnh vực hoạt động")
     founded = models.CharField(max_length=50, blank=True, verbose_name="Ngày thành lập")
     slogan = models.CharField(max_length=255, blank=True, verbose_name="Khẩu hiệu / Slogan")
     description = models.TextField(verbose_name="Mô tả chi tiết")
@@ -421,7 +421,7 @@ class CauLacBo(models.Model):
     contact = models.JSONField(default=dict, blank=True, verbose_name="Thông tin liên hệ (Facebook, Email...)")
     leaders = models.CharField(max_length=255, blank=True, verbose_name="Ban chủ nhiệm nhiệm kỳ")
     advisors = models.CharField(max_length=255, blank=True, verbose_name="Cố vấn chuyên môn")
-    achievements = models.JSONField(default=list, blank=True, verbose_name="Thành tích & Bằng khen")
+    achievements = models.JSONField(default=list, blank=True, verbose_name="Thành tích và bằng khen")
     recruitment = models.CharField(max_length=200, blank=True, default="Mở đơn định kỳ tháng 8 - tháng 10", verbose_name="Thời gian tuyển quân")
     recruitment_steps = models.JSONField(default=list, blank=True, verbose_name="Các vòng ứng tuyển")
     benefits = models.JSONField(default=list, blank=True, verbose_name="Quyền lợi thành viên")
@@ -446,7 +446,7 @@ class CauLacBo(models.Model):
         return f"{self.name} ({self.level})"
 
     def to_dict(self):
-        """Serialize thành dict chuẩn cho template & API"""
+        """Serialize thành dict chuẩn cho template và API"""
         fid = self.faculty_id
         faculty_name_map = dict(self.FACULTY_CHOICES)
         fac_name = faculty_name_map.get(fid, 'Cấp trường (Đoàn – Hội)' if not fid else fid)
@@ -588,7 +588,7 @@ class HoSoHuongNghiep(models.Model):
 
 
 # ========================================================
-# 11. HƯỚNG DẪN NHẬP HỌC & LỊCH TRÌNH TÂN SINH VIÊN
+# 11. HƯỚNG DẪN NHẬP HỌC VÀ LỊCH TRÌNH TÂN SINH VIÊN
 # ========================================================
 
 class HuongDanNhapHoc(models.Model):
@@ -626,7 +626,7 @@ class LichTrinhTanSinhVien(models.Model):
     thoi_gian = models.CharField(max_length=150, verbose_name="Thời gian diễn ra")
     dia_diem = models.CharField(max_length=200, default="Trường ĐH Kinh tế - ĐH Đà Nẵng", verbose_name="Địa điểm")
     doi_tuong = models.CharField(max_length=150, default="Tân sinh viên Khóa 52K", verbose_name="Đối tượng tham gia")
-    noi_dung = models.TextField(verbose_name="Nội dung chi tiết & Lưu ý")
+    noi_dung = models.TextField(verbose_name="Nội dung chi tiết và lưu ý")
     loai_su_kien = models.CharField(max_length=30, choices=LOAI_SU_KIEN_CHOICES, default='khac', verbose_name="Phân loại sự kiện")
     thu_tu = models.PositiveIntegerField(default=0, verbose_name="Thứ tự thời gian")
     kich_hoat = models.BooleanField(default=True, verbose_name="Kích hoạt")

@@ -48,7 +48,7 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
 
   <!-- ====================================================
        1. HERO BANNER CHI TIẾT KHOA
@@ -59,12 +59,12 @@
     <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium" aria-label="Breadcrumb">
       <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa &amp; Đơn vị đào tạo</a>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa và đơn vị đào tạo</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
       <span class="text-secondary-container font-semibold truncate">{{ faculty.name }}</span>
     </nav>
 
-    <!-- Hero Card with Cover & Gradient Overlay -->
+    <!-- Hero Card with Cover và gradient Overlay -->
     <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200">
       
       <!-- Cover Image Background -->
@@ -88,13 +88,6 @@
             <span class="material-symbols-outlined text-[16px] text-amber-300">verified</span>
             {{ faculty.category_tag|default:"Khoa Đào tạo Chuyên sâu" }}
           </span>
-          <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-amber-500/20 text-amber-200 text-xs font-semibold backdrop-blur-md border border-amber-300/30">
-            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            Tuyển sinh Khóa 50K - Năm 2026
-          </span>
-          <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-200 text-xs font-semibold backdrop-blur-md border border-blue-300/30">
-            Chuẩn Quốc tế AUN-QA
-          </span>
         </div>
 
         <!-- Main Identity Info (Logo + Name + Slogan) -->
@@ -109,7 +102,7 @@
             />
           </div>
 
-          <!-- Titles & Slogan -->
+          <!-- Titles và slogan -->
           <div class="space-y-2">
             <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-headline-lg tracking-tight leading-tight text-white drop-shadow-sm">
               {{ faculty.name }}
@@ -123,7 +116,7 @@
           </div>
         </div>
 
-        <!-- Hero Bottom Action Buttons & Key Stats -->
+        <!-- Hero Bottom Action Buttons và key Stats -->
         <div class="pt-8 border-t border-white/15 mt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           
           <!-- Quick Buttons (Có nút riêng nổi bật về Liên Chi Đoàn theo yêu cầu người dùng) -->
@@ -169,7 +162,7 @@
             </div>
             <div class="bg-white/10 px-3.5 py-1.5 rounded-xl border border-white/10 backdrop-blur-sm">
               <span class="text-green-300 font-bold text-base block">100%</span>
-              <span class="text-slate-300">ThS &amp; TS trở lên</span>
+              <span class="text-slate-300">ThS và TS trở lên</span>
             </div>
             <div class="bg-white/10 px-3.5 py-1.5 rounded-xl border border-white/10 backdrop-blur-sm">
               <span class="text-sky-300 font-bold text-base block">&gt; 96%</span>
@@ -189,7 +182,7 @@
   <div class="sticky-subnav shadow-sm mb-10">
     <div class="max-w-7xl mx-auto px-6 lg:px-12 flex items-center overflow-x-auto no-scrollbar py-1">
       <a href="#gioi-thieu" class="subnav-link">
-        <span class="material-symbols-outlined text-[18px] mr-1.5">info</span> Giới thiệu &amp; Sứ mệnh
+        <span class="material-symbols-outlined text-[18px] mr-1.5">info</span> Giới thiệu và sứ mệnh
       </a>
       <a href="#chuyen-nganh-2026" class="subnav-link">
         <span class="material-symbols-outlined text-[18px] mr-1.5">school</span> Chuyên ngành 2026
@@ -198,17 +191,17 @@
         <span class="material-symbols-outlined text-[18px] mr-1.5">workspace_premium</span> Sau đại học
       </a>
       <a href="#doi-ngu" class="subnav-link">
-        <span class="material-symbols-outlined text-[18px] mr-1.5">group</span> Đội ngũ &amp; Bộ môn
+        <span class="material-symbols-outlined text-[18px] mr-1.5">group</span> Đội ngũ và bộ môn
       </a>
       <a href="#nghe-nghiep" class="subnav-link">
-        <span class="material-symbols-outlined text-[18px] mr-1.5">work</span> Cơ hội việc làm &amp; Đối tác
+        <span class="material-symbols-outlined text-[18px] mr-1.5">work</span> Cơ hội việc làm và đối tác
       </a>
       <!-- Tab Liên Chi Đoàn nổi bật -->
       <a href="#lien-chi-doan" class="subnav-link text-rose-600 font-bold">
         <span class="material-symbols-outlined text-[18px] mr-1.5 text-rose-600">flag</span> Liên Chi Đoàn
       </a>
       <a href="#hoat-dong-clb" class="subnav-link">
-        <span class="material-symbols-outlined text-[18px] mr-1.5">groups</span> CLB &amp; Đội nhóm
+        <span class="material-symbols-outlined text-[18px] mr-1.5">groups</span> CLB và đội nhóm
       </a>
       <a href="#hinh-anh" class="subnav-link">
         <span class="material-symbols-outlined text-[18px] mr-1.5">photo_library</span> Thư viện ảnh
@@ -229,7 +222,7 @@
       <!-- CỘT TRÁI: NỘI DUNG CHI TIẾT (8 Cột) -->
       <div class="lg:col-span-8 space-y-10">
         
-        <!-- MỤC 1: GIỚI THIỆU CHUNG & LỊCH SỬ HÌNH THÀNH -->
+        <!-- MỤC 1: GIỚI THIỆU CHUNG và LỊCH SỬ HÌNH THÀNH -->
         <section id="gioi-thieu" class="glass-card p-6 sm:p-8 scroll-mt-36">
           <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-xl bg-blue-100 text-[#003366] flex items-center justify-center shrink-0">
@@ -237,7 +230,7 @@
             </div>
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-secondary-container">Tổng quan đơn vị</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Giới thiệu chung &amp; Lịch sử hình thành</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Giới thiệu chung và lịch sử hình thành</h2>
             </div>
           </div>
 
@@ -297,7 +290,7 @@
         </section>
 
 
-        <!-- MỤC 2: CÁC NGÀNH & CHUYÊN NGÀNH ĐÀO TẠO 2026 (TRỌNG TÂM TUYỂN SINH) -->
+        <!-- MỤC 2: CÁC NGÀNH và CHUYÊN NGÀNH ĐÀO TẠO 2026 (TRỌNG TÂM TUYỂN SINH) -->
         <section id="chuyen-nganh-2026" class="glass-card p-6 sm:p-8 scroll-mt-36 border-2 border-blue-100">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
             <div class="flex items-center gap-3">
@@ -306,7 +299,7 @@
               </div>
               <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-secondary-container">Đề án tuyển sinh mới 2026</span>
-                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Các Ngành &amp; Chuyên Ngành Đào Tạo Năm 2026</h2>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Các Ngành và chuyên Ngành Đào Tạo Năm 2026</h2>
               </div>
             </div>
             <span class="px-3 py-1 rounded-full bg-blue-100 text-[#003366] text-xs font-bold">
@@ -379,7 +372,7 @@
         </section>
 
 
-        <!-- MỤC 3: ĐÀO TẠO SAU ĐẠI HỌC & LIÊN KẾT QUỐC TẾ -->
+        <!-- MỤC 3: ĐÀO TẠO SAU ĐẠI HỌC và LIÊN KẾT QUỐC TẾ -->
         {% if faculty.postgraduate %}
         <section id="sau-dai-hoc" class="glass-card p-6 sm:p-8 scroll-mt-36">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
@@ -387,8 +380,8 @@
               <span class="material-symbols-outlined text-[24px]">workspace_premium</span>
             </div>
             <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-purple-700">Học vị cao cấp &amp; Chứng chỉ nghề nghiệp</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Đào Tạo Sau Đại Học &amp; Chứng Chỉ Quốc Tế</h2>
+              <span class="text-xs font-bold uppercase tracking-wider text-purple-700">Học vị cao cấp và chứng chỉ nghề nghiệp</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Đào Tạo Sau Đại Học và chứng Chỉ Quốc Tế</h2>
             </div>
           </div>
 
@@ -433,7 +426,7 @@
         {% endif %}
 
 
-        <!-- MỤC 4: ĐỘI NGŨ GIẢNG VIÊN & CÁC BỘ MÔN TRỰC THUỘC -->
+        <!-- MỤC 4: ĐỘI NGŨ GIẢNG VIÊN và CÁC BỘ MÔN TRỰC THUỘC -->
         <section id="doi-ngu" class="glass-card p-6 sm:p-8 scroll-mt-36">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
             <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center shrink-0">
@@ -441,7 +434,7 @@
             </div>
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Nguồn nhân lực chất lượng cao</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Đội Ngũ Giảng Viên &amp; Các Bộ Môn</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Đội Ngũ Giảng Viên và các Bộ Môn</h2>
             </div>
           </div>
 
@@ -453,7 +446,7 @@
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
             <div class="stat-card p-3.5 text-center">
               <span class="text-xl sm:text-2xl font-extrabold text-[#003366] block">100%</span>
-              <span class="text-[11px] text-slate-600 font-medium">ThS &amp; TS đào tạo quốc tế</span>
+              <span class="text-[11px] text-slate-600 font-medium">ThS và TS đào tạo quốc tế</span>
             </div>
             <div class="stat-card p-3.5 text-center">
               <span class="text-xl sm:text-2xl font-extrabold text-[#fd761a] block">&gt; 55%</span>
@@ -507,15 +500,15 @@
         </section>
 
 
-        <!-- MỤC 5: CƠ HỘI NGHỀ NGHIỆP & DOANH NGHIỆP ĐỐI TÁC -->
+        <!-- MỤC 5: CƠ HỘI NGHỀ NGHIỆP và DOANH NGHIỆP ĐỐI TÁC -->
         <section id="nghe-nghiep" class="glass-card p-6 sm:p-8 scroll-mt-36">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
             <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
               <span class="material-symbols-outlined text-[24px]">work</span>
             </div>
             <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Đầu ra &amp; Việc làm</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Cơ Hội Nghề Nghiệp &amp; Đối Tác Doanh Nghiệp</h2>
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Đầu ra và việc làm</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Cơ Hội Nghề Nghiệp và đối Tác Doanh Nghiệp</h2>
             </div>
           </div>
 
@@ -527,7 +520,7 @@
           <div>
             <h4 class="font-bold text-slate-800 text-sm sm:text-base mb-3 flex items-center gap-2">
               <span class="material-symbols-outlined text-emerald-600 text-[20px]">handshake</span>
-              Mạng lưới Doanh nghiệp &amp; Tập đoàn Đối tác chiến lược
+              Mạng lưới Doanh nghiệp và tập đoàn Đối tác chiến lược
             </h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {% for p in faculty.partners %}
@@ -583,7 +576,7 @@
         </section>
 
 
-        <!-- MỤC 7: CÂU LẠC BỘ & ĐỘI NHÓM SINH VIÊN TRỰC THUỘC KHOA -->
+        <!-- MỤC 7: CÂU LẠC BỘ và ĐỘI NHÓM SINH VIÊN TRỰC THUỘC KHOA -->
         <section id="hoat-dong-clb" class="glass-card p-6 sm:p-8 scroll-mt-36">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
             <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
@@ -591,7 +584,7 @@
             </div>
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-rose-700">Môi trường rèn luyện kỹ năng</span>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Câu Lạc Bộ Học Thuật &amp; Kỹ Năng</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Câu Lạc Bộ Học Thuật và kỹ Năng</h2>
             </div>
           </div>
 
@@ -632,7 +625,7 @@
               <span class="material-symbols-outlined text-[24px]">photo_library</span>
             </div>
             <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Khoảnh khắc giảng đường &amp; Nghiên cứu</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Khoảnh khắc giảng đường và nghiên cứu</span>
               <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">Thư Viện Hình Ảnh Hoạt Động</h2>
             </div>
           </div>
@@ -658,7 +651,7 @@
       </div>
 
 
-      <!-- CỘT PHẢI: SIDEBAR THÔNG TIN LIÊN HỆ & CHUYỂN KHOA NHANH (4 Cột) -->
+      <!-- CỘT PHẢI: SIDEBAR THÔNG TIN LIÊN HỆ và CHUYỂN KHOA NHANH (4 Cột) -->
       <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-36">
         
         <!-- CARD 1: THÔNG TIN LIÊN HỆ TRỰC TIẾP KHOA -->
@@ -770,7 +763,7 @@
 
 
   <!-- ====================================================
-       4. MỤC BẮT BUỘC Ở DƯỚI CÙNG: HỆ THỐNG PHÒNG BAN CHỨC NĂNG & TRUNG TÂM
+       4. MỤC BẮT BUỘC Ở DƯỚI CÙNG: HỆ THỐNG PHÒNG BAN CHỨC NĂNG và TRUNG TÂM
        (ĐÃ SỬA LỖI HÌNH 1: Hiển thị đầy đủ câu nhiệm vụ hỗ trợ, không bị cắt từng chữ)
        ==================================================== -->
   <section id="phong-ban-ho-tro" class="max-w-7xl mx-auto px-6 lg:px-12 mt-20 pt-16 border-t border-slate-200">
@@ -781,19 +774,19 @@
         Hệ sinh thái Hỗ trợ Sinh viên DUE
       </div>
       <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-headline-lg tracking-tight mb-3">
-        Các Phòng Ban Chức Năng &amp; Trung Tâm Hỗ Trợ
+        Các Phòng Ban Chức Năng và trung Tâm Hỗ Trợ
       </h2>
       <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
         Bên cạnh Khoa chuyên môn, Nhà trường luôn đồng hành cùng sinh viên và quý phụ huynh thông qua hệ thống các phòng ban nghiệp vụ và trung tâm dịch vụ chuyên biệt:
       </p>
     </div>
 
-    <!-- Grid 9 Phòng Ban Chức Năng & Trung Tâm -->
+    <!-- Grid 9 Phòng Ban Chức Năng và trung Tâm -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {% for pb in phongban_list %}
       <div class="p-6 rounded-3xl bg-white border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
         <div>
-          <!-- Header Badge & Icon -->
+          <!-- Header Badge và icon -->
           <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md {{ pb.color|default:'bg-[#003366]' }} group-hover:scale-105 transition-transform">
               <span class="material-symbols-outlined text-[24px]">{{ pb.icon|default:'apartment' }}</span>
@@ -803,7 +796,7 @@
             </span>
           </div>
 
-          <!-- Name & Tagline -->
+          <!-- Name và tagline -->
           <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#003366] transition-colors mb-1.5 leading-snug">
             {{ pb.name }}
           </h3>

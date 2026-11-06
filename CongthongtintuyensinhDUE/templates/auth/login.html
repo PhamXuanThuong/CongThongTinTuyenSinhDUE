@@ -6,7 +6,7 @@
   <title>Đăng nhập | Cổng thông tin Tuyển sinh DUE 2026</title>
   <link rel="icon" type="image/png" href="https://due.udn.vn/Portals/0/favicon.ico">
 
-  <!-- Google Fonts & Material Symbols -->
+  <!-- Google Fonts và material Symbols -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -46,7 +46,7 @@
   <!-- Main Card Container -->
   <div class="w-full max-w-5xl bg-surface-container-lowest rounded-3xl sm:rounded-[32px] shadow-2xl border border-slate-200/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[620px]">
     
-    <!-- LEFT PANEL: Visuals & University Highlights (Hidden on small mobile, visible on lg) -->
+    <!-- LEFT PANEL: Visuals và university Highlights (Hidden on small mobile, visible on lg) -->
     <div class="lg:col-span-5 relative hidden lg:flex flex-col justify-between p-8 text-white overflow-hidden bg-primary-container">
       <!-- Background Image with Overlay -->
       <img class="absolute inset-0 w-full h-full object-cover object-center opacity-30 mix-blend-overlay" 
@@ -54,9 +54,9 @@
            alt="Khuôn viên DUE">
       <div class="absolute inset-0 bg-gradient-to-t from-primary-container via-primary-container/80 to-primary/80"></div>
       
-      <!-- Top: Back Button & Badge -->
+      <!-- Top: Back Button và badge -->
       <div class="relative z-10 flex items-center justify-between">
-        <a href="{% url 'tuyensinh:home' %}" class="inline-flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full transition-all">
+        <a href="{% url 'admissions:home' %}" class="inline-flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full transition-all">
           <span class="material-symbols-outlined text-[16px]">arrow_back</span>
           <span>Về trang chủ</span>
         </a>
@@ -65,7 +65,7 @@
         </span>
       </div>
 
-      <!-- Center: University Info & Value Props -->
+      <!-- Center: University Info và value Props -->
       <div class="relative z-10 my-8">
         <img alt="DUE Logo" class="h-16 w-auto object-contain mb-6 drop-shadow-md brightness-0 invert" 
              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0SZKiA3qgvDQxaYkxsR3w1ej_sMxTuegQNml68FZ966VgfiyacVxxCVBp1S46Q8ZfFcj89zJFmRbki2mFVxwDK3mA_1FmeZlpvSq9GsILj2z2HzeolTI-1aztUgTZFmj50c5hiIbGUH4ETZRF2d42e6mKwe70Fwob0_OrZ8Y8qXAT69PRCagSk7LI9OJze_odv3CZfAw5_B28JRczw9Dj1w2HYnD-Z0VxQ9a8E-IZYEvv1QN0wLCekQ">
@@ -81,7 +81,7 @@
         <div class="space-y-3 text-xs sm:text-sm text-slate-200">
           <div class="flex items-center gap-2.5">
             <span class="material-symbols-outlined text-secondary-container text-[18px]">verified</span>
-            <span>Tra cứu hồ sơ &amp; kết quả xét tuyển sớm</span>
+            <span>Tra cứu hồ sơ và kết quả xét tuyển sớm</span>
           </div>
           <div class="flex items-center gap-2.5">
             <span class="material-symbols-outlined text-secondary-container text-[18px]">verified</span>
@@ -104,9 +104,9 @@
     <!-- RIGHT PANEL: Login Form -->
     <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
       
-      <!-- Mobile Top Bar: Logo & Back Link (Visible only on mobile/tablet) -->
+      <!-- Mobile Top Bar: Logo và back Link (Visible only on mobile/tablet) -->
       <div class="flex lg:hidden items-center justify-between mb-6 pb-4 border-b border-slate-100">
-        <a href="{% url 'tuyensinh:home' %}" class="flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-primary">
+        <a href="{% url 'admissions:home' %}" class="flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-primary">
           <span class="material-symbols-outlined text-[18px]">arrow_back</span>
           <span>Trang chủ</span>
         </a>
@@ -161,7 +161,7 @@
         {% endif %}
 
         <!-- Login Form -->
-        <form method="POST" action="{% url 'tuyensinh:dang_nhap' %}" class="space-y-4">
+        <form method="POST" action="{% url 'admissions:login' %}" class="space-y-4">
           {% csrf_token %}
           
           <!-- Username / Email / CCCD -->

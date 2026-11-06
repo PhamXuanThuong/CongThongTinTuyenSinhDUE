@@ -5,7 +5,7 @@
 {% block nav_sinhvien %}text-secondary-container font-headline-sm border-b-2 border-secondary-container{% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
 
   <!-- Breadcrumb -->
   <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <!-- Header Info & CTA Bar -->
+      <!-- Header Info và CTA Bar -->
       <div class="px-6 sm:px-10 pb-8 pt-4 relative">
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative">
           <!-- Logo + Titles -->
@@ -85,7 +85,7 @@
               </div>
             </div>
 
-            <!-- Title & Slogan -->
+            <!-- Title và slogan -->
             <div class="flex flex-col gap-1.5 pt-2">
               <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs font-bold text-[#0072BC] uppercase tracking-wider flex items-center gap-1">
@@ -195,7 +195,7 @@
       </a>
       <a href="#hoat-dong" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0072BC] hover:bg-slate-100 whitespace-nowrap transition-colors flex items-center gap-1.5">
         <span class="material-symbols-outlined text-[16px]">star</span>
-        <span>Hoạt động & Sự kiện</span>
+        <span>Hoạt động và sự kiện</span>
       </a>
       <a href="#hinh-anh" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0072BC] hover:bg-slate-100 whitespace-nowrap transition-colors flex items-center gap-1.5">
         <span class="material-symbols-outlined text-[16px]">photo_library</span>
@@ -223,14 +223,14 @@
       <!-- ================= LEFT COLUMN (8 cols) ================= -->
       <div class="lg:col-span-8 flex flex-col gap-8">
 
-        <!-- 1. TỔNG QUAN & SỨ MỆNH -->
+        <!-- 1. TỔNG QUAN và SỨ MỆNH -->
         <section id="tong-quan" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
           <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
             <div class="w-10 h-10 rounded-2xl bg-[#0072BC]/10 text-[#0072BC] flex items-center justify-center">
               <span class="material-symbols-outlined text-[22px]">info</span>
             </div>
             <div>
-              <h2 class="text-xl font-bold text-[#003366]">Giới thiệu & Sứ mệnh phát triển</h2>
+              <h2 class="text-xl font-bold text-[#003366]">Giới thiệu và sứ mệnh phát triển</h2>
               <p class="text-xs text-slate-400">Lịch sử, tôn chỉ và định hướng hoạt động</p>
             </div>
           </div>
@@ -250,7 +250,7 @@
             <p>{{ club.description }}</p>
           </div>
 
-          <!-- Mission & Vision Cards -->
+          <!-- Mission và vision Cards -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
             {% if club.mission %}
               <div class="p-5 rounded-2xl bg-[#f8fafc] border border-slate-200/80 hover:border-blue-300 transition-all">
@@ -285,7 +285,7 @@
               <span class="material-symbols-outlined text-[22px]">account_tree</span>
             </div>
             <div>
-              <h2 class="text-xl font-bold text-[#003366]">Cơ cấu tổ chức & Các Ban chuyên môn</h2>
+              <h2 class="text-xl font-bold text-[#003366]">Cơ cấu tổ chức và các Ban chuyên môn</h2>
               <p class="text-xs text-slate-400">Khám phá vị trí phù hợp với thế mạnh của bạn</p>
             </div>
           </div>
@@ -321,14 +321,14 @@
           </div>
         </section>
 
-        <!-- 3. HOẠT ĐỘNG & SỰ KIỆN NỔI BẬT -->
+        <!-- 3. HOẠT ĐỘNG và SỰ KIỆN NỔI BẬT -->
         <section id="hoat-dong" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
             <div class="w-10 h-10 rounded-2xl bg-green-500/10 text-[#00A859] flex items-center justify-center">
               <span class="material-symbols-outlined text-[22px]">star</span>
             </div>
             <div>
-              <h2 class="text-xl font-bold text-[#003366]">Hoạt động & Dấu ấn tiêu biểu</h2>
+              <h2 class="text-xl font-bold text-[#003366]">Hoạt động và dấu ấn tiêu biểu</h2>
               <p class="text-xs text-slate-400">Các cuộc thi, hội thảo và chương trình thường niên</p>
             </div>
           </div>
@@ -429,7 +429,7 @@
                 <span class="material-symbols-outlined text-[22px]">military_tech</span>
               </div>
               <div>
-                <h2 class="text-xl font-bold text-[#003366]">Thành tích & Bằng khen</h2>
+                <h2 class="text-xl font-bold text-[#003366]">Thành tích và bằng khen</h2>
                 <p class="text-xs text-slate-400">Những dấu ấn và giải thưởng được ghi nhận</p>
               </div>
             </div>
@@ -449,7 +449,7 @@
           </section>
         {% endif %}
 
-        <!-- 6. QUY TRÌNH ỨNG TUYỂN GEN MỚI & QUYỀN LỢI -->
+        <!-- 6. QUY TRÌNH ỨNG TUYỂN GEN MỚI và QUYỀN LỢI -->
         <section id="ung-tuyen" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm scroll-mt-36">
           <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
             <div class="w-10 h-10 rounded-2xl bg-[#fd761a]/10 text-[#fd761a] flex items-center justify-center">
@@ -653,11 +653,11 @@
           </div>
         </div>
 
-        <!-- Widget 2: Ban Điều Hành & Cố Vấn -->
+        <!-- Widget 2: Ban Điều Hành và cố Vấn -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
           <h3 class="text-base font-bold text-[#003366] pb-3 mb-4 border-b border-slate-100 flex items-center gap-2">
             <span class="material-symbols-outlined text-[20px] text-[#fd761a]">badge</span>
-            <span>Ban Điều Hành & Cố Vấn</span>
+            <span>Ban Điều Hành và cố Vấn</span>
           </h3>
 
           <div class="space-y-4 text-xs sm:text-sm">

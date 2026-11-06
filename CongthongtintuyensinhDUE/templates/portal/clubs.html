@@ -36,7 +36,7 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
 
     <!-- BREADCRUMB -->
@@ -54,10 +54,6 @@
       <div class="absolute right-60 -bottom-32 w-72 h-72 rounded-full bg-orange-500/15 blur-2xl pointer-events-none"></div>
 
       <div class="relative z-10 max-w-3xl">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-blue-100 text-xs font-bold mb-4 backdrop-blur-sm border border-white/20">
-          <span class="w-2 h-2 rounded-full bg-[#00A859] animate-pulse"></span>
-          Đời sống sinh viên DUE • Năng động & Sáng tạo
-        </div>
         <h1 class="text-2xl sm:text-4xl font-extrabold font-headline-lg tracking-tight mb-3">
           Hệ Thống Câu Lạc Bộ – Đội – Nhóm DUE
         </h1>
@@ -83,7 +79,7 @@
       </div>
     </div>
 
-    <!-- CONTROL BAR: TÌM KIẾM & BỘ LỌC CẤP -->
+    <!-- CONTROL BAR: TÌM KIẾM và BỘ LỌC CẤP -->
     <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 mb-6 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
       <!-- Search Input -->
       <div class="relative flex-1">
@@ -103,7 +99,7 @@
           id="clbLevelSelect"
           class="px-4 py-2.5 rounded-full border border-slate-200 bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#0072BC] transition-all cursor-pointer"
         >
-          <option value="all">Tất cả cấp (Trường & Khoa)</option>
+          <option value="all">Tất cả cấp (Trường và khoa)</option>
           <option value="truong">Cấp trường (Đoàn – Hội)</option>
           <option value="khoa">Cấp khoa chuyên ngành</option>
         </select>
@@ -118,27 +114,27 @@
       </button>
       <button type="button" data-group="hoc-thuat" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
         <span class="material-symbols-outlined text-[18px] text-blue-600">menu_book</span>
-        <span>Học thuật & Chuyên ngành</span>
+        <span>Học thuật và chuyên ngành</span>
       </button>
       <button type="button" data-group="ky-nang" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
         <span class="material-symbols-outlined text-[18px] text-amber-500">rocket_launch</span>
-        <span>Kỹ năng & Khởi nghiệp</span>
+        <span>Kỹ năng và khởi nghiệp</span>
       </button>
       <button type="button" data-group="ngoai-ngu" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
         <span class="material-symbols-outlined text-[18px] text-emerald-600">translate</span>
-        <span>Ngoại ngữ & Tiếng Anh</span>
+        <span>Ngoại ngữ và tiếng Anh</span>
       </button>
       <button type="button" data-group="nghe-thuat" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
         <span class="material-symbols-outlined text-[18px] text-pink-500">music_note</span>
-        <span>Văn nghệ & Nghệ thuật</span>
+        <span>Văn nghệ và nghệ thuật</span>
       </button>
       <button type="button" data-group="the-thao" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
         <span class="material-symbols-outlined text-[18px] text-indigo-600">sports_martial_arts</span>
-        <span>Thể dục & Thể thao</span>
+        <span>Thể dục và thể thao</span>
       </button>
       <button type="button" data-group="cong-dong" class="chip-btn shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-semibold hover:border-[#003366]">
         <span class="material-symbols-outlined text-[18px] text-teal-600">campaign</span>
-        <span>Truyền thông & Cộng đồng</span>
+        <span>Truyền thông và cộng đồng</span>
       </button>
     </div>
 
@@ -173,7 +169,7 @@
         <span class="material-symbols-outlined text-[16px] text-orange-400">celebration</span>
         Không chỉ có CLB
       </div>
-      <h2 class="text-xl sm:text-3xl font-bold font-headline-lg mb-2">Các Hoạt Động & Sự Kiện Thường Niên Của DUE</h2>
+      <h2 class="text-xl sm:text-3xl font-bold font-headline-lg mb-2">Các Hoạt Động và sự Kiện Thường Niên Của DUE</h2>
       <p class="text-blue-100 text-xs sm:text-sm max-w-2xl mb-8">Bên cạnh sinh hoạt CLB, sinh viên DUE còn được hòa mình vào chuỗi phong trào quy mô lớn do Đoàn trường và Hội Sinh viên tổ chức.</p>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -246,7 +242,7 @@
 {% block extra_js %}
 <script>
   // Dữ liệu danh sách CLB từ Django backend
-  const CLUBS_DATA = {{ clubs_json|safe }};
+  const CLUBS_DATA = JSON.parse('{{ clubs_json|safe }}');
 
   // Nhóm phân loại
   const GROUPS = [

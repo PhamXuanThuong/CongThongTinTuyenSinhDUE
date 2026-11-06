@@ -16,9 +16,6 @@ urlpatterns = [
 
     # Admissions app primary namespace
     path('', include('admissions.urls', namespace='admissions')),
-
-    # Backward compatibility namespace for templates referencing {% url 'tuyensinh:...' %}
-    path('', include('admissions.urls', namespace='tuyensinh')),
 ]
 
 if settings.DEBUG:

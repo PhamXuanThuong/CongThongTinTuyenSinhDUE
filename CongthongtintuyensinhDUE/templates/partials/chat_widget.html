@@ -23,7 +23,7 @@
   <div class="dc-backdrop fixed inset-0 bg-slate-900/40 backdrop-blur-[2px] z-[60] sm:hidden" data-dc-close></div>
 
   <!-- Khung chat -->
-  <section class="dc-panel fixed z-[61] inset-x-0 bottom-0 top-16 sm:top-auto sm:inset-x-auto sm:right-6 sm:bottom-24 sm:w-[400px] sm:h-[min(640px,calc(100vh-8rem))]
+  <section class="dc-panel fixed z-[61] inset-x-0 bottom-0 top-16 sm:top-auto sm:inset-x-auto sm:right-6 sm:bottom-24 sm:w-[370px] sm:h-[min(500px,calc(100vh-10rem))]
                   flex flex-col bg-white sm:rounded-3xl rounded-t-3xl shadow-2xl shadow-blue-900/25 border border-slate-200/70 overflow-hidden"
            role="dialog" aria-modal="true" aria-labelledby="dcTitle">
 
@@ -36,8 +36,7 @@
           <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#00A859] ring-2 ring-[#0072BC]"></span>
         </div>
         <div class="flex-1 min-w-0">
-          <h2 id="dcTitle" class="font-heading font-bold text-[15px] leading-tight">Trợ lý Tuyển sinh DUE</h2>
-          <p class="text-[11px] text-blue-100 truncate">Trực tuyến · Cán bộ hỗ trợ khi cần</p>
+          <h2 id="dcTitle" class="font-heading font-bold text-[15px] leading-tight">DUE AI BOT</h2>
         </div>
         <button type="button" data-dc-reset class="w-8 h-8 rounded-xl hover:bg-white/15 flex items-center justify-center" title="Cuộc trò chuyện mới">
           <span class="material-symbols-outlined text-[19px]">refresh</span>
@@ -52,14 +51,14 @@
     </header>
 
     <!-- Tin nhắn -->
-    <div id="dcScroll" class="dc-scroll flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-gradient-to-b from-slate-50 to-white">
+    <div id="dcScroll" class="dc-scroll flex-1 overflow-y-auto px-3.5 py-3 space-y-2.5 bg-gradient-to-b from-slate-50 to-white">
       <div id="dcWelcome" class="dc-msg">
-        <div class="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
+        <div class="rounded-2xl bg-white border border-slate-200 p-3 shadow-sm">
           <p class="text-sm font-bold text-slate-900">Xin chào! 👋</p>
-          <p class="text-[13px] text-slate-600 mt-1 leading-relaxed">Mình là trợ lý tuyển sinh của Trường Đại học Kinh tế – ĐH Đà Nẵng. Bạn có thể hỏi về ngành học, điểm chuẩn, học phí, học bổng, phương thức xét tuyển…</p>
+          <p class="text-[12.5px] text-slate-600 mt-0.5 leading-relaxed">Mình là trợ lý tuyển sinh của DUE</p>
         </div>
-        <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mt-4 mb-2 px-1">Gợi ý câu hỏi</p>
-        <div class="flex flex-wrap gap-2">
+        <p class="text-[10.5px] font-semibold text-slate-400 uppercase tracking-wider mt-3 mb-1.5 px-1">Gợi ý câu hỏi</p>
+        <div class="flex flex-wrap gap-1.5">
           <button type="button" data-dc-ask class="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[12px] text-slate-700 hover:border-[#0072BC] hover:text-[#0072BC] transition">Năm 2026 có những phương thức xét tuyển nào?</button>
           <button type="button" data-dc-ask class="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[12px] text-slate-700 hover:border-[#0072BC] hover:text-[#0072BC] transition">Học phí chương trình Tiêu chuẩn bao nhiêu?</button>
           <button type="button" data-dc-ask class="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[12px] text-slate-700 hover:border-[#0072BC] hover:text-[#0072BC] transition">IELTS 5.5 được xét chương trình nào?</button>
@@ -78,7 +77,7 @@
           <span class="material-symbols-outlined text-[19px]">arrow_upward</span>
         </button>
       </div>
-      <p class="text-[10.5px] text-slate-400 text-center mt-2">AI có thể nhầm lẫn · Hotline tuyển sinh <a href="tel:02363836169" class="text-[#0072BC] font-semibold">0236 3836 169</a></p>
+      <p class="text-[10.5px] text-slate-400 text-center mt-2">Hotline tuyển sinh <a href="tel:02363836169" class="text-[#0072BC] font-semibold">0236 3836 169</a></p>
     </form>
   </section>
 
@@ -151,7 +150,11 @@
     $('dcPing').classList.add('hidden'); $('dcHint').classList.add('md:hidden');
     unread = 0; $('dcBadge').classList.add('hidden');
     setTimeout(function () { input.focus(); }, 150);
-    scrollEnd();
+    if (!history || history.length === 0) {
+      scroller.scrollTop = 0;
+    } else {
+      scrollEnd();
+    }
   }
   function close() {
     root.classList.add('dc-closed');

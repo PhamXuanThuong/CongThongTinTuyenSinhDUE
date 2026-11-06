@@ -175,7 +175,7 @@
         "desc": "Nghiên cứu và đào tạo blockchain, AI trong tài chính, ví điện tử và giải pháp thanh toán số."
       },
       {
-        "name": "Bộ môn Tài chính công & Định chế tài chính",
+        "name": "Bộ môn Tài chính công và định chế tài chính",
         "head": "TS. Nguyễn Thanh Hương",
         "desc": "Đào tạo tài chính công, thuế, bảo hiểm và quản lý quỹ đầu tư."
       }
@@ -183,9 +183,9 @@
     "partners": [
       "Viện CFA Hoa Kỳ (CFA Institute)",
       "Ngân hàng Ngoại thương Việt Nam (Vietcombank)",
-      "Ngân hàng Đầu tư & Phát triển Việt Nam (BIDV)",
+      "Ngân hàng Đầu tư và phát triển Việt Nam (BIDV)",
       "Ngân hàng Quân đội (MB Bank)",
-      "Sở Giao dịch Chứng khoán Hà Nội & TP.HCM (HNX, HOSE)",
+      "Sở Giao dịch Chứng khoán Hà Nội và TP.HCM (HNX, HOSE)",
       "Công ty Chứng khoán VNDIRECT",
       "Hiệp hội Ngân hàng Việt Nam (VNBA)"
     ],
@@ -193,7 +193,7 @@
       "Cuộc thi 'Nhà đầu tư tài chính tương lai' (Young Finance Master)",
       "Sàn giao dịch chứng khoán ảo DUE Virtual Trading",
       "Hội thảo chuyên đề cùng các Chuyên gia phân tích đầu tư CFA Charterholder",
-      "Ngày hội Định hướng Nghề nghiệp Tài chính - Ngân hàng (Banking & Finance Career Day)"
+      "Ngày hội Định hướng Nghề nghiệp Tài chính - Ngân hàng (Banking và finance Career Day)"
     ],
     "clubs_details": [
       {
@@ -206,19 +206,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/tcnh_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Tài chính - Ngân hàng"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Khoa Tài chính - Ngân hàng"
       },
       {
         "url": "/static/img/khoa/tcnh_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Tài chính - Ngân hàng"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Khoa Tài chính - Ngân hàng"
       },
       {
         "url": "/static/img/khoa/tcnh_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Tài chính - Ngân hàng"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Khoa Tài chính - Ngân hàng"
       },
       {
         "url": "/static/img/khoa/tcnh_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Tài chính - Ngân hàng"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Khoa Tài chính - Ngân hàng"
       }
     ],
     "badge_color": "bg-blue-50 text-[#0072BC] border-blue-200",
@@ -233,7 +233,7 @@
     "text_color": "text-blue-600",
     "light_bg": "bg-blue-50",
     "gradient": "from-blue-600 to-indigo-700",
-    "category_tag": "Khối Tài chính & Ngân hàng",
+    "category_tag": "Khối Tài chính và ngân hàng",
     "detail_url": "/khoa/tcnh/",
     "lcd": {
       "id": "lcd_taichinh",
@@ -260,9 +260,9 @@
       ],
       "intro": "Liên chi đoàn Khoa Tài chính (nay thuộc Khoa Tài chính – Ngân hàng) trực thuộc Đoàn trường ĐH Kinh tế. Đại hội Đại biểu ngày 03/03/2024 đã bầu Ban Chấp hành nhiệm kỳ 2024–2027 gồm 15 đồng chí, với mục tiêu xây dựng Liên chi đoàn thành một trong những đơn vị vững mạnh nhất của trường.",
       "achievements": [
-        "Bằng khen Thành Đoàn Đà Nẵng: Thành tích xuất sắc công tác Đoàn & phong trào thanh niên",
+        "Bằng khen Thành Đoàn Đà Nẵng: Thành tích xuất sắc công tác Đoàn và phong trào thanh niên",
         "Giấy khen Đoàn trường ĐH Kinh tế: Đơn vị vững mạnh toàn diện nhiều năm liền",
-        "Giải Nhất cuộc thi Ý tưởng Khởi nghiệp & Nghiên cứu khoa học sinh viên"
+        "Giải Nhất cuộc thi Ý tưởng Khởi nghiệp và nghiên cứu khoa học sinh viên"
       ],
       "activities": [
         {
@@ -453,32 +453,32 @@
     },
     "departments_list": [
       {
-        "name": "Bộ môn Kinh doanh quốc tế & Logistics",
+        "name": "Bộ môn Kinh doanh quốc tế và logistics",
         "head": "TS. Hoàng Thị Thanh Hằng",
         "desc": "Chuyên sâu về ngoại thương, thanh toán quốc tế, chuỗi cung ứng và giao nhận hàng hải."
       },
       {
-        "name": "Bộ môn Quản trị Du lịch & Lữ hành",
+        "name": "Bộ môn Quản trị Du lịch và lữ hành",
         "head": "TS. Đặng Thanh Tùng",
         "desc": "Đào tạo quản lý điểm đến, điều hành tour du lịch lữ hành, du lịch nghỉ dưỡng và sự kiện (MICE)."
       },
       {
-        "name": "Bộ môn Quản trị Khách sạn & Resort",
+        "name": "Bộ môn Quản trị Khách sạn và resort",
         "head": "ThS. Nguyễn Thị Bích Thảo",
         "desc": "Đào tạo quản trị lưu trú, ẩm thực cao cấp (F&B) và vận hành các khách sạn, resort 5 sao."
       }
     ],
     "partners": [
-      "Tập đoàn Sun Group & Sun World",
+      "Tập đoàn Sun Group và sun World",
       "Tập đoàn Vinpearl / Vingroup",
       "InterContinental Danang Sun Peninsula Resort",
       "Furama Resort Danang",
-      "Hãng tàu Maersk Line & Cảng Đà Nẵng",
+      "Hãng tàu Maersk Line và cảng Đà Nẵng",
       "Hiệp hội Du lịch Việt Nam (VITA)",
       "Tập đoàn Khách sạn Marriott International"
     ],
     "student_activities": [
-      "Cuộc thi 'Tài năng Hướng dẫn viên & Thuyết trình du lịch DUE'",
+      "Cuộc thi 'Tài năng Hướng dẫn viên và thuyết trình du lịch DUE'",
       "Chương trình Gala 'DUE Hospitality Night'",
       "Dự án Khởi nghiệp Xanh trong Du lịch bền vững",
       "Chuyến đi thực tế xuyên Việt và khảo sát tuyến điểm du lịch Đông Nam Á"
@@ -494,19 +494,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/dlkdqt_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Du lịch và Kinh doanh quốc tế"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Khoa Du lịch và Kinh doanh quốc tế"
       },
       {
         "url": "/static/img/khoa/dlkdqt_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Du lịch và Kinh doanh quốc tế"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Khoa Du lịch và Kinh doanh quốc tế"
       },
       {
         "url": "/static/img/khoa/dlkdqt_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Du lịch và Kinh doanh quốc tế"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Khoa Du lịch và Kinh doanh quốc tế"
       },
       {
         "url": "/static/img/khoa/dlkdqt_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Du lịch và Kinh doanh quốc tế"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Khoa Du lịch và Kinh doanh quốc tế"
       }
     ],
     "badge_color": "bg-emerald-50 text-[#00A859] border-emerald-200",
@@ -521,7 +521,7 @@
     "text_color": "text-emerald-600",
     "light_bg": "bg-emerald-50",
     "gradient": "from-emerald-600 to-teal-700",
-    "category_tag": "Khối Du lịch & Thương mại Quốc tế",
+    "category_tag": "Khối Du lịch và thương mại Quốc tế",
     "detail_url": "/khoa/dlkdqt/",
     "lcd": {
       "id": "lcd_dulich_kdqt",
@@ -533,7 +533,7 @@
       "intro": "Liên chi đoàn Khoa Du lịch (“Nhà Tím”) hoạt động sôi nổi với các chiến dịch tình nguyện, gây quỹ, phong trào Sinh viên 5 tốt, nghiên cứu khoa học và các cuộc thi chuyên môn. Ban Chấp hành được tuyển theo năm học (đợt 2025–2026 công bố ngày 14/10/2025 qua bản tin Nhà Tím).",
       "achievements": [
         "Giải Nhất cuộc thi báo tường cấp trường “DUE – Nơi viết tiếp giấc mơ” (11/2025)",
-        "Cờ thi đua Liên chi đoàn xuất sắc dẫn đầu phong trào Tình nguyện & Hoạt động xã hội",
+        "Cờ thi đua Liên chi đoàn xuất sắc dẫn đầu phong trào Tình nguyện và hoạt động xã hội",
         "Đơn vị có số lượng Sinh viên 5 tốt cấp Đại học Đà Nẵng đông đảo nhất"
       ],
       "activities": [
@@ -792,30 +792,30 @@
         "desc": "Chuyên sâu về mô hình kinh doanh sàn TMĐT, logistics số, thanh toán điện tử và Omnichannel."
       },
       {
-        "name": "Bộ môn Marketing & Truyền thông số",
+        "name": "Bộ môn Marketing và truyền thông số",
         "head": "TS. Đặng Thị Thu Trang",
         "desc": "Đào tạo Digital Marketing, quản trị thương hiệu, quan hệ công chúng (PR) và sáng tạo nội dung số."
       },
       {
-        "name": "Bộ môn Công nghệ số & Khoa học dữ liệu",
+        "name": "Bộ môn Công nghệ số và khoa học dữ liệu",
         "head": "ThS. Nguyễn Văn Chức",
         "desc": "Nghiên cứu ứng dụng AI trong kinh doanh, phân tích dữ liệu lớn (Big Data) và quản trị hệ thống thông tin."
       }
     ],
     "partners": [
-      "Shopee Việt Nam & TikTok Shop",
+      "Shopee Việt Nam và tikTok Shop",
       "Tập đoàn FPT & FPT Software",
-      "Google for Education & Meta Blueprint",
+      "Google for Education và meta Blueprint",
       "Hiệp hội Thương mại Điện tử Việt Nam (VECOM)",
-      "Dentsu Redder & Ogilvy Việt Nam",
-      "VNPAY & MoMo",
+      "Dentsu Redder và ogilvy Việt Nam",
+      "VNPAY và moMo",
       "Tập đoàn công nghệ Enouvo / BAP Software"
     ],
     "student_activities": [
       "Cuộc thi 'Chiến binh E-Commerce' & 'DUE Digital Marketer'",
       "Workshop 'Gen Z Khởi nghiệp số và ứng dụng Trí tuệ nhân tạo (AI)'",
       "Dự án Livestream Thương mại điện tử thực chiến hỗ trợ nông sản sạch",
-      "Ngày hội Công nghệ số & Triển lãm Dự án Khoa học Dữ liệu DUE"
+      "Ngày hội Công nghệ số và triển lãm Dự án Khoa học Dữ liệu DUE"
     ],
     "clubs_details": [
       {
@@ -832,19 +832,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/tmdt_mkt_cns_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Khoa Thương mại điện tử - Marketing và Công nghệ số"
       },
       {
         "url": "/static/img/khoa/tmdt_mkt_cns_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Khoa Thương mại điện tử - Marketing và Công nghệ số"
       },
       {
         "url": "/static/img/khoa/tmdt_mkt_cns_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Khoa Thương mại điện tử - Marketing và Công nghệ số"
       },
       {
         "url": "/static/img/khoa/tmdt_mkt_cns_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Thương mại điện tử - Marketing và Công nghệ số"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Khoa Thương mại điện tử - Marketing và Công nghệ số"
       }
     ],
     "badge_color": "bg-purple-50 text-[#8b5cf6] border-purple-200",
@@ -860,7 +860,7 @@
     "text_color": "text-orange-600",
     "light_bg": "bg-orange-50",
     "gradient": "from-orange-500 to-red-600",
-    "category_tag": "Khối Công nghệ số & Marketing",
+    "category_tag": "Khối Công nghệ số và marketing",
     "detail_url": "/khoa/tmdt_mkt_cns/",
     "lcd": {
       "id": "lcd_tmdt",
@@ -873,7 +873,7 @@
       "achievements": [
         "Tổ chức thành công Cuộc thi Data Got Talent quy mô hơn 700 sinh viên toàn quốc",
         "Đơn vị tiên phong chuyển đổi số trong công tác Đoàn và hoạt động thanh niên",
-        "Giấy khen Đoàn trường về phong trào Đổi mới Sáng tạo & Kỹ năng số 4.0"
+        "Giấy khen Đoàn trường về phong trào Đổi mới Sáng tạo và kỹ năng số 4.0"
       ],
       "activities": [
         {
@@ -1057,12 +1057,12 @@
     },
     "departments_list": [
       {
-        "name": "Bộ môn Kinh tế học & Kinh tế quốc tế",
+        "name": "Bộ môn Kinh tế học và kinh tế quốc tế",
         "head": "TS. Lê Bảo",
         "desc": "Giảng dạy kinh tế vi mô, vĩ mô nâng cao, kinh tế quốc tế và thương mại tự do (FTA)."
       },
       {
-        "name": "Bộ môn Kinh tế đầu tư & Phát triển",
+        "name": "Bộ môn Kinh tế đầu tư và phát triển",
         "head": "PGS.TS. Bùi Quang Bình",
         "desc": "Chuyên sâu về lập và thẩm định dự án đầu tư, kinh tế môi trường và chính sách công."
       },
@@ -1074,7 +1074,7 @@
     ],
     "partners": [
       "Viện Nghiên cứu Quản lý Kinh tế Trung ương (CIEM)",
-      "Sở Kế hoạch và Đầu tư TP. Đà Nẵng & các tỉnh miền Trung",
+      "Sở Kế hoạch và Đầu tư TP. Đà Nẵng và các tỉnh miền Trung",
       "Cục Thống kê TP. Đà Nẵng",
       "Ban Quản lý Khu công nghệ cao và các Khu công nghiệp Đà Nẵng",
       "Ngân hàng Thế giới (World Bank) tại Việt Nam",
@@ -1082,7 +1082,7 @@
     ],
     "student_activities": [
       "Diễn đàn Kinh tế Trẻ DUE (Young Economics Forum)",
-      "Cuộc thi 'Phân tích Dự án Đầu tư & Khởi sự Kinh doanh'",
+      "Cuộc thi 'Phân tích Dự án Đầu tư và khởi sự Kinh doanh'",
       "Khảo sát và nghiên cứu thực tế tại các vùng kinh tế trọng điểm miền Trung",
       "Chuỗi seminar học thuật cùng các chuyên gia kinh tế trưởng quốc tế"
     ],
@@ -1097,19 +1097,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/kt_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Kinh tế"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Khoa Kinh tế"
       },
       {
         "url": "/static/img/khoa/kt_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Kinh tế"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Khoa Kinh tế"
       },
       {
         "url": "/static/img/khoa/kt_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Kinh tế"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Khoa Kinh tế"
       },
       {
         "url": "/static/img/khoa/kt_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Kinh tế"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Khoa Kinh tế"
       }
     ],
     "badge_color": "bg-sky-50 text-[#0284c7] border-sky-200",
@@ -1124,7 +1124,7 @@
     "text_color": "text-indigo-600",
     "light_bg": "bg-indigo-50",
     "gradient": "from-indigo-600 to-blue-800",
-    "category_tag": "Khối Kinh tế học & Phát triển",
+    "category_tag": "Khối Kinh tế học và phát triển",
     "detail_url": "/khoa/kt/",
     "lcd": {
       "id": "lcd_kinhte",
@@ -1346,12 +1346,12 @@
     },
     "departments_list": [
       {
-        "name": "Bộ môn Quản trị kinh doanh tổng quát & Kinh doanh số",
+        "name": "Bộ môn Quản trị kinh doanh tổng quát và kinh doanh số",
         "head": "TS. Lê Thị Minh Hằng",
         "desc": "Giảng dạy chiến lược doanh nghiệp, quản trị đổi mới sáng tạo, mô hình kinh doanh số."
       },
       {
-        "name": "Bộ môn Quản trị Chuỗi cung ứng & Logistics",
+        "name": "Bộ môn Quản trị Chuỗi cung ứng và logistics",
         "head": "TS. Nguyễn Quốc Tuấn",
         "desc": "Đào tạo quản lý kho bãi, mua hàng, vận tải, hoạch định chuỗi cung ứng toàn cầu."
       },
@@ -1364,9 +1364,9 @@
     "partners": [
       "Hiệp hội Doanh nhân Trẻ TP. Đà Nẵng",
       "Tập đoàn Vingroup, Thaco Group",
-      "Tập đoàn Viettel & VNPT",
+      "Tập đoàn Viettel và VNPT",
       "Công ty Sữa Việt Nam (Vinamilk)",
-      "Tập đoàn Unilever Việt Nam & P&G",
+      "Tập đoàn Unilever Việt Nam và p&G",
       "Hiệp hội Phát triển Nhân lực Việt Nam (VNHR)",
       "Logistics协会 (VLA)"
     ],
@@ -1391,19 +1391,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/qtkd_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Quản trị kinh doanh"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Khoa Quản trị kinh doanh"
       },
       {
         "url": "/static/img/khoa/qtkd_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Quản trị kinh doanh"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Khoa Quản trị kinh doanh"
       },
       {
         "url": "/static/img/khoa/qtkd_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Quản trị kinh doanh"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Khoa Quản trị kinh doanh"
       },
       {
         "url": "/static/img/khoa/qtkd_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Quản trị kinh doanh"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Khoa Quản trị kinh doanh"
       }
     ],
     "badge_color": "bg-orange-50 text-[#ea580c] border-orange-200",
@@ -1676,7 +1676,7 @@
       }
     ],
     "partners": [
-      "Big 4 Kiểm toán thế giới: PwC, Deloitte, Ernst & Young (EY), KPMG",
+      "Big 4 Kiểm toán thế giới: PwC, Deloitte, Ernst và young (EY), KPMG",
       "Hội Kiểm toán viên Hành nghề Việt Nam (VACPA)",
       "Viện Kế toán Công chứng Anh và xứ Wales (ICAEW)",
       "Hiệp hội Kế toán Công chứng Anh Quốc (ACCA)",
@@ -1684,7 +1684,7 @@
       "Viện Kế toán Công chứng Singapore (ISCA)"
     ],
     "student_activities": [
-      "Cuộc thi 'Tài năng Kế toán Kiểm toán' (Accounting & Auditing Arena)",
+      "Cuộc thi 'Tài năng Kế toán Kiểm toán' (Accounting và auditing Arena)",
       "Chương trình học bổng Big 4 Career Path và trải nghiệm thực tế công ty kiểm toán",
       "Lớp huấn luyện chứng chỉ IFRS và ACCA dành cho sinh viên xuất sắc",
       "Hội thảo 'Hành trình chinh phục Big 4' thường niên"
@@ -1700,19 +1700,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/ketoan_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Kế toán"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Khoa Kế toán"
       },
       {
         "url": "/static/img/khoa/ketoan_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Kế toán"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Khoa Kế toán"
       },
       {
         "url": "/static/img/khoa/ketoan_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Kế toán"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Khoa Kế toán"
       },
       {
         "url": "/static/img/khoa/ketoan_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Kế toán"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Khoa Kế toán"
       }
     ],
     "badge_color": "bg-teal-50 text-[#0d9488] border-teal-200",
@@ -1727,7 +1727,7 @@
     "text_color": "text-teal-600",
     "light_bg": "bg-teal-50",
     "gradient": "from-teal-600 to-cyan-700",
-    "category_tag": "Khối Kế toán & Kiểm toán Chuẩn ACCA",
+    "category_tag": "Khối Kế toán và kiểm toán Chuẩn ACCA",
     "detail_url": "/khoa/ketoan/",
     "lcd": {
       "id": "lcd_ketoan",
@@ -1787,7 +1787,7 @@
         },
         {
           "url": "/static/img/lcd/lcd_ketoan-02.jpg",
-          "caption": "Cuộc thi học thuật Olympus & AC Champion Cup Khoa Kế toán"
+          "caption": "Cuộc thi học thuật Olympus và AC Champion Cup Khoa Kế toán"
         },
         {
           "url": "/static/img/lcd/lcd_ketoan-03.jpg",
@@ -1898,12 +1898,12 @@
     },
     "departments_list": [
       {
-        "name": "Bộ môn Quản lý nhà nước & Hành chính công",
+        "name": "Bộ môn Quản lý nhà nước và hành chính công",
         "head": "TS. Bùi Văn Ba",
         "desc": "Đào tạo thủ tục hành chính công, tổ chức bộ máy nhà nước, quản trị địa phương."
       },
       {
-        "name": "Bộ môn Triết học & Kinh tế chính trị",
+        "name": "Bộ môn Triết học và kinh tế chính trị",
         "head": "TS. Nguyễn Thị Nga",
         "desc": "Giảng dạy tư tưởng Hồ Chí Minh, triết học Mác - Lênin, chủ nghĩa xã hội khoa học."
       }
@@ -1923,7 +1923,7 @@
     ],
     "clubs_details": [
       {
-        "name": "Đội Văn nghệ & Tuyên truyền Thanh niên",
+        "name": "Đội Văn nghệ và tuyên truyền Thanh niên",
         "desc": "Tổ chức hoạt động văn hóa, giáo dục truyền thống và kỹ năng xã hội."
       }
     ],
@@ -1932,19 +1932,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/llct_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Lý luận chính trị"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Khoa Lý luận chính trị"
       },
       {
         "url": "/static/img/khoa/llct_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Lý luận chính trị"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Khoa Lý luận chính trị"
       },
       {
         "url": "/static/img/khoa/llct_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Lý luận chính trị"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Khoa Lý luận chính trị"
       },
       {
         "url": "/static/img/khoa/llct_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Lý luận chính trị"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Khoa Lý luận chính trị"
       }
     ],
     "badge_color": "bg-rose-50 text-[#dc2626] border-rose-200",
@@ -1959,7 +1959,7 @@
     "text_color": "text-rose-600",
     "light_bg": "bg-rose-50",
     "gradient": "from-rose-600 to-red-800",
-    "category_tag": "Khối Lý luận & Quản lý Nhà nước",
+    "category_tag": "Khối Lý luận và quản lý Nhà nước",
     "detail_url": "/khoa/llct/",
     "lcd": {
       "id": "lcd_llct",
@@ -1984,7 +1984,7 @@
           "date": "2022-04-15",
           "title": "Đêm nhạc du ca gây quỹ “DUE – is twinkle night”",
           "url": "https://due.udn.vn/vi-vn/khoalyluanchinhtrict/id/15225/cid/4430",
-          "summary": "Phối hợp LCĐ Trung tâm Đào tạo Quốc tế, thuộc chiến dịch “Ươm màu nắng – Xanh màu tình nguyện” 2022, tại New Royal Coffee & Live Music."
+          "summary": "Phối hợp LCĐ Trung tâm Đào tạo Quốc tế, thuộc chiến dịch “Ươm màu nắng – Xanh màu tình nguyện” 2022, tại New Royal Coffee và live Music."
         },
         {
           "date": "2021-07-07",
@@ -2162,7 +2162,7 @@
         "desc": "Chuyên sâu về luật doanh nghiệp, hợp đồng thương mại, sở hữu trí tuệ và thương mại quốc tế."
       },
       {
-        "name": "Bộ môn Luật Hành chính - Nhà nước & Hình sự",
+        "name": "Bộ môn Luật Hành chính - Nhà nước và hình sự",
         "head": "TS. Trần Thị Sáu",
         "desc": "Đào tạo luật tố tụng dân sự, tố tụng hình sự, luật hành chính và kỹ năng tranh tụng tại tòa."
       }
@@ -2172,12 +2172,12 @@
       "Viện Kiểm sát Nhân dân TP. Đà Nẵng",
       "Đoàn Luật sư TP. Đà Nẵng",
       "Trung tâm Trọng tài Quốc tế Việt Nam (VIAC)",
-      "Công ty Luật LNT & Partners, VILAF, YKVN",
+      "Công ty Luật LNT và partners, VILAF, YKVN",
       "Sở Tư pháp TP. Đà Nẵng"
     ],
     "student_activities": [
       "Phiên tòa giả định thường niên (Moot Court DUE)",
-      "Cuộc thi 'Hùng biện Pháp luật & Nhà tư vấn pháp lý tương lai'",
+      "Cuộc thi 'Hùng biện Pháp luật và nhà tư vấn pháp lý tương lai'",
       "Chương trình Trợ giúp pháp lý lưu động cho cộng đồng",
       "Giao lưu cùng các Thẩm phán TAND và Luật sư hàng đầu"
     ],
@@ -2192,19 +2192,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/luat_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Khoa Luật"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Khoa Luật"
       },
       {
         "url": "/static/img/khoa/luat_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Khoa Luật"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Khoa Luật"
       },
       {
         "url": "/static/img/khoa/luat_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Khoa Luật"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Khoa Luật"
       },
       {
         "url": "/static/img/khoa/luat_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Khoa Luật"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Khoa Luật"
       }
     ],
     "badge_color": "bg-indigo-50 text-[#4f46e5] border-indigo-200",
@@ -2218,7 +2218,7 @@
     "text_color": "text-purple-600",
     "light_bg": "bg-purple-50",
     "gradient": "from-purple-600 to-indigo-800",
-    "category_tag": "Khối Pháp lý & Luật Kinh tế",
+    "category_tag": "Khối Pháp lý và luật Kinh tế",
     "detail_url": "/khoa/luat/",
     "lcd": {
       "id": "lcd_luat",
@@ -2230,7 +2230,7 @@
       "intro": "Liên chi đoàn Khoa Luật đạt nhiều giải tại hội trại truyền thống của Đoàn trường và tổ chức các hoạt động như Coffee Talk, hội nghị công tác sinh viên; phối hợp với CLB Khoa học Pháp lý trong các hoạt động học thuật.",
       "achievements": [
         "Giải Nhì toàn đoàn Hội trại truyền thống 2024 “Sử thi vang danh – Thanh niên tiếp bước”",
-        "Giải Nhất Cuộc thi Rung chuông vàng & Giải Nhất trò chơi lớn Hội trại",
+        "Giải Nhất Cuộc thi Rung chuông vàng và giải Nhất trò chơi lớn Hội trại",
         "Đơn vị có phần thi Trình diễn hóa trang xuất sắc nhất trường"
       ],
       "activities": [
@@ -2258,7 +2258,7 @@
         },
         {
           "url": "/static/img/lcd/lcd_luat-02.jpg",
-          "caption": "Chuỗi tọa đàm Pháp lý & Coffee Talk sinh viên Luật"
+          "caption": "Chuỗi tọa đàm Pháp lý và coffee Talk sinh viên Luật"
         },
         {
           "url": "/static/img/lcd/lcd_luat-03.jpg",
@@ -2322,7 +2322,7 @@
     "dean_message": "Du học tại chỗ với chi phí tối ưu và cơ hội chuyển tiếp linh hoạt sang các trường đại học top 1% thế giới! Viện Đào tạo Quốc tế là bệ phóng hoàn hảo giúp bạn trở thành công dân toàn cầu tự tin bước ra thế giới.",
     "staff_stats": {
       "total": 25,
-      "professors": "100% Giảng viên quốc tế & Tu nghiệp nước ngoài",
+      "professors": "100% Giảng viên quốc tế và tu nghiệp nước ngoài",
       "phd": "15 TS",
       "masters": "10 ThS",
       "international_rate": "100%"
@@ -2334,7 +2334,7 @@
         "desc": "Liên kết ĐH Sunderland, ĐH Cardiff Metropolitan, ĐH Coventry (Bằng cử nhân do ĐH Anh cấp)."
       },
       {
-        "name": "Bộ môn Chương trình Cử nhân Úc & Mỹ",
+        "name": "Bộ môn Chương trình Cử nhân Úc và mỹ",
         "head": "TS. Nguyễn Thị Quỳnh",
         "desc": "Liên kết Đại học Queensland (UQ), Swinburne University of Technology, Monash University."
       }
@@ -2348,14 +2348,14 @@
       "Hội đồng Anh (British Council)"
     ],
     "student_activities": [
-      "DUE Global Village & Ngày hội Văn hóa Quốc tế",
+      "DUE Global Village và ngày hội Văn hóa Quốc tế",
       "Chương trình trao đổi sinh viên mùa hè (Summer Exchange Camp)",
       "Cuộc thi Hùng biện Tiếng Anh 'Global Leader'",
       "Dự án Khởi nghiệp Xuyên biên giới hợp tác cùng sinh viên quốc tế"
     ],
     "clubs_details": [
       {
-        "name": "SEE Club (Students of Economic & English)",
+        "name": "SEE Club (Students of Economic và english)",
         "desc": "Câu lạc bộ tiếng Anh và kết nối sinh viên quốc tế năng động nhất DUE."
       }
     ],
@@ -2364,19 +2364,19 @@
     "gallery": [
       {
         "url": "/static/img/khoa/vdtqt_gallery_1.jpg",
-        "caption": "Hoi thao Khoa hoc & Hop tac Doanh nghiep - Viện Đào tạo Quốc tế"
+        "caption": "Hoi thao Khoa hoc và hop tac Doanh nghiep - Viện Đào tạo Quốc tế"
       },
       {
         "url": "/static/img/khoa/vdtqt_gallery_2.jpg",
-        "caption": "Giang duong hien dai & Thuc hanh thuc te - Viện Đào tạo Quốc tế"
+        "caption": "Giang duong hien dai và thuc hanh thuc te - Viện Đào tạo Quốc tế"
       },
       {
         "url": "/static/img/khoa/vdtqt_gallery_3.jpg",
-        "caption": "Sinh vien NCKH & Giai thuong Sang tao - Viện Đào tạo Quốc tế"
+        "caption": "Sinh vien NCKH và giai thuong Sang tao - Viện Đào tạo Quốc tế"
       },
       {
         "url": "/static/img/khoa/vdtqt_gallery_4.jpg",
-        "caption": "Le Trao bang Tot nghiep & Chao don Tan sinh vien - Viện Đào tạo Quốc tế"
+        "caption": "Le Trao bang Tot nghiep và chao don Tan sinh vien - Viện Đào tạo Quốc tế"
       }
     ],
     "badge_color": "bg-amber-50 text-[#d97706] border-amber-200",
@@ -2391,7 +2391,7 @@
     "text_color": "text-cyan-600",
     "light_bg": "bg-cyan-50",
     "gradient": "from-cyan-600 to-blue-700",
-    "category_tag": "Chương trình Quốc tế & Liên kết Song bằng",
+    "category_tag": "Chương trình Quốc tế và liên kết Song bằng",
     "detail_url": "/khoa/vdtqt/",
     "lcd": {
       "id": "lcd_vdtqt",
@@ -2412,7 +2412,7 @@
           "desc": "Kiện toàn tổ chức và phát động các phong trào thi đua thanh niên"
         },
         {
-          "title": "Chiến dịch Mùa hè xanh & Tình nguyện vì cộng đồng",
+          "title": "Chiến dịch Mùa hè xanh và tình nguyện vì cộng đồng",
           "desc": "Tổ chức các hoạt động an sinh xã hội, giúp đỡ các điểm trường vùng khó khăn"
         },
         {
@@ -2427,7 +2427,7 @@
         },
         {
           "url": "/static/img/lcd/lcd_vdtqt-02.jpg",
-          "caption": "Chào đón tân sinh viên quốc tế & chương trình tình nguyện toàn cầu"
+          "caption": "Chào đón tân sinh viên quốc tế và chương trình tình nguyện toàn cầu"
         },
         {
           "url": "/static/img/lcd/lcd_vdtqt-03.jpg",

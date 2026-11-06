@@ -17,16 +17,16 @@
 {% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-16 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
 
     <!-- Breadcrumb -->
     <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
       <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa &amp; Viện Đào Tạo</a>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa và viện Đào Tạo</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <span class="text-secondary-container font-semibold">Hệ thống Liên Chi Đoàn DUE</span>
+      <span class="text-secondary-container font-semibold">Liên Chi Đoàn DUE</span>
     </nav>
 
     <!-- Header Hero Banner -->
@@ -35,31 +35,13 @@
       <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-blue-500/20 blur-3xl pointer-events-none"></div>
 
       <div class="relative z-10 max-w-3xl">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-600/90 text-white text-xs font-bold mb-4 backdrop-blur-sm shadow-sm">
-          <span class="material-symbols-outlined text-[16px]">flag</span>
-          Đoàn TNCS Hồ Chí Minh – Hội Sinh Viên Trường ĐH Kinh Tế (DUE)
-        </div>
-
         <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-headline-lg tracking-tight mb-3">
-          Hệ Thống Liên Chi Đoàn Các Khoa
+          Liên Chi Đoàn các Khoa
         </h1>
 
         <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6">
-          Mạng lưới <strong>9 Liên Chi Đoàn trực thuộc 8 Khoa &amp; Viện Đào tạo Quốc tế DUE</strong> là môi trường tôi luyện bản lĩnh, kỹ năng lãnh đạo và kết nối cộng đồng năng động cho hơn 15.000 đoàn viên sinh viên. Mỗi Liên Chi Đoàn có trang thông tin riêng với đầy đủ nhân sự Ban Chấp Hành, các hoạt động tiêu biểu và hình ảnh phong trào.
+          Mạng lưới <strong>9 Liên Chi Đoàn trực thuộc 8 Khoa và viện Đào tạo Quốc tế DUE</strong> là môi trường tôi luyện bản lĩnh, kỹ năng lãnh đạo và kết nối cộng đồng năng động cho hơn 15.000 đoàn viên sinh viên. Mỗi Liên Chi Đoàn có trang thông tin riêng với đầy đủ nhân sự Ban Chấp Hành, các hoạt động tiêu biểu và hình ảnh phong trào.
         </p>
-
-        <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium">
-          <a href="https://www.facebook.com/FaceDue" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-[#1877F2] hover:bg-[#166fe5] text-white px-4 py-2.5 rounded-full shadow-md transition-all hover:scale-105">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
-            <span>Fanpage Đoàn - Hội DUE</span>
-          </a>
-          <div class="flex items-center gap-2 bg-white/10 px-4 py-2.5 rounded-full border border-white/15">
-            <span class="font-bold text-amber-300">9</span> Liên Chi Đoàn Khoa &amp; Viện
-          </div>
-          <div class="flex items-center gap-2 bg-white/10 px-4 py-2.5 rounded-full border border-white/15">
-            <span class="font-bold text-green-300">{{ clubs_count }}+</span> CLB - Đội - Nhóm
-          </div>
-        </div>
       </div>
     </div>
 
@@ -71,11 +53,8 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-headline-md">
-            Danh Sách 9 Liên Chi Đoàn Trực Thuộc (Nhiệm Kỳ 2024–2027)
+            Danh sách 9 Liên Chi Đoàn Trực Thuộc
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-1">
-            Bấm vào từng Liên Chi Đoàn để xem trang chi tiết: Ban chấp hành, sự kiện tiêu biểu, thư viện ảnh và kênh liên hệ.
-          </p>
         </div>
 
         <div class="relative w-full sm:w-72">
@@ -100,14 +79,11 @@
             <div class="flex items-center justify-between gap-2 mb-4">
               <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 font-bold text-[11px] border border-rose-200/80 flex items-center gap-1">
                 <span class="material-symbols-outlined text-[14px]">flag</span>
-                <span>{{ fac.lcd.term|default:"Nhiệm kỳ 2024–2027" }}</span>
-              </span>
-              <span class="text-[11px] text-slate-400 font-medium">
-                {{ fac.clubs_count }} CLB trực thuộc
+                <span class="font-medium">{{ fac.clubs_count }} CLB trực thuộc</span>
               </span>
             </div>
 
-            <!-- Tên & Giới thiệu -->
+            <!-- Tên và giới thiệu -->
             <div class="flex items-start gap-3.5 mb-3.5">
               <div class="w-12 h-12 rounded-2xl bg-slate-50 p-1.5 shrink-0 border border-slate-100 flex items-center justify-center group-hover:scale-105 transition-transform">
                 <img src="{{ fac.logo_url }}" alt="{{ fac.name }}" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';" />

@@ -13,12 +13,9 @@ urlpatterns = [
     # Liên Chi Đoàn
     path('lien-chi-doan/', views.lcd_overview_view, name='lien_chi_doan_list'),
     path('lien-chi-doan/<str:code>/', views.faculty_lcd_detail_view, name='lien_chi_doan_detail'),
-    path('lcd/', views.lcd_overview_view, name='lcd_list'),
-    path('lcd/<str:code>/', views.faculty_lcd_detail_view, name='lcd_detail'),
 
     # Đời sống sinh viên & Ký túc xá
     path('ky-tuc-xa/', views.dormitory_view, name='ky_tuc_xa'),
-    path('ktx/', views.dormitory_view, name='ktx'),
     path('hoat-dong-doan/', views.youth_activity_view, name='hoat_dong_doan'),
     path('doan-thanh-nien/', views.youth_activity_view, name='doan_thanh_nien'),
 
@@ -38,14 +35,4 @@ urlpatterns = [
     path('api/khoa/<str:code>/', api.api_faculty_detail, name='api_khoa_detail'),
     path('api/clb/', api.api_clubs_list, name='api_clb_list'),
     path('api/clb/dang-ky/', api.api_club_register, name='api_clb_register'),
-
-    # Alias Tiếng Anh phụ trợ (Tùy chọn)
-    path('faculties/', views.faculty_overview_view, name='faculties'),
-    path('faculties/<str:code>/', views.faculty_detail_view, name='faculty_detail'),
-    path('youth-unions/', views.lcd_overview_view, name='youth_unions_list'),
-    path('dormitory/', views.dormitory_view, name='dormitory'),
-    path('clubs/', views.club_view, name='clubs'),
-    path('student-life/', views.student_life_view, name='student_life'),
-    path('enrollment-guide/', views.enrollment_guide_view, name='enrollment_guide'),
-    path('freshman-schedule/', views.freshman_schedule_view, name='freshman_schedule'),
 ]
