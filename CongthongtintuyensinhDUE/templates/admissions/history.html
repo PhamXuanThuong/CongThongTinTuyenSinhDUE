@@ -99,34 +99,37 @@
               1
             </div>
 
-            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all">
+            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 lg:p-9 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <span class="px-3 py-1 rounded-full bg-primary-fixed text-primary-container font-bold text-xs">
+                <span class="px-3.5 py-1 rounded-full bg-primary-fixed text-primary-container font-bold text-xs">
                   Tháng 10/1975 – Tháng 12/1985
                 </span>
                 <span class="text-xs text-outline font-semibold">Giai đoạn hình thành nền móng</span>
               </div>
               
-              <h3 class="text-xl sm:text-2xl font-bold text-on-surface mb-3 group-hover:text-primary-container transition-colors">
+              <h3 class="text-xl sm:text-2xl font-bold text-on-surface mb-4 group-hover:text-primary-container transition-colors leading-snug">
                 Thành lập Khoa Kinh tế - Viện Đại học Đà Nẵng / Đại học Bách khoa Đà Nẵng
               </h3>
 
-              <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                <div class="md:col-span-7">
-                  <p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+                <div class="lg:col-span-7 xl:col-span-8 space-y-3.5 text-justify">
+                  <p class="text-on-surface-variant text-sm sm:text-base leading-relaxed">
                     Tháng 10 năm 1975, ngay sau ngày đất nước thống nhất, Khoa Kinh tế chính thức được thành lập và tiến hành chiêu sinh khóa đào tạo đại học chính quy đầu tiên. Đây là cái nôi đầu tiên đào tạo cán bộ quản lý kinh tế cho toàn bộ dải đất miền Trung và Tây Nguyên.
                   </p>
-                  <p class="text-on-surface-variant text-sm leading-relaxed">
-                    Trong giai đoạn đầu này, Khoa đảm nhiệm đào tạo 6 chuyên ngành chủ lực phục vụ tái thiết đất nước: <strong>Kế hoạch hóa Kinh tế Quốc dân, Kinh tế Công nghiệp, Kinh tế Nông nghiệp, Kinh tế Thương nghiệp, Thống kê và Kế toán</strong>.
+                  <p class="text-on-surface-variant text-sm sm:text-base leading-relaxed">
+                    Trong giai đoạn đầu này, Khoa đảm nhiệm đào tạo 6 chuyên ngành chủ lực phục vụ công cuộc tái thiết và phát triển đất nước: <strong>Kế hoạch hóa Kinh tế Quốc dân, Kinh tế Công nghiệp, Kinh tế Nông nghiệp, Kinh tế Thương nghiệp, Thống kê và Kế toán</strong>.
                   </p>
                 </div>
 
                 <!-- Cột ảnh 2: Tòa nhà cổ kính truyền thống của trường -->
-                <div class="md:col-span-5 flex justify-center">
-                  <div class="rounded-2xl overflow-hidden border border-outline-variant/40 shadow-md bg-surface-container-low max-w-[280px]">
-                    <img class="w-full h-auto object-contain hover:scale-105 transition-transform duration-500" 
+                <div class="lg:col-span-5 xl:col-span-4 flex justify-center">
+                  <div class="w-full max-w-[320px] rounded-2xl overflow-hidden border border-outline-variant/40 shadow-md bg-surface-container-low group/img relative">
+                    <img class="w-full h-52 sm:h-56 object-cover object-center group-hover/img:scale-105 transition-transform duration-500" 
                          src="{% static 'images/history_cu.png' %}" 
                          alt="Tòa nhà giảng đường Khoa Kinh tế - Trường Đại học Kinh tế giai đoạn đầu">
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent p-2 text-center">
+                      <span class="text-[11px] font-semibold text-white/90">Khuôn viên giảng đường giai đoạn đầu (1975)</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -139,34 +142,37 @@
               2
             </div>
 
-            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all">
+            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 lg:p-9 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <span class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-bold text-xs">
+                <span class="px-3.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-bold text-xs">
                   Tháng 12/1985 – Tháng 10/1988
                 </span>
                 <span class="text-xs text-outline font-semibold">Tách lập và mở rộng cơ sở</span>
               </div>
               
-              <h3 class="text-xl sm:text-2xl font-bold text-on-surface mb-3 group-hover:text-primary-container transition-colors">
+              <h3 class="text-xl sm:text-2xl font-bold text-on-surface mb-4 group-hover:text-primary-container transition-colors leading-snug">
                 Giai đoạn phân hiệu Đại học Kinh tế Đà Nẵng
               </h3>
 
-              <p class="text-on-surface-variant text-sm leading-relaxed mb-4">
-                Tháng 12/1985, khối ngành Kinh tế được tách ra để thành lập <strong>phân hiệu Đại học Kinh tế Đà Nẵng</strong> đặt tại cơ sở Bắc Mỹ An (nay là số 71 Ngũ Hành Sơn). Phân hiệu thời điểm đó tổ chức gồm 3 khoa đào tạo chuyên sâu:
+              <p class="text-on-surface-variant text-sm sm:text-base leading-relaxed text-justify mb-5">
+                Tháng 12/1985, khối ngành Kinh tế được tách ra để thành lập <strong>phân hiệu Đại học Kinh tế Đà Nẵng</strong> đặt tại cơ sở Bắc Mỹ An (nay là số 71 Ngũ Hành Sơn). Phân hiệu thời điểm đó quy tụ đội ngũ nhà giáo ưu tú và tổ chức thành 3 khoa đào tạo chuyên sâu:
               </p>
 
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center">
-                  <span class="material-symbols-outlined text-primary-container text-[22px] mb-1">storefront</span>
-                  <p class="text-xs font-bold text-on-surface">Khoa Công Thương</p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center flex flex-col items-center justify-center min-h-[96px] shadow-xs hover:border-primary-container/60 hover:bg-white transition-all">
+                  <span class="material-symbols-outlined text-primary-container text-[24px] mb-1">storefront</span>
+                  <p class="text-xs sm:text-sm font-bold text-on-surface">Khoa Công Thương</p>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Thương mại & Quản lý SX</span>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center">
-                  <span class="material-symbols-outlined text-secondary-container text-[22px] mb-1">query_stats</span>
-                  <p class="text-xs font-bold text-on-surface">Khoa Thống kê - Kế toán - Tài chính</p>
+                <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center flex flex-col items-center justify-center min-h-[96px] shadow-xs hover:border-secondary-container/60 hover:bg-white transition-all">
+                  <span class="material-symbols-outlined text-secondary-container text-[24px] mb-1">query_stats</span>
+                  <p class="text-xs sm:text-sm font-bold text-on-surface">Khoa Thống kê - Kế toán - Tài chính</p>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Phân tích kinh tế định lượng</span>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center">
-                  <span class="material-symbols-outlined text-primary-container text-[22px] mb-1">school</span>
-                  <p class="text-xs font-bold text-on-surface">Khoa Tại chức</p>
+                <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center flex flex-col items-center justify-center min-h-[96px] shadow-xs hover:border-primary-container/60 hover:bg-white transition-all">
+                  <span class="material-symbols-outlined text-primary-container text-[24px] mb-1">school</span>
+                  <p class="text-xs sm:text-sm font-bold text-on-surface">Khoa Tại chức</p>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Bồi dưỡng cán bộ tại chức</span>
                 </div>
               </div>
             </div>
@@ -178,21 +184,39 @@
               3
             </div>
 
-            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all">
+            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 lg:p-9 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <span class="px-3 py-1 rounded-full bg-primary-fixed text-primary-container font-bold text-xs">
+                <span class="px-3.5 py-1 rounded-full bg-primary-fixed text-primary-container font-bold text-xs">
                   Tháng 10/1988 – Tháng 04/1994
                 </span>
                 <span class="text-xs text-outline font-semibold">Tích hợp và chuẩn bị mô hình đại học vùng</span>
               </div>
               
-              <h3 class="text-xl sm:text-2xl font-bold text-on-surface mb-3 group-hover:text-primary-container transition-colors">
+              <h3 class="text-xl sm:text-2xl font-bold text-on-surface mb-4 group-hover:text-primary-container transition-colors leading-snug">
                 Tái sáp nhập và củng cố chất lượng chuyên môn
               </h3>
 
-              <p class="text-on-surface-variant text-sm leading-relaxed">
-                Đến tháng 10 năm 1988, thực hiện chủ trương tinh gọn bộ máy, phân hiệu sáp nhập trở lại Trường Đại học Bách khoa Đà Nẵng nhưng vẫn giữ vững nhiệm vụ cốt lõi: đào tạo và bồi dưỡng đội ngũ chuyên gia kinh tế, chuẩn bị mọi tiền đề vững chắc cho việc thành lập một trường đại học kinh tế chuyên nghiệp quy mô vùng.
+              <p class="text-on-surface-variant text-sm sm:text-base leading-relaxed text-justify mb-5">
+                Đến tháng 10 năm 1988, thực hiện chủ trương tinh gọn bộ máy của Bộ Giáo dục & Đào tạo, phân hiệu sáp nhập trở lại Trường Đại học Bách khoa Đà Nẵng nhưng vẫn giữ vững nhiệm vụ cốt lõi: đào tạo và bồi dưỡng đội ngũ chuyên gia kinh tế, chuẩn bị mọi tiền đề vững chắc cho việc thành lập một trường đại học kinh tế chuyên nghiệp quy mô vùng.
               </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center flex flex-col items-center justify-center min-h-[96px] shadow-xs hover:border-primary-container/60 hover:bg-white transition-all">
+                  <span class="material-symbols-outlined text-primary-container text-[24px] mb-1">merge_type</span>
+                  <p class="text-xs sm:text-sm font-bold text-on-surface">Sáp nhập Bách khoa Đà Nẵng</p>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Tinh gọn bộ máy tổ chức</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center flex flex-col items-center justify-center min-h-[96px] shadow-xs hover:border-secondary-container/60 hover:bg-white transition-all">
+                  <span class="material-symbols-outlined text-secondary-container text-[24px] mb-1">account_balance</span>
+                  <p class="text-xs sm:text-sm font-bold text-on-surface">Định hình Mô hình ĐH Vùng</p>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Chuẩn bị đề án Đại học Đà Nẵng</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-center flex flex-col items-center justify-center min-h-[96px] shadow-xs hover:border-primary-container/60 hover:bg-white transition-all">
+                  <span class="material-symbols-outlined text-emerald-600 text-[24px] mb-1">workspace_premium</span>
+                  <p class="text-xs sm:text-sm font-bold text-on-surface">Nâng cao chất lượng cán bộ</p>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Đào tạo đội ngũ chuyên gia cốt cán</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -202,34 +226,37 @@
               4
             </div>
 
-            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all">
+            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 lg:p-9 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <span class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-bold text-xs">
+                <span class="px-3.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-bold text-xs">
                   Tháng 04/1994 – Nay
                 </span>
                 <span class="text-xs text-outline font-semibold">Hội nhập quốc tế và đột phá toàn diện</span>
               </div>
               
-              <h3 class="text-xl sm:text-2xl font-bold text-on-surface mb-3 group-hover:text-primary-container transition-colors">
+              <h3 class="text-xl sm:text-2xl font-bold text-on-surface mb-4 group-hover:text-primary-container transition-colors leading-snug">
                 Trường Đại học Kinh tế - Thành viên chủ lực Đại học Đà Nẵng
               </h3>
 
-              <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                <div class="md:col-span-7">
-                  <p class="text-on-surface-variant text-sm leading-relaxed mb-4">
-                    Ngày 04/04/1994, Chính phủ ban hành Nghị định số 32/CP thành lập Đại học Đà Nẵng. Trên cơ sở đó, <strong>Trường Đại học Kinh tế</strong> chính thức trở thành trường đại học thành viên độc lập, giữ vai trò lá cờ đầu về đào tạo cử nhân, thạc sĩ, tiến sĩ ngành kinh tế, kinh doanh và quản lý.
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+                <div class="lg:col-span-7 xl:col-span-8 space-y-3.5 text-justify">
+                  <p class="text-on-surface-variant text-sm sm:text-base leading-relaxed">
+                    Ngày 04/04/1994, Chính phủ ban hành Nghị định số 32/CP thành lập Đại học Đà Nẵng. Trên cơ sở đó, <strong>Trường Đại học Kinh tế</strong> chính thức trở thành trường đại học thành viên độc lập, giữ vai trò lá cờ đầu về đào tạo cử nhân, thạc sĩ, tiến sĩ ngành kinh tế, kinh doanh và quản lý tại miền Trung – Tây Nguyên và cả nước.
                   </p>
-                  <p class="text-on-surface-variant text-sm leading-relaxed">
-                    Hiện nay, DUE sở hữu khuôn viên xanh hiện đại, hơn 30 chuyên ngành đào tạo đón đầu kỷ nguyên kinh tế số, đạt chuẩn kiểm định AUN-QA và có quan hệ hợp tác học thuật với hàng trăm trường đại học uy tín trên toàn cầu.
+                  <p class="text-on-surface-variant text-sm sm:text-base leading-relaxed">
+                    Hiện nay, DUE sở hữu khuôn viên xanh hiện đại, hơn 30 chuyên ngành đào tạo đón đầu kỷ nguyên kinh tế số, đạt chuẩn kiểm định quốc tế AUN-QA và có quan hệ hợp tác học thuật với hàng trăm trường đại học uy tín trên toàn cầu.
                   </p>
                 </div>
 
                 <!-- Cột ảnh 3: Sinh viên và giảng viên trước chữ WELCOME TO DUE -->
-                <div class="md:col-span-5">
-                  <div class="rounded-2xl overflow-hidden border border-outline-variant/40 shadow-md bg-surface-container-low">
-                    <img class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" 
+                <div class="lg:col-span-5 xl:col-span-4 flex justify-center">
+                  <div class="w-full max-w-[320px] rounded-2xl overflow-hidden border border-outline-variant/40 shadow-md bg-surface-container-low group/img relative">
+                    <img class="w-full h-52 sm:h-56 object-cover object-center group-hover/img:scale-105 transition-transform duration-500" 
                          src="{% static 'images/history_welcome.png' %}" 
                          alt="Tập thể giảng viên và sinh viên Trường Đại học Kinh tế - DUE">
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent p-2 text-center">
+                      <span class="text-[11px] font-semibold text-white/90">Trường Đại học Kinh tế - DUE ngày nay</span>
+                    </div>
                   </div>
                 </div>
               </div>

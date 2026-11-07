@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Đăng ký tài khoản | Cổng thông tin Tuyển sinh DUE 2026</title>
+  <link rel="icon" type="image/png" href="https://due.udn.vn/Portals/0/favicon.ico">
+
+  <!-- Google Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#003366",
+            "primary-container": "#00274e",
+            "secondary": "#9d4300",
+            "secondary-container": "#fd761a",
+            "secondary-fixed": "#ffdbca",
+            "surface": "#faf8ff",
+            "surface-container": "#eaedff",
+            "surface-container-high": "#e2e7ff",
+            "surface-container-low": "#f2f3ff",
+            "surface-container-lowest": "#ffffff",
+            "on-surface": "#131b2e",
+            "on-surface-variant": "#43474f",
+          },
+          fontFamily: {
+            "body-md": ["Be Vietnam Pro", "sans-serif"],
+            "display-hero": ["Space Grotesk", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-gradient-to-br from-[#f0f4f9] via-[#f7f9fc] to-[#e8eef6] min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 font-body-md text-on-surface antialiased">
+
+  <!-- Main Card Container -->
+  <div class="w-full max-w-5xl bg-surface-container-lowest rounded-3xl sm:rounded-[32px] shadow-2xl border border-slate-200/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[660px]">
+    
+    <!-- LEFT PANEL: Visuals & University Highlights (Giống hệt Ảnh 4) -->
+    <div class="lg:col-span-5 relative hidden lg:flex flex-col justify-between p-8 text-white overflow-hidden bg-primary-container">
+      <img class="absolute inset-0 w-full h-full object-cover object-center opacity-30 mix-blend-overlay" 
+           src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC_9_nZEiYQFTEVi4j1Euk7pjYY2R0FZf4RCSacCOK1jsCxMjMRKgLJSHksCx_bsVYGN9_2EmKgCLEy8oIO2xTm4CbdovXLs3-faqfHwoNkZq6J9hQYlLUiEpyPc_-bYb1q5gqZlOwgLyVIBemZ8G2dHrKGXtcKm2YjQwK9c763aT83ikT3OW3j902xrE24mslmXbnLMmA7obCVuBSIuak8iamrNz_fztfwqmz0LhL" 
+           alt="Khuôn viên DUE">
+      <div class="absolute inset-0 bg-gradient-to-t from-primary-container via-primary-container/80 to-primary/80"></div>
+      
+      <!-- Top: Back Button & Code badge -->
+      <div class="relative z-10 flex items-center justify-between">
+        <a href="{% url 'admissions:home' %}" class="inline-flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full transition-all">
+          <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+          <span>Về trang chủ</span>
+        </a>
+        <span class="text-[11px] font-extrabold uppercase tracking-wider bg-secondary-container text-white px-3 py-1 rounded-full shadow-sm">
+          Mã: DDQ
+        </span>
+      </div>
+
+      <!-- Center: University Info -->
+      <div class="relative z-10 my-8">
+        <img alt="DUE Logo" class="h-16 w-auto object-contain mb-6 drop-shadow-md brightness-0 invert" 
+             src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0SZKiA3qgvDQxaYkxsR3w1ej_sMxTuegQNml68FZ966VgfiyacVxxCVBp1S46Q8ZfFcj89zJFmRbki2mFVxwDK3mA_1FmeZlpvSq9GsILj2z2HzeolTI-1aztUgTZFmj50c5hiIbGUH4ETZRF2d42e6mKwe70Fwob0_OrZ8Y8qXAT69PRCagSk7LI9OJze_odv3CZfAw5_B28JRczw9Dj1w2HYnD-Z0VxQ9a8E-IZYEvv1QN0wLCekQ">
+        
+        <h2 class="text-xl sm:text-2xl font-bold font-display-hero leading-snug mb-3">
+          Khởi đầu <span class="text-secondary-container">Tương lai Vững vàng</span> cùng DUE
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed mb-6">
+          Trường Đại học Kinh tế – Đại học Đà Nẵng chào đón tân sinh viên khóa 50K với môi trường đào tạo quốc tế AUN-QA, giảng viên tận tâm và cơ hội việc làm 98.5%.
+        </p>
+
+        <!-- Feature List -->
+        <div class="space-y-3 text-xs sm:text-sm text-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-secondary-container text-[18px]">verified</span>
+            <span>Tra cứu hồ sơ & kết quả xét tuyển sớm</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-secondary-container text-[18px]">verified</span>
+            <span>Cập nhật và bổ sung minh chứng chứng chỉ IELTS</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-secondary-container text-[18px]">verified</span>
+            <span>Kênh hỗ trợ giải đáp 24/7 từ Ban tư vấn DUE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom: Hotline -->
+      <div class="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-300">
+        <span>Hotline: 0236 3836 169</span>
+        <span>due.udn.vn</span>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Registration Form (Đã bỏ cụm Thí sinh/Phụ huynh và Cán bộ/Quản trị theo yêu cầu) -->
+    <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
+      
+      <!-- Mobile Top Bar -->
+      <div class="flex lg:hidden items-center justify-between mb-6 pb-4 border-b border-slate-100">
+        <a href="{% url 'admissions:home' %}" class="flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-primary">
+          <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+          <span>Trang chủ</span>
+        </a>
+        <img alt="DUE Logo" class="h-10 w-auto object-contain" 
+             src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0SZKiA3qgvDQxaYkxsR3w1ej_sMxTuegQNml68FZ966VgfiyacVxxCVBp1S46Q8ZfFcj89zJFmRbki2mFVxwDK3mA_1FmeZlpvSq9GsILj2z2HzeolTI-1aztUgTZFmj50c5hiIbGUH4ETZRF2d42e6mKwe70Fwob0_OrZ8Y8qXAT69PRCagSk7LI9OJze_odv3CZfAw5_B28JRczw9Dj1w2HYnD-Z0VxQ9a8E-IZYEvv1QN0wLCekQ">
+      </div>
+
+      <!-- Form Content -->
+      <div>
+        <!-- Heading -->
+        <div class="mb-5">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-100 text-secondary-container text-xs font-bold mb-2">
+            <span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+            Hệ thống Tuyển sinh 2026
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-bold font-display-hero text-on-surface">
+            Đăng ký tài khoản
+          </h1>
+          <p class="text-xs sm:text-sm text-on-surface-variant mt-1">
+            Vui lòng nhập thông tin để tạo tài khoản thí sinh / sinh viên DUE.
+          </p>
+        </div>
+
+        <!-- Error Alert -->
+        <div id="registerAlert" class="hidden mb-4 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs sm:text-sm text-red-700 flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-[20px] shrink-0 text-red-600">error</span>
+          <span id="registerAlertMsg"></span>
+        </div>
+
+        {% if error_message %}
+        <div class="mb-4 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs sm:text-sm text-red-700 flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-[20px] shrink-0 text-red-600">error</span>
+          <span>{{ error_message }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Registration Form (Bỏ tabs Thí sinh / Cán bộ) -->
+        <form id="registerForm" method="POST" action="{% url 'admissions:register' %}" onsubmit="handleRegisterSubmit(event)" class="space-y-3.5">
+          {% csrf_token %}
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Họ và tên -->
+            <div>
+              <label for="reg_fullname" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Họ và tên
+              </label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">badge</span>
+                <input id="reg_fullname" name="full_name" type="text" required 
+                       class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
+                       placeholder="VD: Nguyễn Văn An">
+              </div>
+            </div>
+
+            <!-- Tên đăng nhập -->
+            <div>
+              <label for="reg_username" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Tên đăng nhập
+              </label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">person</span>
+                <input id="reg_username" name="username" type="text" required 
+                       class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
+                       placeholder="VD: nguyenvana2026">
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Email -->
+            <div>
+              <label for="reg_email" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Địa chỉ Email
+              </label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">mail</span>
+                <input id="reg_email" name="email" type="email" required 
+                       class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
+                       placeholder="email@example.com">
+              </div>
+            </div>
+
+            <!-- Số điện thoại / CCCD -->
+            <div>
+              <label for="reg_phone" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Số điện thoại / CCCD
+              </label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">call</span>
+                <input id="reg_phone" name="phone" type="text" required 
+                       class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
+                       placeholder="0901234567 hoặc số CCCD">
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Password -->
+            <div>
+              <label for="reg_password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Mật khẩu (Tối thiểu 6 ký tự)
+              </label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">lock</span>
+                <input id="reg_password" name="password" type="password" required minlength="6"
+                       class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
+                       placeholder="Nhập mật khẩu">
+                <button type="button" onclick="togglePasswordVisibility('reg_password', 'eyeIcon1')" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer">
+                  <span id="eyeIcon1" class="material-symbols-outlined text-[18px]">visibility</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div>
+              <label for="reg_confirm_password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Xác nhận Mật khẩu
+              </label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">lock_reset</span>
+                <input id="reg_confirm_password" name="confirm_password" type="password" required minlength="6"
+                       class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
+                       placeholder="Nhập lại mật khẩu">
+                <button type="button" onclick="togglePasswordVisibility('reg_confirm_password', 'eyeIcon2')" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer">
+                  <span id="eyeIcon2" class="material-symbols-outlined text-[18px]">visibility</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms Checkbox -->
+          <div class="pt-1">
+            <label class="flex items-start gap-2 cursor-pointer text-xs text-slate-600">
+              <input type="checkbox" required class="w-4 h-4 mt-0.5 rounded text-secondary-container focus:ring-secondary-container border-slate-300">
+              <span>Tôi đồng ý với Quy định tuyển sinh và Điều khoản sử dụng của Trường Đại học Kinh tế – ĐHĐN.</span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button type="submit" id="regSubmitBtn" class="w-full py-3.5 px-6 rounded-2xl bg-secondary-container hover:bg-[#e06310] text-white font-bold text-sm sm:text-base shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+              <span>Đăng ký tài khoản</span>
+              <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Link to Login -->
+        <div class="mt-4 text-center text-xs text-slate-600">
+          Đã có tài khoản tuyển sinh? 
+          <a href="/?login=1" class="text-secondary-container font-bold hover:underline">
+            Về trang chủ để đăng nhập
+          </a>
+        </div>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="mt-6 pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2 text-center sm:text-left">
+        <span>© 2026 Trường Đại học Kinh tế – Đại học Đà Nẵng</span>
+        <span>Hỗ trợ kỹ thuật: <strong>0236 3836 169</strong></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- POPUP THÔNG BÁO ĐĂNG KÝ THÀNH CÔNG -->
+  <div id="registerSuccessModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[99999] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
+      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-[36px]">check_circle</span>
+      </div>
+      <h3 class="text-xl font-bold text-slate-900 mb-2 font-display-hero">
+        Đăng Ký Thành Công!
+      </h3>
+      <p id="successMessageText" class="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
+        Chúc mừng bạn đã tạo tài khoản thành công tại Cổng thông tin Tuyển sinh DUE. Hệ thống đang chuyển hướng về trang chủ...
+      </p>
+      <div class="flex items-center justify-center gap-2 text-xs font-semibold text-slate-400 mb-4">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+        <span>Tự động chuyển về Trang chủ sau <strong id="redirectCounter" class="text-slate-800">2</strong> giây</span>
+      </div>
+      <a href="/" class="inline-flex items-center justify-center gap-1.5 w-full py-3 rounded-2xl bg-[#003366] hover:bg-[#002244] text-white font-bold text-sm shadow-md transition-all">
+        <span>Về trang chủ ngay</span>
+        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    function togglePasswordVisibility(fieldId, iconId) {
+      const pwd = document.getElementById(fieldId);
+      const icon = document.getElementById(iconId);
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        pwd.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+
+    function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('registerForm');
+      const submitBtn = document.getElementById('regSubmitBtn');
+      const alertBox = document.getElementById('registerAlert');
+      const alertMsg = document.getElementById('registerAlertMsg');
+
+      const p1 = document.getElementById('reg_password').value;
+      const p2 = document.getElementById('reg_confirm_password').value;
+
+      if (p1 !== p2) {
+        alertMsg.textContent = "Mật khẩu xác nhận không khớp!";
+        alertBox.classList.remove('hidden');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Đang đăng ký...</span><span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>`;
+
+      const formData = new FormData(form);
+      formData.append('is_ajax', '1');
+
+      let csrfToken = '';
+      const cookieMatch = document.cookie.match(/csrftoken=([^;]+)/);
+      if (cookieMatch) csrfToken = cookieMatch[1];
+
+      fetch("{% url 'admissions:register' %}", {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': csrfToken
+        },
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Đăng ký tài khoản</span><span class="material-symbols-outlined text-[20px]">how_to_reg</span>`;
+
+        if (data.status === 'success') {
+          // Hiển thị modal đăng ký thành công
+          const modal = document.getElementById('registerSuccessModal');
+          const msgEl = document.getElementById('successMessageText');
+          if (data.message) msgEl.textContent = data.message;
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+
+          // Đếm ngược chuyển hướng về trang chủ
+          let count = 2;
+          const counterEl = document.getElementById('redirectCounter');
+          const timer = setInterval(() => {
+            count--;
+            if (counterEl) counterEl.textContent = count;
+            if (count <= 0) {
+              clearInterval(timer);
+              window.location.href = data.redirect_url || '/';
+            }
+          }, 1000);
+
+        } else {
+          alertMsg.textContent = data.message || "Đăng ký thất bại. Vui lòng thử lại!";
+          alertBox.classList.remove('hidden');
+        }
+      })
+      .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Đăng ký tài khoản</span><span class="material-symbols-outlined text-[20px]">how_to_reg</span>`;
+        alertMsg.textContent = "Đã xảy ra lỗi kết nối. Vui lòng thử lại sau!";
+        alertBox.classList.remove('hidden');
+      });
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,679 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Bảng Thống kê & Phê duyệt Tuyển sinh - Hội đồng Tuyển sinh DUE{% endblock %}
+
+{% block nav_thongke %}text-[#F37021] font-bold border-b-2 border-[#F37021]{% endblock %}
+
+{% block content %}
+<main class="w-full pt-44 sm:pt-40 pb-20 bg-[#f8fafc] min-h-screen flex flex-col">
+  <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-6 flex-1 flex flex-col">
+
+    <!-- Top Executive Header -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div class="flex items-start sm:items-center gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#003366] via-[#0056b3] to-[#0072BC] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+          <span class="material-symbols-outlined text-[32px]">analytics</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap mb-1">
+            <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-[#0072BC] text-xs font-bold border border-blue-200 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px]">verified</span>
+              Hội đồng Tuyển sinh DUE 2026
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">Báo cáo & Giám sát hệ thống</span>
+          </div>
+          <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Trung tâm Thống kê & Phê duyệt Tuyển sinh</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Theo dõi thời gian thực lưu lượng tư vấn AI, xu hướng chọn ngành của thí sinh và thẩm định tài liệu</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 self-start lg:self-center flex-wrap">
+        <!-- Bộ lọc thời gian: Cụ thể Ngày / Tháng / Năm -->
+        <div class="bg-slate-100 p-1 rounded-2xl flex items-center text-xs font-bold gap-0.5">
+          <button type="button" onclick="changePeriod('week')" id="btn-period-week" class="px-3 py-1.5 rounded-xl bg-white text-[#0072BC] shadow-xs transition-all flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+            <span>01/11/2026 - 07/11/2026</span>
+          </button>
+          <button type="button" onclick="changePeriod('month')" id="btn-period-month" class="px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Tháng 11/2026</button>
+          <button type="button" onclick="changePeriod('all')" id="btn-period-all" class="px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Năm học 2026</button>
+        </div>
+
+        <button type="button" onclick="loadHdtsStats()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer" title="Làm mới số liệu">
+          <span class="material-symbols-outlined text-[18px]">sync</span>
+          <span class="hidden sm:inline">Làm mới</span>
+        </button>
+
+        <button type="button" onclick="window.print()" class="px-3.5 py-2 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[17px]">print</span>
+          <span>In báo cáo</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 5 KPI Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <!-- Card 1: Tổng lượt tương tác -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Lượt hỏi Chatbot</span>
+          <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0072BC] flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">forum</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-slate-900" id="kpi-total-interactions">1,450+</div>
+          <div class="text-[11px] text-emerald-600 font-bold flex items-center gap-1 mt-1">
+            <span class="material-symbols-outlined text-[13px]">trending_up</span>
+            <span>+18.4% so với tuần trước</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Tỷ lệ AI tự giải đáp -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">AI tự giải quyết</span>
+          <div class="w-8 h-8 rounded-xl bg-emerald-50 text-[#00A859] flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">smart_toy</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-[#00A859]" id="kpi-ai-rate">85.4%</div>
+          <div class="text-[11px] text-slate-400 font-medium mt-1">
+            Tự động trả lời qua RAG
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Câu hỏi chuyển cán bộ -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Chuyển Cán bộ</span>
+          <div class="w-8 h-8 rounded-xl bg-orange-50 text-[#F37021] flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">support_agent</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-[#F37021]" id="kpi-total-handoff">25</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-1">
+            Đã trả lời: <strong class="text-slate-800" id="kpi-answered-handoff">1</strong> câu
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Tài liệu chờ Hội đồng duyệt -->
+      <div class="bg-gradient-to-br from-amber-50 to-orange-50/60 rounded-2xl p-4 sm:p-5 border border-amber-200 shadow-xs flex flex-col justify-between relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-800">Tài liệu chờ duyệt</span>
+          <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-xs">
+            <span class="material-symbols-outlined text-[18px]">hourglass_top</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-900" id="kpi-pending-docs">0</div>
+          <button type="button" onclick="scrollToDocumentsTable()" class="text-[11px] text-amber-800 font-bold hover:underline flex items-center gap-1 mt-1 cursor-pointer">
+            <span>Kiểm duyệt ngay</span>
+            <span class="material-symbols-outlined text-[13px]">arrow_downward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 5: Thời gian phản hồi TB -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Thời gian phản hồi TB</span>
+          <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">schedule</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-slate-900" id="kpi-avg-time">~42 phút</div>
+          <div class="text-[11px] text-emerald-600 font-bold flex items-center gap-1 mt-1">
+            <span class="material-symbols-outlined text-[13px]">verified</span>
+            <span>Mức hài lòng: 96.8%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 1: SỐ CÂU HỎI THEO NGÀY/TUẦN (Biểu đồ tương tác) & KHUNG GIỜ CAO ĐIỂM -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <!-- Cột trái (8 cols): Biểu đồ số câu hỏi theo ngày/tuần -->
+      <div class="lg:col-span-8 bg-white rounded-3xl border border-slate-200/90 shadow-xs p-5 sm:p-6 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px] text-[#0072BC]">bar_chart</span>
+              <h3 class="font-extrabold text-base text-slate-900">Số câu hỏi Chatbot theo ngày / tuần</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">So sánh lưu lượng câu hỏi AI tự giải quyết thành công so với câu hỏi chuyển Cán bộ</p>
+          </div>
+          <div class="flex items-center gap-3 text-xs font-bold">
+            <div class="flex items-center gap-1.5 text-slate-700">
+              <span class="w-3 h-3 rounded-md bg-[#0072BC]"></span>
+              <span>AI tự trả lời</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-slate-700">
+              <span class="w-3 h-3 rounded-md bg-[#F37021]"></span>
+              <span>Chuyển cán bộ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Bar Chart Container -->
+        <div class="h-64 w-full flex items-end gap-2 sm:gap-4 pt-6 pb-2 px-2 border-b border-slate-100" id="days-chart-container">
+          <!-- Render động qua JS -->
+        </div>
+
+        <div class="pt-3 flex items-center justify-between text-xs text-slate-500">
+          <span>* Dữ liệu được tổng hợp theo thời gian thực từ Chatbot Tuyển sinh DUE</span>
+          <span class="font-bold text-[#0072BC]">Tổng tuần qua: <span id="week-total-count">0</span> câu</span>
+        </div>
+      </div>
+
+      <!-- Cột phải (4 cols): Phân bố khung giờ cao điểm -->
+      <div class="lg:col-span-4 bg-white rounded-3xl border border-slate-200/90 shadow-xs p-5 sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="material-symbols-outlined text-[20px] text-[#F37021]">timelapse</span>
+            <h3 class="font-extrabold text-base text-slate-900">Khung giờ cao điểm</h3>
+          </div>
+          <p class="text-xs text-slate-400">Thời điểm thí sinh truy cập & đặt câu hỏi nhiều nhất</p>
+        </div>
+
+        <div class="space-y-3.5 my-4">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold mb-1">
+              <span class="text-slate-700 flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-amber-500">wb_sunny</span>Buổi sáng (08:30 - 11:30)</span>
+              <span class="text-[#0072BC]">38.5% (Cao điểm 1)</span>
+            </div>
+            <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-blue-500 to-[#0072BC]" style="width: 38.5%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold mb-1">
+              <span class="text-slate-700 flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-orange-500">wb_twilight</span>Buổi chiều (14:00 - 17:00)</span>
+              <span class="text-[#F37021]">32.2% (Cao điểm 2)</span>
+            </div>
+            <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-orange-400 to-[#F37021]" style="width: 32.2%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold mb-1">
+              <span class="text-slate-700 flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-indigo-500">bedtime</span>Buổi tối (19:30 - 22:30)</span>
+              <span class="text-indigo-600">22.8%</span>
+            </div>
+            <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-indigo-400 to-indigo-600" style="width: 22.8%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold mb-1">
+              <span class="text-slate-700 flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-slate-400">nights_stay</span>Đêm & Sáng sớm (23:00 - 07:00)</span>
+              <span class="text-slate-500">6.5%</span>
+            </div>
+            <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full bg-slate-400" style="width: 6.5%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-blue-50/70 border border-blue-200/70 text-xs text-slate-700 flex items-start gap-2">
+          <span class="material-symbols-outlined text-[18px] text-[#0072BC] shrink-0 mt-0.5">tips_and_updates</span>
+          <p class="text-[11px] leading-relaxed"><strong>Khuyến nghị HĐTS:</strong> Bố trí cán bộ tư vấn trực tiếp nhận câu hỏi tập trung trong hai khung giờ <strong>09h-11h</strong> và <strong>14h30-16h30</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2: TOP NGÀNH ĐƯỢC AI GỢI Ý & CHỦ ĐỀ CÂU HỎI BỊ CHUYỂN CÁN BỘ -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Cột trái (7 cols): TOP NGÀNH ĐƯỢC AI GỢI Ý NHIỀU NHẤT -->
+      <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200/90 shadow-xs p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px] text-[#00A859]">trending_up</span>
+            <h3 class="font-extrabold text-base text-slate-900">Top ngành được AI gợi ý nhiều nhất</h3>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-[#00A859] font-bold text-xs border border-emerald-200">Xếp hạng 2026</span>
+        </div>
+        <p class="text-xs text-slate-400">Dựa trên kết quả trắc nghiệm hướng nghiệp Holland và câu hỏi tìm hiểu chuyên ngành của thí sinh</p>
+
+        <div class="space-y-3 pt-2" id="top-majors-list">
+          <!-- Render động qua JS -->
+        </div>
+      </div>
+
+      <!-- Cột phải (5 cols): CHỦ ĐỀ CỦA CÂU HỎI BỊ CHUYỂN CÁN BỘ -->
+      <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200/90 shadow-xs p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px] text-[#F37021]">pie_chart</span>
+            <h3 class="font-extrabold text-base text-slate-900">Chủ đề câu hỏi chuyển Cán bộ</h3>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-orange-50 text-[#F37021] font-bold text-xs border border-orange-200">Phân tích chủ đề</span>
+        </div>
+        <p class="text-xs text-slate-400">Các nhóm nội dung Chatbot chưa tự động giải quyết được và phải chuyển cán bộ xử lý</p>
+
+        <!-- Topic Breakdown Bars -->
+        <div class="space-y-3 pt-2" id="topics-breakdown-list">
+          <!-- Render qua JS -->
+        </div>
+
+        <!-- Mẫu câu hỏi chuyển cán bộ gần nhất -->
+        <div class="pt-4 border-t border-slate-100">
+          <p class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[15px] text-[#F37021]">history</span>
+            <span>Câu hỏi mới chuyển Cán bộ gần đây</span>
+          </p>
+          <div class="space-y-2 max-h-48 overflow-y-auto pr-1" id="recent-handoff-list">
+            <!-- Render danh sách mẫu câu hỏi -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 3: BÀN LÀM VIỆC DUYỆT TÀI LIỆU CỦA HỘI ĐỒNG TUYỂN SINH (SỐ TÀI LIỆU CHỜ HỘI ĐỒNG DUYỆT) -->
+    <div id="section-documents-table" class="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-5 sm:p-7 space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-blue-100 text-[#0072BC] flex items-center justify-center">
+              <span class="material-symbols-outlined text-[20px]">task</span>
+            </div>
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900">Quản lý & Phê duyệt Tài liệu Tuyển sinh của Hội đồng</h2>
+              <p class="text-xs text-slate-500">Thẩm định tài liệu do Cán bộ đẩy lên, xem trước nội dung và nạp vào kho tri thức AI Chatbot</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter tabs for documents -->
+        <div class="bg-slate-100 p-1 rounded-2xl flex items-center text-xs font-bold self-start sm:self-auto">
+          <button type="button" onclick="filterDocs('all')" id="doc-tab-all" class="px-3 py-1.5 rounded-xl bg-white text-[#0072BC] shadow-xs transition-all">Tất cả (<span id="count-docs-all">0</span>)</button>
+          <button type="button" onclick="filterDocs('pending')" id="doc-tab-pending" class="px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1">
+            <span>Chờ duyệt</span>
+            <span id="count-docs-pending" class="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-bold">0</span>
+          </button>
+          <button type="button" onclick="filterDocs('approved')" id="doc-tab-approved" class="px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Đã duyệt (<span id="count-docs-approved">0</span>)</button>
+          <button type="button" onclick="filterDocs('rejected')" id="doc-tab-rejected" class="px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Từ chối (<span id="count-docs-rejected">0</span>)</button>
+        </div>
+      </div>
+
+      <!-- Documents Table -->
+      <div class="overflow-x-auto rounded-2xl border border-slate-200">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <th class="py-3.5 px-4">Tên tài liệu / Tệp đính kèm</th>
+              <th class="py-3.5 px-4">Cán bộ tải lên</th>
+              <th class="py-3.5 px-4">Thời gian tải</th>
+              <th class="py-3.5 px-4">Dung lượng</th>
+              <th class="py-3.5 px-4">Trạng thái phê duyệt</th>
+              <th class="py-3.5 px-4 text-center">Thao tác của HĐTS</th>
+            </tr>
+          </thead>
+          <tbody id="documents-table-body" class="divide-y divide-slate-100">
+            <!-- Render qua JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5">
+        <span class="material-symbols-outlined text-[20px] text-amber-700 shrink-0">info</span>
+        <div>
+          <p class="font-bold">Quy trình thẩm định tài liệu của Hội đồng Tuyển sinh DUE:</p>
+          <p class="text-[11px] text-amber-800 mt-0.5">
+            1. Bấm nút <strong>[👁️ Xem tài liệu]</strong> để kiểm tra tính chính xác của đề án/văn bản. <br>
+            2. Bấm <strong>[✓ Phê duyệt]</strong>: Tài liệu sẽ tự động được hệ thống vector hóa nạp vào AI và phục vụ trả lời ngay cho thí sinh trên Chatbot. <br>
+            3. Bấm <strong>[✕ Từ chối]</strong>: Nếu thông tin chưa đầy đủ hoặc cần điều chỉnh thêm.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  var CSRF_TOKEN = '{{ csrf_token }}';
+  var allDocuments = [];
+  var currentDocFilter = 'all';
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function changePeriod(p) {
+    ['week', 'month', 'all'].forEach(function(k) {
+      var btn = document.getElementById('btn-period-' + k);
+      if (btn) {
+        if (k === p) {
+          btn.className = 'px-3 py-1.5 rounded-xl bg-white text-[#0072BC] shadow-xs transition-all font-bold';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all';
+        }
+      }
+    });
+    loadHdtsStats();
+  }
+
+  function scrollToDocumentsTable() {
+    var el = document.getElementById('section-documents-table');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  async function loadHdtsStats() {
+    try {
+      var res = await fetch('/api/hdts/thong-ke/');
+      var json = await res.json();
+      if (json.status !== 'success') return;
+
+      // 1. KPI Cards
+      var kpi = json.kpi || {};
+      document.getElementById('kpi-total-interactions').textContent = (kpi.total_interactions || 0).toLocaleString();
+      document.getElementById('kpi-ai-rate').textContent = (kpi.ai_resolution_rate || 0) + '%';
+      document.getElementById('kpi-total-handoff').textContent = (kpi.total_handoff || 0);
+      document.getElementById('kpi-answered-handoff').textContent = (kpi.answered_handoff || 0);
+      document.getElementById('kpi-pending-docs').textContent = (kpi.pending_docs || 0);
+      document.getElementById('kpi-avg-time').textContent = '~' + (kpi.avg_response_time_minutes || 42) + ' phút';
+
+      // 2. Render Bar Chart theo ngày/tuần
+      renderDaysChart(json.days_data || []);
+
+      // 3. Render Top ngành
+      renderTopMajors(json.top_majors || []);
+
+      // 4. Render Topics Breakdown & Recent Questions
+      renderTopics(json.topics_data || []);
+      renderRecentHandoff(json.recent_handoff_samples || []);
+
+      // 5. Render Documents Table
+      allDocuments = json.documents || [];
+      document.getElementById('count-docs-all').textContent = allDocuments.length;
+      document.getElementById('count-docs-pending').textContent = kpi.pending_docs || 0;
+      document.getElementById('count-docs-approved').textContent = kpi.approved_docs || 0;
+      document.getElementById('count-docs-rejected').textContent = kpi.rejected_docs || 0;
+
+      renderDocumentsTable();
+    } catch (e) {
+      console.error('Lỗi nạp thống kê HĐTS:', e);
+    }
+  }
+
+  function renderDaysChart(days) {
+    var container = document.getElementById('days-chart-container');
+    if (!container || !days.length) return;
+
+    var maxTotal = Math.max.apply(null, days.map(function(d) { return d.total; })) || 30;
+    var weekTotal = days.reduce(function(acc, d) { return acc + d.total; }, 0);
+    document.getElementById('week-total-count').textContent = weekTotal;
+
+    var html = '';
+    days.forEach(function(d) {
+      var totalH = Math.max(12, Math.round((d.total / maxTotal) * 190));
+      var aiH = Math.max(6, Math.round((d.ai_resolved / d.total) * totalH));
+      var handoffH = totalH - aiH;
+
+      html += '<div class="flex-1 flex flex-col items-center gap-1 group relative">' +
+        '<!-- Tooltip -->' +
+        '<div class="absolute -top-12 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-[10px] font-bold py-1 px-2 rounded-lg whitespace-nowrap pointer-events-none z-20 shadow-md">' +
+          d.weekday + ' (' + d.date + '): ' + d.total + ' câu (AI: ' + d.ai_resolved + ' | Cán bộ: ' + d.officer_handoff + ')' +
+        '</div>' +
+        '<!-- Bars -->' +
+        '<div class="w-full max-w-[42px] flex flex-col justify-end gap-0.5" style="height: 200px;">' +
+          '<div class="w-full bg-[#F37021] rounded-t-sm transition-all group-hover:brightness-110" style="height: ' + handoffH + 'px;" title="Chuyển cán bộ: ' + d.officer_handoff + '"></div>' +
+          '<div class="w-full bg-[#0072BC] rounded-b-sm transition-all group-hover:brightness-110" style="height: ' + aiH + 'px;" title="AI tự trả lời: ' + d.ai_resolved + '"></div>' +
+        '</div>' +
+        '<!-- Label -->' +
+        '<div class="text-center mt-1">' +
+          '<span class="block text-[11px] font-bold text-slate-700">' + d.weekday + '</span>' +
+          '<span class="block text-[10px] text-slate-400">' + d.date + '</span>' +
+        '</div>' +
+      '</div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  function renderTopMajors(majors) {
+    var container = document.getElementById('top-majors-list');
+    if (!container) return;
+
+    var html = '';
+    majors.forEach(function(m, idx) {
+      var badgeClass = idx === 0 ? 'bg-amber-100 text-amber-800 font-black' : (idx === 1 ? 'bg-slate-200 text-slate-800 font-bold' : (idx === 2 ? 'bg-orange-100 text-orange-800 font-bold' : 'bg-slate-100 text-slate-600 font-semibold'));
+      html += '<div class="p-3 rounded-2xl bg-slate-50/70 border border-slate-200/80 hover:bg-slate-100/70 transition-all text-xs">' +
+        '<div class="flex items-center justify-between gap-2 mb-1.5">' +
+          '<div class="flex items-center gap-2 min-w-0 flex-1">' +
+            '<span class="w-5 h-5 rounded-md ' + badgeClass + ' text-[11px] flex items-center justify-center shrink-0">#' + (idx + 1) + '</span>' +
+            '<strong class="text-slate-800 truncate text-xs sm:text-sm">' + esc(m.name) + '</strong>' +
+            '<span class="text-[10px] text-slate-400 hidden sm:inline">(' + esc(m.code) + ')</span>' +
+          '</div>' +
+          '<div class="flex items-center gap-2 shrink-0">' +
+            '<span class="font-extrabold text-[#0072BC] text-xs sm:text-sm">' + m.count + ' lượt</span>' +
+            '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700">' + m.trend + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="flex items-center gap-2">' +
+          '<div class="flex-1 h-2 rounded-full bg-slate-200 overflow-hidden">' +
+            '<div class="h-full rounded-full bg-gradient-to-r from-blue-600 to-emerald-500" style="width: ' + m.percent + '%"></div>' +
+          '</div>' +
+          '<span class="text-[10px] font-bold text-slate-500 w-10 text-right">' + m.percent + '%</span>' +
+        '</div>' +
+      '</div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  function renderTopics(topics) {
+    var container = document.getElementById('topics-breakdown-list');
+    if (!container) return;
+
+    var html = '';
+    topics.forEach(function(t) {
+      html += '<div class="space-y-1">' +
+        '<div class="flex items-center justify-between text-xs font-bold">' +
+          '<span class="text-slate-700 flex items-center gap-1.5">' +
+            '<span class="w-2.5 h-2.5 rounded-full" style="background-color: ' + t.color + '"></span>' +
+            '<span>' + esc(t.topic) + '</span>' +
+          '</span>' +
+          '<span class="text-slate-600 font-extrabold">' + t.count + ' câu (' + t.percent + '%)</span>' +
+        '</div>' +
+        '<div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">' +
+          '<div class="h-full rounded-full" style="width: ' + t.percent + '%; background-color: ' + t.color + '"></div>' +
+        '</div>' +
+      '</div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  function renderRecentHandoff(samples) {
+    var container = document.getElementById('recent-handoff-list');
+    if (!container) return;
+
+    if (!samples.length) {
+      container.innerHTML = '<p class="text-xs text-slate-400 py-2">Không có câu hỏi nào</p>';
+      return;
+    }
+
+    var html = '';
+    samples.forEach(function(s) {
+      var statusBadge = s.trang_thai === 'da_tra_loi' ? '<span class="text-[10px] font-bold text-emerald-600">Đã trả lời</span>' : '<span class="text-[10px] font-bold text-amber-600">Đang chờ</span>';
+      html += '<div class="p-2 rounded-xl bg-slate-50 border border-slate-200 text-xs">' +
+        '<div class="flex items-center justify-between text-[10px] text-slate-400 mb-0.5">' +
+          '<span class="font-bold text-slate-600">' + esc(s.topic) + '</span>' +
+          '<span>' + s.ngay_tao + ' • ' + statusBadge + '</span>' +
+        '</div>' +
+        '<p class="text-slate-800 font-semibold line-clamp-1">' + esc(s.cau_hoi) + '</p>' +
+      '</div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  function filterDocs(tab) {
+    currentDocFilter = tab;
+    ['all', 'pending', 'approved', 'rejected'].forEach(function(t) {
+      var btn = document.getElementById('doc-tab-' + t);
+      if (btn) {
+        if (t === tab) {
+          btn.className = 'px-3 py-1.5 rounded-xl bg-white text-[#0072BC] shadow-xs transition-all font-bold';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all';
+        }
+      }
+    });
+    renderDocumentsTable();
+  }
+
+  function renderDocumentsTable() {
+    var tbody = document.getElementById('documents-table-body');
+    if (!tbody) return;
+
+    var list = allDocuments;
+    if (currentDocFilter !== 'all') {
+      list = allDocuments.filter(function(d) { return d.status === currentDocFilter; });
+    }
+
+    if (!list.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="py-12 text-center text-slate-400 text-xs">' +
+        '<span class="material-symbols-outlined text-[32px] text-slate-300 block mb-1">folder_open</span>' +
+        '<span>Không có tài liệu nào trong mục này</span>' +
+        '</td></tr>';
+      return;
+    }
+
+    var html = '';
+    list.forEach(function(d) {
+      var statusBadge = '';
+      if (d.status === 'approved') {
+        statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1 w-fit"><span class="material-symbols-outlined text-[12px]">check_circle</span>Đã duyệt (AI sẵn sàng)</span>';
+      } else if (d.status === 'rejected') {
+        statusBadge = '<div><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1 w-fit"><span class="material-symbols-outlined text-[12px]">cancel</span>Từ chối</span>' +
+          (d.reject_reason ? '<div class="text-[10px] text-rose-600 mt-1 line-clamp-1" title="' + esc(d.reject_reason) + '">Lý do: ' + esc(d.reject_reason) + '</div>' : '') +
+          '</div>';
+      } else {
+        statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1 w-fit animate-pulse"><span class="material-symbols-outlined text-[12px]">hourglass_top</span>Đang chờ HĐTS duyệt</span>';
+      }
+
+      var actions = '<div class="flex items-center justify-center gap-1.5">' +
+        '<a href="' + (d.edit_url || '/hdts/tai-lieu/' + d.id + '/chinh-sua/') + '" class="px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center gap-1 transition-colors" title="Thẩm định nội dung và chỉnh sửa trước khi duyệt">' +
+          '<span class="material-symbols-outlined text-[15px]">edit_note</span>' +
+          '<span>Sửa</span>' +
+        '</a>' +
+        '<a href="/tai-lieu/' + d.id + '/xem/" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0072BC] font-bold text-xs flex items-center gap-1 transition-colors" title="Mở xem tài liệu gốc">' +
+          '<span class="material-symbols-outlined text-[15px]">visibility</span>' +
+          '<span>Xem</span>' +
+        '</a>';
+
+      if (d.status === 'pending') {
+        actions += '<button type="button" onclick="tableApproveDoc(' + d.id + ')" class="px-3 py-1.5 rounded-lg bg-[#00A859] hover:bg-[#008f4c] text-white font-bold text-xs flex items-center gap-1 transition-colors shadow-xs cursor-pointer" title="HĐTS Phê duyệt">' +
+            '<span class="material-symbols-outlined text-[15px]">done_all</span>' +
+            '<span>Duyệt</span>' +
+          '</button>' +
+          '<button type="button" onclick="tableRejectDoc(' + d.id + ')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer" title="Từ chối tài liệu">' +
+            '<span class="material-symbols-outlined text-[15px]">close</span>' +
+            '<span>Từ chối</span>' +
+          '</button>';
+      } else if (d.status === 'rejected') {
+        actions += '<button type="button" onclick="tableApproveDoc(' + d.id + ')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer" title="Duyệt lại tài liệu này">' +
+            '<span class="material-symbols-outlined text-[15px]">replay</span>' +
+            '<span>Duyệt lại</span>' +
+          '</button>';
+      }
+
+      actions += '<button type="button" onclick="tableDeleteDoc(' + d.id + ')" class="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors cursor-pointer" title="Xóa tài liệu">' +
+          '<span class="material-symbols-outlined text-[16px]">delete</span>' +
+        '</button>' +
+      '</div>';
+
+      html += '<tr class="hover:bg-slate-50/80 transition-colors">' +
+        '<td class="py-3.5 px-4 font-bold text-slate-800">' +
+          '<div class="flex items-center gap-2">' +
+            '<span class="material-symbols-outlined text-[20px] text-[#0072BC] shrink-0">description</span>' +
+            '<a href="/tai-lieu/' + d.id + '/xem/" target="_blank" class="hover:text-[#0072BC] hover:underline max-w-xs sm:max-w-md truncate block" title="Xem tài liệu: ' + esc(d.name) + '">' +
+              esc(d.name) +
+            '</a>' +
+          '</div>' +
+        '</td>' +
+        '<td class="py-3.5 px-4 font-medium text-slate-700">' + esc(d.uploaded_by || 'Cán bộ') + '</td>' +
+        '<td class="py-3.5 px-4 text-slate-500 font-mono text-[11px]">' + d.date + '</td>' +
+        '<td class="py-3.5 px-4 text-slate-500 font-mono text-[11px]">' + (d.size || '--') + '</td>' +
+        '<td class="py-3.5 px-4">' + statusBadge + '</td>' +
+        '<td class="py-3.5 px-4">' + actions + '</td>' +
+      '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  async function tableApproveDoc(id) {
+    if (!confirm('Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp vào kho tri thức AI?')) return;
+    try {
+      var res = await fetch('/api/tailieu/' + id + '/approve/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': CSRF_TOKEN }
+      });
+      var json = await res.json();
+      alert(json.message);
+      loadHdtsStats();
+      if (typeof loadHdtsBell === 'function') loadHdtsBell();
+    } catch (e) {
+      alert('Lỗi phê duyệt: ' + e.message);
+    }
+  }
+
+  async function tableRejectDoc(id) {
+    var reason = prompt('Nhập lý do Hội đồng từ chối tài liệu này (sẽ thông báo lại cho Cán bộ):', 'Nội dung chưa đầy đủ hoặc không đúng quy định tuyển sinh');
+    if (reason === null) return;
+    try {
+      var res = await fetch('/api/tailieu/' + id + '/reject/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN },
+        body: JSON.stringify({ reason: reason })
+      });
+      var json = await res.json();
+      alert(json.message);
+      loadHdtsStats();
+      if (typeof loadHdtsBell === 'function') loadHdtsBell();
+    } catch (e) {
+      alert('Lỗi từ chối: ' + e.message);
+    }
+  }
+
+  async function tableDeleteDoc(id) {
+    if (!confirm('Xóa vĩnh viễn tài liệu này khỏi cơ sở dữ liệu?')) return;
+    try {
+      var res = await fetch('/api/tailieu/' + id + '/delete/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': CSRF_TOKEN }
+      });
+      var json = await res.json();
+      alert(json.message);
+      loadHdtsStats();
+      if (typeof loadHdtsBell === 'function') loadHdtsBell();
+    } catch (e) {
+      alert('Lỗi xóa: ' + e.message);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    loadHdtsStats();
+  });
+</script>
+{% endblock %}
+

@@ -37,6 +37,27 @@
       </div>
     </div>
 
+    <!-- Overdue 24h Global Warning Banner (Dành cho Cán bộ) -->
+    <div id="overdue-global-banner" class="hidden mb-5 p-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-orange-500 text-white shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 animate-bounce">
+          <span class="material-symbols-outlined text-[24px] text-white">notification_important</span>
+        </div>
+        <div>
+          <h2 class="font-bold text-sm sm:text-base flex items-center gap-2">
+            <span>NHẮC NHỞ PHẢN HỒI: CÂU HỎI CHỜ XỬ LÝ ĐÃ QUÁ 24 GIỜ!</span>
+          </h2>
+          <p class="text-xs text-white/90 mt-0.5">
+            Hiện có <strong id="overdue-banner-count" class="font-extrabold text-yellow-300">0</strong> câu hỏi từ thí sinh đã gửi quá 24h chưa được phản hồi. Cán bộ vui lòng ưu tiên giải đáp sớm!
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="toggleOverdueFilter()" id="btn-toggle-overdue" class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-yellow-50 text-red-700 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer">
+        <span class="material-symbols-outlined text-[16px]">filter_list</span>
+        <span id="txt-filter-overdue">Chỉ xem câu hỏi quá hạn</span>
+      </button>
+    </div>
+
     <!-- 2-COLUMN WORKSPACE: MASTER - DETAIL -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 items-start">
       
@@ -80,6 +101,7 @@
   var currentTab = 'cho';
   var questionsData = [];
   var selectedId = null;
+  var isFilteringOverdue = false;
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -90,15 +112,36 @@
   function switchTab(tab) {
     currentTab = tab;
     selectedId = null;
+    isFilteringOverdue = false;
+    var btn = document.getElementById('btn-toggle-overdue');
+    var txt = document.getElementById('txt-filter-overdue');
+    if (btn && txt) {
+      btn.className = 'px-3.5 py-1.5 rounded-xl bg-white hover:bg-yellow-50 text-red-700 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer';
+      txt.textContent = 'Chỉ xem câu hỏi quá hạn';
+    }
     ['cho', 'da_tra_loi'].forEach(function (t) {
-      var btn = document.getElementById('tab-' + t);
+      var b = document.getElementById('tab-' + t);
       if (t === tab) {
-        btn.className = 'px-3 py-1.5 rounded-lg bg-[#0072BC] text-white shadow-xs transition-all flex items-center gap-1.5';
+        b.className = 'px-3 py-1.5 rounded-lg bg-[#0072BC] text-white shadow-xs transition-all flex items-center gap-1.5';
       } else {
-        btn.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all';
+        b.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all';
       }
     });
     loadQuestions();
+  }
+
+  function toggleOverdueFilter() {
+    isFilteringOverdue = !isFilteringOverdue;
+    var btn = document.getElementById('btn-toggle-overdue');
+    var txt = document.getElementById('txt-filter-overdue');
+    if (isFilteringOverdue) {
+      btn.className = 'px-3.5 py-1.5 rounded-xl bg-yellow-400 text-slate-900 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer ring-2 ring-white';
+      txt.textContent = 'Hiện tất cả câu hỏi';
+    } else {
+      btn.className = 'px-3.5 py-1.5 rounded-xl bg-white hover:bg-yellow-50 text-red-700 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer';
+      txt.textContent = 'Chỉ xem câu hỏi quá hạn';
+    }
+    renderQuestionsList();
   }
 
   async function loadQuestions() {
@@ -111,13 +154,25 @@
       document.getElementById('badge-cho').textContent = json.pending_count || '0';
       document.getElementById('list-counter').textContent = questionsData.length + ' câu';
 
+      var overdueBanner = document.getElementById('overdue-global-banner');
+      var overdueBannerCount = document.getElementById('overdue-banner-count');
+      if (overdueBanner && overdueBannerCount) {
+        if (json.overdue_count > 0 && currentTab === 'cho') {
+          overdueBannerCount.textContent = json.overdue_count;
+          overdueBanner.classList.remove('hidden');
+        } else {
+          overdueBanner.classList.add('hidden');
+        }
+      }
+
       renderQuestionsList();
 
       // Nếu có câu hỏi và chưa chọn câu nào, tự động chọn câu đầu tiên
-      if (questionsData.length > 0) {
-        var stillExists = questionsData.some(function (q) { return q.id === selectedId; });
+      var listToCheck = isFilteringOverdue ? questionsData.filter(function (q) { return q.is_overdue; }) : questionsData;
+      if (listToCheck.length > 0) {
+        var stillExists = listToCheck.some(function (q) { return q.id === selectedId; });
         if (!selectedId || !stillExists) {
-          selectQuestion(questionsData[0].id);
+          selectQuestion(listToCheck[0].id);
         } else {
           renderDetailPane();
         }
@@ -130,27 +185,44 @@
 
   function renderQuestionsList() {
     var listEl = document.getElementById('questions-list');
-    if (!questionsData.length) {
+    var listToShow = questionsData;
+    if (isFilteringOverdue && currentTab === 'cho') {
+      listToShow = questionsData.filter(function (q) { return q.is_overdue; });
+    }
+
+    if (!listToShow.length) {
       listEl.innerHTML = '<div class="py-16 text-center text-slate-400 text-xs">' +
         '<span class="material-symbols-outlined text-[32px] text-slate-300 block mb-2">' +
         (currentTab === 'cho' ? 'check_circle' : 'inventory_2') + '</span>' +
-        '<p class="font-bold text-slate-600">' + (currentTab === 'cho' ? 'Không có câu hỏi chờ' : 'Chưa có câu trả lời nào') + '</p>' +
+        '<p class="font-bold text-slate-600">' + (isFilteringOverdue ? 'Không có câu hỏi nào quá hạn 24h' : (currentTab === 'cho' ? 'Không có câu hỏi chờ' : 'Chưa có câu trả lời nào')) + '</p>' +
         '</div>';
       return;
     }
 
     var html = '';
-    questionsData.forEach(function (q) {
+    listToShow.forEach(function (q) {
       var isSelected = q.id === selectedId;
+      var overdueBadge = '';
+      var overdueCardStyle = '';
+      if (q.is_overdue) {
+        overdueBadge = '<span class="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-red-100 text-red-700 border border-red-300 animate-pulse">' +
+          '<span class="material-symbols-outlined text-[12px]">schedule</span>Quá 24h (' + q.hours_waiting + 'h)' +
+          '</span>';
+        if (!isSelected) {
+          overdueCardStyle = ' border-red-300 bg-red-50/40';
+        }
+      }
+
       html += '<div onclick="selectQuestion(' + q.id + ')" class="p-3 rounded-xl cursor-pointer transition-all duration-150 border text-xs flex flex-col gap-1.5 group ' +
         (isSelected 
           ? 'bg-blue-50/90 border-[#0072BC] shadow-xs ring-1 ring-blue-400/20' 
-          : 'bg-slate-50/60 border-slate-200/70 hover:bg-slate-100/80 hover:border-slate-300') + '">' +
-        '<div class="flex items-center justify-between text-[11px]">' +
+          : 'bg-slate-50/60 border-slate-200/70 hover:bg-slate-100/80 hover:border-slate-300' + overdueCardStyle) + '">' +
+        '<div class="flex items-center justify-between text-[11px] gap-1">' +
           '<span class="text-slate-400 font-medium text-[11px] flex items-center gap-1">' +
             '<span class="material-symbols-outlined text-[13px] ' + (isSelected ? 'text-[#0072BC]' : 'text-slate-400') + '">schedule</span>' +
             '<span>' + esc(q.ngay_tao) + '</span>' +
           '</span>' +
+          overdueBadge +
         '</div>' +
         '<p class="font-semibold leading-relaxed line-clamp-2 ' + (isSelected ? 'text-[#0072BC]' : 'text-slate-800') + '">' +
           esc(q.cau_hoi) +
@@ -183,12 +255,22 @@
     if (!q) return;
 
     var isPending = q.trang_thai === 'cho';
+    var overdueDetailBadge = '';
+    if (q.is_overdue) {
+      overdueDetailBadge = '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-bold bg-red-100 text-red-700 border border-red-200 animate-pulse">' +
+        '<span class="material-symbols-outlined text-[14px]">warning</span>' +
+        '<span>Đã quá 24h (' + q.hours_waiting + ' giờ)</span>' +
+        '</span>';
+    }
 
     // Header của Detail Pane
     var topBar = '<div class="p-4 border-b border-slate-100 bg-slate-50/70 flex items-center justify-between gap-3">' +
-      '<div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium">' +
-        '<span class="material-symbols-outlined text-[16px] text-slate-400">event</span>' +
-        '<span>Thời gian gửi: <strong>' + esc(q.ngay_tao) + '</strong></span>' +
+      '<div class="flex items-center gap-2 text-xs text-slate-600 font-medium flex-wrap">' +
+        '<div class="flex items-center gap-1.5">' +
+          '<span class="material-symbols-outlined text-[16px] text-slate-400">event</span>' +
+          '<span>Thời gian gửi: <strong>' + esc(q.ngay_tao) + '</strong></span>' +
+        '</div>' +
+        overdueDetailBadge +
       '</div>' +
       '<div class="flex items-center gap-2">' +
         (isPending ? 
@@ -229,14 +311,10 @@
           '</label>' +
           '<textarea id="detail-ans" rows="4" class="w-full p-3 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0072BC] focus:ring-2 focus:ring-blue-100 transition-all resize-none" placeholder="Nhập câu trả lời cụ thể, đúng trọng tâm cho thí sinh..."></textarea>' +
         '</div>' +
-        '<div class="flex items-center justify-between gap-3 pt-1">' +
-          '<label class="cursor-pointer text-xs text-slate-700 flex items-center gap-2 select-none hover:text-[#00A859] transition-colors">' +
-            '<input type="checkbox" id="detail-kb" checked class="w-4 h-4 rounded text-[#00A859] focus:ring-[#00A859] cursor-pointer">' +
-            '<span>Duyệt câu trả lời này vào <strong>Kho tri thức Chatbot</strong> (AI tự trả lời lần sau)</span>' +
-          '</label>' +
-          '<button onclick="submitDetailAnswer(' + q.id + ')" id="detail-submit-btn" class="px-5 py-2.5 rounded-xl bg-[#00A859] hover:bg-[#008f4c] text-white text-xs font-bold shadow-xs hover:shadow transition-all flex items-center gap-1.5 flex-shrink-0">' +
+        '<div class="flex items-center justify-end gap-3 pt-1">' +
+          '<button onclick="submitDetailAnswer(' + q.id + ')" id="detail-submit-btn" class="px-5 py-2.5 rounded-xl bg-[#00A859] hover:bg-[#008f4c] text-white text-xs font-bold shadow-xs hover:shadow transition-all flex items-center gap-1.5 flex-shrink-0 cursor-pointer">' +
             '<span class="material-symbols-outlined text-[17px]">send</span>' +
-            '<span>Gửi câu trả lời</span>' +
+            '<span>Gửi câu trả lời cho thí sinh</span>' +
           '</button>' +
         '</div>' +
       '</div>';
@@ -273,8 +351,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN },
         body: JSON.stringify({
-          tra_loi: text,
-          them_kien_thuc: document.getElementById('detail-kb').checked
+          tra_loi: text
         })
       });
       var json = await res.json();

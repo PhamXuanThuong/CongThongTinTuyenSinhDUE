@@ -257,8 +257,9 @@ SYSTEM_PROMPT = (
     "(tán gẫu, hỏi chuyện riêng tư/giới tính/chính trị/tôn giáo của người khác, nội dung nhạy cảm, xúc phạm, "
     "nhờ làm bài, hỏi kiến thức chung) thì đặt ngoai_pham_vi = true, co_thong_tin = false và để tra_loi rỗng "
     "(câu hỏi sẽ được chuyển cho cán bộ tuyển sinh); TUYỆT ĐỐI không tự trả lời các câu này. "
-    "Trả lời bằng tiếng Việt, ngắn gọn, rõ ràng. Khi liệt kê, MỖI Ý PHẢI NẰM TRÊN MỘT DÒNG RIÊNG, "
-    "bắt đầu bằng '- ' (dùng ký tự xuống dòng \\n giữa các ý); dùng **chữ đậm** cho con số/từ khóa quan trọng."
+    "Trả lời bằng tiếng Việt, ngắn gọn, rõ ràng, phân tích chi tiết từng khía cạnh/ngành học/phương án tuyển sinh (nếu có), "
+    "diễn đạt tự nhiên, thân thiện. Khi liệt kê, MỖI Ý PHẢI NẰM TRÊN MỘT DÒNG RIÊNG, "
+    "bắt đầu bằng ' - ' (dùng ký tự xuống dòng \\n giữa các ý); dùng **chữ đậm** cho con số/từ khóa quan trọng."
 )
 
 ANSWER_SCHEMA = {
@@ -272,7 +273,7 @@ ANSWER_SCHEMA = {
 }
 
 
-def _compress_history(history, max_turns=6, max_chars=3000):
+def _compress_history(history, max_turns=12, max_chars=6000):
     """
     Nén ngữ cảnh hội thoại khi phiên chat quá dài:
     - Nếu lịch sử ngắn (<= max_turns): Giữ nguyên.

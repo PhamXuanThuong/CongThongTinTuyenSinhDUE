@@ -9,6 +9,7 @@ urlpatterns = [
     path('khoa/<str:code>/', views.faculty_detail_view, name='khoa_detail'),
     path('khoa/<str:code>/lien-chi-doan/', views.faculty_lcd_detail_view, name='khoa_lcd_detail'),
     path('khoa/<str:code>/lcd/', views.faculty_lcd_detail_view, name='khoa_lcd_detail_short'),
+    path('khoa/<str:code>/lich-trinh-tan-sinh-vien/', views.faculty_freshman_schedule_view, name='khoa_freshman_schedule'),
 
     # Liên Chi Đoàn
     path('lien-chi-doan/', views.lcd_overview_view, name='lien_chi_doan_list'),
@@ -29,6 +30,8 @@ urlpatterns = [
     # Hướng dẫn nhập học & Lịch trình tân sinh viên
     path('huong-dan-nhap-hoc/', views.enrollment_guide_view, name='huong_dan_nhap_hoc'),
     path('lich-trinh-tan-sinh-vien/', views.freshman_schedule_view, name='lich_trinh_tan_sinh_vien'),
+    path('api/lich-trinh/tao/', views.api_create_schedule_event, name='api_create_schedule_event'),
+    path('portal/api/lich-trinh/tao/', views.api_create_schedule_event, name='api_create_schedule_event_alias'),
 
     # API Endpoints chính thức (Tiếng Việt đồng bộ)
     path('api/khoa/', api.api_faculties_list, name='api_khoa_list'),

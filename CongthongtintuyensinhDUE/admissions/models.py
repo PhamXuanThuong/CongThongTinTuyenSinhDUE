@@ -367,15 +367,77 @@ class ChinhSachHocBong(models.Model):
 
 
 class TaiLieuTuyenSinh(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Đang chờ duyệt'),
+        ('approved', 'Đã duyệt'),
+        ('rejected', 'Từ chối'),
+        ('cho_duyet', 'Đang chờ duyệt'),
+        ('da_duyet', 'Đã duyệt'),
+        ('tu_choi', 'Từ chối'),
+    ]
+
     title = models.CharField(max_length=255, verbose_name="Tên tài liệu")
     file = models.FileField(upload_to="file_upload/", verbose_name="Tệp đính kèm")
     file_size = models.CharField(
         max_length=50, blank=True, verbose_name="Kích thước tệp"
     )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        verbose_name="Trạng thái phê duyệt"
+    )
+    uploaded_by = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="uploaded_documents",
+        verbose_name="Người tải lên"
+    )
+    approved_by = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="approved_documents",
+        verbose_name="HĐTS phê duyệt"
+    )
+    approved_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Thời gian phê duyệt"
+    )
+    reject_reason = models.TextField(
+        blank=True,
+        default="",
+        verbose_name="Lý do từ chối"
+    )
     uploaded_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Thời gian tải lên"
     )
     is_processed = models.BooleanField(default=False, verbose_name="Đã nạp vào AI")
+
+    # Thuộc tính alias tiếng Việt theo thiết kế HĐTS
+    @property
+    def nguoi_upload(self):
+        return self.uploaded_by
+
+    @property
+    def nguoi_duyet(self):
+        return self.approved_by
+
+    @property
+    def ngay_duyet(self):
+        return self.approved_at
+
+    @property
+    def trang_thai(self):
+        return self.status
+
+    @property
+    def ly_do_tu_choi(self):
+        return self.reject_reason
 
     class Meta:
         db_table = 'admissions_uploaded_file'
@@ -384,7 +446,7 @@ class TaiLieuTuyenSinh(models.Model):
         ordering = ["-uploaded_at"]
 
     def __str__(self):
-        return self.title
+        return f"{self.title} [{self.get_status_display()}]"
 
 
 # ========================================================
@@ -678,6 +740,7 @@ class CauHoiChoTraLoi(models.Model):
     ngu_canh = models.TextField(blank=True, verbose_name="Hội thoại trước đó")
     tra_loi = models.TextField(blank=True, verbose_name="Câu trả lời của cán bộ")
     trang_thai = models.CharField(max_length=20, choices=TRANG_THAI_CHOICES, default='cho', db_index=True, verbose_name="Trạng thái")
+    nguoi_hoi = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='cau_hoi_da_gui', verbose_name="Người gửi câu hỏi")
     can_bo = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Cán bộ trả lời")
     da_them_kien_thuc = models.BooleanField(default=False, verbose_name="Đã thêm vào kho kiến thức")
     ngay_tao = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian hỏi")
@@ -747,4 +810,78 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return f"[{self.role}] {self.content[:50]}"
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='profile', verbose_name="Tài khoản")
+    full_name = models.CharField(max_length=150, blank=True, verbose_name="Họ và tên")
+    phone = models.CharField(max_length=50, blank=True, verbose_name="Số điện thoại")
+    cccd = models.CharField(max_length=50, blank=True, verbose_name="Số CCCD")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Ngày đăng ký")
+
+    class Meta:
+        db_table = 'admissions_user_profile'
+        verbose_name = "Hồ sơ người dùng / Thí sinh"
+        verbose_name_plural = "Hồ sơ người dùng / Thí sinh"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.full_name or self.phone or self.user.email}"
+
+
+# ========================================================
+# 15. THÔNG BÁO HỆ THỐNG (IN-APP NOTIFICATIONS)
+# ========================================================
+
+class ThongBao(models.Model):
+    LOAI_CHOICES = [
+        ('upload_moi', 'Tài liệu mới cần duyệt'),
+        ('da_duyet', 'Tài liệu đã được duyệt'),
+        ('tu_choi', 'Tài liệu bị từ chối'),
+        ('he_thong', 'Thông báo hệ thống'),
+    ]
+
+    nguoi_nhan = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name="thong_bao_nhan",
+        verbose_name="Người nhận"
+    )
+    nguoi_gui = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="thong_bao_gui",
+        verbose_name="Người gửi"
+    )
+    tieu_de = models.CharField(max_length=255, verbose_name="Tiêu đề thông báo")
+    noi_dung = models.TextField(verbose_name="Nội dung thông báo")
+    loai = models.CharField(
+        max_length=50,
+        choices=LOAI_CHOICES,
+        default='he_thong',
+        verbose_name="Phân loại thông báo"
+    )
+    tai_lieu = models.ForeignKey(
+        TaiLieuTuyenSinh,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="thong_bao_lien_quan",
+        verbose_name="Tài liệu liên quan"
+    )
+    duong_dan = models.CharField(max_length=255, blank=True, default='', verbose_name="Đường dẫn xử lý")
+    da_doc = models.BooleanField(default=False, db_index=True, verbose_name="Đã đọc")
+    ngay_tao = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name="Thời gian tạo")
+
+    class Meta:
+        db_table = 'admissions_notification'
+        verbose_name = "Thông báo hệ thống"
+        verbose_name_plural = "15. Quản lý Thông báo hệ thống"
+        ordering = ['-ngay_tao']
+
+    def __str__(self):
+        return f"[{self.get_loai_display()}] {self.tieu_de} -> {self.nguoi_nhan.username}"
+
+
 

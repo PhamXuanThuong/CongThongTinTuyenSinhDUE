@@ -1,0 +1,548 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Báo cáo Khung giờ cao điểm - Hội đồng Tuyển sinh DUE{% endblock %}
+
+{% block nav_thongke %}text-[#F37021] font-bold border-b-2 border-[#F37021]{% endblock %}
+
+{% block content %}
+<main class="w-full pt-44 sm:pt-40 pb-20 bg-[#f8fafc] min-h-screen flex flex-col">
+  <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-6 flex-1 flex flex-col">
+
+    <!-- Top Executive Header -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div class="flex items-start sm:items-center gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#F37021] via-[#ea580c] to-[#c2410c] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+          <span class="material-symbols-outlined text-[32px]">schedule</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap mb-1">
+            <span class="px-2.5 py-0.5 rounded-full bg-orange-50 text-[#F37021] text-xs font-bold border border-orange-200 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px]">verified</span>
+              Hội đồng Tuyển sinh DUE 2026
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">Báo cáo chuyên đề 02</span>
+          </div>
+          <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Khung giờ cao điểm tra cứu & tư vấn</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Phân tích mật độ tương tác 24 giờ trong ngày để tối ưu ca trực cán bộ và chất lượng phản hồi</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 self-start lg:self-center flex-wrap">
+        <!-- Bộ lọc thời gian: Cụ thể Ngày / Tháng / Năm -->
+        <div class="bg-slate-100 p-1 rounded-2xl flex items-center text-xs font-bold gap-0.5">
+          <button type="button" onclick="changePeriod('week')" id="btn-period-week" class="px-3 py-1.5 rounded-xl bg-white text-[#0072BC] shadow-xs transition-all flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+            <span>01/11/2026 - 07/11/2026</span>
+          </button>
+          <button type="button" onclick="changePeriod('month')" id="btn-period-month" class="px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Tháng 11/2026</button>
+          <button type="button" onclick="changePeriod('all')" id="btn-period-all" class="px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Năm học 2026</button>
+        </div>
+
+        <button type="button" onclick="loadHdtsStats()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer" title="Làm mới số liệu">
+          <span class="material-symbols-outlined text-[18px]">sync</span>
+          <span class="hidden sm:inline">Làm mới</span>
+        </button>
+
+        <button type="button" onclick="window.print()" class="px-3.5 py-2 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[17px]">print</span>
+          <span>In báo cáo</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 5 KPI Summary Cards (Giữ nguyên trên tất cả báo cáo) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <!-- Card 1: Lượt hỏi Chatbot -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Lượt hỏi Chatbot</span>
+          <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0072BC] flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">forum</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-slate-900" id="kpi-total-interactions">1,450+</div>
+          <div class="text-[11px] text-emerald-600 font-bold flex items-center gap-1 mt-1">
+            <span class="material-symbols-outlined text-[13px]">trending_up</span>
+            <span>+18.4% so với tuần trước</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: AI tự giải quyết -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">AI tự giải quyết</span>
+          <div class="w-8 h-8 rounded-xl bg-emerald-50 text-[#00A859] flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">smart_toy</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-[#00A859]" id="kpi-ai-rate">98.3%</div>
+          <div class="text-[11px] text-slate-400 font-medium mt-1">
+            Tự động trả lời qua RAG
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Chuyển cán bộ -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Chuyển Cán bộ</span>
+          <div class="w-8 h-8 rounded-xl bg-orange-50 text-[#F37021] flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">support_agent</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-[#F37021]" id="kpi-total-handoff">25</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-1">
+            Đã trả lời: <strong class="text-slate-800" id="kpi-answered-handoff">1</strong> câu
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Tài liệu chờ duyệt -->
+      <div class="bg-gradient-to-br from-amber-50 to-orange-50/60 rounded-2xl p-4 sm:p-5 border border-amber-200 shadow-xs flex flex-col justify-between relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-800">Tài liệu chờ duyệt</span>
+          <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-xs">
+            <span class="material-symbols-outlined text-[18px]">hourglass_top</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-900" id="kpi-pending-docs">0</div>
+          <button type="button" onclick="scrollToDocumentsTable()" class="text-[11px] text-amber-800 font-bold hover:underline flex items-center gap-1 mt-1 cursor-pointer">
+            <span>Kiểm duyệt ngay</span>
+            <span class="material-symbols-outlined text-[13px]">arrow_downward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 5: Thời gian phản hồi TB -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Thời gian phản hồi TB</span>
+          <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">schedule</span>
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-slate-900" id="kpi-avg-time">~42 phút</div>
+          <div class="text-[11px] text-emerald-600 font-medium flex items-center gap-1 mt-1">
+            <span class="material-symbols-outlined text-[13px]">check_circle</span>
+            <span>Mức hài lòng: 96.8%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- BIỂU ĐỒ 24 KHUNG GIỜ TRONG NGÀY -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-6 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[22px] text-[#F37021]">timeline</span>
+            <h2 class="text-lg font-extrabold text-slate-900">Biểu đồ Phân bổ Mật độ Tương tác 24 Giờ trong Ngày</h2>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">Xác định các khung giờ "vàng" thí sinh truy cập nhiều nhất để bố trí nhân sự trực chat</p>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-semibold">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-md bg-[#F37021]"></span>
+            <span class="text-slate-600">Giờ cao điểm (&ge; 130 lượt)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-md bg-[#0072BC]"></span>
+            <span class="text-slate-600">Bình thường</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-md bg-slate-300"></span>
+            <span class="text-slate-600">Thấp / Đêm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 24-Hour Bar Chart -->
+      <div class="space-y-2">
+        <div class="h-64 flex items-end justify-between gap-1 sm:gap-2 pt-6 pb-2 px-1 overflow-x-auto" id="hourly-chart-container">
+          <!-- Render qua JS -->
+        </div>
+      </div>
+
+      <!-- Bảng 24 khung giờ chi tiết -->
+      <div class="pt-4 border-t border-slate-100">
+        <h3 class="text-sm font-extrabold text-slate-900 mb-3 flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px] text-[#F37021]">access_time</span>
+          <span>Bảng dữ liệu chi tiết từng khung giờ và đề xuất nhân sự</span>
+        </h3>
+        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[11px]">
+                <th class="p-3.5">Khung giờ</th>
+                <th class="p-3.5">Ca làm việc</th>
+                <th class="p-3.5 text-center">Lượt hỏi TB</th>
+                <th class="p-3.5 text-center">Tỷ lệ ngày</th>
+                <th class="p-3.5 text-center">Mức tải</th>
+                <th class="p-3.5 text-center">Cơ chế giải quyết</th>
+                <th class="p-3.5 text-right">Khuyến nghị HĐTS</th>
+              </tr>
+            </thead>
+            <tbody id="table-hourly-body" class="divide-y divide-slate-100 font-medium text-slate-700">
+              <!-- Render qua JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- KHỐI KHUYẾN NGHỊ PHÂN BỔ CA TRỰC CHO HĐTS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="bg-gradient-to-br from-orange-50/70 to-amber-50/40 rounded-3xl border border-orange-100 p-5 space-y-3 shadow-xs">
+        <div class="w-10 h-10 rounded-2xl bg-[#F37021] text-white flex items-center justify-center shadow-xs">
+          <span class="material-symbols-outlined text-[20px]">person_pin_circle</span>
+        </div>
+        <h4 class="font-extrabold text-slate-900 text-sm">Ưu tiên tăng cường Ca Tối</h4>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Khung giờ <strong>19:30 - 21:30</strong> là thời điểm phụ huynh cùng con tìm hiểu ngành nghề nhiều nhất. HĐTS nên phân công tối thiểu <strong>2 cán bộ trực online</strong> để giải quyết các trường hợp phức tạp.
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-blue-50/70 to-indigo-50/40 rounded-3xl border border-blue-100 p-5 space-y-3 shadow-xs">
+        <div class="w-10 h-10 rounded-2xl bg-[#0072BC] text-white flex items-center justify-center shadow-xs">
+          <span class="material-symbols-outlined text-[20px]">speed</span>
+        </div>
+        <h4 class="font-extrabold text-slate-900 text-sm">Rút ngắn SLA phản hồi giờ hành chính</h4>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Trong ca chiều (14h00 - 16h30), số câu hỏi chuyển cán bộ có xu hướng tăng vì liên quan đến giấy tờ chứng chỉ IELTS. Duy trì thời gian phản hồi dưới <strong>30 phút</strong> để thí sinh không rời khỏi trang.
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-emerald-50/70 to-teal-50/40 rounded-3xl border border-emerald-100 p-5 space-y-3 shadow-xs">
+        <div class="w-10 h-10 rounded-2xl bg-[#00A859] text-white flex items-center justify-center shadow-xs">
+          <span class="material-symbols-outlined text-[20px]">verified</span>
+        </div>
+        <h4 class="font-extrabold text-slate-900 text-sm">Phát huy tối đa AI ban đêm</h4>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Khung 23h00 - 07h00 đạt tỷ lệ giải quyết tự động <strong>100%</strong> bằng cơ sở tri thức RAG. Không cần bố trí nhân sự trực đêm, hệ thống AI hoạt động ổn định và tin cậy.
+        </p>
+      </div>
+    </div>
+
+    <!-- BÀN LÀM VIỆC CỐT LÕI CỦA HĐTS: BẢNG KIỂM DUYỆT TÀI LIỆU TUYỂN SINH -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-6 space-y-4" id="section-documents-table">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[22px] text-amber-600">verified_user</span>
+            <h2 class="text-lg font-extrabold text-slate-900">Bàn Thẩm định & Phê duyệt Tài liệu Tuyển sinh</h2>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">Tất cả tài liệu do Cán bộ tuyển sinh tải lên phải được Hội đồng duyệt trước khi đưa vào hệ thống tư vấn</p>
+        </div>
+
+        <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-2xl text-xs font-bold">
+          <button type="button" onclick="filterDocs('all')" id="btn-doc-filter-all" class="px-3 py-1.5 rounded-xl bg-white text-[#0072BC] shadow-xs transition-all">
+            Tất cả (<span id="count-docs-all">0</span>)
+          </button>
+          <button type="button" onclick="filterDocs('pending')" id="btn-doc-filter-pending" class="px-3 py-1.5 rounded-xl text-amber-700 hover:text-amber-900 transition-all">
+            Chờ duyệt (<span id="count-docs-pending">0</span>)
+          </button>
+          <button type="button" onclick="filterDocs('approved')" id="btn-doc-filter-approved" class="px-3 py-1.5 rounded-xl text-emerald-700 hover:text-emerald-900 transition-all">
+            Đã duyệt (<span id="count-docs-approved">0</span>)
+          </button>
+          <button type="button" onclick="filterDocs('rejected')" id="btn-doc-filter-rejected" class="px-3 py-1.5 rounded-xl text-rose-700 hover:text-rose-900 transition-all">
+            Từ chối (<span id="count-docs-rejected">0</span>)
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-slate-200">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[11px]">
+              <th class="p-3.5">Tên tài liệu / Văn bản</th>
+              <th class="p-3.5">Dung lượng</th>
+              <th class="p-3.5">Người tải lên</th>
+              <th class="p-3.5">Thời gian</th>
+              <th class="p-3.5 text-center">Trạng thái</th>
+              <th class="p-3.5 text-center">Người duyệt</th>
+              <th class="p-3.5 text-right">Thao tác thẩm định</th>
+            </tr>
+          </thead>
+          <tbody id="table-documents-body" class="divide-y divide-slate-100 font-medium text-slate-700">
+            <!-- Render qua JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  var allDocuments = [];
+  var currentDocFilter = 'all';
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function changePeriod(p) {
+    ['week', 'month', 'all'].forEach(function(k) {
+      var btn = document.getElementById('btn-period-' + k);
+      if (btn) {
+        if (k === p) {
+          btn.className = 'px-3 py-1.5 rounded-xl bg-white text-[#0072BC] shadow-xs transition-all font-bold';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all';
+        }
+      }
+    });
+    loadHdtsStats();
+  }
+
+  function scrollToDocumentsTable() {
+    var el = document.getElementById('section-documents-table');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  async function loadHdtsStats() {
+    try {
+      var res = await fetch('/api/hdts/thong-ke/');
+      var json = await res.json();
+      if (json.status !== 'success') return;
+
+      var kpi = json.kpi || {};
+      document.getElementById('kpi-total-interactions').textContent = (kpi.total_interactions || 0).toLocaleString();
+      document.getElementById('kpi-ai-rate').textContent = (kpi.ai_resolution_rate || 0) + '%';
+      document.getElementById('kpi-total-handoff').textContent = (kpi.total_handoff || 0);
+      document.getElementById('kpi-answered-handoff').textContent = (kpi.answered_handoff || 0);
+      document.getElementById('kpi-pending-docs').textContent = (kpi.pending_docs || 0);
+      document.getElementById('kpi-avg-time').textContent = '~' + (kpi.avg_response_time_minutes || 42) + ' phút';
+
+      renderHourlyChart(json.hourly_data || []);
+      renderHourlyTable(json.hourly_data || []);
+
+      allDocuments = json.documents || [];
+      document.getElementById('count-docs-all').textContent = allDocuments.length;
+      document.getElementById('count-docs-pending').textContent = kpi.pending_docs || 0;
+      document.getElementById('count-docs-approved').textContent = kpi.approved_docs || 0;
+      document.getElementById('count-docs-rejected').textContent = kpi.rejected_docs || 0;
+
+      renderDocumentsTable();
+    } catch (e) {
+      console.error('Lỗi nạp thống kê HĐTS:', e);
+    }
+  }
+
+  function renderHourlyChart(hourly) {
+    var container = document.getElementById('hourly-chart-container');
+    if (!container || !hourly.length) return;
+
+    var maxCount = Math.max.apply(null, hourly.map(function(h) { return h.count; })) || 180;
+    var html = '';
+
+    hourly.forEach(function(h) {
+      var heightPercent = Math.max(10, Math.round((h.count / maxCount) * 100));
+      var barBg = h.is_peak ? 'linear-gradient(180deg, #F37021, #c2410c)'
+                : (h.h_num >= 7 && h.h_num <= 22 ? 'linear-gradient(180deg, #0072BC, #0056b3)' : '#cbd5e1');
+
+      html += '<div class="flex-1 min-w-[28px] sm:min-w-[36px] flex flex-col items-center gap-1.5 h-full justify-end group">';
+      html += '  <div class="text-[10px] font-bold text-slate-800 transition-all opacity-0 group-hover:opacity-100 group-hover:scale-110 mb-0.5">' + h.count + '</div>';
+      html += '  <div class="w-full max-w-[28px] rounded-t-lg overflow-hidden shadow-2xs transition-all duration-300 group-hover:brightness-110" style="height: ' + heightPercent + '%; background: ' + barBg + ';" title="' + esc(h.hour) + ': ' + h.count + ' lượt (' + h.shift + ')"></div>';
+      html += '  <div class="text-[10px] font-mono font-bold text-slate-500 mt-1">' + esc(h.hour) + '</div>';
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  function renderHourlyTable(hourly) {
+    var tbody = document.getElementById('table-hourly-body');
+    if (!tbody || !hourly.length) return;
+
+    var html = '';
+    hourly.forEach(function(h) {
+      var loadBadge = h.is_peak ? '<span class="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-bold">Đỉnh cao điểm</span>'
+                    : (h.count >= 60 ? '<span class="px-2 py-0.5 rounded-full bg-blue-50 text-[#0072BC] border border-blue-200 text-[10px] font-bold">Trung bình</span>'
+                    : '<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold">Thấp</span>');
+
+      var solver = (h.h_num >= 23 || h.h_num <= 6) ? '<span class="text-emerald-600 font-bold flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[14px]">smart_toy</span>AI 100%</span>'
+                 : '<span class="text-slate-700 font-medium">AI & Cán bộ trực</span>';
+
+      var recommendation = h.is_peak ? '<strong class="text-[#F37021]">Bố trí 2 cán bộ trực online</strong>'
+                         : (h.count >= 70 ? '<span class="text-slate-700">1 cán bộ thường trực</span>'
+                         : '<span class="text-slate-400">Tự động qua Chatbot</span>');
+
+      html += '<tr class="hover:bg-slate-50/80 transition-colors">';
+      html += '  <td class="p-3.5 font-bold font-mono text-slate-900">' + esc(h.hour) + '</td>';
+      html += '  <td class="p-3.5 text-slate-700">' + esc(h.shift) + '</td>';
+      html += '  <td class="p-3.5 text-center font-extrabold text-slate-900">' + h.count + '</td>';
+      html += '  <td class="p-3.5 text-center font-semibold text-slate-600">' + h.percent + '%</td>';
+      html += '  <td class="p-3.5 text-center">' + loadBadge + '</td>';
+      html += '  <td class="p-3.5 text-center">' + solver + '</td>';
+      html += '  <td class="p-3.5 text-right">' + recommendation + '</td>';
+      html += '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  function filterDocs(status) {
+    currentDocFilter = status;
+    ['all', 'pending', 'approved', 'rejected'].forEach(function(st) {
+      var btn = document.getElementById('btn-doc-filter-' + st);
+      if (btn) {
+        if (st === status) {
+          btn.className = 'px-3 py-1.5 rounded-xl bg-white text-[#0072BC] shadow-xs transition-all font-bold';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition-all';
+        }
+      }
+    });
+    renderDocumentsTable();
+  }
+
+  function renderDocumentsTable() {
+    var tbody = document.getElementById('table-documents-body');
+    if (!tbody) return;
+
+    var filtered = allDocuments;
+    if (currentDocFilter !== 'all') {
+      filtered = allDocuments.filter(function(d) { return d.status === currentDocFilter; });
+    }
+
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-400 font-medium">Không có tài liệu nào trong mục này</td></tr>';
+      return;
+    }
+
+    var html = '';
+    filtered.forEach(function(d) {
+      var statusBadge = '';
+      if (d.status === 'pending') {
+        statusBadge = '<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 text-[11px] font-bold border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>Đang chờ duyệt</span>';
+      } else if (d.status === 'approved') {
+        statusBadge = '<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Đã duyệt</span>';
+      } else {
+        statusBadge = '<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[11px] font-bold border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Từ chối</span>';
+      }
+
+      html += '<tr class="hover:bg-slate-50/80 transition-colors">';
+      html += '  <td class="p-3.5">';
+      html += '    <div class="flex items-center gap-2.5">';
+      html += '      <span class="material-symbols-outlined text-[20px] text-red-500 shrink-0">picture_as_pdf</span>';
+      html += '      <div>';
+      html += '        <a href="' + esc(d.view_url) + '" target="_blank" class="font-bold text-slate-900 hover:text-[#0072BC] transition-colors leading-snug line-clamp-1 flex items-center gap-1" title="Nhấn để xem tài liệu">';
+      html += '          <span>' + esc(d.name) + '</span>';
+      html += '          <span class="material-symbols-outlined text-[13px] text-slate-400">open_in_new</span>';
+      html += '        </a>';
+      html += '        <span class="text-[10px] text-slate-400">ID: #' + d.id + '</span>';
+      html += '      </div>';
+      html += '    </div>';
+      html += '  </td>';
+      html += '  <td class="p-3.5 text-slate-500 font-mono text-[11px]">' + esc(d.size) + '</td>';
+      html += '  <td class="p-3.5 text-slate-700">' + esc(d.uploaded_by) + '</td>';
+      html += '  <td class="p-3.5 text-slate-500 text-[11px]">' + esc(d.date) + '</td>';
+      html += '  <td class="p-3.5 text-center">' + statusBadge + '</td>';
+      html += '  <td class="p-3.5 text-center text-slate-600 text-[11px]">' + (d.approved_by ? esc(d.approved_by) : '<span class="text-slate-400">—</span>') + '</td>';
+      html += '  <td class="p-3.5 text-right whitespace-nowrap">';
+      html += '    <div class="flex items-center justify-end gap-1.5">';
+      html += '      <a href="' + esc(d.view_url) + '" target="_blank" class="px-2.5 py-1 rounded-lg bg-blue-50 text-[#0072BC] hover:bg-blue-100 font-bold text-[11px] transition-colors flex items-center gap-1" title="Xem tài liệu trực tiếp">';
+      html += '        <span class="material-symbols-outlined text-[14px]">visibility</span>';
+      html += '        <span>Xem</span>';
+      html += '      </a>';
+
+      if (d.status === 'pending') {
+        html += '      <button type="button" onclick="approveDoc(' + d.id + ')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition-all shadow-xs flex items-center gap-1 cursor-pointer">';
+        html += '        <span class="material-symbols-outlined text-[14px]">check</span>';
+        html += '        <span>Duyệt</span>';
+        html += '      </button>';
+        html += '      <button type="button" onclick="rejectDoc(' + d.id + ')" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-[11px] transition-colors flex items-center gap-1 cursor-pointer">';
+        html += '        <span class="material-symbols-outlined text-[14px]">close</span>';
+        html += '      </button>';
+      } else if (d.status === 'rejected') {
+        html += '      <button type="button" onclick="approveDoc(' + d.id + ')" class="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-[11px] transition-colors cursor-pointer">';
+        html += '        <span>Duyệt lại</span>';
+        html += '      </button>';
+      } else {
+        html += '      <span class="text-[11px] text-emerald-600 font-bold flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]">done_all</span>Hoàn tất</span>';
+      }
+
+      html += '    </div>';
+      html += '  </td>';
+      html += '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  async function approveDoc(docId) {
+    if (!confirm('Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này đưa vào hệ thống?')) return;
+    try {
+      var res = await fetch('/api/tailieu/' + docId + '/approve/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCookie('csrftoken') || '' }
+      });
+      var data = await res.json();
+      if (data.status === 'success') {
+        alert(data.message || 'Đã duyệt tài liệu thành công!');
+        loadHdtsStats();
+      } else {
+        alert(data.message || 'Có lỗi xảy ra');
+      }
+    } catch (e) {
+      alert('Không thể kết nối đến máy chủ');
+    }
+  }
+
+  async function rejectDoc(docId) {
+    var reason = prompt('Nhập lý do từ chối tài liệu (gửi phản hồi cho Cán bộ):', 'Tài liệu chưa đúng định dạng hoặc thiếu quyết định phê duyệt');
+    if (reason === null) return;
+    try {
+      var res = await fetch('/api/tailieu/' + docId + '/reject/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken') || ''
+        },
+        body: JSON.stringify({ reason: reason })
+      });
+      var data = await res.json();
+      if (data.status === 'success') {
+        alert(data.message || 'Đã từ chối tài liệu');
+        loadHdtsStats();
+      } else {
+        alert(data.message || 'Có lỗi xảy ra');
+      }
+    } catch (e) {
+      alert('Không thể kết nối đến máy chủ');
+    }
+  }
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    loadHdtsStats();
+  });
+</script>
+{% endblock %}
+
