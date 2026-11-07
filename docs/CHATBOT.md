@@ -119,11 +119,14 @@ Cán bộ trả lời tại `/can-bo/hoi-dap/` (chỉ tài khoản staff). Tích
 |---|---|---|
 | Sửa dữ liệu qua **admin** (bảng trong `SYNC_MODELS` / `PORTAL_MODELS`) | ✅ sau ~5 giây | — |
 | **Tải tệp** ở mục Tài liệu tư vấn | ✅ | Thay tệp: xóa tệp cũ trước rồi tải bản mới |
+| **Xóa tệp** ở mục Tài liệu tư vấn | ✅ | Kiến thức của tệp đó bị xóa khỏi kho ngay |
 | Cán bộ trả lời + tích “Thêm vào kho” | ✅ | — |
 | Sửa **trực tiếp database** (DB Browser, SQL) | ❌ | `python manage.py sync_knowledge` |
 | Sửa **file CSV** kiến thức | ❌ | `python manage.py ingest_knowledge_csv data/due_knowledge_base_merged.csv` |
+| **Thêm bảng mới** muốn chatbot biết | ❌ | Thêm vào `SYNC_MODELS` / `PORTAL_MODELS` trong `admissions/knowledge_sync.py`, rồi `python manage.py sync_knowledge` |
 | Đổi **model embedding** | ❌ | `python manage.py rebuild_embeddings` |
 | **Đổi logic đồng bộ** (`knowledge_sync.py`) | ❌ | `python manage.py sync_knowledge` trên mọi máy |
+| **Pull code mới** có sửa phần đồng bộ (ví dụ sau khi merge PR chatbot) | ❌ | `python manage.py sync_knowledge` một lần trên máy mình |
 
 Chạy lệnh trong thư mục `CongthongtintuyensinhDUE` (có `manage.py`), đã kích hoạt `.venv`.
 
