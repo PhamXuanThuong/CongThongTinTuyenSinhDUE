@@ -123,7 +123,7 @@ Cán bộ trả lời tại `/can-bo/hoi-dap/` (chỉ tài khoản staff). Tích
 | **Xóa tệp** ở mục Tài liệu tư vấn | ✅ | Kiến thức của tệp đó bị xóa khỏi kho ngay |
 | Cán bộ trả lời + tích “Thêm vào kho” | ✅ | — |
 | Sửa **trực tiếp database** (DB Browser, SQL) | ❌ | `python manage.py sync_knowledge` |
-| Pull code có migration `0010_remove_csv_knowledge` | ❌ | `python manage.py migrate` rồi `python manage.py sync_knowledge` |
+| Pull code có migration `0010_remove_csv_knowledge` | ❌ | Xem **mục 6.2** |
 | **Thêm bảng mới** muốn chatbot biết | ❌ | Thêm vào `SYNC_MODELS` / `PORTAL_MODELS` trong `admissions/knowledge_sync.py`, rồi `python manage.py sync_knowledge` |
 | Đổi **model embedding** | ❌ | `python manage.py rebuild_embeddings` |
 | **Đổi logic đồng bộ** (`knowledge_sync.py`) | ❌ | `python manage.py sync_knowledge` trên mọi máy |
@@ -160,6 +160,35 @@ Chạy lệnh trong thư mục `CongthongtintuyensinhDUE` (có `manage.py`), đ�
 Chi phí embedding: `sync_knowledge` chỉ embed phần **thay đổi**; `rebuild_embeddings` embed toàn kho (~1.200 lượt). Gói miễn phí: ~1.000 lượt/ngày, 100 lượt/phút (lệnh tự chia lô 40 và chờ khi bị giới hạn).
 
 > `db.sqlite3` **không lưu trên git**. Mỗi máy tự giữ database (kho kiến thức nằm trong đó). Sao lưu trước khi pull.
+
+### 6.2. Dành cho dev pull code về: đã bỏ file CSV kiến thức (07/11/2026)
+
+**Đã thay đổi gì**
+
+| Trước | Sau |
+|---|---|
+| Ưu tiên 1: file `data/due_knowledge_base_merged.csv` + tệp tải lên + câu trả lời cán bộ | Ưu tiên 1: **tệp cán bộ tải lên** + **câu trả lời cán bộ** |
+| Ưu tiên 2: database | Ưu tiên 2: **database** (không đổi) |
+| Bảng FAQ `CauHoiThuongGap` (admin: “6. Tri thức Chatbot và hỏi đáp tự động”) có 221 câu `DUE_KB_...` nhập từ file CSV | Bảng **rỗng**; cán bộ tự thêm câu mới trong admin nếu cần |
+| Có lệnh `ingest_knowledge_csv`, `ingest_csv` | **Đã xóa** cả hai lệnh và file CSV |
+| Không có đoạn tổng hợp khoa → bot lấy danh sách 10 khoa cũ trong CSV | Có đoạn **“Trường có N khoa / viện”** lấy từ bảng Khoa (`portal_faculty`) |
+
+**Lý do:** file CSV chứa thông tin cũ (ví dụ 10 khoa, trong khi database đã gộp còn 9 khoa / viện) và được ưu tiên hơn database nên bot trả lời sai. Nhóm quyết định chỉ dùng database và tệp tải lên.
+
+**Sau khi pull, chọn MỘT trong hai cách:**
+
+| Cách | Làm gì | Ghi chú |
+|---|---|---|
+| A. Dùng database đang có trên máy mình | `python manage.py migrate` rồi `python manage.py sync_knowledge` | `migrate` chạy migration `admissions/0010_remove_csv_knowledge`: xóa 221 câu `DUE_KB_` trong bảng FAQ và các đoạn kiến thức từ file CSV. `sync_knowledge` xóa ~674 đoạn kiến thức sinh từ bảng FAQ cũ và thêm đoạn tổng hợp khoa. |
+| B. Nhận file `db.sqlite3` đã xử lý từ người khác | Chép vào `CongthongtintuyensinhDUE/db.sqlite3` (cùng thư mục `manage.py`) | **Không cần chạy lệnh nào** — database đã migrate và đồng bộ sẵn. Bắt buộc phải pull code mới, nếu không Django báo có migration lạ. |
+
+Kiểm tra đã đúng chưa: hỏi chatbot “Có bao nhiêu khoa trong trường” → phải ra **9 khoa / viện** (khớp bảng `portal_faculty`), không còn “Khoa Marketing”, “Khoa Thống kê - Tin học”.
+
+**Lưu ý sau thay đổi này**
+
+- Một số chủ đề trước chỉ có trong CSV (học phí chi tiết từng năm, lịch sử trường, sứ mệnh, cơ sở vật chất…) giờ có thể bị **chuyển cán bộ** hoặc trả lời ngắn hơn. Muốn bot trả lời lại: nhập vào bảng tương ứng trong admin, hoặc tải tệp (đề án tuyển sinh PDF/DOCX…) lên trang Chatbot.
+- Migration **không hoàn tác được** dữ liệu (chiều ngược là `noop`). Muốn lấy lại 221 câu cũ phải dùng bản sao lưu `db.sqlite3` trước khi migrate.
+- Sửa database bằng **DB Browser / SQL** vẫn phải chạy `sync_knowledge` thì bot mới biết (xem bảng ở đầu mục 6).
 
 ---
 

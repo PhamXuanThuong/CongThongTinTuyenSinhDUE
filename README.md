@@ -38,6 +38,16 @@ python manage.py sync_knowledge
 
 > Lưu ý: khi pull code mà file `db.sqlite3` bị xóa khỏi git, database trên máy bạn cũng có thể bị xóa theo. Hãy sao lưu file `db.sqlite3` trước khi pull.
 
+### Sau khi pull code mới (đặc biệt bản bỏ file CSV kiến thức, 07/11/2026)
+
+| Trường hợp | Cần làm |
+|---|---|
+| **Được gửi file `db.sqlite3` mới** từ người đã cập nhật | Chép vào `CongthongtintuyensinhDUE/db.sqlite3` là xong, **không cần chạy lệnh nào** (database đã migrate và đồng bộ sẵn). Vẫn phải pull code mới. |
+| **Không được gửi db**, dùng database cũ trên máy mình | Sao lưu `db.sqlite3`, rồi chạy:<br>`python manage.py migrate` (xóa dữ liệu cũ nhập từ file CSV)<br>`python manage.py sync_knowledge` (cập nhật lại kho kiến thức chatbot) |
+| Chưa có database nào | Làm theo cách 2 ở mục Database phía trên |
+
+Kiểm tra: hỏi chatbot “Có bao nhiêu khoa trong trường” → phải ra **9 khoa / viện**. Chi tiết: [docs/CHATBOT.md mục 6.2](docs/CHATBOT.md).
+
 ## 2. Chạy dự án
 
 ```powershell
