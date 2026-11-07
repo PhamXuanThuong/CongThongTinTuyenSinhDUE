@@ -173,7 +173,7 @@ def build_portal_texts():
                     lcd_rows.append((l["name"], fac.name, l.get("secretary", ""), l.get("term", "")))
     if lcd_rows:
         lines = [f"[Tổng hợp] Danh sách Liên chi đoàn tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
-                 f"Trường hiện có {len(lcd_rows)} Liên chi đoàn trực thuộc các khoa:"]
+                 f"Trường có bao nhiêu Liên chi đoàn? Trường hiện có {len(lcd_rows)} Liên chi đoàn trực thuộc các khoa:"]
         for i, (n, fac, sec, term) in enumerate(lcd_rows, 1):
             extra = "; ".join(x for x in (f"thuộc {fac}" if fac else "", f"Bí thư: {sec}" if sec else "", f"Nhiệm kỳ: {term}" if term else "") if x)
             lines.append(f"{i}. {n}" + (f" ({extra})" if extra else ""))
@@ -184,7 +184,7 @@ def build_portal_texts():
         facs = list(_active(fac_model.objects.all()))
         if facs:
             lines = ["[Tổng hợp] Danh sách Khoa / Viện tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
-                     f"Trường hiện có {len(facs)} khoa / viện:"]
+                     f"Trường có bao nhiêu khoa? Trường hiện có {len(facs)} khoa / viện:"]
             lines += [f"{i}. {f.name}" for i, f in enumerate(facs, 1)]
             out.append((SOURCE_PREFIX + "Tổng hợp Khoa / Viện", "\n".join(lines)))
     return out

@@ -162,7 +162,7 @@ _STOPWORDS = set("""
 a à ạ á ả ã ai anh ạh ba bao bị bởi các cái cần cho chị chứ chưa có của cùng cũng đã đang đây để đến đều
 được em gì hả hay hãy hết hỏi khi không ko k kg khg là làm lại lên lúc mà mình mấy mới một nào này nên nha
 nhé nhỉ như những nó ơi ở ra rằng rồi sao sẽ tại thì thế thôi tôi trên trong từ và vâng vậy vào vì với vs
-v j z ạ dạ uh ừ ok oke okela the of and or is are what how who you me my i to in on for
+nhiêu ủa ơ đâu chứ hông hem v j z ạ dạ uh ừ ok oke okela the of and or is are what how who you me my i to in on for
 """.split())
 
 
