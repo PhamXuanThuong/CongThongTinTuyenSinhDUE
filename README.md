@@ -53,6 +53,9 @@ python manage.py runserver 0.0.0.0:8000
 
 ## 3. Cập nhật kiến thức cho Chatbot
 
+> Tài liệu chi tiết về chatbot (kiến trúc, luồng trả lời, API, file code, xử lý sự cố, bộ test): **[docs/CHATBOT.md](docs/CHATBOT.md)**.
+> Sửa logic chatbot thì phải cập nhật tài liệu này (người dùng Claude Code có skill `cap-nhat-tai-lieu-chatbot` hỗ trợ).
+
 Chatbot **không đọc trực tiếp** file Excel/CSV hay database mỗi lần trả lời. Dữ liệu được cắt thành các đoạn nhỏ, chuyển thành vector (embedding) và lưu vào bảng `admissions_document_chunk`. Vì vậy sau khi dữ liệu thay đổi, kho kiến thức phải được cập nhật.
 
 ### Trường hợp nào tự động, trường hợp nào phải chạy lệnh
