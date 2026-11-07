@@ -247,7 +247,8 @@ SYSTEM_PROMPT = (
     "chỉ dùng [ƯU TIÊN 2] để bổ sung chi tiết mà [ƯU TIÊN 1] không có. "
     "Nếu NGỮ CẢNH không đủ thông tin để trả lời chính xác câu hỏi thì đặt co_thong_tin = false "
     "(câu hỏi sẽ được chuyển cho cán bộ tuyển sinh). "
-    "Lời chào hỏi xã giao (xin chào, cảm ơn...) cũng xếp vào NGOÀI PHẠM VI (ngoai_pham_vi = true). "
+    "LỜI CHÀO HỎI & CẢM ƠN: Nếu người dùng chào hỏi, cảm ơn hoặc khen ngợi xã giao, "
+    "hãy trả lời thân thiện, lịch sự, đóng vai trò là Trợ lý AI Cổng tuyển sinh DUE sẵn sàng giải đáp thắc mắc (đặt co_thong_tin = true, ngoai_pham_vi = false). "
     "ĐÁNH GIÁ LIÊN QUAN: hệ thống tìm tài liệu tự động nên NGỮ CẢNH có thể chứa đoạn KHÔNG liên quan. "
     "Chỉ dùng đoạn trả lời TRỰC TIẾP câu hỏi; nếu không đoạn nào trả lời trực tiếp thì co_thong_tin = false, "
     "KHÔNG được lấy đại một đoạn gần giống để trả lời. "
@@ -325,8 +326,8 @@ def answer(question, history=None):
     def _priority(h):
         return 2 if h["source"].startswith("Website DUE:") else 1
     hits.sort(key=lambda h: (_priority(h), -h["score"]))
-    # Đã có đủ tài liệu ưu tiên 1 thì bỏ hẳn dữ liệu website để AI không lẫn số liệu mâu thuẫn
-    if sum(1 for h in hits if _priority(h) == 1) >= 2:
+    # Đã có đủ tài liệu ưu tiên 1 có độ liên quan cao thì mới bỏ dữ liệu website để AI không lẫn số liệu
+    if sum(1 for h in hits if _priority(h) == 1 and h["score"] >= 0.55) >= 2:
         hits = [h for h in hits if _priority(h) == 1]
     if hits:
         context = "\n\n".join(
@@ -362,13 +363,13 @@ def answer(question, history=None):
         result = json.loads(r.json()["message"]["content"])
 
     reply = (result.get("tra_loi") or "").strip()
-    # Quy tắc của nhóm: KHÔNG có trong kiến thức -> chuyển cán bộ (kể cả câu ngoài phạm vi, chào hỏi).
-    # AI không được tự viết câu trả lời cho câu ngoài phạm vi -> không thể trả lời bậy.
     if result.get("ngoai_pham_vi"):
         return "", [], False
-    # Chỉ được trả lời khi THỰC SỰ có tài liệu (tệp tải lên / câu trả lời cán bộ / database)
-    found = bool(result.get("co_thong_tin")) and bool(reply) and bool(hits)
-    sources = sorted({h["source"] for h in hits}) if found else []
+    
+    # Kiểm tra nếu là câu chào hỏi / cảm ơn xã giao
+    is_greeting_or_chat = bool(result.get("co_thong_tin")) and bool(reply) and not hits
+    found = (bool(result.get("co_thong_tin")) and bool(reply) and bool(hits)) or is_greeting_or_chat
+    sources = sorted({h["source"] for h in hits}) if (found and hits) else []
     return reply, sources, found
 
 

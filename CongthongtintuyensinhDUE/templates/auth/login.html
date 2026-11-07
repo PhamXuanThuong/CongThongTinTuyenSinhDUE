@@ -154,16 +154,16 @@
         <form method="POST" action="{% url 'admissions:login' %}" class="space-y-4">
           {% csrf_token %}
           
-          <!-- Username / Email / CCCD -->
+          <!-- Username / Email -->
           <div>
             <label for="username" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-              Tên đăng nhập / Email / CCCD
+              Tên đăng nhập / Email
             </label>
             <div class="relative">
               <span class="material-symbols-outlined absolute left-3.5 top-3 text-slate-400 text-[20px]">person</span>
               <input id="username" name="username" type="text" required 
                      class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container focus:border-transparent transition-all" 
-                     placeholder="VD: thisinh2026, canbo hoặc admin">
+                     placeholder="VD: nguyenvana hoặc email@example.com">
             </div>
           </div>
 

@@ -394,9 +394,9 @@
         var res = await fetch('/api/tailieu/upload/', { method: 'POST', body: fd, headers: { 'X-CSRFToken': CSRF_TOKEN } });
         var json = await res.json();
         if (json.status !== 'success') throw new Error(json.message);
-        alert(json.message);
+        showDueAlert(json.message || 'Đã tải lên tài liệu thành công!', 'success');
       } catch (err) {
-        alert('Tải lên thất bại: ' + err.message);
+        showDueAlert('Tải lên thất bại: ' + err.message, 'error');
       }
       loadSources();
     }
@@ -410,49 +410,62 @@
     }
 
     async function approveSource(id) {
-      if (!confirm('Bạn có chắc chắn muốn PHÊ DUYỆT tài liệu này và nạp vào kho tri thức AI của Chatbot?')) return;
-      try {
-        var res = await fetch('/api/tailieu/' + id + '/approve/', {
-          method: 'POST',
-          headers: { 'X-CSRFToken': CSRF_TOKEN }
-        });
-        var json = await res.json();
-        if (json.status === 'success') {
-          alert(json.message);
-          loadSources();
-        } else {
-          alert('Lỗi: ' + json.message);
+      showDueConfirm({
+        title: 'Phê duyệt tài liệu',
+        message: 'Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp toàn bộ nội dung vào kho tri thức AI của Chatbot?',
+        confirmText: 'Phê duyệt & Nạp AI',
+        confirmColor: 'bg-[#00A859] hover:bg-[#008f4c]',
+        onConfirm: async function() {
+          try {
+            var res = await fetch('/api/tailieu/' + id + '/approve/', {
+              method: 'POST',
+              headers: { 'X-CSRFToken': CSRF_TOKEN }
+            });
+            var json = await res.json();
+            if (json.status === 'success') {
+              showDueAlert(json.message || 'Đã phê duyệt tài liệu thành công!', 'success');
+              loadSources();
+              if (typeof loadHdtsBell === 'function') loadHdtsBell();
+            } else {
+              showDueAlert('Lỗi: ' + json.message, 'error');
+            }
+          } catch (e) {
+            showDueAlert('Thao tác thất bại: ' + e.message, 'error');
+          }
         }
-      } catch (e) {
-        alert('Thao tác thất bại: ' + e.message);
-      }
+      });
     }
 
     async function rejectSource(id) {
-      var reason = prompt('Nhập lý do từ chối tài liệu này (sẽ gửi thông báo cho Cán bộ):', 'Nội dung chưa đầy đủ hoặc không đúng quy định tuyển sinh');
-      if (reason === null) return;
-      try {
-        var res = await fetch('/api/tailieu/' + id + '/reject/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN },
-          body: JSON.stringify({ reason: reason })
-        });
-        var json = await res.json();
-        if (json.status === 'success') {
-          alert(json.message);
+      showDueRejectModal({
+        docId: id,
+        onSuccess: function(msg) {
+          showDueAlert(msg || 'Đã từ chối tài liệu', 'success');
           loadSources();
-        } else {
-          alert('Lỗi: ' + json.message);
+          if (typeof loadHdtsBell === 'function') loadHdtsBell();
         }
-      } catch (e) {
-        alert('Thao tác thất bại: ' + e.message);
-      }
+      });
     }
 
     async function removeSource(id) {
-      if (!confirm('Xóa tài liệu này khỏi hệ thống?')) return;
-      await fetch('/api/tailieu/' + id + '/delete/', { method: 'POST', headers: { 'X-CSRFToken': CSRF_TOKEN } });
-      loadSources();
+      showDueConfirm({
+        title: 'Xóa tài liệu',
+        message: 'Bạn có chắc chắn muốn xóa tài liệu này khỏi hệ thống? Thao tác này không thể hoàn tác.',
+        confirmText: 'Xác nhận xóa',
+        type: 'danger',
+        confirmColor: 'bg-rose-600 hover:bg-rose-700',
+        onConfirm: async function() {
+          try {
+            var res = await fetch('/api/tailieu/' + id + '/delete/', { method: 'POST', headers: { 'X-CSRFToken': CSRF_TOKEN } });
+            var json = await res.json();
+            showDueAlert(json.message || 'Đã xóa tài liệu!', 'success');
+            loadSources();
+            if (typeof loadHdtsBell === 'function') loadHdtsBell();
+          } catch(e) {
+            showDueAlert('Lỗi xóa: ' + e.message, 'error');
+          }
+        }
+      });
     }
 
     /* ---- Chat gọi API RAG ---- */
@@ -602,15 +615,31 @@
     }
 
     async function deleteSession(sid) {
-      if (!confirm('Bạn có chắc muốn xóa phiên trò chuyện này?')) return;
-      try {
-        await fetch('/api/chat/sessions/' + encodeURIComponent(sid) + '/delete/', {
-          method: 'POST',
-          headers: { 'X-CSRFToken': CSRF_TOKEN }
-        });
-        if (sid === CLIENT_ID) createNewSession();
-        else loadChatSessions();
-      } catch (e) {}
+      showDueConfirm({
+        title: 'Xóa phiên trò chuyện',
+        message: 'Bạn có chắc chắn muốn xóa phiên trò chuyện này?',
+        confirmText: 'Xác nhận xóa',
+        type: 'danger',
+        confirmColor: 'bg-rose-600 hover:bg-rose-700',
+        onConfirm: async function() {
+          try {
+            var res = await fetch('/api/chat/sessions/' + encodeURIComponent(sid) + '/delete/', {
+              method: 'POST',
+              headers: { 'X-CSRFToken': CSRF_TOKEN }
+            });
+            var json = await res.json();
+            if (json.status === 'success') {
+              showDueAlert(json.message || 'Đã xóa phiên trò chuyện', 'success');
+              if (sid === CLIENT_ID) createNewSession();
+              else await loadChatSessions();
+            } else {
+              showDueAlert(json.message || 'Không thể xóa phiên chat', 'error');
+            }
+          } catch (e) {
+            showDueAlert('Lỗi xóa phiên trò chuyện: ' + e.message, 'error');
+          }
+        }
+      });
     }
 
     document.addEventListener('DOMContentLoaded', async function () {
@@ -681,20 +710,13 @@
         var hdtsActions = '';
         if (IS_HDTS && src.status === 'pending') {
           hdtsActions = '<div class="flex items-center gap-1.5 mt-1.5 pt-1.5 border-t border-slate-200/80">' +
-            '<a href="' + (src.edit_url || '/hdts/tai-lieu/' + src.id + '/chinh-sua/') + '" class="py-1 px-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[10px] flex items-center justify-center gap-0.5 transition-colors" title="Thẩm định nội dung và sửa trực tiếp">' +
-              '<span class="material-symbols-outlined text-[13px]">edit_note</span>' +
-              '<span>Sửa</span>' +
-            '</a>' +
-            '<a href="/tai-lieu/' + src.id + '/xem/" target="_blank" class="py-1 px-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0072BC] font-bold text-[10px] flex items-center justify-center gap-0.5 transition-colors" title="Xem tài liệu gốc">' +
-              '<span class="material-symbols-outlined text-[13px]">visibility</span>' +
-              '<span>Xem</span>' +
+            '<a href="' + (src.edit_url || '/hdts/tai-lieu/' + src.id + '/chinh-sua/') + '" class="py-1 px-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0072BC] font-bold text-[10px] flex items-center justify-center gap-0.5 transition-colors" title="Xem & Thẩm định nội dung">' +
+              '<span>Thẩm định</span>' +
             '</a>' +
             '<button type="button" onclick="approveSource(' + src.id + ')" class="flex-1 py-1 px-2 rounded-lg bg-[#00A859] hover:bg-[#008f4c] text-white font-bold text-[10px] flex items-center justify-center gap-1 transition-colors shadow-xs cursor-pointer" title="HĐTS phê duyệt">' +
-              '<span class="material-symbols-outlined text-[13px]">done_all</span>' +
               '<span>Duyệt</span>' +
             '</button>' +
             '<button type="button" onclick="rejectSource(' + src.id + ')" class="py-1 px-2 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 font-bold text-[10px] flex items-center justify-center gap-0.5 transition-colors cursor-pointer" title="Từ chối tài liệu">' +
-              '<span class="material-symbols-outlined text-[13px]">close</span>' +
               '<span>Từ chối</span>' +
             '</button>' +
           '</div>';
@@ -724,8 +746,8 @@
                       '</div>' +
                     '</div>' +
                     '<div class="flex items-center gap-0.5 shrink-0">' +
-                      '<a href="/tai-lieu/' + src.id + '/xem/" target="_blank" class="w-6 h-6 rounded-md hover:bg-blue-50 text-slate-400 hover:text-[#0072BC] flex items-center justify-center transition-colors" title="Mở xem tài liệu">' +
-                        '<span class="material-symbols-outlined text-[15px]">visibility</span>' +
+                      '<a href="/tai-lieu/' + src.id + '/xem/" download class="w-6 h-6 rounded-md hover:bg-slate-100 text-slate-400 hover:text-[#0072BC] flex items-center justify-center transition-colors" title="Tải file gốc">' +
+                        '<span class="material-symbols-outlined text-[15px]">download</span>' +
                       '</a>' +
                       (IS_STAFF || IS_HDTS ?
                       '<button onclick="removeSource(\'' + src.id + '\')" class="w-6 h-6 rounded-md hover:bg-red-50 text-slate-400 hover:text-red-500 flex items-center justify-center transition-colors flex-shrink-0 cursor-pointer" title="Xóa tài liệu">' +

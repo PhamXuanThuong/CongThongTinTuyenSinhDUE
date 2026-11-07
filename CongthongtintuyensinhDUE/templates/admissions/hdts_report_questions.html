@@ -485,46 +485,39 @@
   }
 
   async function approveDoc(docId) {
-    if (!confirm('Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này đưa vào hệ thống?')) return;
-    try {
-      var res = await fetch('/api/tailieu/' + docId + '/approve/', {
-        method: 'POST',
-        headers: { 'X-CSRFToken': getCookie('csrftoken') || '' }
-      });
-      var data = await res.json();
-      if (data.status === 'success') {
-        alert(data.message || 'Đã duyệt tài liệu thành công!');
-        loadHdtsStats();
-      } else {
-        alert(data.message || 'Có lỗi xảy ra');
+    showDueConfirm({
+      title: 'Phê duyệt tài liệu',
+      message: 'Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này đưa vào hệ thống?',
+      confirmText: 'Phê duyệt & Nạp AI',
+      confirmColor: 'bg-[#00A859] hover:bg-[#008f4c]',
+      onConfirm: async function() {
+        try {
+          var res = await fetch('/api/tailieu/' + docId + '/approve/', {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') || '' }
+          });
+          var data = await res.json();
+          if (data.status === 'success') {
+            showDueAlert(data.message || 'Đã duyệt tài liệu thành công!', 'success');
+            loadHdtsStats();
+          } else {
+            showDueAlert(data.message || 'Có lỗi xảy ra', 'error');
+          }
+        } catch (e) {
+          showDueAlert('Không thể kết nối đến máy chủ', 'error');
+        }
       }
-    } catch (e) {
-      alert('Không thể kết nối đến máy chủ');
-    }
+    });
   }
 
   async function rejectDoc(docId) {
-    var reason = prompt('Nhập lý do từ chối tài liệu (gửi phản hồi cho Cán bộ):', 'Tài liệu chưa đúng định dạng hoặc thiếu quyết định phê duyệt');
-    if (reason === null) return;
-    try {
-      var res = await fetch('/api/tailieu/' + docId + '/reject/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCookie('csrftoken') || ''
-        },
-        body: JSON.stringify({ reason: reason })
-      });
-      var data = await res.json();
-      if (data.status === 'success') {
-        alert(data.message || 'Đã từ chối tài liệu');
+    showDueRejectModal({
+      docId: docId,
+      onSuccess: function(msg) {
+        showDueAlert(msg || 'Đã từ chối tài liệu', 'success');
         loadHdtsStats();
-      } else {
-        alert(data.message || 'Có lỗi xảy ra');
       }
-    } catch (e) {
-      alert('Không thể kết nối đến máy chủ');
-    }
+    });
   }
 
   function getCookie(name) {

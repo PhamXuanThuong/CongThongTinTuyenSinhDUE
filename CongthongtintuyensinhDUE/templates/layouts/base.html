@@ -452,7 +452,7 @@
                 <form id="dueLoginForm" onsubmit="handleDueLoginSubmit(event)">
                   <!-- Tên đăng nhập / Email / CCCD -->
                   <div class="relative mb-3">
-                    <input type="text" id="p_username" name="username" placeholder="Tên đăng nhập / Email / CCCD" required autocomplete="username"
+                    <input type="text" id="p_username" name="username" placeholder="Tên đăng nhập / Email" required autocomplete="username"
                            class="w-full px-3 py-2 pr-9 text-xs sm:text-sm text-slate-800 bg-white border border-[#ced4da] rounded focus:outline-none focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3] placeholder:text-slate-400 transition-colors">
                     <span class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-slate-400">
                       <!-- User silhouette icon like the screenshot -->
@@ -501,7 +501,7 @@
 
               <!-- Quên mật khẩu & Đăng ký tài khoản (Ảnh 3) -->
               <div class="bg-[#f8f9fa] px-4 py-2.5 border-t border-slate-200 mt-3 rounded-b-md flex items-center justify-between text-xs">
-                <a href="javascript:void(0)" onclick="alert('Quý thí sinh hoặc cán bộ vui lòng liên hệ Ban Đào tạo và tuyển sinh DUE qua Hotline (0236) 3836 169 để được hỗ trợ cấp lại mật khẩu.')" class="text-[#0056b3] hover:underline font-normal">
+                <a href="javascript:void(0)" onclick="showDueAlert('Quý thí sinh hoặc cán bộ vui lòng liên hệ Ban Đào tạo và tuyển sinh DUE qua Hotline (0236) 3836 169 để được hỗ trợ cấp lại mật khẩu.', 'info')" class="text-[#0056b3] hover:underline font-normal">
                   Quên mật khẩu?
                 </a>
                 <a href="{% url 'admissions:register' %}" class="text-[#fd761a] hover:text-[#d95d08] hover:underline font-bold flex items-center gap-1" title="Đăng ký tài khoản mới">
@@ -570,6 +570,7 @@
             </button>
           </div>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_career %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="tu-van-chon-nganh" href="{% url 'admissions:career_advisory' %}">TƯ VẤN CHỌN NGÀNH</a>
+          <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_chatbot %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="chat-ai" href="/chatbot/">CHAT VỚI DUE</a>
           {% if user.is_authenticated and user.username == 'hdts' or user.is_superuser %}
           <!-- THỐNG KÊ - Dropdown Hội đồng Tuyển sinh -->
           <div class="relative h-full flex items-center" id="nav-thongke">
@@ -584,8 +585,6 @@
               <svg id="nav-thongke-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
-          {% else %}
-          <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_chatbot %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="chat-ai" href="/chatbot/">CHAT VỚI DUE</a>
           {% endif %}
         </nav>
       </div>
@@ -2008,7 +2007,7 @@
         var unreadNotifs = notifications.filter(function(n) { return !n.da_doc; });
 
         // 2. Nếu là HĐTS hoặc admin, lấy thêm danh sách tài liệu đang chờ duyệt
-        var isHdtsUser = {% if user.username == 'hdts' or user.is_superuser %}true{% else %}false{% endif %};
+        var isHdtsUser = ("{{ user.username|default:'' }}" === "hdts") || ("{{ user.is_superuser }}" === "True");
         var pendingDocs = [];
         if (isHdtsUser) {
           try {
@@ -2051,9 +2050,10 @@
                 '</div>';
 
               pendingDocs.forEach(function(d) {
+                var reviewUrl = d.edit_url || ('/hdts/tai-lieu/' + d.id + '/chinh-sua/');
                 html += '<div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200 text-xs space-y-1.5">' +
                   '<div class="flex items-start justify-between gap-1.5">' +
-                    '<a href="' + (d.edit_url || '/tai-lieu/' + d.id + '/xem/') + '" class="font-bold text-slate-800 hover:text-[#0072BC] hover:underline line-clamp-1 block" title="Nhấn để thẩm định: ' + (d.name || '') + '">' +
+                    '<a href="' + reviewUrl + '" class="font-bold text-slate-800 hover:text-[#0072BC] hover:underline line-clamp-1 block" title="Nhấn để thẩm định nội dung: ' + (d.name || '') + '">' +
                       (d.name || '') +
                     '</a>' +
                     '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-700 border border-amber-300 shrink-0">Chờ duyệt</span>' +
@@ -2063,9 +2063,9 @@
                     '<span>' + (d.date || '') + '</span>' +
                   '</div>' +
                   '<div class="flex items-center gap-1.5 pt-1 border-t border-amber-200/60">' +
-                    '<a href="' + (d.edit_url || '/hdts/tai-lieu/' + d.id + '/chinh-sua/') + '" class="flex-1 py-1 px-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-[#0072BC] font-bold text-[10px] flex items-center justify-center gap-1 transition-colors" title="Chỉnh sửa nội dung trước khi duyệt">' +
-                      '<span class="material-symbols-outlined text-[13px]">edit_note</span>' +
-                      '<span>Sửa & Thẩm định</span>' +
+                    '<a href="' + reviewUrl + '" class="flex-1 py-1 px-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-[#0072BC] font-bold text-[10px] flex items-center justify-center gap-1 transition-colors" title="Xem & Thẩm định nội dung">' +
+                      '<span class="material-symbols-outlined text-[13px]">visibility</span>' +
+                      '<span>Thẩm định</span>' +
                     '</a>' +
                     '<button type="button" onclick="bellApproveDoc(' + d.id + ')" class="py-1 px-2.5 rounded-lg bg-[#00A859] hover:bg-[#008f4c] text-white font-bold text-[10px] flex items-center justify-center gap-1 transition-colors cursor-pointer" title="HĐTS Phê duyệt">' +
                       '<span class="material-symbols-outlined text-[13px]">done</span>' +
@@ -2073,6 +2073,7 @@
                     '</button>' +
                     '<button type="button" onclick="bellRejectDoc(' + d.id + ')" class="py-1 px-2 rounded-lg bg-slate-200 hover:bg-rose-100 text-slate-700 hover:text-rose-700 font-bold text-[10px] flex items-center justify-center transition-colors cursor-pointer" title="Từ chối">' +
                       '<span class="material-symbols-outlined text-[13px]">close</span>' +
+                      '<span>Từ chối</span>' +
                     '</button>' +
                   '</div>' +
                 '</div>';
@@ -2151,39 +2152,44 @@
     }
 
     async function bellApproveDoc(id) {
-      if (!confirm('Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp vào AI?')) return;
-      try {
-        var res = await fetch('/api/tailieu/' + id + '/approve/', {
-          method: 'POST',
-          headers: { 'X-CSRFToken': '{{ csrf_token }}' }
-        });
-        var json = await res.json();
-        alert(json.message);
-        loadHdtsBell();
-        if (typeof loadSources === 'function') loadSources();
-        if (typeof loadHdtsStats === 'function') loadHdtsStats();
-      } catch (e) {
-        alert('Lỗi phê duyệt: ' + e.message);
-      }
+      showDueConfirm({
+        title: 'Phê duyệt tài liệu',
+        message: 'Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp toàn bộ nội dung vào kho tri thức AI của Chatbot?',
+        confirmText: 'Phê duyệt & Nạp AI',
+        confirmColor: 'bg-[#00A859] hover:bg-[#008f4c]',
+        onConfirm: async function() {
+          showDueAlert('Đang nạp tri thức vào AI, vui lòng chờ trong giây lát...', 'info');
+          try {
+            var res = await fetch('/api/tailieu/' + id + '/approve/', {
+              method: 'POST',
+              headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            });
+            var json = await res.json();
+            if (json.status === 'success') {
+              showDueAlert(json.message || 'Đã phê duyệt tài liệu thành công!', 'success');
+              loadHdtsBell();
+              if (typeof loadSources === 'function') loadSources();
+              if (typeof loadHdtsStats === 'function') loadHdtsStats();
+            } else {
+              showDueAlert('Lỗi: ' + json.message, 'error');
+            }
+          } catch (e) {
+            showDueAlert('Lỗi phê duyệt: ' + e.message, 'error');
+          }
+        }
+      });
     }
 
     async function bellRejectDoc(id) {
-      var reason = prompt('Nhập lý do Hội đồng từ chối tài liệu này (sẽ thông báo lại cho Cán bộ):', 'Nội dung chưa đầy đủ hoặc không đúng quy định tuyển sinh');
-      if (reason === null) return;
-      try {
-        var res = await fetch('/api/tailieu/' + id + '/reject/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
-          body: JSON.stringify({ reason: reason })
-        });
-        var json = await res.json();
-        alert(json.message);
-        loadHdtsBell();
-        if (typeof loadSources === 'function') loadSources();
-        if (typeof loadHdtsStats === 'function') loadHdtsStats();
-      } catch (e) {
-        alert('Lỗi: ' + e.message);
-      }
+      showDueRejectModal({
+        docId: id,
+        onSuccess: function(msg) {
+          showDueAlert(msg || 'Đã từ chối tài liệu', 'success');
+          loadHdtsBell();
+          if (typeof loadSources === 'function') loadSources();
+          if (typeof loadHdtsStats === 'function') loadHdtsStats();
+        }
+      });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -2193,13 +2199,236 @@
   </script>
 
   <!-- ====================================================
-       FLOATING AI CHATBOT BUBBLE WIDGET (Ẩn cho HĐTS vì HĐTS không tham gia chat)
+       HỆ THỐNG POPUP MODAL DÙNG CHUNG TOÀN HỆ THỐNG
        ==================================================== -->
-  {% if user.username != 'hdts' and not user.is_superuser %}
+  <!-- 1. Modal Từ chối phê duyệt tài liệu (Chuẩn giao diện DUE theo yêu cầu) -->
+  <div id="globalRejectModalBackdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[99999] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 text-left shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-150 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5 text-rose-600 font-bold">
+          <span class="material-symbols-outlined text-[24px]">cancel</span>
+          <h3 class="text-base sm:text-lg text-slate-900 font-extrabold" id="globalRejectModalTitle">Từ chối Phê duyệt Tài liệu</h3>
+        </div>
+        <button type="button" onclick="closeDueRejectModal()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600 cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500 leading-relaxed">
+        Vui lòng cung cấp lý do từ chối để hệ thống tự động thông báo cho Cán bộ đã tải tài liệu lên:
+      </p>
+
+      <textarea id="globalRejectModalReason" rows="4" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500 leading-relaxed shadow-xs" placeholder="Ví dụ: Thiếu quyết định ban hành chỉ tiêu 2026 chính thức, hoặc số liệu học phí chưa được cập nhật..."></textarea>
+
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button type="button" onclick="closeDueRejectModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer">
+          Hủy bỏ
+        </button>
+        <button type="button" id="globalRejectModalSubmitBtn" onclick="confirmDueRejectModal()" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">send</span>
+          <span>Xác nhận từ chối</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Modal Xác nhận hành động (Thay thế confirm browser) -->
+  <div id="globalConfirmModalBackdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[99999] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-150 space-y-4">
+      <div id="globalConfirmModalIconWrap" class="w-14 h-14 rounded-full bg-blue-100 text-[#0072BC] flex items-center justify-center mx-auto">
+        <span id="globalConfirmModalIcon" class="material-symbols-outlined text-[28px]">help_outline</span>
+      </div>
+      <div>
+        <h3 id="globalConfirmModalTitle" class="text-base sm:text-lg font-bold text-slate-900 mb-1.5">Xác nhận</h3>
+        <p id="globalConfirmModalMessage" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
+      </div>
+      <div class="flex items-center justify-center gap-3 pt-2">
+        <button type="button" onclick="closeDueConfirmModal()" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
+          Hủy bỏ
+        </button>
+        <button type="button" id="globalConfirmModalBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-[#0072BC] hover:bg-[#005a96] text-white text-xs font-bold transition-all shadow-xs cursor-pointer">
+          Đồng ý
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Toast Thông báo nổi góc màn hình (Thu nhỏ, đặt góc dưới phải) -->
+  <div id="globalDueToast" class="fixed bottom-5 right-5 z-[100000] hidden items-center gap-2 px-3 py-2 rounded-xl shadow-lg border text-xs font-medium max-w-sm transition-all duration-200">
+    <span id="globalDueToastIcon" class="material-symbols-outlined text-[18px] shrink-0">check_circle</span>
+    <span id="globalDueToastMsg" class="leading-snug"></span>
+  </div>
+
+  <script>
+    // Global Toast Function
+    var _toastTimeout = null;
+    function showDueAlert(msg, type) {
+      type = type || 'info';
+      var toast = document.getElementById('globalDueToast');
+      var icon = document.getElementById('globalDueToastIcon');
+      var msgEl = document.getElementById('globalDueToastMsg');
+      if (!toast) return;
+
+      if (type === 'success') {
+        toast.className = 'fixed bottom-5 right-5 z-[100000] flex items-center gap-2 px-3 py-2 rounded-xl shadow-lg border bg-emerald-50 text-emerald-800 border-emerald-200 text-xs font-medium max-w-sm animate-in slide-in-from-bottom-2 duration-200';
+        icon.textContent = 'check_circle';
+        icon.className = 'material-symbols-outlined text-[18px] shrink-0 text-emerald-600';
+      } else if (type === 'error') {
+        toast.className = 'fixed bottom-5 right-5 z-[100000] flex items-center gap-2 px-3 py-2 rounded-xl shadow-lg border bg-rose-50 text-rose-800 border-rose-200 text-xs font-medium max-w-sm animate-in slide-in-from-bottom-2 duration-200';
+        icon.textContent = 'error';
+        icon.className = 'material-symbols-outlined text-[18px] shrink-0 text-rose-600';
+      } else {
+        toast.className = 'fixed bottom-5 right-5 z-[100000] flex items-center gap-2 px-3 py-2 rounded-xl shadow-lg border bg-blue-50 text-blue-800 border-blue-200 text-xs font-medium max-w-sm animate-in slide-in-from-bottom-2 duration-200';
+        icon.textContent = 'info';
+        icon.className = 'material-symbols-outlined text-[18px] shrink-0 text-blue-600';
+      }
+
+      msgEl.textContent = msg;
+      toast.classList.remove('hidden');
+
+      if (_toastTimeout) clearTimeout(_toastTimeout);
+      _toastTimeout = setTimeout(function() {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    // Global Confirm Modal
+    var _dueConfirmCallback = null;
+    function showDueConfirm(opts) {
+      opts = opts || {};
+      var modal = document.getElementById('globalConfirmModalBackdrop');
+      var title = document.getElementById('globalConfirmModalTitle');
+      var message = document.getElementById('globalConfirmModalMessage');
+      var btn = document.getElementById('globalConfirmModalBtn');
+      var iconWrap = document.getElementById('globalConfirmModalIconWrap');
+      var icon = document.getElementById('globalConfirmModalIcon');
+
+      title.textContent = opts.title || 'Xác nhận hành động';
+      message.textContent = opts.message || 'Bạn có chắc chắn muốn thực hiện thao tác này?';
+      btn.textContent = opts.confirmText || 'Đồng ý';
+
+      if (opts.confirmColor) {
+        btn.className = 'flex-1 py-2.5 px-4 rounded-xl text-white text-xs font-bold transition-all shadow-xs cursor-pointer ' + opts.confirmColor;
+      } else {
+        btn.className = 'flex-1 py-2.5 px-4 rounded-xl bg-[#0072BC] hover:bg-[#005a96] text-white text-xs font-bold transition-all shadow-xs cursor-pointer';
+      }
+
+      if (opts.type === 'danger') {
+        iconWrap.className = 'w-14 h-14 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto';
+        icon.textContent = 'warning';
+      } else {
+        iconWrap.className = 'w-14 h-14 rounded-full bg-blue-100 text-[#0072BC] flex items-center justify-center mx-auto';
+        icon.textContent = 'help_outline';
+      }
+
+      _dueConfirmCallback = opts.onConfirm;
+      btn.onclick = function() {
+        var cb = _dueConfirmCallback;
+        closeDueConfirmModal();
+        if (typeof cb === 'function') {
+          cb();
+        }
+      };
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeDueConfirmModal() {
+      var modal = document.getElementById('globalConfirmModalBackdrop');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      _dueConfirmCallback = null;
+    }
+
+    // Global Reject Modal
+    var _dueRejectDocId = null;
+    var _dueRejectSuccessCallback = null;
+    function showDueRejectModal(opts) {
+      opts = opts || {};
+      _dueRejectDocId = opts.docId;
+      _dueRejectSuccessCallback = opts.onSuccess;
+
+      var modal = document.getElementById('globalRejectModalBackdrop');
+      var reasonInp = document.getElementById('globalRejectModalReason');
+      if (reasonInp) {
+        reasonInp.value = opts.defaultReason || 'Nội dung chưa đầy đủ hoặc không đúng quy định tuyển sinh';
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (reasonInp) setTimeout(function() { reasonInp.focus(); }, 100);
+    }
+
+    function closeDueRejectModal() {
+      var modal = document.getElementById('globalRejectModalBackdrop');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      _dueRejectDocId = null;
+      _dueRejectSuccessCallback = null;
+    }
+
+    async function confirmDueRejectModal() {
+      if (!_dueRejectDocId) return;
+      var reasonInp = document.getElementById('globalRejectModalReason');
+      var reason = reasonInp ? reasonInp.value.trim() : '';
+      if (!reason) {
+        showDueAlert('Vui lòng nhập lý do từ chối để thông báo cho cán bộ!', 'error');
+        if (reasonInp) reasonInp.focus();
+        return;
+      }
+
+      var submitBtn = document.getElementById('globalRejectModalSubmitBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span><span>Đang xử lý...</span>';
+      }
+
+      try {
+        var res = await fetch('/api/tailieu/' + _dueRejectDocId + '/reject/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({ reason: reason })
+        });
+        var json = await res.json();
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">send</span><span>Xác nhận từ chối</span>';
+        }
+
+        if (json.status === 'success') {
+          var callback = _dueRejectSuccessCallback;
+          closeDueRejectModal();
+          if (typeof callback === 'function') {
+            callback(json.message);
+          } else {
+            showDueAlert(json.message || 'Đã từ chối tài liệu!', 'success');
+          }
+        } else {
+          showDueAlert('Lỗi: ' + (json.message || 'Không thể từ chối tài liệu'), 'error');
+        }
+      } catch (e) {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">send</span><span>Xác nhận từ chối</span>';
+        }
+        showDueAlert('Không thể kết nối đến máy chủ: ' + e.message, 'error');
+      }
+    }
+  </script>
+
+  <!-- ====================================================
+       FLOATING AI CHATBOT BUBBLE WIDGET
+       ==================================================== -->
   {% block floating_chat %}
   {% include 'partials/chat_widget.html' %}
   {% endblock %}
-  {% endif %}
 
   {% block extra_js %}{% endblock %}
 </body>
