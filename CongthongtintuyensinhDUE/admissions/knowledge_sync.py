@@ -82,7 +82,9 @@ PORTAL_MODELS = [
     ("Department", ["functions", "duties"]),
     ("LienChiDoan", ["executive_board", "featured_activities"]),   # chỉ có ở nhánh develop
     ("HoatDongDoan", []),                                          # chỉ có ở nhánh develop
-    ("KyTucXa", []),                                               # chỉ có ở nhánh develop
+    ("CauLacBo", ["aliases", "departments", "contact", "leaders", "advisors", "achievements", "recruitment",
+                  "recruitment_steps", "benefits", "highlights", "recent_activities"]),  # model ở app admissions
+    ("KyTucXa", []),                                             # chỉ có ở nhánh develop
 ]
 _LABELS = {"name": "Tên", "term": "Nhiệm kỳ", "secretary": "Bí thư", "deputy_secretary": "Phó bí thư",
            "position": "Chức vụ", "title": "Tiêu đề", "date": "Ngày", "desc": "Mô tả", "phone": "Điện thoại",
@@ -92,6 +94,10 @@ _LABELS = {"name": "Tên", "term": "Nhiệm kỳ", "secretary": "Bí thư", "dep
 def _portal_model(name):
     try:
         return apps.get_model("portal", name)
+    except LookupError:
+        pass
+    try:  # model nhiều cột JSON nằm ở app admissions (ví dụ CauLacBo)
+        return apps.get_model("admissions", name)
     except LookupError:
         return None
 
@@ -187,6 +193,19 @@ def build_portal_texts():
                      f"Trường có bao nhiêu khoa? Trường hiện có {len(facs)} khoa / viện:"]
             lines += [f"{i}. {f.name}" for i, f in enumerate(facs, 1)]
             out.append((SOURCE_PREFIX + "Tổng hợp Khoa / Viện", "\n".join(lines)))
+
+    # Đoạn tổng hợp CLB: "trường có những CLB nào", "CLB nào hợp với tin học / ca hát..."
+    clb_model = _portal_model("CauLacBo")
+    if clb_model is not None:
+        clbs = list(_active(clb_model.objects.all()))
+        if clbs:
+            lines = ["[Tổng hợp] Danh sách Câu lạc bộ – Đội – Nhóm (CLB) tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
+                     f"Trường có bao nhiêu câu lạc bộ? Hiện có {len(clbs)} CLB / đội / nhóm:"]
+            for i, c in enumerate(clbs, 1):
+                cat = c.get_category_display() if hasattr(c, "get_category_display") else c.category
+                desc = " ".join(strip_tags(c.description or "").split())[:200]
+                lines.append(f"{i}. {c.name}" + (f" (lĩnh vực: {cat})" if cat else "") + (f": {desc}" if desc else ""))
+            out.append((SOURCE_PREFIX + "Tổng hợp Câu lạc bộ", "\n".join(lines)))
     return out
 
 
@@ -222,14 +241,21 @@ def sync():
     stale_ids = []
     for c in DocumentChunk.objects.filter(document__isnull=True, source__startswith=SOURCE_PREFIX):
         key = hashlib.sha1(f"{c.source}\n{c.content}".encode("utf-8")).hexdigest()
-        if key in wanted and key not in existing:
+        # Đoạn chưa có embedding (lần trước hết lượt Gemini) -> tạo lại để thử embed lần này
+        if key in wanted and key not in existing and c.embedding:
             existing[key] = c.id
         else:
             stale_ids.append(c.id)
 
     new_keys = [k for k in wanted if k not in existing]
     if new_keys:
-        vectors = embed_texts([wanted[k][1] for k in new_keys])
+        try:
+            vectors = embed_texts([wanted[k][1] for k in new_keys])
+        except Exception as e:
+            # Hết lượt embedding (429)...: vẫn lưu đoạn với embedding rỗng để tìm theo từ khóa được ngay.
+            # Lần sync_knowledge sau (khi còn lượt) sẽ tự embed lại các đoạn này.
+            log.warning("Embedding lỗi (%s) -> lưu %d đoạn chưa có embedding", e, len(new_keys))
+            vectors = [[] for _ in new_keys]
         DocumentChunk.objects.bulk_create([
             DocumentChunk(document=None, source=wanted[k][0], chunk_index=i, content=wanted[k][1], embedding=v)
             for i, (k, v) in enumerate(zip(new_keys, vectors))

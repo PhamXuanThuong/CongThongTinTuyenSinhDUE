@@ -119,7 +119,7 @@ def embed_texts(texts, batch=None, task="RETRIEVAL_DOCUMENT"):
                 {"model": f"models/{model}", "content": {"parts": [{"text": t}]},
                  "taskType": task, "outputDimensionality": settings.GEMINI_EMBED_DIM}
                 for t in texts[i:i + batch]
-            ]}, attempts=6 if len(texts) > 1 else 1, wait_429=62)  # câu hỏi lẻ: lỗi thì tìm từ khóa ngay
+            ]}, attempts=3 if len(texts) > 1 else 1, wait_429=62)  # câu hỏi lẻ: lỗi thì tìm từ khóa ngay
             out.extend(e["values"] for e in data["embeddings"])
         return out
     batch = batch or 16

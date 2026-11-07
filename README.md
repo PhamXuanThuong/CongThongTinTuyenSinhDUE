@@ -93,9 +93,9 @@ python manage.py rebuild_embeddings
 
 ### Các bảng đang được tự đồng bộ
 
-Ngành đào tạo, Điểm chuẩn, Phương thức xét tuyển, Loại hình đào tạo, Câu hỏi thường gặp (đang kích hoạt), Học phí, FAQ học phí, Học bổng, Khoa & phòng ban, Chuyên ngành, Hướng dẫn nhập học, Lịch trình tân sinh viên, Tin tức.
+Ngành đào tạo, Điểm chuẩn, Phương thức xét tuyển, Loại hình đào tạo, Câu hỏi thường gặp (đang kích hoạt), Học phí, FAQ học phí, Học bổng, Khoa & phòng ban, Chuyên ngành, Hướng dẫn nhập học, Lịch trình tân sinh viên, Tin tức, Khoa / Viện, Phòng ban, Liên chi đoàn, **Câu lạc bộ (CLB)**.
 
-Bảng mới muốn chatbot biết (ví dụ Liên chi đoàn, Ký túc xá) cần được thêm vào danh sách `SYNC_MODELS` trong `admissions/knowledge_sync.py`.
+Bảng mới muốn chatbot biết cần được thêm vào `SYNC_MODELS` / `PORTAL_MODELS` trong `admissions/knowledge_sync.py` (xem [docs/CHATBOT.md mục 6.1](docs/CHATBOT.md)).
 
 ### Thứ tự ưu tiên nguồn khi trả lời
 

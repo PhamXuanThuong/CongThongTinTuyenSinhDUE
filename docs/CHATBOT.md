@@ -153,7 +153,9 @@ Kiểm tra nhanh bảng nào **chưa** được đồng bộ:
 python manage.py shell -c "from django.apps import apps; from admissions.knowledge_sync import SYNC_MODELS, PORTAL_MODELS; s={n for n,_ in SYNC_MODELS+PORTAL_MODELS}; print([m.__name__ for a in ('admissions','portal') for m in apps.get_app_config(a).get_models() if m.__name__ not in s])"
 ```
 
-Danh sách in ra gồm cả bảng hệ thống của chatbot (`DocumentChunk`, `ChatSession`…) — chỉ cần xem có bảng **dữ liệu cho thí sinh** nào bị sót (ví dụ hiện tại: `CauLacBo` – CLB chưa được đồng bộ riêng).
+Danh sách in ra gồm cả bảng hệ thống của chatbot (`DocumentChunk`, `ChatSession`…) — chỉ cần xem có bảng **dữ liệu cho thí sinh** nào bị sót Hiện tại (07/11/2026) **không còn bảng dữ liệu thí sinh nào bị sót**: các bảng còn lại là `TuVanTuyenSinh`, `DangKyCLB`, `HoSoHuongNghiep` (dữ liệu cá nhân, không được cho chatbot đọc), `TaiLieuTuyenSinh`, `DocumentChunk`, `CauHoiChoTraLoi`, `ChatSession`, `ChatMessage` (bảng hệ thống).
+
+> **Vì sao CLB từng bị sót:** bảng `CauLacBo` (admin: “8. Quản lý Câu lạc bộ”) được thêm sau khi viết danh sách đồng bộ, nằm ở app `admissions` nhưng có nhiều cột JSON như bảng của app `portal`, nên không ai thêm vào `SYNC_MODELS` lẫn `PORTAL_MODELS`. Đã thêm vào `PORTAL_MODELS` (hàm `_portal_model` giờ tìm cả app `admissions`) và có đoạn tổng hợp “Trường có bao nhiêu câu lạc bộ”.
 
 Chạy lệnh trong thư mục `CongthongtintuyensinhDUE` (có `manage.py`), đã kích hoạt `.venv`.
 
@@ -255,7 +257,8 @@ Khi sửa bất kỳ file nào trong bảng trên → **cập nhật tài liệu
 | Dữ liệu có trong database nhưng chatbot không biết | Bảng chưa có trong `SYNC_MODELS` / `PORTAL_MODELS`; dữ liệu nằm trong cột JSON chưa khai báo; hoặc nạp bằng seed/SQL chưa đồng bộ | Làm theo mục 6.1; chạy `sync_knowledge` |
 | Chatbot trả lời số liệu cũ | Còn tệp tải lên cũ (ưu tiên 1), hoặc database sửa ngoài admin chưa đồng bộ | Xóa tệp cũ; chạy `sync_knowledge` |
 | Trả lời chậm / treo | Model quá tải | Kiểm tra `GEMINI_CHAT_MODEL`, `GEMINI_FALLBACK_MODELS`, `GEMINI_TIMEOUT` |
-| Lỗi 429 khi nạp dữ liệu | Hết hạn mức embedding | Chờ hoặc bật thanh toán; xem ai.dev/rate-limit |
+| Lỗi 429 khi nạp dữ liệu | Hết hạn mức embedding (các máy **dùng chung 1 key** thì chung hạn mức) | `sync_knowledge` vẫn lưu đoạn mới với embedding rỗng → tìm theo từ khóa được ngay; hôm sau (còn lượt) chạy lại `sync_knowledge` để embed bổ sung. Nên mỗi dev dùng key riêng |
+| Câu hỏi ngắn bị chuyển cán bộ, câu dài thì trả lời được | Đang hết lượt embedding nên chỉ tìm theo từ khóa | Như dòng trên; kiểm tra log `runserver` có dòng `Embedding lỗi ... 429` |
 | Kết quả tìm kiếm lạ sau khi đổi model embedding | Vector cũ và mới không so được | `rebuild_embeddings` |
 
 ---
@@ -286,3 +289,4 @@ Tiêu chí: không câu nào hiển thị dữ liệu thô (“Từ khóa tìm k
 | 07/11/2026 | Quy tắc nhóm: mọi câu **không có trong kiến thức** (kể cả ngoài phạm vi, chào hỏi, tán gẫu) đều **chuyển cán bộ**; bỏ câu trả lời cố định `OUT_OF_SCOPE_REPLY` |
 | 07/11/2026 | **Bỏ hoàn toàn file CSV** `due_knowledge_base_merged.csv` (file, lệnh `ingest_knowledge_csv`, 221 câu `DUE_KB_` trong bảng FAQ). Ưu tiên mới: tệp tải lên + câu trả lời cán bộ > database. Thêm đoạn tổng hợp “Trường có N khoa / viện” từ bảng Khoa |
 | 07/11/2026 | Sửa lỗi “Có bao nhiêu khoa?” bị chuyển cán bộ khi hết lượt embedding: thêm từ hỏi (nhiêu, ủa, đâu…) vào danh sách từ bỏ qua khi tìm theo từ khóa; đoạn tổng hợp khoa / liên chi đoàn có thêm câu “Trường có bao nhiêu …?”. Cần chạy `sync_knowledge` |
+| 07/11/2026 | Chatbot đọc bảng **Câu lạc bộ** (`CauLacBo`, 13 CLB) + đoạn tổng hợp CLB. `sync_knowledge` không còn treo/thất bại khi hết lượt embedding: lưu đoạn với embedding rỗng (tìm theo từ khóa), lần sync sau tự embed lại. Cần chạy `sync_knowledge` |
