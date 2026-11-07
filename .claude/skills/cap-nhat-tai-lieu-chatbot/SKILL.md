@@ -1,6 +1,6 @@
 ---
 name: cap-nhat-tai-lieu-chatbot
-description: Cập nhật tài liệu docs/CHATBOT.md mỗi khi thay đổi logic chatbot. Dùng khi sửa hoặc review thay đổi trong admissions/rag.py, admissions/knowledge_sync.py, các view chat/tài liệu/cán bộ trong admissions/views.py, model DocumentChunk/TaiLieuTuyenSinh/CauHoiChoTraLoi/ChatSession/ChatMessage, lệnh ingest_knowledge_csv/sync_knowledge/rebuild_embeddings, templates chat_widget.html/chatbot.html/officer_qa.html, hoặc cấu hình GEMINI_*/RAG_* trong settings.py và .env.example. Cũng dùng khi người dùng hỏi "chatbot đọc dữ liệu ở đâu", "cập nhật tài liệu chatbot".
+description: Cập nhật tài liệu docs/CHATBOT.md mỗi khi thay đổi logic chatbot. Dùng khi sửa hoặc review thay đổi trong admissions/rag.py, admissions/knowledge_sync.py, các view chat/tài liệu/cán bộ trong admissions/views.py, model DocumentChunk/TaiLieuTuyenSinh/CauHoiChoTraLoi/ChatSession/ChatMessage, lệnh sync_knowledge/rebuild_embeddings, templates chat_widget.html/chatbot.html/officer_qa.html, hoặc cấu hình GEMINI_*/RAG_* trong settings.py và .env.example. Cũng dùng khi người dùng hỏi "chatbot đọc dữ liệu ở đâu", "cập nhật tài liệu chatbot".
 ---
 
 # Cập nhật tài liệu Chatbot
@@ -21,7 +21,6 @@ Bất kỳ thay đổi nào trong các file sau:
 | `CongthongtintuyensinhDUE/admissions/management/commands/*` (lệnh kiến thức) | 6 |
 | `templates/partials/chat_widget.html`, `templates/admissions/chatbot.html`, `templates/admissions/officer_qa.html` | 8, 9 |
 | `settings.py` (GEMINI_*, RAG_*), `.env.example` | 7 |
-| `data/due_knowledge_base_merged.csv` (đổi cấu trúc cột) | 2, 6 |
 | **Tạo model mới** (bất kỳ app nào: `admissions/models.py`, `portal/models.py`…) chứa thông tin cho thí sinh | 2, 6.1, 11 — kiểm tra model đã được thêm vào `SYNC_MODELS` / `PORTAL_MODELS` chưa |
 
 ## Quy trình
@@ -36,7 +35,7 @@ Bất kỳ thay đổi nào trong các file sau:
    - Đường dẫn: `CongthongtintuyensinhDUE/admissions/urls.py`
    - Giới hạn tần suất: `grep -n "rate_limit(" CongthongtintuyensinhDUE/admissions/views.py`
    - Tên lệnh: `ls CongthongtintuyensinhDUE/admissions/management/commands/`
-4. **Nếu thay đổi làm kho kiến thức phải tạo lại** (đổi cách chuyển bản ghi thành văn bản, đổi danh sách bảng, đổi model embedding): ghi rõ lệnh cần chạy (`sync_knowledge` / `ingest_knowledge_csv` / `rebuild_embeddings`) ở mục 6 và trong mô tả PR.
+4. **Nếu thay đổi làm kho kiến thức phải tạo lại** (đổi cách chuyển bản ghi thành văn bản, đổi danh sách bảng, đổi model embedding): ghi rõ lệnh cần chạy (`sync_knowledge` / `rebuild_embeddings`) ở mục 6 và trong mô tả PR.
 5. **Cập nhật mục 11 (bộ test)** nếu thêm hành vi mới cần kiểm tra; chạy lại bộ test nếu có thể.
 6. **Thêm 1 dòng vào “Lịch sử thay đổi”** cuối tài liệu: ngày (dd/mm/yyyy) + tóm tắt thay đổi; sửa dòng “Cập nhật lần cuối” ở đầu file.
 7. Nếu thay đổi ảnh hưởng hướng dẫn chung (cài đặt, lệnh), cập nhật thêm mục tương ứng trong `README.md`.

@@ -152,24 +152,6 @@ def index_document(doc):
     return len(chunks)
 
 
-def index_csv_rows(path):
-    """Mỗi dòng CSV = 1 chunk (dùng cho file kiến thức có sẵn)."""
-    source = Path(path).name
-    DocumentChunk.objects.filter(document__isnull=True, source=source).delete()
-    with open(path, encoding="utf-8-sig", newline="") as f:
-        rows = list(csv.DictReader(f))
-    texts = [
-        "\n".join(f"{k}: {v}" for k, v in r.items() if v and v.strip())
-        for r in rows
-    ]
-    vectors = embed_texts(texts)
-    DocumentChunk.objects.bulk_create([
-        DocumentChunk(document=None, source=source, chunk_index=i, content=t, embedding=v)
-        for i, (t, v) in enumerate(zip(texts, vectors))
-    ])
-    return len(texts)
-
-
 # ---------- 5. Truy xuất ----------
 # Tách riêng số và chữ để "7310101ST" vẫn khớp với "7310101"
 _WORD = re.compile(r"\d+|[a-zà-ỹđ]+", re.IGNORECASE)
@@ -259,7 +241,7 @@ SYSTEM_PROMPT = (
     "CHỈ trả lời dựa trên phần NGỮ CẢNH được cung cấp, không dùng kiến thức bên ngoài. "
     "Không bịa số liệu, ngày tháng, điểm chuẩn, học phí, số điện thoại. "
     "Không tư vấn về trường đại học khác. "
-    "THỨ TỰ ƯU TIÊN NGUỒN: các đoạn có nhãn [ƯU TIÊN 1] (tài liệu tuyển sinh chính thức và câu trả lời "
+    "THỨ TỰ ƯU TIÊN NGUỒN: các đoạn có nhãn [ƯU TIÊN 1] (tài liệu cán bộ tải lên và câu trả lời "
     "của cán bộ) luôn đúng hơn các đoạn [ƯU TIÊN 2] (dữ liệu website). Nếu hai nguồn mâu thuẫn "
     "(mã ngành, chỉ tiêu, điểm chuẩn, học phí, số điện thoại...) thì dùng số liệu [ƯU TIÊN 1]; "
     "chỉ dùng [ƯU TIÊN 2] để bổ sung chi tiết mà [ƯU TIÊN 1] không có. "
@@ -338,7 +320,7 @@ def _build_messages(question, history, context):
 def answer(question, history=None):
     """Trả về (reply, sources, found). found=False nghĩa là cần chuyển cho cán bộ."""
     hits = retrieve(question)
-    # Tài liệu (CSV, file upload) và câu trả lời của cán bộ được ưu tiên hơn dữ liệu website (DB)
+    # Tài liệu cán bộ tải lên và câu trả lời của cán bộ được ưu tiên hơn dữ liệu website (DB)
     def _priority(h):
         return 2 if h["source"].startswith("Website DUE:") else 1
     hits.sort(key=lambda h: (_priority(h), -h["score"]))
@@ -383,7 +365,7 @@ def answer(question, history=None):
     # AI không được tự viết câu trả lời cho câu ngoài phạm vi -> không thể trả lời bậy.
     if result.get("ngoai_pham_vi"):
         return "", [], False
-    # Chỉ được trả lời khi THỰC SỰ có tài liệu từ CSV / database
+    # Chỉ được trả lời khi THỰC SỰ có tài liệu (tệp tải lên / câu trả lời cán bộ / database)
     found = bool(result.get("co_thong_tin")) and bool(reply) and bool(hits)
     sources = sorted({h["source"] for h in hits}) if found else []
     return reply, sources, found

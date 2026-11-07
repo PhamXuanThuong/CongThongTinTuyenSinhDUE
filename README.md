@@ -33,7 +33,6 @@ Lấy key Gemini tại <https://aistudio.google.com/apikey>. Không commit file 
 cd CongthongtintuyensinhDUE
 python manage.py migrate
 python manage.py seed_portal_data
-python manage.py ingest_knowledge_csv data/due_knowledge_base_merged.csv
 python manage.py sync_knowledge
 ```
 
@@ -66,7 +65,7 @@ Chatbot **không đọc trực tiếp** file Excel/CSV hay database mỗi lần 
 | **Tải tài liệu lên** ở trang Chatbot (PDF, DOCX, XLSX, CSV, TXT) bằng tài khoản cán bộ | ✅ Tự động | Thay tài liệu cũ: **xóa file cũ trước** rồi tải bản mới |
 | Cán bộ trả lời câu hỏi và tích **“Thêm vào kho kiến thức”** | ✅ Tự động | Không cần làm gì |
 | Sửa **trực tiếp database** bằng DB Browser for SQLite hoặc SQL | ❌ Không | Chạy `sync_knowledge` |
-| Sửa file **`data/due_knowledge_base_merged.csv`** | ❌ Không | Chạy `ingest_knowledge_csv` |
+| Pull code có migration mới đụng tới dữ liệu kiến thức | ❌ Không | Chạy `migrate` rồi `sync_knowledge` |
 | Đổi **model embedding** (`GEMINI_EMBED_MODEL` trong `.env`) | ❌ Không | Chạy `rebuild_embeddings` |
 
 ### Các lệnh
@@ -74,9 +73,6 @@ Chatbot **không đọc trực tiếp** file Excel/CSV hay database mỗi lần 
 Chạy trong thư mục `CongthongtintuyensinhDUE` (thư mục có `manage.py`), đã kích hoạt `.venv`:
 
 ```powershell
-# Nạp lại file CSV kiến thức (thay toàn bộ dữ liệu cũ của file này, ~332 lượt embedding)
-python manage.py ingest_knowledge_csv data/due_knowledge_base_merged.csv
-
 # Đồng bộ dữ liệu website trong database vào kho kiến thức
 # (chỉ tạo embedding cho phần thay đổi nên rất ít tốn lượt)
 python manage.py sync_knowledge
@@ -93,16 +89,16 @@ Bảng mới muốn chatbot biết (ví dụ Liên chi đoàn, Ký túc xá) c�
 
 ### Thứ tự ưu tiên nguồn khi trả lời
 
-1. File CSV kiến thức, tài liệu cán bộ tải lên, câu trả lời của cán bộ
+1. Tài liệu cán bộ tải lên, câu trả lời của cán bộ
 2. Dữ liệu website trong database
 
-Khi hai nguồn mâu thuẫn, chatbot dùng nguồn ưu tiên 1.
+Khi hai nguồn mâu thuẫn, chatbot dùng nguồn ưu tiên 1. File `due_knowledge_base_merged.csv` cũ đã bị bỏ, không còn được dùng.
 
 ### Nguyên tắc trả lời (không trả lời bừa)
 
 | Tình huống | Chatbot làm gì |
 |---|---|
-| Có tài liệu (CSV / database) trả lời **trực tiếp** câu hỏi | Trả lời dựa trên tài liệu, kèm nguồn |
+| Có tài liệu (tệp tải lên / database) trả lời **trực tiếp** câu hỏi | Trả lời dựa trên tài liệu, kèm nguồn |
 | Không tìm thấy tài liệu liên quan, hoặc AI đánh giá tài liệu không trả lời được câu hỏi | **Chuyển câu hỏi cho cán bộ tuyển sinh** (người chưa đăng nhập: hướng dẫn đăng nhập hoặc gọi hotline) |
 | Câu chào hỏi, tán gẫu, câu nhạy cảm, không liên quan tới DUE | **Chuyển cán bộ** (AI không tự trả lời) |
 | AI lỗi / hết hạn mức | Chuyển cho cán bộ, không bao giờ hiển thị tài liệu thô |

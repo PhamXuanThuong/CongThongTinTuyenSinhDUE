@@ -178,6 +178,15 @@ def build_portal_texts():
             extra = "; ".join(x for x in (f"thuộc {fac}" if fac else "", f"Bí thư: {sec}" if sec else "", f"Nhiệm kỳ: {term}" if term else "") if x)
             lines.append(f"{i}. {n}" + (f" ({extra})" if extra else ""))
         out.append((SOURCE_PREFIX + "Tổng hợp Liên chi đoàn", "\n".join(lines)))
+
+    # Đoạn tổng hợp để trả lời "trường có bao nhiêu khoa / gồm những khoa nào"
+    if fac_model is not None:
+        facs = list(_active(fac_model.objects.all()))
+        if facs:
+            lines = ["[Tổng hợp] Danh sách Khoa / Viện tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
+                     f"Trường hiện có {len(facs)} khoa / viện:"]
+            lines += [f"{i}. {f.name}" for i, f in enumerate(facs, 1)]
+            out.append((SOURCE_PREFIX + "Tổng hợp Khoa / Viện", "\n".join(lines)))
     return out
 
 

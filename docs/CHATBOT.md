@@ -36,18 +36,19 @@ Nguồn kiến thức ──(nạp / đồng bộ)──► KHO KIẾN THỨC (a
 
 | # | Nguồn | Nội dung | Cách vào kho | Ưu tiên |
 |---|---|---|---|---|
-| ① | **File CSV kiến thức** `CongthongtintuyensinhDUE/data/due_knowledge_base_merged.csv` | ~221 chủ đề tuyển sinh 2026 (→ ~332 đoạn) | Lệnh `ingest_knowledge_csv` | **1** |
-| ② | **Tệp cán bộ tải lên** (mục *Tài liệu tư vấn* ở `/chatbot/`) | PDF, DOCX, XLSX, CSV, TXT, MD | **Tự động** khi tải lên; xóa tệp thì kiến thức của tệp cũng bị xóa | **1** |
-| ③ | **Câu trả lời của cán bộ** (tích “Thêm vào kho kiến thức”) | Cặp hỏi – đáp | **Tự động** | **1** |
-| ④ | **Dữ liệu website trong database** | Xem danh sách bên dưới | **Tự động** khi sửa qua admin; hoặc lệnh `sync_knowledge` | 2 |
+| ① | **Tệp cán bộ tải lên** (mục *Tài liệu tư vấn* ở `/chatbot/`) | PDF, DOCX, XLSX, CSV, TXT, MD | **Tự động** khi tải lên; xóa tệp thì kiến thức của tệp cũng bị xóa | **1** |
+| ② | **Câu trả lời của cán bộ** (tích “Thêm vào kho kiến thức”) | Cặp hỏi – đáp | **Tự động** | **1** |
+| ③ | **Dữ liệu website trong database** | Xem danh sách bên dưới | **Tự động** khi sửa qua admin; hoặc lệnh `sync_knowledge` | 2 |
 
-Nguồn ④ được đánh dấu `source` bắt đầu bằng `"Website DUE: "`; các nguồn còn lại là ưu tiên 1.
+> File `due_knowledge_base_merged.csv` **đã bị bỏ** (07/11/2026): file, lệnh `ingest_knowledge_csv` và 221 câu `DUE_KB_...` nhập từ file này vào bảng `CauHoiThuongGap` đều đã xóa (migration `admissions/0010_remove_csv_knowledge`). Muốn bổ sung kiến thức: tải tệp lên trang Chatbot hoặc sửa database qua admin.
 
-### Các bảng database đang được đồng bộ (nguồn ④)
+Nguồn ③ được đánh dấu `source` bắt đầu bằng `"Website DUE: "`; các nguồn còn lại là ưu tiên 1.
+
+### Các bảng database đang được đồng bộ (nguồn ③)
 
 Khai báo trong `admissions/knowledge_sync.py`:
 
-- **`SYNC_MODELS`** (app `admissions`): Ngành đào tạo, Điểm chuẩn, Phương thức xét tuyển, Loại hình đào tạo, Câu hỏi thường gặp (đang kích hoạt), Bảng học phí, FAQ học phí, Chính sách học bổng, Khoa & phòng ban, Chuyên ngành, Hướng dẫn nhập học, Lịch trình tân sinh viên, Tin tức.
+- **`SYNC_MODELS`** (app `admissions`): Ngành đào tạo, Điểm chuẩn, Phương thức xét tuyển, Loại hình đào tạo, Câu hỏi thường gặp (đang kích hoạt; hiện trống, cán bộ tự thêm), Bảng học phí, FAQ học phí, Chính sách học bổng, Khoa & phòng ban, Chuyên ngành, Hướng dẫn nhập học, Lịch trình tân sinh viên, Tin tức.
 - **`PORTAL_MODELS`** (app `portal`): Khoa/Viện (kèm ban lãnh đạo, bộ môn, ngành, liên chi đoàn, CLB, liên hệ…), Phòng ban. Nếu code có các model `LienChiDoan`, `HoatDongDoan`, `KyTucXa` thì cũng được đồng bộ.
 - Thêm 1 đoạn **tổng hợp “Danh sách Liên chi đoàn”** để trả lời câu hỏi số lượng.
 
@@ -122,7 +123,7 @@ Cán bộ trả lời tại `/can-bo/hoi-dap/` (chỉ tài khoản staff). Tích
 | **Xóa tệp** ở mục Tài liệu tư vấn | ✅ | Kiến thức của tệp đó bị xóa khỏi kho ngay |
 | Cán bộ trả lời + tích “Thêm vào kho” | ✅ | — |
 | Sửa **trực tiếp database** (DB Browser, SQL) | ❌ | `python manage.py sync_knowledge` |
-| Sửa **file CSV** kiến thức | ❌ | `python manage.py ingest_knowledge_csv data/due_knowledge_base_merged.csv` |
+| Pull code có migration `0010_remove_csv_knowledge` | ❌ | `python manage.py migrate` rồi `python manage.py sync_knowledge` |
 | **Thêm bảng mới** muốn chatbot biết | ❌ | Thêm vào `SYNC_MODELS` / `PORTAL_MODELS` trong `admissions/knowledge_sync.py`, rồi `python manage.py sync_knowledge` |
 | Đổi **model embedding** | ❌ | `python manage.py rebuild_embeddings` |
 | **Đổi logic đồng bộ** (`knowledge_sync.py`) | ❌ | `python manage.py sync_knowledge` trên mọi máy |
@@ -156,7 +157,7 @@ Danh sách in ra gồm cả bảng hệ thống của chatbot (`DocumentChunk`, 
 
 Chạy lệnh trong thư mục `CongthongtintuyensinhDUE` (có `manage.py`), đã kích hoạt `.venv`.
 
-Chi phí embedding: `sync_knowledge` chỉ embed phần **thay đổi**; `ingest_knowledge_csv` embed lại toàn bộ file (~332 lượt); `rebuild_embeddings` embed toàn kho (~1.200 lượt). Gói miễn phí: ~1.000 lượt/ngày, 100 lượt/phút (lệnh tự chia lô 40 và chờ khi bị giới hạn).
+Chi phí embedding: `sync_knowledge` chỉ embed phần **thay đổi**; `rebuild_embeddings` embed toàn kho (~1.200 lượt). Gói miễn phí: ~1.000 lượt/ngày, 100 lượt/phút (lệnh tự chia lô 40 và chờ khi bị giới hạn).
 
 > `db.sqlite3` **không lưu trên git**. Mỗi máy tự giữ database (kho kiến thức nằm trong đó). Sao lưu trước khi pull.
 
@@ -207,7 +208,7 @@ Giới hạn tần suất: `POST /api/chat/` tối đa **15 câu/phút**.
 | `admissions/apps.py` | Kết nối tín hiệu tự đồng bộ khi khởi động |
 | `admissions/views.py` | `api_chat`, `api_chat_updates`, phiên chat, tài liệu, cán bộ; `HANDOFF_REPLY`, `UNAUTH_HANDOFF_REPLY` |
 | `admissions/models.py` | `DocumentChunk`, `TaiLieuTuyenSinh`, `CauHoiChoTraLoi`, `ChatSession`, `ChatMessage` |
-| `admissions/management/commands/` | `ingest_knowledge_csv`, `sync_knowledge`, `rebuild_embeddings` |
+| `admissions/management/commands/` | `sync_knowledge`, `rebuild_embeddings`, `seed_portal_data` |
 | `templates/partials/chat_widget.html` | Khung chat modal |
 | `templates/admissions/chatbot.html` | Trang chatbot toàn màn hình |
 | `templates/admissions/officer_qa.html` | Trang cán bộ |
@@ -223,7 +224,7 @@ Khi sửa bất kỳ file nào trong bảng trên → **cập nhật tài liệu
 |---|---|---|
 | Câu nào cũng chuyển cán bộ | Kho kiến thức trống (database mới) hoặc thiếu `GEMINI_API_KEY` | Kiểm tra số đoạn trong `admissions_document_chunk`; lấy `db.sqlite3` của nhóm hoặc nạp lại (README); kiểm tra `.env` |
 | Dữ liệu có trong database nhưng chatbot không biết | Bảng chưa có trong `SYNC_MODELS` / `PORTAL_MODELS`; dữ liệu nằm trong cột JSON chưa khai báo; hoặc nạp bằng seed/SQL chưa đồng bộ | Làm theo mục 6.1; chạy `sync_knowledge` |
-| Chatbot trả lời số liệu cũ | File CSV (ưu tiên 1) có dữ liệu cũ, hoặc còn tệp tải lên cũ | Sửa CSV + `ingest_knowledge_csv`; xóa tệp cũ |
+| Chatbot trả lời số liệu cũ | Còn tệp tải lên cũ (ưu tiên 1), hoặc database sửa ngoài admin chưa đồng bộ | Xóa tệp cũ; chạy `sync_knowledge` |
 | Trả lời chậm / treo | Model quá tải | Kiểm tra `GEMINI_CHAT_MODEL`, `GEMINI_FALLBACK_MODELS`, `GEMINI_TIMEOUT` |
 | Lỗi 429 khi nạp dữ liệu | Hết hạn mức embedding | Chờ hoặc bật thanh toán; xem ai.dev/rate-limit |
 | Kết quả tìm kiếm lạ sau khi đổi model embedding | Vector cũ và mới không so được | `rebuild_embeddings` |
@@ -254,3 +255,4 @@ Tiêu chí: không câu nào hiển thị dữ liệu thô (“Từ khóa tìm k
 | 06/11/2026 | Đổi tên bảng/URL/lệnh sang tiếng Anh; phiên chat; khách chưa đăng nhập không vào hàng chờ (PR #12) |
 | 07/11/2026 | Chặn trả lời bừa: lọc từ phổ biến, bỏ cột Boolean khỏi kiến thức. Chatbot đọc thêm dữ liệu các bảng Khoa, Phòng ban (app `portal`, do Khoa tạo ở PR #12, nạp từ `khoa.json` / `phongban.json`), gồm cả Liên chi đoàn |
 | 07/11/2026 | Quy tắc nhóm: mọi câu **không có trong kiến thức** (kể cả ngoài phạm vi, chào hỏi, tán gẫu) đều **chuyển cán bộ**; bỏ câu trả lời cố định `OUT_OF_SCOPE_REPLY` |
+| 07/11/2026 | **Bỏ hoàn toàn file CSV** `due_knowledge_base_merged.csv` (file, lệnh `ingest_knowledge_csv`, 221 câu `DUE_KB_` trong bảng FAQ). Ưu tiên mới: tệp tải lên + câu trả lời cán bộ > database. Thêm đoạn tổng hợp “Trường có N khoa / viện” từ bảng Khoa |
