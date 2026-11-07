@@ -127,6 +127,32 @@ Cán bộ trả lời tại `/can-bo/hoi-dap/` (chỉ tài khoản staff). Tích
 | Đổi **model embedding** | ❌ | `python manage.py rebuild_embeddings` |
 | **Đổi logic đồng bộ** (`knowledge_sync.py`) | ❌ | `python manage.py sync_knowledge` trên mọi máy |
 | **Pull code mới** có sửa phần đồng bộ (ví dụ sau khi merge PR chatbot) | ❌ | `python manage.py sync_knowledge` một lần trên máy mình |
+| Nạp dữ liệu hàng loạt bằng lệnh **seed** (`seed_portal_data`, `seed_data`…) hoặc script | ⚠️ Không chắc | Chạy thêm `python manage.py sync_knowledge` (xem lưu ý bên dưới) |
+
+> **Vì sao sau lệnh seed phải chạy `sync_knowledge`:** tự đồng bộ chờ ~5 giây sau lần lưu cuối mới chạy (để gộp nhiều lần lưu). Lệnh seed chạy xong thoát ngay nên việc đồng bộ thường bị hủy. Ngoài ra `bulk_create` / `update()` / sửa thẳng SQL **không phát tín hiệu** nên không bao giờ tự đồng bộ.
+
+### 6.1. Thêm bảng dữ liệu mới cho chatbot (tránh lỗi như “Liên chi đoàn”)
+
+**Bài học:** dữ liệu Liên chi đoàn đã có trong database (bảng Khoa, app `portal`) nhưng chatbot không trả lời được, vì bảng đó **chưa có trong danh sách đồng bộ** và nằm trong cột JSON mà phần đồng bộ cũ bỏ qua. **Có dữ liệu trong database ≠ chatbot biết.**
+
+Mỗi khi tạo **bảng (model) mới** chứa thông tin muốn chatbot trả lời, làm đủ các bước:
+
+1. **Khai báo bảng** trong `admissions/knowledge_sync.py`:
+   - Model của app `admissions` → thêm vào `SYNC_MODELS`: `("TenModel", {})` (có thể thêm điều kiện lọc, ví dụ `{"kich_hoat": True}`).
+   - Model của app `portal` (hoặc app khác có nhiều cột JSON) → thêm vào `PORTAL_MODELS`: `("TenModel", ["cot_json_1", "cot_json_2"])` — liệt kê các cột JSON **có nội dung cho thí sinh** (bỏ cột ảnh, màu, icon).
+   - App khác ngoài `admissions` / `portal`: cần sửa thêm hàm `_model` / `_portal_model` để lấy đúng app.
+2. **Đặt `verbose_name` tiếng Việt** cho model và các cột: tên này được ghi vào kiến thức (ví dụ “Bí thư: …”), đặt rõ nghĩa thì AI tìm và trả lời tốt hơn.
+3. Nếu thí sinh hay hỏi **câu tổng hợp** (“có bao nhiêu…”, “danh sách…”), thêm một **đoạn tổng hợp** như đoạn “Danh sách Liên chi đoàn” trong `build_portal_texts()`.
+4. **Chạy** `python manage.py sync_knowledge` và **hỏi thử** 2–3 câu về bảng mới (một câu chi tiết, một câu tổng hợp).
+5. **Cập nhật tài liệu này** (mục 2 – danh sách bảng, mục 11 – thêm câu test) và ghi trong mô tả PR: “sau khi merge cần chạy `sync_knowledge`”.
+
+Kiểm tra nhanh bảng nào **chưa** được đồng bộ:
+
+```powershell
+python manage.py shell -c "from django.apps import apps; from admissions.knowledge_sync import SYNC_MODELS, PORTAL_MODELS; s={n for n,_ in SYNC_MODELS+PORTAL_MODELS}; print([m.__name__ for a in ('admissions','portal') for m in apps.get_app_config(a).get_models() if m.__name__ not in s])"
+```
+
+Danh sách in ra gồm cả bảng hệ thống của chatbot (`DocumentChunk`, `ChatSession`…) — chỉ cần xem có bảng **dữ liệu cho thí sinh** nào bị sót (ví dụ hiện tại: `CauLacBo` – CLB chưa được đồng bộ riêng).
 
 Chạy lệnh trong thư mục `CongthongtintuyensinhDUE` (có `manage.py`), đã kích hoạt `.venv`.
 
@@ -196,7 +222,7 @@ Khi sửa bất kỳ file nào trong bảng trên → **cập nhật tài liệu
 | Hiện tượng | Nguyên nhân thường gặp | Cách xử lý |
 |---|---|---|
 | Câu nào cũng chuyển cán bộ | Kho kiến thức trống (database mới) hoặc thiếu `GEMINI_API_KEY` | Kiểm tra số đoạn trong `admissions_document_chunk`; lấy `db.sqlite3` của nhóm hoặc nạp lại (README); kiểm tra `.env` |
-| Dữ liệu có trong database nhưng chatbot không biết | Bảng chưa có trong `SYNC_MODELS` / `PORTAL_MODELS`, hoặc sửa thẳng DB chưa đồng bộ | Thêm bảng vào danh sách, chạy `sync_knowledge` |
+| Dữ liệu có trong database nhưng chatbot không biết | Bảng chưa có trong `SYNC_MODELS` / `PORTAL_MODELS`; dữ liệu nằm trong cột JSON chưa khai báo; hoặc nạp bằng seed/SQL chưa đồng bộ | Làm theo mục 6.1; chạy `sync_knowledge` |
 | Chatbot trả lời số liệu cũ | File CSV (ưu tiên 1) có dữ liệu cũ, hoặc còn tệp tải lên cũ | Sửa CSV + `ingest_knowledge_csv`; xóa tệp cũ |
 | Trả lời chậm / treo | Model quá tải | Kiểm tra `GEMINI_CHAT_MODEL`, `GEMINI_FALLBACK_MODELS`, `GEMINI_TIMEOUT` |
 | Lỗi 429 khi nạp dữ liệu | Hết hạn mức embedding | Chờ hoặc bật thanh toán; xem ai.dev/rate-limit |
@@ -226,5 +252,5 @@ Tiêu chí: không câu nào hiển thị dữ liệu thô (“Từ khóa tìm k
 |---|---|
 | 05/11/2026 | Chuyển RAG sang Gemini; kho kiến thức 3 nguồn; chuyển câu hỏi cho cán bộ; khung chat modal (PR #9) |
 | 06/11/2026 | Đổi tên bảng/URL/lệnh sang tiếng Anh; phiên chat; khách chưa đăng nhập không vào hàng chờ (PR #12) |
-| 07/11/2026 | Chặn trả lời bừa: lọc từ phổ biến, bỏ cột Boolean khỏi kiến thức; đồng bộ thêm Khoa / Phòng ban / Liên chi đoàn (app portal) |
+| 07/11/2026 | Chặn trả lời bừa: lọc từ phổ biến, bỏ cột Boolean khỏi kiến thức. Chatbot đọc thêm dữ liệu các bảng Khoa, Phòng ban (app `portal`, do Khoa tạo ở PR #12, nạp từ `khoa.json` / `phongban.json`), gồm cả Liên chi đoàn |
 | 07/11/2026 | Quy tắc nhóm: mọi câu **không có trong kiến thức** (kể cả ngoài phạm vi, chào hỏi, tán gẫu) đều **chuyển cán bộ**; bỏ câu trả lời cố định `OUT_OF_SCOPE_REPLY` |

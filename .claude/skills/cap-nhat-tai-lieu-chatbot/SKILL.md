@@ -22,8 +22,11 @@ Bất kỳ thay đổi nào trong các file sau:
 | `templates/partials/chat_widget.html`, `templates/admissions/chatbot.html`, `templates/admissions/officer_qa.html` | 8, 9 |
 | `settings.py` (GEMINI_*, RAG_*), `.env.example` | 7 |
 | `data/due_knowledge_base_merged.csv` (đổi cấu trúc cột) | 2, 6 |
+| **Tạo model mới** (bất kỳ app nào: `admissions/models.py`, `portal/models.py`…) chứa thông tin cho thí sinh | 2, 6.1, 11 — kiểm tra model đã được thêm vào `SYNC_MODELS` / `PORTAL_MODELS` chưa |
 
 ## Quy trình
+
+0. **Nếu thay đổi có tạo model / bảng mới** chứa thông tin cho thí sinh: làm theo mục **6.1** của `docs/CHATBOT.md` (thêm vào `SYNC_MODELS` / `PORTAL_MODELS`, khai báo cột JSON, đoạn tổng hợp nếu cần, chạy `sync_knowledge`, hỏi thử). Chạy lệnh kiểm tra bảng chưa đồng bộ trong mục 6.1 và báo cho người dùng nếu còn bảng bị sót. Đây là lỗi đã xảy ra với “Liên chi đoàn”.
 
 1. **Xác định thay đổi**: chạy `git diff` (hoặc `git diff main...HEAD`) trên các file ở bảng trên; ghi rõ hành vi nào thay đổi (nguồn kiến thức, cách tìm kiếm, ngưỡng, prompt, quy tắc chuyển cán bộ, API, lệnh, biến cấu hình).
 2. **Đọc lại `docs/CHATBOT.md`** và sửa đúng các mục liên quan. Giữ nguyên cấu trúc 11 mục. Không mô tả điều code không làm.
