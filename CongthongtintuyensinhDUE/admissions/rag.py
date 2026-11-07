@@ -317,35 +317,9 @@ def _build_messages(question, history, context):
     return turns
 
 
-# Từ khóa chủ đề -> đoạn tổng hợp (tạo trong knowledge_sync.build_portal_texts)
-_SUMMARY_TOPICS = [
-    (("liên chi đoàn", "lcđ"), "Website DUE: Tổng hợp Liên chi đoàn"),
-    (("câu lạc bộ", "clb", "đội nhóm"), "Website DUE: Tổng hợp Câu lạc bộ"),
-    (("khoa", "viện"), "Website DUE: Tổng hợp Khoa / Viện"),
-]
-
-
 def answer(question, history=None):
     """Trả về (reply, sources, found). found=False nghĩa là cần chuyển cho cán bộ."""
     hits = retrieve(question)
-    # Câu hỏi nối tiếp ngắn ("cụ thể hơn", "còn cái kia thì sao"): tìm thêm tài liệu theo
-    # câu hỏi trước đó của thí sinh, nếu không AI có trí nhớ nhưng không có tài liệu để trả lời.
-    prev_users = [m.get("content", "") for m in (history or []) if m.get("role") == "user" and m.get("content")]
-    if prev_users and prev_users[-1].strip() == question.strip():  # views gửi kèm cả câu hiện tại
-        prev_users = prev_users[:-1]
-    if prev_users and len(_query_terms(question)) <= 4:
-        hits += retrieve(" ".join(prev_users[-2:] + [question]))
-    # Câu hỏi đếm / liệt kê (có thể hỏi nhiều thứ cùng lúc): luôn kèm đoạn [Tổng hợp] đúng chủ đề
-    topic_text = " ".join(prev_users[-1:] + [question]).lower() if len(_query_terms(question)) <= 4 else question.lower()
-    for key, src in _SUMMARY_TOPICS:
-        if any(k in topic_text for k in key):
-            hits += [{"source": s, "content": c, "score": 1.0}
-                     for s, c in DocumentChunk.objects.filter(source=src).values_list("source", "content")]
-    seen, uniq = set(), []
-    for h in sorted(hits, key=lambda h: -h["score"]):
-        if h["content"] not in seen:
-            seen.add(h["content"]); uniq.append(h)
-    hits = uniq[:settings.RAG_TOP_K + 4]
     # Tài liệu cán bộ tải lên và câu trả lời của cán bộ được ưu tiên hơn dữ liệu website (DB)
     def _priority(h):
         return 2 if h["source"].startswith("Website DUE:") else 1
