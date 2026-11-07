@@ -350,3 +350,70 @@ class HoatDongDoan(models.Model):
             'image_url': self.image_url,
             'icon': self.icon
         }
+
+
+class LichTrinhTanSinhVien(models.Model):
+    """
+    Model lưu trữ các sự kiện, lịch trình đón Tân sinh viên (theo từng Khoa hoặc toàn trường).
+    Dành cho Cán bộ tạo và quản lý lịch hoạt động cho Tân sinh viên.
+    db_table: portal_lich_trinh_tsv
+    """
+    faculty = models.ForeignKey(
+        Faculty,
+        on_delete=models.CASCADE,
+        related_name='freshman_schedules',
+        null=True,
+        blank=True,
+        verbose_name="Khoa / Viện chủ trì"
+    )
+    day = models.PositiveSmallIntegerField(default=1, verbose_name="Ngày diễn ra (1-31)")
+    month = models.PositiveSmallIntegerField(default=8, verbose_name="Tháng (1-12)")
+    year = models.PositiveIntegerField(default=2026, verbose_name="Năm")
+
+    title = models.CharField(max_length=255, verbose_name="Tên hoạt động / Sự kiện")
+    time_str = models.CharField(max_length=150, verbose_name="Khung giờ / Thời gian")
+    location = models.CharField(max_length=255, verbose_name="Địa điểm tổ chức")
+    category = models.CharField(
+        max_length=50,
+        default="khoa",
+        verbose_name="Phân loại (online, welcome, khoa, shcd, gala, test, study)"
+    )
+    badge = models.CharField(max_length=100, blank=True, default="", verbose_name="Badge hiển thị")
+    badge_color = models.CharField(max_length=100, blank=True, default="bg-emerald-50 text-emerald-700 border-emerald-200")
+    dot_color = models.CharField(max_length=50, blank=True, default="#047857")
+    description = models.TextField(blank=True, default="", verbose_name="Nội dung chi tiết")
+    guide = models.TextField(blank=True, default="", verbose_name="Lưu ý cho Tân sinh viên")
+    image_url = models.CharField(max_length=500, blank=True, default="", verbose_name="Ảnh minh họa")
+
+    created_by = models.CharField(max_length=100, blank=True, default="Cán bộ", verbose_name="Người tạo")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Thời điểm tạo")
+    is_active = models.BooleanField(default=True, verbose_name="Kích hoạt")
+
+    class Meta:
+        db_table = 'portal_lich_trinh_tsv'
+        verbose_name = "Lịch Trình Tân Sinh Viên"
+        verbose_name_plural = "Danh Sách Lịch Trình Tân Sinh Viên"
+        ordering = ['day', 'id']
+
+    def __str__(self):
+        return f"[{self.day:02d}/{self.month:02d}] {self.title}"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'id': self.id,
+            'day': self.day,
+            'month': self.month,
+            'year': self.year,
+            'badge': self.badge or f"Ngày {self.day:02d}/{self.month:02d}",
+            'badge_color': self.badge_color or "bg-blue-50 text-blue-700 border-blue-200",
+            'dot_color': self.dot_color or "#0072BC",
+            'time': self.time_str,
+            'title': self.title,
+            'location': self.location,
+            'desc': self.description,
+            'guide': self.guide,
+            'image': self.image_url or "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
+            'category': self.category,
+            'created_by': self.created_by,
+        }
+

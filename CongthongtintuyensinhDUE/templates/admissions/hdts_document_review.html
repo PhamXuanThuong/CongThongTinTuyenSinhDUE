@@ -1,0 +1,502 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Thẩm định & Chỉnh sửa Tài liệu Tuyển sinh - HĐTS DUE{% endblock %}
+
+{% block nav_thongke %}text-[#F37021] font-bold border-b-2 border-[#F37021]{% endblock %}
+
+{% block content %}
+<main class="w-full pt-44 sm:pt-40 pb-20 bg-[#f8fafc] min-h-screen flex flex-col">
+  <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-6 flex-1 flex flex-col">
+
+    <!-- Top Executive Header -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div class="flex items-start sm:items-center gap-4">
+        <a href="/hdts/thong-ke/" class="w-12 h-12 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center flex-shrink-0 transition-colors shadow-xs" title="Quay lại danh sách tài liệu">
+          <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+        </a>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap mb-1">
+            <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-[#0072BC] text-xs font-bold border border-blue-200 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px]">verified</span>
+              Hội đồng Tuyển sinh DUE
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium font-mono uppercase">{{ ext|default:"FILE" }}</span>
+            <span id="doc-status-badge">
+              {% if doc.status == 'approved' or doc.status == 'da_duyet' %}
+              <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px]">check_circle</span> Đã duyệt & Nạp AI
+              </span>
+              {% elif doc.status == 'rejected' or doc.status == 'tu_choi' %}
+              <span class="px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px]">cancel</span> Bị từ chối
+              </span>
+              {% else %}
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 text-xs font-bold border border-amber-300 flex items-center gap-1 animate-pulse">
+                <span class="material-symbols-outlined text-[13px]">hourglass_top</span> Đang chờ duyệt
+              </span>
+              {% endif %}
+            </span>
+          </div>
+          <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+            <span>{{ doc.title }}</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5 flex items-center gap-3 flex-wrap">
+            <span>Người tải lên: <strong class="text-slate-700">{{ doc.uploaded_by.get_full_name|default:doc.uploaded_by.username|default:"Cán bộ tuyển sinh" }}</strong></span>
+            <span>•</span>
+            <span>Dung lượng: <strong class="text-slate-700 font-mono">{{ doc.file_size }}</strong></span>
+            <span>•</span>
+            <span>Thời gian: <strong class="text-slate-700">{{ doc.uploaded_at|date:"H:i - d/m/Y" }}</strong></span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 self-start lg:self-center flex-wrap">
+        <a href="{% url 'admissions:view_document_file' doc.id %}" target="_blank" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer" title="Mở file gốc">
+          <span class="material-symbols-outlined text-[17px]">open_in_new</span>
+          <span>Xem file gốc</span>
+        </a>
+
+        {% if ext != '.pdf' %}
+        <button type="button" onclick="saveDocumentContent()" id="btn-save-content" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">save</span>
+          <span>Lưu nội dung</span>
+        </button>
+        {% endif %}
+
+        <button type="button" onclick="approveAndIndex()" id="btn-approve" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">verified</span>
+          <span>Phê duyệt & Nạp vào AI</span>
+        </button>
+
+        <button type="button" onclick="openRejectModal()" id="btn-reject" class="px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[17px]">close</span>
+          <span>Từ chối</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Cảnh báo nếu tài liệu từng bị từ chối -->
+    <div id="rejection-alert-box" class="{% if not doc.reject_reason %}hidden{% endif %} bg-rose-50 border border-rose-200 rounded-2xl p-4 text-xs text-rose-800 flex items-start gap-3">
+      <span class="material-symbols-outlined text-[20px] text-rose-600 shrink-0 mt-0.5">report</span>
+      <div>
+        <h4 class="font-bold text-rose-900 mb-0.5">Tài liệu đang bị từ chối phê duyệt</h4>
+        <p id="rejection-reason-text">{{ doc.reject_reason }}</p>
+      </div>
+    </div>
+
+    <!-- MAIN EDITOR CONTAINER -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden flex flex-col flex-1">
+      
+      <!-- Toolbar -->
+      <div class="p-4 border-b border-slate-100 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[20px] text-[#0072BC]">edit_note</span>
+          <span class="font-extrabold text-xs sm:text-sm text-slate-800">
+            {% if ext == '.csv' or ext == '.xlsx' %}
+            Bảng Dữ liệu Tương tác (Chỉnh sửa từng ô và lưu trực tiếp)
+            {% elif ext == '.md' or ext == '.txt' %}
+            Trình Soạn thảo Văn bản & Xem trước thời gian thực
+            {% elif ext == '.docx' %}
+            Văn bản Microsoft Word (Nội dung & Định dạng văn bản)
+            {% elif ext == '.pdf' %}
+            Xem trực tiếp Tệp PDF & Trích xuất nội dung vector hóa
+            {% else %}
+            Xem trước tài liệu
+            {% endif %}
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap">
+          {% if ext == '.csv' or ext == '.xlsx' %}
+          <button type="button" onclick="addRowToTable()" class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-blue-400 text-slate-700 text-xs font-bold shadow-2xs flex items-center gap-1 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[16px] text-emerald-600">add_circle</span>
+            <span>+ Thêm dòng</span>
+          </button>
+          <button type="button" onclick="deleteSelectedRow()" class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-red-400 text-slate-700 text-xs font-bold shadow-2xs flex items-center gap-1 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[16px] text-rose-600">delete</span>
+            <span>Xóa dòng chọn</span>
+          </button>
+          {% elif ext == '.md' or ext == '.txt' or ext == '.docx' %}
+          <span class="text-xs text-slate-400 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">info</span>
+            Nội dung sau khi lưu sẽ được ghi đè trực tiếp vào file gốc trên máy chủ
+          </span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Editor Body according to File Type -->
+      <div class="p-5 flex-1 flex flex-col min-h-[500px]">
+
+        {% if ext == '.csv' or ext == '.xlsx' %}
+        <!-- TABLE EDITOR -->
+        <div class="overflow-x-auto rounded-2xl border border-slate-200 max-h-[620px] flex-1">
+          <table class="w-full text-left border-collapse text-xs" id="interactive-table">
+            <thead class="sticky top-0 bg-slate-100 z-10 shadow-xs">
+              <tr class="border-b border-slate-300" id="table-headers-row">
+                <th class="p-3 w-10 text-center text-slate-500 font-bold">#</th>
+                {% for h in editable_data.headers %}
+                <th class="p-3 font-bold text-slate-800 uppercase tracking-wide">
+                  <input type="text" value="{{ h }}" class="header-input w-full bg-transparent font-bold focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-400 rounded px-1.5 py-1" />
+                </th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody id="table-data-body" class="divide-y divide-slate-100">
+              {% for row in editable_data.rows %}
+              <tr class="hover:bg-blue-50/40 transition-colors group">
+                <td class="p-2.5 text-center text-slate-400 font-mono text-[11px] select-none">
+                  <input type="radio" name="selected_row_radio" value="{{ forloop.counter0 }}" class="cursor-pointer" />
+                </td>
+                {% for cell in row %}
+                <td class="p-1.5">
+                  <input type="text" value="{{ cell }}" class="cell-input w-full bg-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg px-2.5 py-1.5 text-slate-800 font-medium border border-transparent focus:border-blue-400 transition-all text-xs" />
+                </td>
+                {% endfor %}
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="10" class="p-8 text-center text-slate-400 font-medium">Bảng hiện chưa có dữ liệu</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% elif ext == '.md' or ext == '.txt' %}
+        <!-- TEXT / MARKDOWN SPLIT EDITOR -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
+          <div class="flex flex-col space-y-2">
+            <label class="text-xs font-bold text-slate-700 flex items-center justify-between">
+              <span>Trình soạn thảo mã nguồn</span>
+              <span class="text-slate-400 font-normal">Hỗ trợ Markdown & Text</span>
+            </label>
+            <textarea id="text-editor-input" oninput="updateLivePreview()" class="w-full flex-1 min-h-[500px] p-4 rounded-2xl border border-slate-200 bg-slate-50 font-mono text-xs sm:text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0072BC] focus:border-transparent leading-relaxed resize-y shadow-xs">{{ editable_data.content }}</textarea>
+          </div>
+
+          <div class="flex flex-col space-y-2">
+            <label class="text-xs font-bold text-slate-700 flex items-center justify-between">
+              <span>Xem trước hiển thị (Live Preview)</span>
+              <span class="text-emerald-600 font-semibold flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>Thời gian thực</span>
+            </label>
+            <div id="live-preview-box" class="w-full flex-1 min-h-[500px] p-5 rounded-2xl border border-slate-200 bg-white overflow-y-auto prose prose-sm max-w-none text-slate-800 leading-relaxed shadow-xs">
+              <!-- Rendered preview -->
+            </div>
+          </div>
+        </div>
+
+        {% elif ext == '.docx' %}
+        <!-- DOCX WORD EDITOR -->
+        <div class="flex flex-col space-y-3 flex-1">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-slate-700">Nội dung văn bản Word (.docx)</label>
+            <span class="text-xs text-slate-400">Các đoạn văn được phân cách bằng dấu xuống dòng</span>
+          </div>
+          <textarea id="docx-editor-input" class="w-full flex-1 min-h-[500px] p-5 rounded-2xl border border-slate-200 bg-white text-slate-800 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#0072BC] leading-relaxed resize-y shadow-xs">{{ editable_data.content }}</textarea>
+        </div>
+
+        {% elif ext == '.pdf' %}
+        <!-- PDF VIEWER & EXTRACTED PREVIEW -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 min-h-[600px]">
+          <div class="lg:col-span-7 flex flex-col space-y-2">
+            <label class="text-xs font-bold text-slate-700 flex items-center justify-between">
+              <span>Trình xem tệp PDF trực quan</span>
+              <span class="text-slate-400 font-normal">{{ editable_data.page_count }} trang</span>
+            </label>
+            <iframe src="{{ editable_data.url }}" class="w-full flex-1 min-h-[580px] rounded-2xl border border-slate-200 shadow-xs" title="PDF Viewer"></iframe>
+          </div>
+
+          <div class="lg:col-span-5 flex flex-col space-y-2">
+            <label class="text-xs font-bold text-slate-700 flex items-center justify-between">
+              <span>Nội dung văn bản trích xuất (được AI nạp vào RAG)</span>
+              <span class="text-[#0072BC] font-semibold">Tự động OCR/Extract</span>
+            </label>
+            <div class="w-full flex-1 min-h-[580px] max-h-[580px] overflow-y-auto p-4 rounded-2xl border border-slate-200 bg-slate-50 font-mono text-xs text-slate-700 leading-relaxed whitespace-pre-wrap shadow-xs">
+              {{ editable_data.extracted_text|default:"(Không trích xuất được văn bản từ tệp PDF này)" }}
+            </div>
+          </div>
+        </div>
+
+        {% else %}
+        <div class="py-16 text-center text-slate-400">
+          <span class="material-symbols-outlined text-[48px] text-slate-300 block mb-2">draft</span>
+          <p class="font-bold text-slate-700">Định dạng tệp không hỗ trợ chỉnh sửa trực tiếp trên Web</p>
+          <a href="{% url 'admissions:view_document_file' doc.id %}" target="_blank" class="mt-3 inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-colors">
+            <span class="material-symbols-outlined text-[16px]">download</span>
+            <span>Tải về máy tính để xem</span>
+          </a>
+        </div>
+        {% endif %}
+
+      </div>
+
+      <!-- Footer Info -->
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-500 gap-2">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px] text-emerald-600">security</span>
+          <span>Thao tác phê duyệt sẽ lập tức kích hoạt vector embedding và nạp vào mô hình AI DUE Tuyển sinh.</span>
+        </div>
+        <div class="font-mono text-[11px]">Mã tài liệu: #{{ doc.id }}</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- MODAL TỪ CHỐI TÀI LIỆU -->
+<div id="reject-modal-backdrop" class="fixed inset-0 z-[99999] bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4">
+  <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
+    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div class="flex items-center gap-2 text-rose-600 font-bold">
+        <span class="material-symbols-outlined text-[22px]">cancel</span>
+        <h3 class="text-base text-slate-900 font-extrabold">Từ chối Phê duyệt Tài liệu</h3>
+      </div>
+      <button type="button" onclick="closeRejectModal()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600 cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <p class="text-xs text-slate-500">
+      Vui lòng cung cấp lý do từ chối để hệ thống tự động thông báo cho Cán bộ đã tải tài liệu lên:
+    </p>
+
+    <textarea id="modal-reject-reason" rows="4" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500 leading-relaxed shadow-xs" placeholder="Ví dụ: Thiếu quyết định ban hành chỉ tiêu 2026 chính thức, hoặc số liệu học phí chưa được cập nhật..."></textarea>
+
+    <div class="flex items-center justify-end gap-2 pt-2">
+      <button type="button" onclick="closeRejectModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer">
+        Hủy bỏ
+      </button>
+      <button type="button" onclick="confirmRejectDoc()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">send</span>
+        <span>Xác nhận từ chối</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var DOC_ID = {{ doc.id }};
+  var FILE_EXT = "{{ ext|lower }}";
+  var EDITABLE_DATA = {{ editable_json|safe }};
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  // Live markdown preview
+  function updateLivePreview() {
+    var input = document.getElementById('text-editor-input');
+    var box = document.getElementById('live-preview-box');
+    if (!input || !box) return;
+    var text = input.value;
+    var formatted = esc(text)
+      .replace(/\n/g, '<br>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#0072BC] hover:underline font-semibold" target="_blank" rel="noopener">$1</a>');
+    box.innerHTML = formatted;
+  }
+
+  // Interactive table operations
+  function addRowToTable() {
+    var tbody = document.getElementById('table-data-body');
+    var headers = document.querySelectorAll('#table-headers-row th');
+    var colCount = headers.length - 1; // trừ cột #
+    if (colCount <= 0) colCount = 3;
+
+    var tr = document.createElement('tr');
+    tr.className = 'hover:bg-blue-50/40 transition-colors group';
+
+    var rowIdx = tbody.querySelectorAll('tr').length;
+    var html = '<td class="p-2.5 text-center text-slate-400 font-mono text-[11px] select-none">' +
+               '<input type="radio" name="selected_row_radio" value="' + rowIdx + '" class="cursor-pointer" />' +
+               '</td>';
+    for (var i = 0; i < colCount; i++) {
+      html += '<td class="p-1.5">' +
+              '<input type="text" value="" class="cell-input w-full bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg px-2.5 py-1.5 text-slate-800 font-medium border border-slate-200 focus:border-blue-400 transition-all text-xs" />' +
+              '</td>';
+    }
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+  }
+
+  function deleteSelectedRow() {
+    var selected = document.querySelector('input[name="selected_row_radio"]:checked');
+    if (!selected) {
+      alert('Vui lòng tích chọn dòng cần xóa ở cột # đầu tiên');
+      return;
+    }
+    var tr = selected.closest('tr');
+    if (tr) tr.remove();
+  }
+
+  // Lấy dữ liệu payload từ editor
+  function getPayloadFromEditor() {
+    if (FILE_EXT === '.csv' || FILE_EXT === '.xlsx') {
+      var headerInputs = document.querySelectorAll('#table-headers-row .header-input');
+      var headers = Array.from(headerInputs).map(function(inp) { return inp.value.trim(); });
+
+      var rowEls = document.querySelectorAll('#table-data-body tr');
+      var rows = [];
+      rowEls.forEach(function(tr) {
+        var cellInputs = tr.querySelectorAll('.cell-input');
+        if (cellInputs.length > 0) {
+          var row = Array.from(cellInputs).map(function(inp) { return inp.value.trim(); });
+          rows.push(row);
+        }
+      });
+      return { headers: headers, rows: rows };
+    } else if (FILE_EXT === '.md' || FILE_EXT === '.txt') {
+      var textInp = document.getElementById('text-editor-input');
+      return { content: textInp ? textInp.value : '' };
+    } else if (FILE_EXT === '.docx') {
+      var docxInp = document.getElementById('docx-editor-input');
+      return { content: docxInp ? docxInp.value : '' };
+    }
+    return {};
+  }
+
+  // Lưu nội dung chỉnh sửa vào file vật lý
+  async function saveDocumentContent(silent) {
+    var btn = document.getElementById('btn-save-content');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Đang lưu...</span>';
+    }
+
+    var payload = getPayloadFromEditor();
+    try {
+      var res = await fetch('/api/tailieu/' + DOC_ID + '/save/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken') || ''
+        },
+        body: JSON.stringify(payload)
+      });
+      var json = await res.json();
+      if (json.status === 'success') {
+        if (!silent) alert(json.message || 'Đã lưu nội dung thành công!');
+        return true;
+      } else {
+        alert('Lỗi: ' + json.message);
+        return false;
+      }
+    } catch (e) {
+      alert('Không thể kết nối đến máy chủ để lưu nội dung');
+      return false;
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">save</span><span>Lưu nội dung</span>';
+      }
+    }
+  }
+
+  // Phê duyệt tài liệu & Nạp vào RAG AI
+  async function approveAndIndex() {
+    if (!confirm('Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp toàn bộ nội dung vào kho tri thức Chatbot AI DUE?')) return;
+
+    // Lưu nội dung đã sửa trước nếu có thể
+    if (FILE_EXT !== '.pdf') {
+      var saved = await saveDocumentContent(true);
+      if (!saved) return;
+    }
+
+    var btn = document.getElementById('btn-approve');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Đang nạp vào AI...</span>';
+    }
+
+    try {
+      var res = await fetch('/api/tailieu/' + DOC_ID + '/approve/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken') || ''
+        }
+      });
+      var json = await res.json();
+      if (json.status === 'success') {
+        alert(json.message || 'Đã phê duyệt và nạp vào AI thành công!');
+        window.location.reload();
+      } else {
+        alert('Lỗi: ' + json.message);
+      }
+    } catch (e) {
+      alert('Không thể kết nối đến máy chủ');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span><span>Phê duyệt & Nạp vào AI</span>';
+      }
+    }
+  }
+
+  // Modal Từ chối
+  function openRejectModal() {
+    var modal = document.getElementById('reject-modal-backdrop');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  function closeRejectModal() {
+    var modal = document.getElementById('reject-modal-backdrop');
+    if (modal) modal.style.display = 'none';
+  }
+
+  async function confirmRejectDoc() {
+    var reasonInp = document.getElementById('modal-reject-reason');
+    var reason = reasonInp ? reasonInp.value.trim() : '';
+    if (!reason) {
+      alert('Vui lòng nhập lý do từ chối để gửi phản hồi cho cán bộ');
+      return;
+    }
+
+    try {
+      var res = await fetch('/api/tailieu/' + DOC_ID + '/reject/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken') || ''
+        },
+        body: JSON.stringify({ reason: reason })
+      });
+      var json = await res.json();
+      if (json.status === 'success') {
+        alert(json.message || 'Đã từ chối tài liệu');
+        closeRejectModal();
+        window.location.reload();
+      } else {
+        alert('Lỗi: ' + json.message);
+      }
+    } catch (e) {
+      alert('Không thể kết nối đến máy chủ');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (FILE_EXT === '.md' || FILE_EXT === '.txt') {
+      updateLivePreview();
+    }
+  });
+</script>
+{% endblock %}
+

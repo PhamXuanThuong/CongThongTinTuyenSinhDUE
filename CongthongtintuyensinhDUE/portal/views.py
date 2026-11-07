@@ -1,8 +1,10 @@
 import json
 from django.shortcuts import render, redirect
-from django.http import Http404, HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
+from django.views.decorators.http import require_POST
+from django.db.models import Q
 from portal import selectors
-from portal.models import LienChiDoan, KyTucXa, HoatDongDoan
+from portal.models import LienChiDoan, KyTucXa, HoatDongDoan, Faculty, LichTrinhTanSinhVien
 
 
 def faculty_overview_view(request: HttpRequest) -> HttpResponse:
@@ -256,6 +258,117 @@ def get_freshman_schedule_events(faculty_name="Khoa Tài chính - Ngân hàng", 
         }
     ]
 
+    # Bổ sung các sự kiện do Cán bộ thêm mới từ Database
+    try:
+        qs = LichTrinhTanSinhVien.objects.filter(is_active=True)
+        if faculty_code:
+            qs = qs.filter(Q(faculty__code=faculty_code) | Q(faculty__isnull=True))
+        db_events = [item.to_dict() for item in qs.order_by('day', 'id')]
+        # Tránh trùng lặp ID
+        for ev in db_events:
+            ev['id'] = 1000 + ev['id']
+        return base_events + db_events
+    except Exception:
+        return base_events
+
+
+@require_POST
+def api_create_schedule_event(request: HttpRequest) -> JsonResponse:
+    """
+    API cho phép Cán bộ thêm mới một sự kiện / hoạt động vào Lịch trình Tân sinh viên.
+    Chỉ tài khoản có vai trò Cán bộ (is_staff=True hoặc user 'canbo' hoặc superuser) mới có quyền tạo.
+    Thí sinh và khách vãng lai bị khóa quyền hoàn toàn.
+    """
+    is_can_bo = request.user.is_authenticated and (request.user.is_staff or request.user.username == 'canbo' or request.user.is_superuser)
+    if not is_can_bo:
+        return JsonResponse({
+            'success': False,
+            'message': 'Quyền bị từ chối: Chức năng tạo lịch trình chỉ dành riêng cho Cán bộ quản lý!'
+        }, status=403)
+
+    try:
+        data = json.loads(request.body.decode('utf-8')) if request.body else request.POST
+    except Exception:
+        data = request.POST
+
+    try:
+        day = int(data.get('day', 1))
+    except (ValueError, TypeError):
+        day = 1
+
+    try:
+        month = int(data.get('month', 8))
+    except (ValueError, TypeError):
+        month = 8
+
+    try:
+        year = int(data.get('year', 2026))
+    except (ValueError, TypeError):
+        year = 2026
+
+    title = data.get('title', '').strip()
+    time_str = data.get('time_str', '').strip()
+    location = data.get('location', '').strip()
+    category = data.get('category', 'khoa').strip()
+    desc = data.get('desc', '').strip()
+    guide = data.get('guide', '').strip()
+    faculty_code = data.get('faculty_code', '').strip()
+
+    if not title:
+        return JsonResponse({'success': False, 'message': 'Vui lòng nhập tên hoạt động!'}, status=400)
+
+    if not time_str:
+        time_str = f"Ngày {day:02d}/{month:02d}/{year}"
+
+    category_map = {
+        'online': ('Trực tuyến', 'bg-blue-50 text-blue-700 border-blue-200', '#0072BC'),
+        'welcome': ('Toàn trường', 'bg-amber-50 text-amber-700 border-amber-200', '#F37021'),
+        'khoa': ('Khoa & Lớp', 'bg-emerald-50 text-emerald-700 border-emerald-200', '#047857'),
+        'shcd': ('Sinh hoạt CD', 'bg-purple-50 text-purple-700 border-purple-200', '#7e22ce'),
+        'gala': ('Gala Khoa', 'bg-rose-50 text-rose-700 border-rose-200', '#e11d48'),
+        'test': ('Khảo sát & Y tế', 'bg-cyan-50 text-cyan-700 border-cyan-200', '#0891b2'),
+        'study': ('Học chính khóa', 'bg-teal-50 text-teal-700 border-teal-200', '#0d9488'),
+    }
+    badge_label, badge_color, dot_color = category_map.get(
+        category,
+        ('Hoạt động mới', 'bg-blue-50 text-blue-700 border-blue-200', '#0072BC')
+    )
+    badge = f"Ngày {day:02d}/{month:02d} • {badge_label}"
+
+    faculty_obj = None
+    if faculty_code:
+        faculty_obj = Faculty.objects.filter(code=faculty_code).first()
+
+    creator = request.user.username if request.user.is_authenticated else "Cán bộ quản trị"
+
+    obj = LichTrinhTanSinhVien.objects.create(
+        faculty=faculty_obj,
+        day=day,
+        month=month,
+        year=year,
+        title=title,
+        time_str=time_str,
+        location=location or "Khuôn viên DUE (71 Ngũ Hành Sơn)",
+        category=category,
+        badge=badge,
+        badge_color=badge_color,
+        dot_color=dot_color,
+        description=desc or "Hoạt động bổ sung trong lịch trình tân sinh viên do Cán bộ thiết lập.",
+        guide=guide or "Tân sinh viên chú ý theo dõi thông báo và tham gia đầy đủ, đúng giờ.",
+        image_url="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
+        created_by=creator
+    )
+
+    ev_dict = obj.to_dict()
+    ev_dict['id'] = 1000 + obj.id
+
+    return JsonResponse({
+        'success': True,
+        'message': f'Đã thêm thành công hoạt động "{title}" vào ngày {day:02d}/{month:02d}/{year}!',
+        'event': ev_dict
+    })
+
+
 
 def faculty_freshman_schedule_view(request: HttpRequest, code: str) -> HttpResponse:
     """Renders freshman schedule customized for a specific faculty."""
@@ -267,12 +380,14 @@ def faculty_freshman_schedule_view(request: HttpRequest, code: str) -> HttpRespo
     faculty_name = target_faculty.get('name')
     faculty_id = target_faculty.get('id')
     events = get_freshman_schedule_events(faculty_name, faculty_id)
+    is_can_bo = request.user.is_authenticated and (request.user.is_staff or request.user.username == 'canbo' or request.user.is_superuser)
 
     return render(request, 'portal/freshman_schedule.html', {
         'faculty': target_faculty,
         'faculties': faculties,
         'schedule_events': events,
         'is_faculty_specific': True,
+        'is_can_bo': is_can_bo,
     })
 
 
@@ -285,10 +400,12 @@ def freshman_schedule_view(request: HttpRequest) -> HttpResponse:
     faculty_name = target_faculty.get('name') if target_faculty else "Trường Đại học Kinh tế"
     faculty_id = target_faculty.get('id') if target_faculty else "tcnh"
     events = get_freshman_schedule_events(faculty_name, faculty_id)
+    is_can_bo = request.user.is_authenticated and (request.user.is_staff or request.user.username == 'canbo' or request.user.is_superuser)
 
     return render(request, 'portal/freshman_schedule.html', {
         'faculty': target_faculty,
         'faculties': faculties,
         'schedule_events': events,
         'is_faculty_specific': bool(khoa_code),
+        'is_can_bo': is_can_bo,
     })

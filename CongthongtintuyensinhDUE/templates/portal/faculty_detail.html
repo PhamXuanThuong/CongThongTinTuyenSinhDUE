@@ -59,7 +59,7 @@
     <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium" aria-label="Breadcrumb">
       <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa và đơn vị đào tạo</a>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa và Viện Đào tạo</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
       <span class="text-secondary-container font-semibold truncate">{{ faculty.name }}</span>
     </nav>
@@ -558,9 +558,6 @@
               <div class="space-y-1">
                 <div class="flex items-center gap-2">
                   <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Đoàn Thanh Niên – Hội Sinh Viên Khoa</span>
-                  <span class="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold border border-rose-200">
-                    {{ faculty.lcd.term|default:"Nhiệm kỳ 2024–2027" }}
-                  </span>
                 </div>
                 <h3 class="text-lg sm:text-xl font-bold text-slate-900">
                   {{ faculty.lcd.name|default:faculty.lien_chi_doan }}

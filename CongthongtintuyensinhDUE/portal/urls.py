@@ -30,6 +30,8 @@ urlpatterns = [
     # Hướng dẫn nhập học & Lịch trình tân sinh viên
     path('huong-dan-nhap-hoc/', views.enrollment_guide_view, name='huong_dan_nhap_hoc'),
     path('lich-trinh-tan-sinh-vien/', views.freshman_schedule_view, name='lich_trinh_tan_sinh_vien'),
+    path('api/lich-trinh/tao/', views.api_create_schedule_event, name='api_create_schedule_event'),
+    path('portal/api/lich-trinh/tao/', views.api_create_schedule_event, name='api_create_schedule_event_alias'),
 
     # API Endpoints chính thức (Tiếng Việt đồng bộ)
     path('api/khoa/', api.api_faculties_list, name='api_khoa_list'),

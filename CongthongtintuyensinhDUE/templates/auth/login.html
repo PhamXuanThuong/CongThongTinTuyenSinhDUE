@@ -116,7 +116,7 @@
 
       <!-- Form Content -->
       <div>
-        <!-- Heading -->
+        <!-- Form Heading & Description (Đã bỏ tabs phân quyền theo yêu cầu) -->
         <div class="mb-6">
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-100 text-secondary-container text-xs font-bold mb-2">
             <span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
@@ -128,16 +128,6 @@
           <p class="text-xs sm:text-sm text-on-surface-variant mt-1">
             Vui lòng nhập thông tin đăng nhập để tiếp tục tra cứu và quản trị hồ sơ.
           </p>
-        </div>
-
-        <!-- Role Switcher Tabs (Thí sinh / Cán bộ) -->
-        <div class="flex p-1 bg-slate-100 rounded-2xl mb-6">
-          <button type="button" onclick="switchRole('thisinh')" id="tab-thisinh" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all shadow-sm bg-white text-primary-container">
-            Thí sinh / Phụ huynh
-          </button>
-          <button type="button" onclick="switchRole('admin')" id="tab-admin" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-500 hover:text-slate-800">
-            Cán bộ / Quản trị
-          </button>
         </div>
 
         <!-- Error Alert (If login failed) -->
@@ -228,8 +218,8 @@
             <button type="button" onclick="fillCredentials('canbo', 'canbo123')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-secondary-container text-slate-700 hover:text-secondary-container font-semibold transition-colors cursor-pointer">
               Cán bộ: <span class="font-mono text-primary font-bold">canbo</span>
             </button>
-            <button type="button" onclick="fillCredentials('admin', 'admin123')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-secondary-container text-slate-700 hover:text-secondary-container font-semibold transition-colors cursor-pointer">
-              Quản trị: <span class="font-mono text-primary font-bold">admin</span>
+            <button type="button" onclick="fillCredentials('hdts', 'hdts123')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-secondary-container text-slate-700 hover:text-secondary-container font-semibold transition-colors cursor-pointer">
+              HĐTS: <span class="font-mono text-primary font-bold">hdts</span>
             </button>
           </div>
         </div>
@@ -261,23 +251,10 @@
     function fillCredentials(u, p) {
       document.getElementById('username').value = u;
       document.getElementById('password').value = p;
-      if (u === 'admin' || u === 'canbo') {
-        switchRole('admin');
-      } else {
-        switchRole('thisinh');
-      }
     }
 
     function switchRole(role) {
-      const tabThisinh = document.getElementById('tab-thisinh');
-      const tabAdmin = document.getElementById('tab-admin');
-      if (role === 'admin') {
-        tabAdmin.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all shadow-sm bg-white text-primary-container";
-        tabThisinh.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-500 hover:text-slate-800";
-      } else {
-        tabThisinh.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all shadow-sm bg-white text-primary-container";
-        tabAdmin.className = "flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-500 hover:text-slate-800";
-      }
+      // Đã bỏ tab phân quyền
     }
   </script>
 </body>

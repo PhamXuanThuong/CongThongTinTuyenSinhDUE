@@ -41,8 +41,8 @@
            ============================================== -->
       <div class="lg:col-span-3 space-y-4 flex flex-col h-[720px]">
 
-        {% if user.is_staff %}
-        <!-- Box 1 (Dành cho Cán bộ tư vấn): TẢI LÊN & QUẢN LÝ TÀI LIỆU -->
+        {% if user.is_staff or user.is_superuser or user.username == 'hdts' %}
+        <!-- Box 1 (Dành cho Cán bộ tư vấn & HĐTS): TẢI LÊN & QUẢN LÝ TÀI LIỆU -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col flex-shrink-0">
           <div class="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
             <div class="flex items-center gap-2">
@@ -64,9 +64,10 @@
             
             <!-- Danh sách tài liệu rút gọn -->
             <div id="sources-empty-state" class="py-2 text-center text-slate-400 text-xs">Chưa có tài liệu tải lên</div>
-            <div id="sources-list" class="max-h-[120px] overflow-y-auto space-y-1.5 hidden pr-1"></div>
+            <div id="sources-list" class="max-h-[160px] overflow-y-auto space-y-1.5 hidden pr-1"></div>
             
-            <!-- Nút bấm vào trang Duyệt & Trả lời câu hỏi đang chờ -->
+            <!-- Nút bấm vào trang Duyệt & Trả lời câu hỏi đang chờ (Chỉ hiển thị cho Cán bộ tư vấn) -->
+            {% if user.username != 'hdts' and not user.is_superuser %}
             <a href="/can-bo/hoi-dap/" class="flex items-center justify-between p-2.5 rounded-xl bg-orange-50 border border-orange-200 hover:bg-orange-100/70 transition-all text-xs font-bold text-[#F37021] group">
               <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-[18px]">support_agent</span>
@@ -74,6 +75,27 @@
               </div>
               <span id="staff-pending-badge" class="px-2 py-0.5 rounded-full bg-[#F37021] text-white text-[10px] font-extrabold shadow-sm">0</span>
             </a>
+
+            <!-- Cảnh báo nhắc nhở phản hồi cho Cán bộ khi vượt quá 24h (Đã ẩn với HĐTS) -->
+            <div id="staff-overdue-alert" class="hidden p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs space-y-1">
+              <div class="flex items-center gap-1.5 font-bold text-red-700">
+                <span class="material-symbols-outlined text-[16px] text-red-600 animate-pulse">warning</span>
+                <span>Nhắc nhở phản hồi (>24h)</span>
+              </div>
+              <p class="text-[11px] leading-snug text-red-600">
+                Có <strong id="staff-overdue-count">0</strong> câu hỏi chờ xử lý quá 24h chưa được phản hồi! Vui lòng ưu tiên phản hồi sớm.
+              </p>
+            </div>
+            {% else %}
+            <!-- Nút điều hướng sang Bảng Thống kê & Quản trị dành cho HĐTS -->
+            <a href="/hdts/thong-ke/" class="flex items-center justify-between p-2.5 rounded-xl bg-blue-50 border border-blue-200 hover:bg-blue-100/70 transition-all text-xs font-bold text-[#0072BC] group">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">query_stats</span>
+                <span>Bảng Thống kê & Duyệt HĐTS</span>
+              </div>
+              <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+            </a>
+            {% endif %}
 
           </div>
         </div>
@@ -253,23 +275,28 @@
     var uploadedSources = [];
     var chatHistory = [];
     var IS_STAFF = Boolean('{% if user.is_staff %}1{% endif %}');
+    var IS_HDTS = Boolean('{% if user.is_superuser or user.username == "hdts" or user.username == "admin" %}1{% endif %}');
     var CSRF_TOKEN = '{{ csrf_token }}';
 
-    /* ---- Mã phiên chat của người hỏi (để nhận câu trả lời của cán bộ) ---- */
+    /* ---- Mã phiên chat của người hỏi (cách ly độc lập theo từng tài khoản) ---- */
     function storageGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
     function storageSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+    var CURRENT_USER_ID = "{% if user.is_authenticated %}{{ user.id }}{% else %}guest{% endif %}";
+    var STORAGE_KEY = 'due_chat_client_id_u' + CURRENT_USER_ID;
+    var SEEN_KEY = 'due_chat_seen_u' + CURRENT_USER_ID;
 
     // Kiểm tra nếu chuyển từ ChatWidget sang qua URL param
     var urlParams = new URLSearchParams(window.location.search);
     var urlSessionId = urlParams.get('session_id');
 
-    var CLIENT_ID = urlSessionId || storageGet('due_chat_client_id');
+    var CLIENT_ID = urlSessionId || storageGet(STORAGE_KEY);
     if (!CLIENT_ID || !/^[A-Za-z0-9_-]{8,64}$/.test(CLIENT_ID)) {
       CLIENT_ID = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
     }
-    storageSet('due_chat_client_id', CLIENT_ID);
+    storageSet(STORAGE_KEY, CLIENT_ID);
     var seenAnswers = {};
-    try { seenAnswers = JSON.parse(storageGet('due_chat_seen') || '{}') || {}; } catch (e) { seenAnswers = {}; }
+    try { seenAnswers = JSON.parse(storageGet(SEEN_KEY) || '{}') || {}; } catch (e) { seenAnswers = {}; }
     var pendingCount = 0;
     var pollTimer = null;
 
@@ -286,7 +313,7 @@
           appendMessage('staff', '**Trả lời cho câu hỏi:** "' + q.cau_hoi + '"\n\n' + q.tra_loi);
           chatHistory.push({ role: 'assistant', content: q.tra_loi });
         });
-        storageSet('due_chat_seen', JSON.stringify(seenAnswers));
+        storageSet(SEEN_KEY, JSON.stringify(seenAnswers));
       } catch (e) {}
       schedulePoll();
     }
@@ -297,17 +324,36 @@
     }
 
     async function refreshStaffBadge() {
-      if (!IS_STAFF) return;
+      if (!IS_STAFF && !IS_HDTS) return;
       try {
         var res = await fetch('/api/can-bo/cau-hoi/?trang_thai=cho');
         var json = await res.json();
         var b = document.getElementById('staff-pending-badge');
-        if (b && json.status === 'success') {
-          b.textContent = json.pending_count;
-          if (json.pending_count > 0) {
-            b.className = 'px-2 py-0.5 rounded-full bg-red-500 text-white text-[10px] font-extrabold shadow-sm animate-pulse';
-          } else {
-            b.className = 'px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 text-[10px] font-bold';
+        var overdueAlert = document.getElementById('staff-overdue-alert');
+        var overdueCountEl = document.getElementById('staff-overdue-count');
+
+        if (json.status === 'success') {
+          if (b) {
+            b.textContent = json.pending_count;
+            if (json.overdue_count > 0) {
+              b.className = 'px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-extrabold shadow-sm animate-bounce';
+              b.title = 'Có ' + json.overdue_count + ' câu hỏi đã quá 24h chưa được phản hồi!';
+            } else if (json.pending_count > 0) {
+              b.className = 'px-2 py-0.5 rounded-full bg-[#F37021] text-white text-[10px] font-extrabold shadow-sm';
+            } else {
+              b.className = 'px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 text-[10px] font-bold';
+            }
+          }
+
+          if (IS_HDTS) {
+            if (overdueAlert) overdueAlert.classList.add('hidden');
+          } else if (overdueAlert && overdueCountEl) {
+            if (json.overdue_count > 0) {
+              overdueCountEl.textContent = json.overdue_count;
+              overdueAlert.classList.remove('hidden');
+            } else {
+              overdueAlert.classList.add('hidden');
+            }
           }
         }
       } catch (e) {}
@@ -320,12 +366,19 @@
     }
 
     async function loadSources() {
-      var res = await fetch('/api/tailieu/');
-      var json = await res.json();
-      uploadedSources = json.data.map(function (d) {
-        return { id: d.id, name: d.name, size: d.size, date: d.date };
-      });
-      renderSourcesList();
+      try {
+        var res = await fetch('/api/tailieu/');
+        var json = await res.json();
+        if (json.status === 'success') {
+          if (typeof json.is_hdts !== 'undefined') {
+            IS_HDTS = Boolean(json.is_hdts);
+          }
+          uploadedSources = json.data || [];
+          renderSourcesList();
+        }
+      } catch (e) {
+        console.error('Error loading sources:', e);
+      }
     }
 
     async function handleStaffUpload(e) {
@@ -335,15 +388,13 @@
       for (var i = 0; i < files.length; i++) fd.append('files', files[i]);
       e.target.value = '';
 
-      document.getElementById('sources-count-badge').textContent = 'Đang xử lý...';
+      var countBadge = document.getElementById('sources-count-badge');
+      if (countBadge) countBadge.textContent = 'Đang tải lên...';
       try {
         var res = await fetch('/api/tailieu/upload/', { method: 'POST', body: fd, headers: { 'X-CSRFToken': CSRF_TOKEN } });
         var json = await res.json();
         if (json.status !== 'success') throw new Error(json.message);
-        var errs = json.data.filter(function (d) { return d.error; });
-        var msg = 'Đã nạp ' + (json.data.length - errs.length) + ' tài liệu vào AI.';
-        if (errs.length) msg += '\nLỗi: ' + errs.map(function (d) { return d.name + ' - ' + d.error; }).join('\n');
-        alert(msg);
+        alert(json.message);
       } catch (err) {
         alert('Tải lên thất bại: ' + err.message);
       }
@@ -358,8 +409,48 @@
       return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
     }
 
+    async function approveSource(id) {
+      if (!confirm('Bạn có chắc chắn muốn PHÊ DUYỆT tài liệu này và nạp vào kho tri thức AI của Chatbot?')) return;
+      try {
+        var res = await fetch('/api/tailieu/' + id + '/approve/', {
+          method: 'POST',
+          headers: { 'X-CSRFToken': CSRF_TOKEN }
+        });
+        var json = await res.json();
+        if (json.status === 'success') {
+          alert(json.message);
+          loadSources();
+        } else {
+          alert('Lỗi: ' + json.message);
+        }
+      } catch (e) {
+        alert('Thao tác thất bại: ' + e.message);
+      }
+    }
+
+    async function rejectSource(id) {
+      var reason = prompt('Nhập lý do từ chối tài liệu này (sẽ gửi thông báo cho Cán bộ):', 'Nội dung chưa đầy đủ hoặc không đúng quy định tuyển sinh');
+      if (reason === null) return;
+      try {
+        var res = await fetch('/api/tailieu/' + id + '/reject/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN },
+          body: JSON.stringify({ reason: reason })
+        });
+        var json = await res.json();
+        if (json.status === 'success') {
+          alert(json.message);
+          loadSources();
+        } else {
+          alert('Lỗi: ' + json.message);
+        }
+      } catch (e) {
+        alert('Thao tác thất bại: ' + e.message);
+      }
+    }
+
     async function removeSource(id) {
-      if (!confirm('Xóa tài liệu này khỏi cơ sở tri thức?')) return;
+      if (!confirm('Xóa tài liệu này khỏi hệ thống?')) return;
       await fetch('/api/tailieu/' + id + '/delete/', { method: 'POST', headers: { 'X-CSRFToken': CSRF_TOKEN } });
       loadSources();
     }
@@ -393,6 +484,10 @@
         if (json.status !== 'success') {
           appendMessage('assistant', '⚠️ ' + (json.message || 'Có lỗi xảy ra'));
           return;
+        }
+        if (json.client_id && json.client_id !== CLIENT_ID) {
+          CLIENT_ID = json.client_id;
+          storageSet(STORAGE_KEY, CLIENT_ID);
         }
         var text = json.reply;
         appendMessage(json.handoff ? 'handoff' : 'assistant', text);
@@ -469,7 +564,7 @@
     async function switchSession(sid) {
       if (sid === CLIENT_ID) return;
       CLIENT_ID = sid;
-      storageSet('due_chat_client_id', CLIENT_ID);
+      storageSet(STORAGE_KEY, CLIENT_ID);
       chatHistory = [];
       document.getElementById('messages-list').innerHTML = '';
       var sug = document.getElementById('suggestions-block');
@@ -487,6 +582,8 @@
             appendMessage(m.role, text);
             chatHistory.push({ role: m.role, content: m.content });
           });
+        } else {
+          createNewSession();
         }
       } catch (e) {}
       loadChatSessions();
@@ -494,7 +591,7 @@
 
     function createNewSession() {
       CLIENT_ID = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
-      storageSet('due_chat_client_id', CLIENT_ID);
+      storageSet(STORAGE_KEY, CLIENT_ID);
       chatHistory = [];
       document.getElementById('messages-list').innerHTML = '';
       var label = document.getElementById('current-session-label');
@@ -520,7 +617,7 @@
       if (IS_STAFF) loadSources();
       await loadChatSessions();
 
-      // Nếu đang có phiên chat (ví dụ từ widget chuyển sang), tự động load tin nhắn của phiên đó
+      // Nếu đang có phiên chat, tự động load tin nhắn của phiên đó
       if (CLIENT_ID) {
         try {
           var res = await fetch('/api/chat/sessions/' + encodeURIComponent(CLIENT_ID) + '/');
@@ -537,8 +634,13 @@
               appendMessage(m.role, m.content);
               chatHistory.push({ role: m.role, content: m.content });
             });
+          } else if (res.status === 403 || (json && json.status === 'error')) {
+            // Phiên chat thuộc tài khoản khác hoặc không hợp lệ -> Sinh phiên mới sạch sẽ
+            createNewSession();
           }
-        } catch (e) {}
+        } catch (e) {
+          createNewSession();
+        }
       }
 
       pollStaffAnswers();
@@ -552,8 +654,8 @@
       var topIndicator = document.getElementById('active-source-indicator');
 
       var total = uploadedSources.length;
-      countBadge.textContent = total + ' tệp';
-      topIndicator.textContent = total;
+      if (countBadge) countBadge.textContent = total + ' tệp';
+      if (topIndicator) topIndicator.textContent = total;
 
       if (total === 0) {
         emptyEl.classList.remove('hidden');
@@ -567,18 +669,71 @@
 
       var html = '';
       uploadedSources.forEach(function(src) {
-        html += '<div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2 text-xs group">' +
-                  '<div class="flex items-center gap-2 min-w-0 flex-1">' +
-                    '<span class="material-symbols-outlined text-[18px] text-[#0072BC] flex-shrink-0">article</span>' +
-                    '<div class="min-w-0 flex-1">' +
-                      '<p class="font-semibold text-slate-800 truncate" title="' + escapeHtml(src.name) + '">' + escapeHtml(src.name) + '</p>' +
-                      '<p class="text-[10px] text-slate-400">' + src.size + ' • Lúc ' + src.date + '</p>' +
+        var statusBadge = '';
+        if (src.status === 'approved') {
+          statusBadge = '<span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200" title="Đã duyệt & nạp vào AI"><span class="material-symbols-outlined text-[11px]">check_circle</span>Đã duyệt</span>';
+        } else if (src.status === 'rejected') {
+          statusBadge = '<span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200" title="HĐTS đã từ chối"><span class="material-symbols-outlined text-[11px]">cancel</span>Từ chối</span>';
+        } else {
+          statusBadge = '<span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-300 animate-pulse" title="Đang chờ HĐTS phê duyệt"><span class="material-symbols-outlined text-[11px]">hourglass_top</span>Đang chờ duyệt</span>';
+        }
+
+        var hdtsActions = '';
+        if (IS_HDTS && src.status === 'pending') {
+          hdtsActions = '<div class="flex items-center gap-1.5 mt-1.5 pt-1.5 border-t border-slate-200/80">' +
+            '<a href="' + (src.edit_url || '/hdts/tai-lieu/' + src.id + '/chinh-sua/') + '" class="py-1 px-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[10px] flex items-center justify-center gap-0.5 transition-colors" title="Thẩm định nội dung và sửa trực tiếp">' +
+              '<span class="material-symbols-outlined text-[13px]">edit_note</span>' +
+              '<span>Sửa</span>' +
+            '</a>' +
+            '<a href="/tai-lieu/' + src.id + '/xem/" target="_blank" class="py-1 px-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0072BC] font-bold text-[10px] flex items-center justify-center gap-0.5 transition-colors" title="Xem tài liệu gốc">' +
+              '<span class="material-symbols-outlined text-[13px]">visibility</span>' +
+              '<span>Xem</span>' +
+            '</a>' +
+            '<button type="button" onclick="approveSource(' + src.id + ')" class="flex-1 py-1 px-2 rounded-lg bg-[#00A859] hover:bg-[#008f4c] text-white font-bold text-[10px] flex items-center justify-center gap-1 transition-colors shadow-xs cursor-pointer" title="HĐTS phê duyệt">' +
+              '<span class="material-symbols-outlined text-[13px]">done_all</span>' +
+              '<span>Duyệt</span>' +
+            '</button>' +
+            '<button type="button" onclick="rejectSource(' + src.id + ')" class="py-1 px-2 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 font-bold text-[10px] flex items-center justify-center gap-0.5 transition-colors cursor-pointer" title="Từ chối tài liệu">' +
+              '<span class="material-symbols-outlined text-[13px]">close</span>' +
+              '<span>Từ chối</span>' +
+            '</button>' +
+          '</div>';
+        }
+
+        var rejectReasonBox = '';
+        if (src.status === 'rejected' && src.reject_reason) {
+          rejectReasonBox = '<div class="text-[10px] text-rose-700 bg-rose-50 px-2 py-1 rounded-lg border border-rose-200 mt-1 flex items-center gap-1">' +
+            '<span class="material-symbols-outlined text-[12px] text-rose-600 shrink-0">info</span>' +
+            '<span><strong>Lý do từ chối:</strong> ' + escapeHtml(src.reject_reason) + '</span>' +
+            '</div>';
+        }
+
+        var uploaderInfo = src.uploaded_by ? (' • Bởi ' + escapeHtml(src.uploaded_by)) : '';
+
+        html += '<div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1 text-xs group">' +
+                  '<div class="flex items-start justify-between gap-2">' +
+                    '<div class="flex items-start gap-2 min-w-0 flex-1">' +
+                      '<span class="material-symbols-outlined text-[18px] text-[#0072BC] flex-shrink-0 mt-0.5">description</span>' +
+                      '<div class="min-w-0 flex-1">' +
+                        '<div class="flex items-center gap-1.5 flex-wrap">' +
+                          '<a href="/tai-lieu/' + src.id + '/xem/" target="_blank" class="font-bold text-slate-800 hover:text-[#0072BC] hover:underline truncate block" title="Bấm để xem tệp: ' + escapeHtml(src.name) + '">' + escapeHtml(src.name) + '</a>' +
+                          statusBadge +
+                        '</div>' +
+                        '<p class="text-[10px] text-slate-400 mt-0.5">' + src.size + ' • Lúc ' + src.date + uploaderInfo + '</p>' +
+                        rejectReasonBox +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="flex items-center gap-0.5 shrink-0">' +
+                      '<a href="/tai-lieu/' + src.id + '/xem/" target="_blank" class="w-6 h-6 rounded-md hover:bg-blue-50 text-slate-400 hover:text-[#0072BC] flex items-center justify-center transition-colors" title="Mở xem tài liệu">' +
+                        '<span class="material-symbols-outlined text-[15px]">visibility</span>' +
+                      '</a>' +
+                      (IS_STAFF || IS_HDTS ?
+                      '<button onclick="removeSource(\'' + src.id + '\')" class="w-6 h-6 rounded-md hover:bg-red-50 text-slate-400 hover:text-red-500 flex items-center justify-center transition-colors flex-shrink-0 cursor-pointer" title="Xóa tài liệu">' +
+                        '<span class="material-symbols-outlined text-[15px]">delete</span>' +
+                      '</button>' : '') +
                     '</div>' +
                   '</div>' +
-                  (IS_STAFF ?
-                  '<button onclick="removeSource(\'' + src.id + '\')" class="w-6 h-6 rounded-md hover:bg-red-50 text-slate-400 hover:text-red-500 flex items-center justify-center transition-colors flex-shrink-0" title="Xóa tài liệu">' +
-                    '<span class="material-symbols-outlined text-[16px]">delete</span>' +
-                  '</button>' : '') +
+                  hdtsActions +
                 '</div>';
       });
 
@@ -605,7 +760,10 @@
       var msgDiv = document.createElement('div');
       msgDiv.className = 'flex items-start gap-3 ' + (sender === 'user' ? 'justify-end' : 'justify-start');
 
-      var formatted = escapeHtml(text).replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      var formatted = escapeHtml(text)
+        .replace(/\n/g, '<br>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#0072BC] hover:underline font-semibold" target="_blank" rel="noopener">$1</a>');
 
       if (sender === 'user') {
         msgDiv.innerHTML = '<div class="max-w-[85%] rounded-2xl p-3.5 bg-[#0072BC] text-white text-xs sm:text-sm shadow-sm">' +
