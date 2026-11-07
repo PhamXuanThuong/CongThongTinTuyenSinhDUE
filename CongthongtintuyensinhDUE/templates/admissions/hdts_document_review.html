@@ -12,7 +12,7 @@
     <!-- Top Executive Header -->
     <div class="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
       <div class="flex items-start sm:items-center gap-4">
-        <a href="/hdts/thong-ke/" class="w-12 h-12 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center flex-shrink-0 transition-colors shadow-xs" title="Quay lại danh sách tài liệu">
+        <a href="javascript:void(0);" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href = '/hdts/thong-ke/'; }" class="w-12 h-12 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center flex-shrink-0 transition-colors shadow-xs cursor-pointer" title="Quay lại trang trước">
           <span class="material-symbols-outlined text-[24px]">arrow_back</span>
         </a>
         <div>
@@ -52,10 +52,9 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center gap-2 self-start lg:self-center flex-wrap">
-        <a href="{% url 'admissions:view_document_file' doc.id %}" target="_blank" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer" title="Mở file gốc">
-          <span class="material-symbols-outlined text-[17px]">open_in_new</span>
-          <span>Xem file gốc</span>
+      <div class="flex items-center gap-2 self-start lg:self-center flex-wrap" id="review-action-buttons">
+        <a href="{% url 'admissions:view_document_file' doc.id %}" download class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all shadow-xs flex items-center justify-center cursor-pointer" title="Tải file gốc">
+          <span class="material-symbols-outlined text-[20px]">download</span>
         </a>
 
         {% if ext != '.pdf' %}
@@ -65,6 +64,16 @@
         </button>
         {% endif %}
 
+        {% if doc.status == 'approved' or doc.status == 'da_duyet' %}
+        <button type="button" disabled class="px-4 py-2.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center gap-1.5 cursor-default">
+          <span class="material-symbols-outlined text-[18px]">check_circle</span>
+          <span>Đã phê duyệt & Nạp AI</span>
+        </button>
+        <button type="button" onclick="approveAndIndex()" id="btn-re-approve" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer" title="Cập nhật lại tri thức vào AI">
+          <span class="material-symbols-outlined text-[16px]">sync</span>
+          <span>Nạp lại AI</span>
+        </button>
+        {% else %}
         <button type="button" onclick="approveAndIndex()" id="btn-approve" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
           <span class="material-symbols-outlined text-[18px]">verified</span>
           <span>Phê duyệt & Nạp vào AI</span>
@@ -74,6 +83,7 @@
           <span class="material-symbols-outlined text-[17px]">close</span>
           <span>Từ chối</span>
         </button>
+        {% endif %}
       </div>
     </div>
 
@@ -231,15 +241,6 @@
         {% endif %}
 
       </div>
-
-      <!-- Footer Info -->
-      <div class="p-4 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-500 gap-2">
-        <div class="flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-[16px] text-emerald-600">security</span>
-          <span>Thao tác phê duyệt sẽ lập tức kích hoạt vector embedding và nạp vào mô hình AI DUE Tuyển sinh.</span>
-        </div>
-        <div class="font-mono text-[11px]">Mã tài liệu: #{{ doc.id }}</div>
-      </div>
     </div>
 
   </div>
@@ -277,9 +278,9 @@
 </div>
 
 <script>
-  var DOC_ID = {{ doc.id }};
+  var DOC_ID = parseInt("{{ doc.id|default:'0' }}", 10);
   var FILE_EXT = "{{ ext|lower }}";
-  var EDITABLE_DATA = {{ editable_json|safe }};
+  var EDITABLE_DATA = JSON.parse('{{ editable_json|escapejs }}' || 'null');
 
   function getCookie(name) {
     var cookieValue = null;
@@ -341,7 +342,7 @@
   function deleteSelectedRow() {
     var selected = document.querySelector('input[name="selected_row_radio"]:checked');
     if (!selected) {
-      alert('Vui lòng tích chọn dòng cần xóa ở cột # đầu tiên');
+      showDueAlert('Vui lòng tích chọn dòng cần xóa ở cột # đầu tiên', 'info');
       return;
     }
     var tr = selected.closest('tr');
@@ -394,14 +395,14 @@
       });
       var json = await res.json();
       if (json.status === 'success') {
-        if (!silent) alert(json.message || 'Đã lưu nội dung thành công!');
+        if (!silent) showDueAlert(json.message || 'Đã lưu nội dung thành công!', 'success');
         return true;
       } else {
-        alert('Lỗi: ' + json.message);
+        showDueAlert('Lỗi: ' + json.message, 'error');
         return false;
       }
     } catch (e) {
-      alert('Không thể kết nối đến máy chủ để lưu nội dung');
+      showDueAlert('Không thể kết nối đến máy chủ để lưu nội dung', 'error');
       return false;
     } finally {
       if (btn) {
@@ -413,83 +414,66 @@
 
   // Phê duyệt tài liệu & Nạp vào RAG AI
   async function approveAndIndex() {
-    if (!confirm('Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp toàn bộ nội dung vào kho tri thức Chatbot AI DUE?')) return;
-
-    // Lưu nội dung đã sửa trước nếu có thể
-    if (FILE_EXT !== '.pdf') {
-      var saved = await saveDocumentContent(true);
-      if (!saved) return;
-    }
-
-    var btn = document.getElementById('btn-approve');
-    if (btn) {
-      btn.disabled = true;
-      btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Đang nạp vào AI...</span>';
-    }
-
-    try {
-      var res = await fetch('/api/tailieu/' + DOC_ID + '/approve/', {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': getCookie('csrftoken') || ''
+    showDueConfirm({
+      title: 'Phê duyệt tài liệu',
+      message: 'Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp toàn bộ nội dung vào kho tri thức Chatbot AI DUE?',
+      confirmText: 'Phê duyệt & Nạp AI',
+      confirmColor: 'bg-emerald-600 hover:bg-emerald-700',
+      onConfirm: async function() {
+        // Lưu nội dung đã sửa trước nếu có thể
+        if (FILE_EXT !== '.pdf') {
+          var saved = await saveDocumentContent(true);
+          if (!saved) return;
         }
-      });
-      var json = await res.json();
-      if (json.status === 'success') {
-        alert(json.message || 'Đã phê duyệt và nạp vào AI thành công!');
-        window.location.reload();
-      } else {
-        alert('Lỗi: ' + json.message);
+
+        var btn = document.getElementById('btn-approve') || document.getElementById('btn-re-approve');
+        var btnReject = document.getElementById('btn-reject');
+        if (btn) {
+          btn.disabled = true;
+          btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Đang nạp dữ liệu vào AI...</span>';
+        }
+        if (btnReject) btnReject.disabled = true;
+
+        try {
+          var res = await fetch('/api/tailieu/' + DOC_ID + '/approve/', {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken') || ''
+            }
+          });
+          var json = await res.json();
+          if (json.status === 'success') {
+            showDueAlert(json.message || 'Đã phê duyệt và nạp vào AI thành công!', 'success');
+            setTimeout(function() { window.location.reload(); }, 1200);
+          } else {
+            showDueAlert('Lỗi: ' + json.message, 'error');
+            if (btn) {
+              btn.disabled = false;
+              btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span><span>Phê duyệt & Nạp vào AI</span>';
+            }
+            if (btnReject) btnReject.disabled = false;
+          }
+        } catch (e) {
+          showDueAlert('Không thể kết nối đến máy chủ: ' + e.message, 'error');
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span><span>Phê duyệt & Nạp vào AI</span>';
+          }
+          if (btnReject) btnReject.disabled = false;
+        }
       }
-    } catch (e) {
-      alert('Không thể kết nối đến máy chủ');
-    } finally {
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span><span>Phê duyệt & Nạp vào AI</span>';
-      }
-    }
+    });
   }
 
   // Modal Từ chối
   function openRejectModal() {
-    var modal = document.getElementById('reject-modal-backdrop');
-    if (modal) modal.style.display = 'flex';
-  }
-
-  function closeRejectModal() {
-    var modal = document.getElementById('reject-modal-backdrop');
-    if (modal) modal.style.display = 'none';
-  }
-
-  async function confirmRejectDoc() {
-    var reasonInp = document.getElementById('modal-reject-reason');
-    var reason = reasonInp ? reasonInp.value.trim() : '';
-    if (!reason) {
-      alert('Vui lòng nhập lý do từ chối để gửi phản hồi cho cán bộ');
-      return;
-    }
-
-    try {
-      var res = await fetch('/api/tailieu/' + DOC_ID + '/reject/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCookie('csrftoken') || ''
-        },
-        body: JSON.stringify({ reason: reason })
-      });
-      var json = await res.json();
-      if (json.status === 'success') {
-        alert(json.message || 'Đã từ chối tài liệu');
-        closeRejectModal();
-        window.location.reload();
-      } else {
-        alert('Lỗi: ' + json.message);
+    showDueRejectModal({
+      docId: DOC_ID,
+      onSuccess: function(msg) {
+        showDueAlert(msg || 'Đã từ chối tài liệu', 'success');
+        setTimeout(function() { window.location.reload(); }, 600);
       }
-    } catch (e) {
-      alert('Không thể kết nối đến máy chủ');
-    }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function() {

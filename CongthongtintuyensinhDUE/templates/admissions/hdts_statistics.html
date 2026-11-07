@@ -571,11 +571,7 @@
       }
 
       var actions = '<div class="flex items-center justify-center gap-1.5">' +
-        '<a href="' + (d.edit_url || '/hdts/tai-lieu/' + d.id + '/chinh-sua/') + '" class="px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center gap-1 transition-colors" title="Thẩm định nội dung và chỉnh sửa trước khi duyệt">' +
-          '<span class="material-symbols-outlined text-[15px]">edit_note</span>' +
-          '<span>Sửa</span>' +
-        '</a>' +
-        '<a href="/tai-lieu/' + d.id + '/xem/" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0072BC] font-bold text-xs flex items-center gap-1 transition-colors" title="Mở xem tài liệu gốc">' +
+        '<a href="' + (d.edit_url || '/hdts/tai-lieu/' + d.id + '/chinh-sua/') + '" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0072BC] font-bold text-xs flex items-center gap-1 transition-colors" title="Xem & thẩm định nội dung tài liệu">' +
           '<span class="material-symbols-outlined text-[15px]">visibility</span>' +
           '<span>Xem</span>' +
         '</a>';
@@ -596,7 +592,10 @@
           '</button>';
       }
 
-      actions += '<button type="button" onclick="tableDeleteDoc(' + d.id + ')" class="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors cursor-pointer" title="Xóa tài liệu">' +
+      actions += '<a href="/tai-lieu/' + d.id + '/xem/" download class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-[#0072BC] transition-colors cursor-pointer" title="Tải file gốc">' +
+          '<span class="material-symbols-outlined text-[17px]">download</span>' +
+        '</a>' +
+        '<button type="button" onclick="tableDeleteDoc(' + d.id + ')" class="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors cursor-pointer" title="Xóa tài liệu">' +
           '<span class="material-symbols-outlined text-[16px]">delete</span>' +
         '</button>' +
       '</div>';
@@ -605,7 +604,7 @@
         '<td class="py-3.5 px-4 font-bold text-slate-800">' +
           '<div class="flex items-center gap-2">' +
             '<span class="material-symbols-outlined text-[20px] text-[#0072BC] shrink-0">description</span>' +
-            '<a href="/tai-lieu/' + d.id + '/xem/" target="_blank" class="hover:text-[#0072BC] hover:underline max-w-xs sm:max-w-md truncate block" title="Xem tài liệu: ' + esc(d.name) + '">' +
+            '<a href="' + (d.edit_url || '/hdts/tai-lieu/' + d.id + '/chinh-sua/') + '" class="hover:text-[#0072BC] hover:underline max-w-xs sm:max-w-md truncate block" title="Xem nội dung thẩm định: ' + esc(d.name) + '">' +
               esc(d.name) +
             '</a>' +
           '</div>' +
@@ -622,53 +621,66 @@
   }
 
   async function tableApproveDoc(id) {
-    if (!confirm('Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp vào kho tri thức AI?')) return;
-    try {
-      var res = await fetch('/api/tailieu/' + id + '/approve/', {
-        method: 'POST',
-        headers: { 'X-CSRFToken': CSRF_TOKEN }
-      });
-      var json = await res.json();
-      alert(json.message);
-      loadHdtsStats();
-      if (typeof loadHdtsBell === 'function') loadHdtsBell();
-    } catch (e) {
-      alert('Lỗi phê duyệt: ' + e.message);
-    }
+    showDueConfirm({
+      title: 'Phê duyệt tài liệu',
+      message: 'Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp vào kho tri thức AI của Chatbot?',
+      confirmText: 'Phê duyệt & Nạp AI',
+      confirmColor: 'bg-[#00A859] hover:bg-[#008f4c]',
+      onConfirm: async function() {
+        showDueAlert('Đang nạp tri thức vào AI, vui lòng chờ trong giây lát...', 'info');
+        try {
+          var res = await fetch('/api/tailieu/' + id + '/approve/', {
+            method: 'POST',
+            headers: { 'X-CSRFToken': CSRF_TOKEN }
+          });
+          var json = await res.json();
+          if (json.status === 'success') {
+            showDueAlert(json.message || 'Đã phê duyệt tài liệu thành công!', 'success');
+            loadHdtsStats();
+            if (typeof loadHdtsBell === 'function') loadHdtsBell();
+          } else {
+            showDueAlert('Lỗi: ' + json.message, 'error');
+          }
+        } catch (e) {
+          showDueAlert('Lỗi phê duyệt: ' + e.message, 'error');
+        }
+      }
+    });
   }
 
   async function tableRejectDoc(id) {
-    var reason = prompt('Nhập lý do Hội đồng từ chối tài liệu này (sẽ thông báo lại cho Cán bộ):', 'Nội dung chưa đầy đủ hoặc không đúng quy định tuyển sinh');
-    if (reason === null) return;
-    try {
-      var res = await fetch('/api/tailieu/' + id + '/reject/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF_TOKEN },
-        body: JSON.stringify({ reason: reason })
-      });
-      var json = await res.json();
-      alert(json.message);
-      loadHdtsStats();
-      if (typeof loadHdtsBell === 'function') loadHdtsBell();
-    } catch (e) {
-      alert('Lỗi từ chối: ' + e.message);
-    }
+    showDueRejectModal({
+      docId: id,
+      onSuccess: function(msg) {
+        showDueAlert(msg || 'Đã từ chối tài liệu', 'success');
+        loadHdtsStats();
+        if (typeof loadHdtsBell === 'function') loadHdtsBell();
+      }
+    });
   }
 
   async function tableDeleteDoc(id) {
-    if (!confirm('Xóa vĩnh viễn tài liệu này khỏi cơ sở dữ liệu?')) return;
-    try {
-      var res = await fetch('/api/tailieu/' + id + '/delete/', {
-        method: 'POST',
-        headers: { 'X-CSRFToken': CSRF_TOKEN }
-      });
-      var json = await res.json();
-      alert(json.message);
-      loadHdtsStats();
-      if (typeof loadHdtsBell === 'function') loadHdtsBell();
-    } catch (e) {
-      alert('Lỗi xóa: ' + e.message);
-    }
+    showDueConfirm({
+      title: 'Xóa vĩnh viễn tài liệu',
+      message: 'Bạn có chắc chắn muốn xóa vĩnh viễn tài liệu này khỏi cơ sở dữ liệu? Thao tác này không thể hoàn tác.',
+      confirmText: 'Xác nhận xóa',
+      type: 'danger',
+      confirmColor: 'bg-rose-600 hover:bg-rose-700',
+      onConfirm: async function() {
+        try {
+          var res = await fetch('/api/tailieu/' + id + '/delete/', {
+            method: 'POST',
+            headers: { 'X-CSRFToken': CSRF_TOKEN }
+          });
+          var json = await res.json();
+          showDueAlert(json.message || 'Đã xóa tài liệu!', 'success');
+          loadHdtsStats();
+          if (typeof loadHdtsBell === 'function') loadHdtsBell();
+        } catch (e) {
+          showDueAlert('Lỗi xóa: ' + e.message, 'error');
+        }
+      }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function() {

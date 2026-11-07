@@ -166,51 +166,34 @@ def build_portal_texts():
             for piece in chunk_text(portal_record_to_text(obj, json_fields)):
                 out.append((source, piece))
 
-    # Đoạn tổng hợp để trả lời câu hỏi kiểu "có bao nhiêu liên chi đoàn"
-    lcd_rows = []
-    lcd_model, fac_model = _portal_model("LienChiDoan"), _portal_model("Faculty")
-    if lcd_model is not None:
-        for o in _active(lcd_model.objects.all()):
-            lcd_rows.append((o.name, getattr(o, "faculty_name", ""), getattr(o, "secretary", ""), getattr(o, "term", "")))
-    elif fac_model is not None:
-        for fac in _active(fac_model.objects.all()):
-            for l in (fac.lien_chi_doan or []):
-                if isinstance(l, dict) and l.get("name"):
-                    lcd_rows.append((l["name"], fac.name, l.get("secretary", ""), l.get("term", "")))
-    if lcd_rows:
-        lines = [f"[Tổng hợp] Danh sách Liên chi đoàn tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
-                 f"Trường có bao nhiêu Liên chi đoàn? Trường hiện có {len(lcd_rows)} Liên chi đoàn trực thuộc các khoa:"]
-        for i, (n, fac, sec, term) in enumerate(lcd_rows, 1):
-            extra = "; ".join(x for x in (f"thuộc {fac}" if fac else "", f"Bí thư: {sec}" if sec else "", f"Nhiệm kỳ: {term}" if term else "") if x)
-            lines.append(f"{i}. {n}" + (f" ({extra})" if extra else ""))
-        out.append((SOURCE_PREFIX + "Tổng hợp Liên chi đoàn", "\n".join(lines)))
-
     # Đoạn tổng hợp để trả lời "trường có bao nhiêu khoa / gồm những khoa nào"
+    fac_model = _portal_model("Faculty")
     if fac_model is not None:
         facs = list(_active(fac_model.objects.all()))
         if facs:
-            lines = ["[Tổng hợp] Danh sách Khoa / Viện tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
-                     f"Trường có bao nhiêu khoa? Trường hiện có {len(facs)} khoa / viện:"]
+            lines = ["[Tổng quan] Danh sách Khoa / Viện đào tạo tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
+                     f"Trường hiện có tổng cộng {len(facs)} khoa / viện đào tạo:"]
             lines += [f"{i}. {f.name}" for i, f in enumerate(facs, 1)]
-            out.append((SOURCE_PREFIX + "Tổng hợp Khoa / Viện", "\n".join(lines)))
+            out.append((SOURCE_PREFIX + "Khoa & Viện đào tạo", "\n".join(lines)))
 
-    # Đoạn tổng hợp CLB: "trường có những CLB nào", "CLB nào hợp với tin học / ca hát..."
+    # Đoạn tổng hợp để trả lời "trường có bao nhiêu câu lạc bộ"
     clb_model = _portal_model("CauLacBo")
     if clb_model is not None:
         clbs = list(_active(clb_model.objects.all()))
         if clbs:
-            lines = ["[Tổng hợp] Danh sách Câu lạc bộ – Đội – Nhóm (CLB) tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
-                     f"Trường có bao nhiêu câu lạc bộ? Hiện có {len(clbs)} CLB / đội / nhóm:"]
+            lines = ["[Tổng quan] Danh sách Câu lạc bộ – Đội – Nhóm (CLB) tại Trường Đại học Kinh tế - ĐH Đà Nẵng",
+                     f"Trường hiện có {len(clbs)} câu lạc bộ / đội / nhóm sinh viên:"]
             for i, c in enumerate(clbs, 1):
                 cat = c.get_category_display() if hasattr(c, "get_category_display") else c.category
-                desc = " ".join(strip_tags(c.description or "").split())[:200]
-                lines.append(f"{i}. {c.name}" + (f" (lĩnh vực: {cat})" if cat else "") + (f": {desc}" if desc else ""))
-            out.append((SOURCE_PREFIX + "Tổng hợp Câu lạc bộ", "\n".join(lines)))
+                desc = " ".join(strip_tags(c.description or "").split())[:150]
+                lines.append(f"{i}. {c.name}" + (f" ({cat})" if cat else "") + (f": {desc}" if desc else ""))
+            out.append((SOURCE_PREFIX + "Câu lạc bộ – Đội – Nhóm", "\n".join(lines)))
+
     return out
 
 
 def build_texts():
-    """Trả về list (source, content) cho toàn bộ dữ liệu website."""
+    """Trả về list (source, content) cho toàn bộ dữ liệu website (tổng hợp chung)."""
     from .rag import chunk_text
     out = build_portal_texts()
     for name, filters in SYNC_MODELS:
@@ -227,10 +210,15 @@ def build_texts():
     return out
 
 
-def sync():
-    """Đồng bộ kho kiến thức với database. Trả về dict thống kê."""
+def sync(clear_all=False, progress_callback=None):
+    """Đồng bộ tổng hợp chung kho kiến thức với database. Trả về dict thống kê."""
     from .models import DocumentChunk
     from .rag import embed_texts
+
+    if clear_all:
+        del_count = DocumentChunk.objects.filter(document__isnull=True).delete()[0]
+        if progress_callback:
+            progress_callback(f"Đã dọn dẹp {del_count} đoạn kiến thức website cũ.")
 
     wanted = {}
     for source, content in build_texts():
@@ -239,7 +227,9 @@ def sync():
 
     existing = {}
     stale_ids = []
-    for c in DocumentChunk.objects.filter(document__isnull=True, source__startswith=SOURCE_PREFIX):
+    chunk_qs = DocumentChunk.objects.filter(document__isnull=True, source__startswith=SOURCE_PREFIX)
+
+    for c in chunk_qs:
         key = hashlib.sha1(f"{c.source}\n{c.content}".encode("utf-8")).hexdigest()
         # Đoạn chưa có embedding (lần trước hết lượt Gemini) -> tạo lại để thử embed lần này
         if key in wanted and key not in existing and c.embedding:
@@ -247,21 +237,34 @@ def sync():
         else:
             stale_ids.append(c.id)
 
+    # Xóa ngay các đoạn stale trước khi embed để giải phóng dữ liệu cũ
+    if stale_ids:
+        del_stale = DocumentChunk.objects.filter(id__in=stale_ids).delete()[0]
+        if progress_callback:
+            progress_callback(f"Đã xóa {del_stale} đoạn kiến thức cũ không còn hiệu lực.")
+
     new_keys = [k for k in wanted if k not in existing]
     if new_keys:
-        try:
-            vectors = embed_texts([wanted[k][1] for k in new_keys])
-        except Exception as e:
-            # Hết lượt embedding (429)...: vẫn lưu đoạn với embedding rỗng để tìm theo từ khóa được ngay.
-            # Lần sync_knowledge sau (khi còn lượt) sẽ tự embed lại các đoạn này.
-            log.warning("Embedding lỗi (%s) -> lưu %d đoạn chưa có embedding", e, len(new_keys))
-            vectors = [[] for _ in new_keys]
-        DocumentChunk.objects.bulk_create([
-            DocumentChunk(document=None, source=wanted[k][0], chunk_index=i, content=wanted[k][1], embedding=v)
-            for i, (k, v) in enumerate(zip(new_keys, vectors))
-        ])
-    if stale_ids:
-        DocumentChunk.objects.filter(id__in=stale_ids).delete()
+        if progress_callback:
+            progress_callback(f"Cần tạo vector nhúng cho {len(new_keys)} đoạn mới...")
+        batch_size = 30
+        for b_idx in range(0, len(new_keys), batch_size):
+            batch_keys = new_keys[b_idx:b_idx + batch_size]
+            cur_end = min(b_idx + batch_size, len(new_keys))
+            if progress_callback:
+                progress_callback(f"Đang xử lý nhúng vector đoạn {b_idx + 1}-{cur_end} / {len(new_keys)}...")
+            try:
+                vectors = embed_texts([wanted[k][1] for k in batch_keys])
+            except Exception as e:
+                log.warning("Embedding lỗi (%s) -> lưu %d đoạn chưa có embedding", e, len(batch_keys))
+                vectors = [[] for _ in batch_keys]
+            DocumentChunk.objects.bulk_create([
+                DocumentChunk(document=None, source=wanted[k][0], chunk_index=b_idx + i, content=wanted[k][1], embedding=v)
+                for i, (k, v) in enumerate(zip(batch_keys, vectors))
+            ])
+            if progress_callback:
+                progress_callback(f"Đã lưu thành công lô {b_idx + 1}-{cur_end} vào DB.")
+
     return {"tong": len(wanted), "them_moi": len(new_keys), "xoa": len(stale_ids)}
 
 

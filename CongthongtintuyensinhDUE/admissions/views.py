@@ -118,15 +118,21 @@ def login_view(request):
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.POST.get('is_ajax') == '1'
 
     if request.user.is_authenticated:
+        if is_hdts_user(request.user):
+            redirect_url = '/hdts/thong-ke/'
+        elif request.user.is_staff:
+            redirect_url = '/chatbot/'
+        else:
+            redirect_url = ''
+
         if is_ajax:
-            redirect_url = '/chatbot/' if request.user.is_staff else ''
             return JsonResponse({
                 'status': 'success',
                 'message': f'Bạn đã đăng nhập với tài khoản {request.user.username}.',
                 'redirect_url': redirect_url
             })
-        if request.user.is_staff:
-            return redirect('/chatbot/')
+        if redirect_url:
+            return redirect(redirect_url)
         return redirect('admissions:home')
 
     if request.method == 'POST':
@@ -190,7 +196,12 @@ def login_view(request):
             messages.success(request, success_msg)
 
             next_url = request.GET.get('next') or request.POST.get('next')
-            redirect_url = next_url or ('/chatbot/' if user.is_staff else '')
+            if is_hdts_user(user):
+                redirect_url = next_url or '/hdts/thong-ke/'
+            elif user.is_staff:
+                redirect_url = next_url or '/chatbot/'
+            else:
+                redirect_url = next_url or ''
 
             if is_ajax:
                 return JsonResponse({
@@ -236,15 +247,24 @@ def register_view(request):
 
     error_message = None
     if request.method == 'POST':
-        full_name = request.POST.get('full_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()   # Họ và tên đệm
+        first_name = request.POST.get('first_name', '').strip() # Tên
         username = request.POST.get('username', '').strip()
         email = request.POST.get('email', '').strip()
-        phone = request.POST.get('phone', '').strip()
         password = request.POST.get('password', '').strip()
         confirm_password = request.POST.get('confirm_password', '').strip()
 
-        if not username or not password:
-            msg = "Vui lòng điền đầy đủ Tên đăng nhập và Mật khẩu!"
+        # Validate dữ liệu
+        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        import re
+
+        if not username or not password or not email or not last_name or not first_name:
+            msg = "Vui lòng điền đầy đủ tất cả các trường thông tin!"
+            if is_ajax:
+                return JsonResponse({'status': 'error', 'message': msg}, status=400)
+            error_message = msg
+        elif not re.match(email_regex, email):
+            msg = "Địa chỉ email không đúng định dạng. Vui lòng kiểm tra lại!"
             if is_ajax:
                 return JsonResponse({'status': 'error', 'message': msg}, status=400)
             error_message = msg
@@ -263,32 +283,32 @@ def register_view(request):
             if is_ajax:
                 return JsonResponse({'status': 'error', 'message': msg}, status=400)
             error_message = msg
-        elif email and User.objects.filter(email__iexact=email).exists():
+        elif User.objects.filter(email__iexact=email).exists():
             msg = f"Email '{email}' đã được đăng ký tài khoản khác. Vui lòng sử dụng email khác!"
             if is_ajax:
                 return JsonResponse({'status': 'error', 'message': msg}, status=400)
             error_message = msg
         else:
-            # Tạo tài khoản thành công và lưu trực tiếp vào cơ sở dữ liệu
-            new_user = User.objects.create_user(username=username, email=email, password=password)
-            if full_name:
-                parts = full_name.split(' ', 1)
-                new_user.first_name = parts[0]
-                if len(parts) > 1:
-                    new_user.last_name = parts[1]
-                else:
-                    new_user.last_name = ""
-                new_user.save()
+            # Tạo tài khoản và lưu vào bảng auth_user
+            # Đảm bảo tài khoản đăng ký công khai chỉ là sinh viên/thí sinh: is_staff=False (0), is_superuser=False (0)
+            new_user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+                is_staff=False,
+                is_superuser=False,
+                is_active=True
+            )
 
-            # Lưu thông tin bổ sung (Họ tên, SĐT, CCCD) vào UserProfile trong DB
+            # Đồng bộ thông tin Họ tên vào UserProfile
+            full_name = f"{last_name} {first_name}".strip()
             profile, _ = UserProfile.objects.get_or_create(user=new_user)
             profile.full_name = full_name
-            profile.phone = phone
-            if phone.isdigit() and len(phone) >= 9:
-                profile.cccd = phone
             profile.save()
 
-            success_msg = f"Đăng ký tài khoản thành công! Chào mừng {full_name or username} đến với Cổng thông tin Tuyển sinh DUE."
+            success_msg = f"Đăng ký tài khoản thành công! Chào mừng {full_name} đến với Cổng thông tin Tuyển sinh DUE."
             redirect_target = f"/?login=1&registered=1&u={username}"
             if is_ajax:
                 return JsonResponse({
@@ -941,14 +961,15 @@ def api_document_approve(request, doc_id):
 
     try:
         doc = TaiLieuTuyenSinh.objects.get(id=doc_id)
+
+        # Nạp tri thức trực tiếp vào kho AI của Chatbot
         chunks_count = 0
-        error = ''
         try:
             chunks_count = rag.index_document(doc)
             doc.is_processed = True
-        except Exception as e:
-            error = str(e)
-            print(f"Lỗi nạp tài liệu vào AI: {e}")
+        except Exception as ex:
+            print(f"[AI Index Error] Lỗi nạp tài liệu {doc.title}: {ex}")
+            return JsonResponse({'status': 'error', 'message': f'Lỗi khi nạp dữ liệu vào AI: {str(ex)}'}, status=500)
 
         doc.status = 'approved'
         doc.approved_by = request.user
@@ -961,12 +982,7 @@ def api_document_approve(request, doc_id):
         except Exception as e:
             print(f"Lỗi gửi thông báo phê duyệt: {e}")
 
-        msg = f'HĐTS đã phê duyệt tài liệu "{doc.title}" thành công'
-        if chunks_count > 0:
-            msg += f' và nạp {chunks_count} đoạn tri thức vào AI.'
-        elif error:
-            msg += f' (Cảnh báo nạp AI: {error})'
-
+        msg = f'HĐTS đã phê duyệt tài liệu "{doc.title}" thành công và nạp {chunks_count} đoạn tri thức vào AI.'
         return JsonResponse({'status': 'success', 'message': msg, 'chunks_count': chunks_count})
     except TaiLieuTuyenSinh.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Tài liệu không tồn tại'}, status=404)
@@ -1545,16 +1561,18 @@ def api_hdts_statistics(request):
 
 HANDOFF_REPLY = (
     'Câu hỏi này hiện chưa có trong cơ sở dữ liệu của Chatbot nên đã được **chuyển tới cán bộ tuyển sinh DUE** tiếp nhận. '
-    'Bạn có thể xem lại câu trả lời trong mục Lịch sử trò chuyện khi cán bộ phản hồi. '
-    'Nếu cần giải đáp gấp, bạn vui lòng liên hệ Hotline: **0236 3836 169** hoặc **0236 3847 139** nhé!'
+    'Bạn có thể xem lại câu trả lời trong mục Lịch sử trò chuyện khi cán bộ phản hồi.\n\n'
+    '💡 *Nếu bạn muốn được tư vấn chọn ngành, định hướng nghề nghiệp, hãy truy cập mục **[Tư vấn hướng nghiệp & Chọn ngành](/huong-nghiep/)** nhé!*\n'
+    'Nếu cần giải đáp gấp, bạn vui lòng liên hệ Hotline: **0236 3836 169** hoặc **0236 3847 139**.'
 )
 
 UNAUTH_HANDOFF_REPLY = (
     'Câu hỏi này hiện chưa có trong dữ liệu tự động của Chatbot. '
     'Vì bạn **chưa đăng nhập tài khoản**, hệ thống không thể lưu lại phiên kết nối để gửi câu trả lời của Cán bộ tuyển sinh cho bạn sau này.\n\n'
-    '👉 **Vui lòng chọn một trong hai cách sau:**\n'
+    '👉 **Vui lòng chọn một trong các cách sau:**\n'
     '1. [Đăng nhập tài khoản](/dang-nhap/) để câu hỏi được chuyển trực tiếp tới Cán bộ tư vấn và lưu vào lịch sử của bạn.\n'
-    '2. Liên hệ trực tiếp với Ban tuyển sinh DUE qua **Hotline: 0236 3836 169 - 0236 3847 139** hoặc gửi form tại mục **[Đăng ký tư vấn](/dang-ky-tu-van/)** để được hỗ trợ ngay nhé!'
+    '2. Nếu bạn muốn định hướng nghề nghiệp, hãy tham gia **[Tư vấn hướng nghiệp & Chọn ngành](/huong-nghiep/)** để làm bài trắc nghiệm và nhận phân tích chi tiết.\n'
+    '3. Liên hệ trực tiếp với Ban tuyển sinh DUE qua **Hotline: 0236 3836 169 - 0236 3847 139** để được hỗ trợ ngay nhé!'
 )
 
 
@@ -1769,7 +1787,6 @@ def api_officer_questions(request):
             'tra_loi': q.tra_loi,
             'trang_thai': q.trang_thai,
             'can_bo': (q.can_bo.get_full_name() or q.can_bo.username) if q.can_bo else '',
-            'da_them_kien_thuc': q.da_them_kien_thuc,
             'ngay_tao': timezone.localtime(q.ngay_tao).strftime('%H:%M %d/%m/%Y'),
             'ngay_tra_loi': timezone.localtime(q.ngay_tra_loi).strftime('%H:%M %d/%m/%Y') if q.ngay_tra_loi else '',
             'is_overdue': is_overdue,

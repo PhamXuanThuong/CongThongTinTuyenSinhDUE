@@ -742,7 +742,6 @@ class CauHoiChoTraLoi(models.Model):
     trang_thai = models.CharField(max_length=20, choices=TRANG_THAI_CHOICES, default='cho', db_index=True, verbose_name="Trạng thái")
     nguoi_hoi = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='cau_hoi_da_gui', verbose_name="Người gửi câu hỏi")
     can_bo = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Cán bộ trả lời")
-    da_them_kien_thuc = models.BooleanField(default=False, verbose_name="Đã thêm vào kho kiến thức")
     ngay_tao = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian hỏi")
     ngay_tra_loi = models.DateTimeField(null=True, blank=True, verbose_name="Thời gian trả lời")
 

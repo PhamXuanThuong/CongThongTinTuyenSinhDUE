@@ -142,39 +142,52 @@
         </div>
         {% endif %}
 
-        <!-- Registration Form (Bỏ tabs Thí sinh / Cán bộ) -->
+        <!-- Registration Form (Chỉ còn Họ và tên đệm, Tên, Username, Email, Mật khẩu, Xác nhận mật khẩu) -->
         <form id="registerForm" method="POST" action="{% url 'admissions:register' %}" onsubmit="handleRegisterSubmit(event)" class="space-y-3.5">
           {% csrf_token %}
           
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <!-- Họ và tên -->
+            <!-- Họ và tên đệm -->
             <div>
-              <label for="reg_fullname" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                Họ và tên
+              <label for="reg_last_name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Họ và tên đệm
               </label>
               <div class="relative">
                 <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">badge</span>
-                <input id="reg_fullname" name="full_name" type="text" required 
+                <input id="reg_last_name" name="last_name" type="text" required 
                        class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
-                       placeholder="VD: Nguyễn Văn An">
+                       placeholder="VD: Nguyễn Văn">
               </div>
             </div>
 
-            <!-- Tên đăng nhập -->
+            <!-- Tên -->
             <div>
-              <label for="reg_username" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                Tên đăng nhập
+              <label for="reg_first_name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Tên
               </label>
               <div class="relative">
                 <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">person</span>
-                <input id="reg_username" name="username" type="text" required 
+                <input id="reg_first_name" name="first_name" type="text" required 
                        class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
-                       placeholder="VD: nguyenvana2026">
+                       placeholder="VD: An">
               </div>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Tên đăng nhập (username) -->
+            <div>
+              <label for="reg_username" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Tên đăng nhập
+              </label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">account_circle</span>
+                <input id="reg_username" name="username" type="text" required 
+                       class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
+                       placeholder="VD: nguyenvana">
+              </div>
+            </div>
+
             <!-- Email -->
             <div>
               <label for="reg_email" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
@@ -185,19 +198,6 @@
                 <input id="reg_email" name="email" type="email" required 
                        class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
                        placeholder="email@example.com">
-              </div>
-            </div>
-
-            <!-- Số điện thoại / CCCD -->
-            <div>
-              <label for="reg_phone" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                Số điện thoại / CCCD
-              </label>
-              <div class="relative">
-                <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 text-[18px]">call</span>
-                <input id="reg_phone" name="phone" type="text" required 
-                       class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" 
-                       placeholder="0901234567 hoặc số CCCD">
               </div>
             </div>
           </div>

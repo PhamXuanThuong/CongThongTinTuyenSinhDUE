@@ -325,8 +325,8 @@ from .models import CauHoiChoTraLoi
 
 @admin.register(CauHoiChoTraLoi)
 class CauHoiChoTraLoiAdmin(admin.ModelAdmin):
-    list_display = ('cau_hoi_ngan', 'trang_thai', 'can_bo', 'da_them_kien_thuc', 'ngay_tao', 'ngay_tra_loi')
-    list_filter = ('trang_thai', 'da_them_kien_thuc', 'ngay_tao')
+    list_display = ('cau_hoi_ngan', 'trang_thai', 'can_bo', 'ngay_tao', 'ngay_tra_loi')
+    list_filter = ('trang_thai', 'ngay_tao')
     search_fields = ('cau_hoi', 'tra_loi')
     readonly_fields = ('client_id', 'ngu_canh', 'ngay_tao')
 
