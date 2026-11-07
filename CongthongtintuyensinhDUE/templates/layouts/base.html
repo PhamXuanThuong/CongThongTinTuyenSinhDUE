@@ -136,36 +136,27 @@
       position: fixed;
       display: none;
       z-index: 9999;
-      width: 380px;
+      width: 330px;
       max-height: 85vh;
       overflow-y: auto;
       background-color: #ffffff;
       border: 1px solid #cbd5e1;
-      border-radius: 16px;
+      border-radius: 14px;
       box-shadow: 0 16px 40px rgba(0, 30, 64, 0.16);
-      padding: 8px;
+      padding: 6px;
       font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     .nav-khoa-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 8px 10px;
-      border-radius: 10px;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
       text-decoration: none;
       transition: background-color .15s ease, transform .15s ease;
     }
     .nav-khoa-item:hover {
       background-color: #f1f5f9;
-    }
-    .nav-khoa-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
     }
     .nav-khoa-text {
       flex: 1;
@@ -315,10 +306,96 @@
           </a>
         </div>
         <div class="flex items-center gap-space-md">
-          <div class="relative hidden md:block w-72">
-            <input class="w-full pl-10 pr-4 py-2 bg-surface-container-low text-on-surface rounded-full font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" placeholder="Tìm kiếm..." type="text">
-            <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+          <!-- Desktop Search Box with Instant Results -->
+          <div class="relative hidden md:block w-80" id="headerSearchBox">
+            <input 
+              id="headerSearchInput"
+              class="w-full pl-10 pr-9 py-2 bg-surface-container-low text-on-surface rounded-full font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all shadow-xs" 
+              placeholder="Tìm ngành, khoa, CLB, học phí..." 
+              type="text"
+              autocomplete="off"
+            >
+            <button 
+              id="headerSearchBtn"
+              type="button"
+              class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px] hover:text-secondary-container cursor-pointer transition-colors"
+              title="Tìm kiếm"
+            >search</button>
+            <button 
+              id="headerSearchClearBtn" 
+              type="button" 
+              class="material-symbols-outlined absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-[18px] hidden cursor-pointer"
+              title="Xóa tìm kiếm"
+            >close</button>
+
+            <!-- Search Dropdown Results -->
+            <div 
+              id="headerSearchResults" 
+              class="absolute left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden hidden z-[99999]"
+              style="width: 440px; max-height: 480px; overflow-y: auto;"
+            >
+              <div id="searchResultsContent" class="p-3"></div>
+            </div>
           </div>
+
+          <!-- Mobile Search Toggle Button -->
+          <button 
+            id="mobileSearchToggle" 
+            type="button"
+            class="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-surface-container-low text-on-surface hover:text-secondary-container transition-all cursor-pointer"
+            title="Tìm kiếm"
+          >
+            <span class="material-symbols-outlined text-[20px]">search</span>
+          </button>
+
+          <!-- Chuông thông báo dành riêng cho Hội đồng Tuyển sinh (HĐTS) & Cán bộ -->
+          {% if user.is_authenticated and user.username == 'hdts' or user.is_superuser or user.is_staff or user.username == 'canbo' %}
+          <div class="relative" id="hdtsBellWrapper">
+            <button 
+              id="hdtsBellBtn" 
+              type="button" 
+              onclick="toggleHdtsBellPopover(event)" 
+              class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-surface-container-low hover:bg-slate-200/80 flex items-center justify-center text-slate-700 transition-all cursor-pointer" 
+              title="Thông báo Tuyển sinh"
+            >
+              <span class="material-symbols-outlined text-[22px]" id="hdtsBellIcon">notifications</span>
+              <span id="hdtsBellBadge" class="hidden absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-extrabold shadow-sm animate-bounce">0</span>
+            </button>
+
+            <!-- Bell Dropdown Popover -->
+            <div id="hdtsBellPopover" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 z-[99999] overflow-hidden">
+              <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[18px] text-[#0072BC]">mark_email_unread</span>
+                  <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wide">Thông báo Tuyển sinh</h4>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button type="button" onclick="bellMarkAllRead()" class="text-[10px] text-blue-600 hover:underline font-semibold cursor-pointer">Đọc tất cả</button>
+                  <span id="hdtsBellHeaderBadge" class="px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-[11px] font-extrabold">0</span>
+                </div>
+              </div>
+
+              <div id="hdtsBellList" class="max-h-80 overflow-y-auto p-2.5 space-y-2">
+                <!-- Danh sách tài liệu/thông báo render qua JS -->
+              </div>
+
+              <div class="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
+                {% if user.username == 'hdts' or user.is_superuser %}
+                <a href="/hdts/thong-ke/" class="text-xs font-bold text-[#0072BC] hover:underline flex items-center justify-center gap-1">
+                  <span>Mở Bảng thống kê & Quản lý tất cả tài liệu</span>
+                  <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+                {% else %}
+                <a href="/chatbot/" class="text-xs font-bold text-[#0072BC] hover:underline flex items-center justify-center gap-1">
+                  <span>Mở Kho tài liệu Tuyển sinh AI</span>
+                  <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
           {% if user.is_authenticated %}
           <div class="relative group">
             <button class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-container text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-primary transition-all cursor-pointer">
@@ -331,13 +408,13 @@
                 <div class="px-4 py-2 border-b border-slate-100 text-[11px] text-slate-500">
                   Đăng nhập: <strong class="text-slate-800">{{ user.username }}</strong>
                 </div>
-                {% if user.is_staff %}
-                <a href="/admin/" class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors font-semibold">
-                  <span class="material-symbols-outlined text-[18px] text-blue-600">dashboard</span>
-                  <span>Trang quản trị Admin</span>
+                {% if user.username == 'hdts' or user.is_superuser %}
+                <a href="/hdts/thong-ke/" class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-[#0072BC] hover:bg-blue-50 transition-colors font-semibold">
+                  <span class="material-symbols-outlined text-[18px]">analytics</span>
+                  <span>Bảng thống kê HĐTS</span>
                 </a>
                 {% endif %}
-                <a href="{% url 'admissions:logout' %}" class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-red-600 hover:bg-red-50 transition-colors font-semibold">
+                <a href="{% url 'admissions:logout' %}" onclick="try { localStorage.removeItem('due_chat_client_id'); localStorage.removeItem('due_chat_seen'); } catch(e){}" class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-red-600 hover:bg-red-50 transition-colors font-semibold">
                   <span class="material-symbols-outlined text-[18px]">logout</span>
                   <span>Đăng xuất</span>
                 </a>
@@ -351,6 +428,9 @@
               <button type="button" onclick="toggleDueLoginPopover(event)" class="text-[#0056b3] hover:text-[#003d82] text-xs sm:text-sm font-semibold transition-colors cursor-pointer py-1 px-1">
                 Đăng nhập
               </button>
+              <a href="{% url 'admissions:register' %}" class="hidden sm:inline-flex text-[#fd761a] hover:text-[#e0610f] text-xs sm:text-sm font-semibold transition-colors cursor-pointer py-1 px-1">
+                Đăng ký
+              </a>
               <button type="button" onclick="toggleDueLoginPopover(event)" id="dueAvatarBtn" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-300 flex items-center justify-center transition-all shadow-sm cursor-pointer relative" title="Đăng nhập tài khoản">
                 <svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-5.5-2.2c.3-1.6 1.8-2.8 3.5-2.8h4c1.7 0 3.2 1.2 3.5 2.8A8 8 0 0 1 12 20z"></path>
@@ -370,9 +450,9 @@
                 <div id="popoverAlert" class="hidden mb-3 p-2 rounded text-xs leading-normal"></div>
 
                 <form id="dueLoginForm" onsubmit="handleDueLoginSubmit(event)">
-                  <!-- Tên đăng nhập -->
+                  <!-- Tên đăng nhập / Email / CCCD -->
                   <div class="relative mb-3">
-                    <input type="text" id="p_username" name="username" placeholder="Tên đăng nhập" required autocomplete="username"
+                    <input type="text" id="p_username" name="username" placeholder="Tên đăng nhập / Email / CCCD" required autocomplete="username"
                            class="w-full px-3 py-2 pr-9 text-xs sm:text-sm text-slate-800 bg-white border border-[#ced4da] rounded focus:outline-none focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3] placeholder:text-slate-400 transition-colors">
                     <span class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-slate-400">
                       <!-- User silhouette icon like the screenshot -->
@@ -408,7 +488,7 @@
                       <span class="text-slate-300">|</span>
                       <button type="button" onclick="quickFillCreds('canbo','canbo123')" class="text-[#0056b3] hover:underline cursor-pointer">Cán bộ</button>
                       <span class="text-slate-300">|</span>
-                      <button type="button" onclick="quickFillCreds('admin','admin123')" class="text-[#0056b3] hover:underline cursor-pointer">Admin</button>
+                      <button type="button" onclick="quickFillCreds('hdts','hdts123')" class="text-[#0056b3] hover:underline cursor-pointer font-bold">HĐTS</button>
                     </div>
                   </div>
 
@@ -419,10 +499,14 @@
                 </form>
               </div>
 
-              <!-- Quên mật khẩu footer section (exact as screenshot) -->
-              <div class="bg-[#f8f9fa] px-4 py-2.5 border-t border-slate-200 mt-3 rounded-b-md text-left">
-                <a href="javascript:void(0)" onclick="alert('Quý thí sinh hoặc cán bộ vui lòng liên hệ Ban Đào tạo và tuyển sinh DUE qua Hotline (0236) 3836 169 để được hỗ trợ cấp lại mật khẩu.')" class="text-xs text-[#0056b3] hover:underline font-normal">
+              <!-- Quên mật khẩu & Đăng ký tài khoản (Ảnh 3) -->
+              <div class="bg-[#f8f9fa] px-4 py-2.5 border-t border-slate-200 mt-3 rounded-b-md flex items-center justify-between text-xs">
+                <a href="javascript:void(0)" onclick="alert('Quý thí sinh hoặc cán bộ vui lòng liên hệ Ban Đào tạo và tuyển sinh DUE qua Hotline (0236) 3836 169 để được hỗ trợ cấp lại mật khẩu.')" class="text-[#0056b3] hover:underline font-normal">
                   Quên mật khẩu?
+                </a>
+                <a href="{% url 'admissions:register' %}" class="text-[#fd761a] hover:text-[#d95d08] hover:underline font-bold flex items-center gap-1" title="Đăng ký tài khoản mới">
+                  <span>Đăng ký</span>
+                  <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </a>
               </div>
             </div>
@@ -458,18 +542,18 @@
               <svg id="nav-ttts-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
-          <!-- KHOA - Dropdown (Cơ cấu mới 2026: 8 Khoa + Viện ĐTQT) -->
+          <!-- KHOA - Bấm vào chuyển ngay sang giao diện /khoa/ (Ảnh 2) -->
           <div class="relative h-full flex items-center" id="nav-khoa">
-            <button
+            <a
+              href="/khoa/"
               class="h-full flex items-center gap-1 font-label-lg text-label-lg uppercase whitespace-nowrap focus:outline-none {% block nav_khoa %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}"
               aria-haspopup="true"
               aria-expanded="false"
               id="nav-khoa-btn"
-              type="button"
             >
               KHOA
               <svg id="nav-khoa-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
+            </a>
           </div>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_hocphi %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="hoc-phi" href="/hoc-phi/">HỌC PHÍ</a>
           <!-- DÀNH CHO SINH VIÊN - Dropdown -->
@@ -486,8 +570,47 @@
             </button>
           </div>
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_career %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="tu-van-chon-nganh" href="{% url 'admissions:career_advisory' %}">TƯ VẤN CHỌN NGÀNH</a>
+          {% if user.is_authenticated and user.username == 'hdts' or user.is_superuser %}
+          <!-- THỐNG KÊ - Dropdown Hội đồng Tuyển sinh -->
+          <div class="relative h-full flex items-center" id="nav-thongke">
+            <button
+              class="h-full flex items-center gap-1 font-label-lg text-label-lg uppercase whitespace-nowrap text-[#F37021] hover:text-[#d85d12] transition-colors font-bold focus:outline-none {% block nav_thongke %}{% endblock %}"
+              aria-haspopup="true"
+              aria-expanded="false"
+              id="nav-thongke-btn"
+              type="button"
+            >
+              THỐNG KÊ
+              <svg id="nav-thongke-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
+          {% else %}
           <a class="h-full flex items-center font-label-lg text-label-lg uppercase whitespace-nowrap {% block nav_chatbot %}text-on-surface-variant hover:text-primary-container transition-colors{% endblock %}" data-path="chat-ai" href="/chatbot/">CHAT VỚI DUE</a>
+          {% endif %}
         </nav>
+      </div>
+
+      <!-- Mobile Search Bar (Collapsible) -->
+      <div id="mobileSearchBar" class="md:hidden hidden px-2 pb-3 pt-1 border-t border-slate-100">
+        <div class="relative w-full">
+          <input 
+            id="mobileSearchInput" 
+            type="text" 
+            placeholder="Tìm kiếm ngành, khoa, CLB, học phí..." 
+            class="w-full pl-10 pr-9 py-2.5 bg-surface-container-low text-on-surface rounded-full text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-xs"
+            autocomplete="off"
+          >
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+          <button id="mobileSearchClearBtn" type="button" class="material-symbols-outlined absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-[18px] hidden cursor-pointer">close</button>
+          
+          <div 
+            id="mobileSearchResults" 
+            class="absolute left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden hidden z-[99999]"
+            style="max-height: 400px; overflow-y: auto;"
+          >
+            <div id="mobileSearchResultsContent" class="p-3"></div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -606,15 +729,12 @@
     aria-label="Danh mục Khoa đào tạo"
   >
     <div style="padding:6px 10px 8px;border-bottom:1px solid #f1f5f9;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
-      <span style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Khoa và viện Đào Tạo 2026</span>
+      <span style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Khoa và Viện Đào tạo 2026</span>
       <span style="font-size:11px;font-weight:700;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:999px;">9 Đơn vị</span>
     </div>
     
     <a href="/khoa/tcnh/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#dbeafe;color:#1d4ed8;">
-        <span class="material-symbols-outlined" style="font-size:20px;">account_balance</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Tài chính - Ngân hàng</span>
         <span class="nav-khoa-sub">Tài chính, Ngân hàng, Fintech</span>
@@ -623,9 +743,6 @@
 
     <a href="/khoa/dlkdqt/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#d1fae5;color:#047857;">
-        <span class="material-symbols-outlined" style="font-size:20px;">travel_explore</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Du lịch và kinh doanh quốc tế</span>
         <span class="nav-khoa-sub">Kinh doanh quốc tế, Ngoại thương, Du lịch</span>
@@ -634,9 +751,6 @@
 
     <a href="/khoa/tmdt_mkt_cns/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#ffedd5;color:#c2410c;">
-        <span class="material-symbols-outlined" style="font-size:20px;">hub</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa TMĐT - Marketing và CNS</span>
         <span class="nav-khoa-sub">Marketing số, TMĐT, Kinh tế số</span>
@@ -645,9 +759,6 @@
 
     <a href="/khoa/kt/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#e0e7ff;color:#4338ca;">
-        <span class="material-symbols-outlined" style="font-size:20px;">trending_up</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Kinh tế</span>
         <span class="nav-khoa-sub">Kinh tế đầu tư, Kinh tế phát triển</span>
@@ -656,9 +767,6 @@
 
     <a href="/khoa/qtkd/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#fef3c7;color:#b45309;">
-        <span class="material-symbols-outlined" style="font-size:20px;">corporate_fare</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Quản trị kinh doanh</span>
         <span class="nav-khoa-sub">Quản trị kinh doanh, Quản trị nhân lực</span>
@@ -667,9 +775,6 @@
 
     <a href="/khoa/ketoan/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#ccfbf1;color:#0f766e;">
-        <span class="material-symbols-outlined" style="font-size:20px;">calculate</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Kế toán</span>
         <span class="nav-khoa-sub">Kế toán doanh nghiệp, Kiểm toán ACCA</span>
@@ -678,9 +783,6 @@
 
     <a href="/khoa/llct/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#ffe4e6;color:#be123c;">
-        <span class="material-symbols-outlined" style="font-size:20px;">menu_book</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Lý luận chính trị</span>
         <span class="nav-khoa-sub">Quản lý nhà nước, Kinh tế chính trị</span>
@@ -689,9 +791,6 @@
 
     <a href="/khoa/luat/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#f3e8ff;color:#7e22ce;">
-        <span class="material-symbols-outlined" style="font-size:20px;">gavel</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Khoa Luật</span>
         <span class="nav-khoa-sub">Luật kinh tế, Luật tài chính - ngân hàng</span>
@@ -700,9 +799,6 @@
 
     <a href="/khoa/vdtqt/" class="nav-khoa-item" role="menuitem">
       <span class="due-nav-bullet"></span>
-      <span class="nav-khoa-icon" style="background:#cffafe;color:#0e7490;">
-        <span class="material-symbols-outlined" style="font-size:20px;">public</span>
-      </span>
       <div class="nav-khoa-text">
         <span class="nav-khoa-name">Viện Đào tạo Quốc tế</span>
         <span class="nav-khoa-sub">Cử nhân quốc tế, Liên kết Anh, Mỹ, Úc</span>
@@ -740,6 +836,41 @@
       <span>Hoạt động Đoàn</span>
     </a>
   </div>
+
+  {% if user.is_authenticated and user.username == 'hdts' or user.is_superuser %}
+  <!-- Dropdown panel for THỐNG KÊ (Hội đồng Tuyển sinh) -->
+  <div
+    id="nav-thongke-dropdown"
+    style="position:fixed;display:none;z-index:9999;width:265px;background:#fff;border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,0.12);border:1px solid #fed7aa;padding:8px 0;"
+    role="menu"
+    aria-label="Danh mục Thống kê Tuyển sinh"
+  >
+    <div style="padding:4px 18px 8px 18px;border-bottom:1px solid #f1f5f9;margin-bottom:4px;">
+      <span style="font-size:11px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;color:#F37021;">Báo cáo tuyển sinh DUE</span>
+    </div>
+    <a href="/hdts/thong-ke/cau-hoi/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:13.5px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#fff7ed';this.style.color='#F37021'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet" style="background:#F37021;"></span>
+      <span>Số câu hỏi theo ngày/tuần</span>
+    </a>
+    <a href="/hdts/thong-ke/khung-gio/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:13.5px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#fff7ed';this.style.color='#F37021'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet" style="background:#F37021;"></span>
+      <span>Khung giờ cao điểm</span>
+    </a>
+    <a href="/hdts/thong-ke/top-nganh/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:13.5px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#fff7ed';this.style.color='#F37021'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet" style="background:#F37021;"></span>
+      <span>Top ngành AI gợi ý</span>
+    </a>
+    <a href="/hdts/thong-ke/chu-de/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:12px;padding:9px 18px;text-decoration:none;font-size:13.5px;font-weight:600;color:#334155;transition:all .15s;" onmouseover="this.style.background='#fff7ed';this.style.color='#F37021'" onmouseout="this.style.background='';this.style.color='#334155'" role="menuitem">
+      <span class="due-nav-bullet" style="background:#F37021;"></span>
+      <span>Chủ đề chuyển Cán bộ</span>
+    </a>
+    <div style="height:1px;background:#f1f5f9;margin:6px 0;"></div>
+    <a href="/hdts/thong-ke/" class="due-dropdown-link" style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 18px;text-decoration:none;font-size:13px;font-weight:700;color:#0072BC;transition:all .15s;" onmouseover="this.style.background='#eff6ff';this.style.color='#003366'" onmouseout="this.style.background='';this.style.color='#0072BC'" role="menuitem">
+      <span class="material-symbols-outlined" style="font-size:16px;">dashboard</span>
+      <span>Tổng quan & Duyệt tài liệu</span>
+    </a>
+  </div>
+  {% endif %}
 
   <!-- Main Content Block -->
   {% block content %}{% endblock %}
@@ -1029,6 +1160,31 @@
     window.openLoginModal = toggleDueLoginPopover;
     window.closeLoginModal = closeDueLoginPopover;
 
+    // Tự động mở khung Đăng nhập nếu URL có ?login=1 hoặc #login
+    if (window.location.search.includes('login=1') || window.location.hash === '#login') {
+      setTimeout(function() {
+        const popover = document.getElementById('dueLoginPopover');
+        if (popover && popover.classList.contains('hidden')) {
+          toggleDueLoginPopover();
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const registeredUser = urlParams.get('u');
+        if (registeredUser) {
+          const userInp = document.getElementById('p_username');
+          const passInp = document.getElementById('p_password');
+          if (userInp) userInp.value = decodeURIComponent(registeredUser);
+          if (passInp) passInp.focus();
+        }
+        if (urlParams.get('registered') === '1') {
+          const alertBox = document.getElementById('popoverAlert');
+          if (alertBox) {
+            alertBox.className = "mb-3 p-2.5 rounded text-xs leading-normal bg-emerald-50 text-emerald-800 border border-emerald-200 block font-semibold";
+            alertBox.textContent = "Đăng ký thành công! Bạn có thể nhập mật khẩu để đăng nhập ngay.";
+          }
+        }
+      }, 150);
+    }
+
     function quickFillCreds(u, p) {
       const userInp = document.getElementById('p_username');
       const passInp = document.getElementById('p_password');
@@ -1187,6 +1343,7 @@
       closeDropdown();
       closeGtDropdown();
       closeDcsvDropdown();
+      closeThongkeDropdown();
       if (!_khoaDrop) return;
       positionKhoaDropdown();
       _khoaDrop.style.display = 'block';
@@ -1216,12 +1373,19 @@
     }
 
     if (_khoaBtn) {
-      _khoaBtn.addEventListener('click', toggleKhoaDropdown);
+      // Bấm vào chữ KHOA sẽ chuyển ngay sang /khoa/ (Ảnh 2) theo href của thẻ <a>
       _khoaBtn.addEventListener('mouseenter', openKhoaDropdown);
       _khoaBtn.addEventListener('mouseleave', function() {
         setTimeout(function() {
           if (!_khoaDrop.matches(':hover') && !_khoaBtn.matches(':hover')) closeKhoaDropdown();
         }, 220);
+      });
+    }
+    if (_khoaChevron) {
+      _khoaChevron.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleKhoaDropdown();
       });
     }
     if (_khoaDrop) {
@@ -1253,7 +1417,7 @@
       closeDropdown();
       closeGtDropdown();
       closeKhoaDropdown();
-      closeKhoaDropdown();
+      closeThongkeDropdown();
       if (!_dcsvDrop) return;
       positionDcsvDropdown();
       _dcsvDrop.style.display = 'block';
@@ -1299,6 +1463,73 @@
       });
     }
 
+    /* ---- Dropdown Navbar: THỐNG KÊ (HỘI ĐỒNG TUYỂN SINH) ---- */
+    var _thongkeBtn     = document.getElementById('nav-thongke-btn');
+    var _thongkeDrop    = document.getElementById('nav-thongke-dropdown');
+    var _thongkeChevron = document.getElementById('nav-thongke-chevron');
+
+    function positionThongkeDropdown() {
+      if (!_thongkeBtn || !_thongkeDrop) return;
+      var rect = _thongkeBtn.getBoundingClientRect();
+      _thongkeDrop.style.top  = (rect.bottom + 6) + 'px';
+      var left = rect.left;
+      var width = 265;
+      if (left + width > window.innerWidth) {
+        left = Math.max(10, window.innerWidth - width - 15);
+      }
+      _thongkeDrop.style.left = left + 'px';
+    }
+
+    function openThongkeDropdown() {
+      closeDropdown();
+      closeGtDropdown();
+      closeKhoaDropdown();
+      closeDcsvDropdown();
+      if (!_thongkeDrop) return;
+      positionThongkeDropdown();
+      _thongkeDrop.style.display = 'block';
+      if (_thongkeChevron) _thongkeChevron.style.transform = 'rotate(180deg)';
+      if (_thongkeBtn) _thongkeBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeThongkeDropdown() {
+      if (!_thongkeDrop) return;
+      _thongkeDrop.style.display = 'none';
+      if (_thongkeChevron) _thongkeChevron.style.transform = '';
+      if (_thongkeBtn) _thongkeBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggleThongkeDropdown(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      if (!_thongkeDrop) return;
+      var isOpen = _thongkeDrop.style.display === 'block';
+      if (isOpen) {
+        closeThongkeDropdown();
+      } else {
+        openThongkeDropdown();
+      }
+    }
+
+    if (_thongkeBtn) {
+      _thongkeBtn.addEventListener('click', toggleThongkeDropdown);
+      _thongkeBtn.addEventListener('mouseenter', openThongkeDropdown);
+      _thongkeBtn.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_thongkeDrop || (!_thongkeDrop.matches(':hover') && !_thongkeBtn.matches(':hover'))) closeThongkeDropdown();
+        }, 220);
+      });
+    }
+    if (_thongkeDrop) {
+      _thongkeDrop.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!_thongkeDrop.matches(':hover') && !_thongkeBtn.matches(':hover')) closeThongkeDropdown();
+        }, 220);
+      });
+    }
+
     document.addEventListener('click', function (e) {
       if (_btn && !_btn.contains(e.target) && _drop && !_drop.contains(e.target)) {
         closeDropdown();
@@ -1309,17 +1540,22 @@
       if (_khoaBtn && !_khoaBtn.contains(e.target) && _khoaDrop && !_khoaDrop.contains(e.target)) {
         closeKhoaDropdown();
       }
+      if (_thongkeBtn && !_thongkeBtn.contains(e.target) && _thongkeDrop && !_thongkeDrop.contains(e.target)) {
+        closeThongkeDropdown();
+      }
     });
 
     window.addEventListener('resize', function () {
       if (_drop && _drop.style.display === 'block') positionDropdown();
       if (_dcsvDrop && _dcsvDrop.style.display === 'block') positionDcsvDropdown();
       if (_khoaDrop && _khoaDrop.style.display === 'block') positionKhoaDropdown();
+      if (_thongkeDrop && _thongkeDrop.style.display === 'block') positionThongkeDropdown();
     });
     window.addEventListener('scroll', function () {
       if (_drop && _drop.style.display === 'block') positionDropdown();
       if (_dcsvDrop && _dcsvDrop.style.display === 'block') positionDcsvDropdown();
       if (_khoaDrop && _khoaDrop.style.display === 'block') positionKhoaDropdown();
+      if (_thongkeDrop && _thongkeDrop.style.display === 'block') positionThongkeDropdown();
     }, { passive: true });
 
     /* ---- Modal 1: Hướng dẫn nhập học ---- */
@@ -1330,6 +1566,7 @@
       closeDropdown();
       closeKhoaDropdown();
       closeDcsvDropdown();
+      closeThongkeDropdown();
       if (!_hdBackdrop || !_hdModal) return;
       _hdBackdrop.style.display = 'flex';
       document.body.style.overflow = 'hidden';
@@ -1461,19 +1698,508 @@
         closeDropdown();
         closeKhoaDropdown();
         closeDcsvDropdown();
+        var dsRes = document.getElementById('headerSearchResults');
+        if (dsRes) dsRes.classList.add('hidden');
+        var mbRes = document.getElementById('mobileSearchResults');
+        if (mbRes) mbRes.classList.add('hidden');
         if (_hdBackdrop && _hdBackdrop.style.display === 'flex') closeHuongDanModal();
         if (_ltBackdrop && _ltBackdrop.style.display === 'flex') closeLichTrinhModal();
         if (_svBackdrop && _svBackdrop.style.display === 'flex') closeSinhVienModal();
       }
     });
+
+    /* ====================================================
+       GLOBAL SEARCH FUNCTIONALITY (DESKTOP & MOBILE)
+       ==================================================== */
+    (function() {
+      var portalItems = [
+        // Khoa & Viện Đào Tạo
+        { name: 'Khoa Tài chính - Ngân hàng', sub: 'Tài chính, Ngân hàng, Fintech, Tài chính số', url: '/khoa/tcnh/', type: 'khoa', icon: 'account_balance', badge: 'Khoa' },
+        { name: 'Khoa Du lịch và Kinh doanh quốc tế', sub: 'Kinh doanh quốc tế, Logistics, Ngoại thương, Du lịch', url: '/khoa/dlkdqt/', type: 'khoa', icon: 'travel_explore', badge: 'Khoa' },
+        { name: 'Khoa TMĐT - Marketing và Công nghệ số', sub: 'Marketing số, TMĐT, Kinh tế số, AI & Phân tích dữ liệu', url: '/khoa/tmdt_mkt_cns/', type: 'khoa', icon: 'hub', badge: 'Khoa' },
+        { name: 'Khoa Kinh tế', sub: 'Kinh tế đầu tư, Kinh tế phát triển, Quản lý tài nguyên', url: '/khoa/kt/', type: 'khoa', icon: 'trending_up', badge: 'Khoa' },
+        { name: 'Khoa Quản trị kinh doanh', sub: 'Quản trị kinh doanh, Quản trị nhân lực, Chuỗi cung ứng', url: '/khoa/qtkd/', type: 'khoa', icon: 'corporate_fare', badge: 'Khoa' },
+        { name: 'Khoa Kế toán', sub: 'Kế toán doanh nghiệp, Kiểm toán ACCA, Tài chính kế toán', url: '/khoa/ketoan/', type: 'khoa', icon: 'calculate', badge: 'Khoa' },
+        { name: 'Khoa Lý luận chính trị', sub: 'Quản lý nhà nước, Kinh tế chính trị', url: '/khoa/llct/', type: 'khoa', icon: 'menu_book', badge: 'Khoa' },
+        { name: 'Khoa Luật', sub: 'Luật kinh tế, Luật tài chính - ngân hàng, Pháp luật kinh doanh', url: '/khoa/luat/', type: 'khoa', icon: 'gavel', badge: 'Khoa' },
+        { name: 'Viện Đào tạo Quốc tế', sub: 'Cử nhân quốc tế, Liên kết Anh, Mỹ, Úc, Thụy Sĩ', url: '/khoa/vdtqt/', type: 'khoa', icon: 'public', badge: 'Viện ĐTQT' },
+        
+        // Dành cho sinh viên
+        { name: 'Ký túc xá DUE', sub: 'Phòng nội trú, đăng ký phòng, giá điện nước, Khu D Ngũ Hành Sơn', url: '/ky-tuc-xa/', type: 'sinhvien', icon: 'hotel', badge: 'Ký túc xá' },
+        { name: 'Câu lạc bộ & Đội nhóm', sub: '13+ CLB học thuật, kỹ năng, tình nguyện và nghệ thuật sinh viên', url: '/clb/', type: 'sinhvien', icon: 'groups', badge: 'CLB' },
+        { name: 'Lịch trình Tân sinh viên Khóa 52K', sub: 'Các mốc thời gian: SHCD, gặp GVCN, sinh hoạt lớp, Gala', url: '/lich-trinh-tan-sinh-vien/', type: 'sinhvien', icon: 'calendar_month', badge: 'Lịch trình' },
+        { name: 'Hoạt động Đoàn & Phong trào', sub: 'Phong trào Thanh niên, Tình nguyện Mùa hè xanh, Tiếp sức mùa thi', url: '/hoat-dong-doan/', type: 'sinhvien', icon: 'volunteer_activism', badge: 'Đoàn TN' },
+
+        // Tuyển sinh & Học phí
+        { name: 'Bảng học phí năm 2026', sub: 'Học phí chương trình Tiêu chuẩn, Bán phần và Toàn phần tiếng Anh', url: '/hoc-phi/', type: 'admissions', icon: 'payments', badge: 'Học phí' },
+        { name: 'Chỉ tiêu tuyển sinh 2026', sub: '4.600 chỉ tiêu cho 37 ngành và chuyên ngành đào tạo', url: '/chi-tieu-tuyen-sinh/', type: 'admissions', icon: 'format_list_numbered', badge: 'Chỉ tiêu' },
+        { name: 'Điểm chuẩn các năm (2023 - 2025)', sub: 'Tra cứu điểm chuẩn trúng tuyển theo phương thức THPT và ĐGNL', url: '/diem-chuan-cac-nam/', type: 'admissions', icon: 'military_tech', badge: 'Điểm chuẩn' },
+        { name: 'Phương thức xét tuyển 2026', sub: '4 phương thức tuyển sinh của Trường Đại học Kinh tế', url: '/phuong-thuc-xet-tuyen/', type: 'admissions', icon: 'checklist', badge: 'Phương thức' },
+        { name: 'Tư vấn chọn ngành thông minh', sub: 'Trắc nghiệm tính cách Holland và gợi ý ngành học phù hợp', url: '/huong-nghiep/', type: 'admissions', icon: 'psychology', badge: 'Tư vấn' },
+        { name: 'Chatbot AI Tuyển sinh DUE', sub: 'Trợ lý ảo giải đáp 24/7 toàn bộ thông tin tuyển sinh', url: '/chatbot/', type: 'admissions', icon: 'smart_toy', badge: 'Chatbot' }
+      ];
+
+      function setupSearch(inputEl, resultsEl, contentEl, clearBtn) {
+        if (!inputEl || !resultsEl || !contentEl) return;
+        var debounceTimer = null;
+
+        function closeResults() {
+          resultsEl.classList.add('hidden');
+        }
+
+        function highlight(text, q) {
+          if (!q) return text;
+          try {
+            var re = new RegExp('(' + q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + ')', 'gi');
+            return text.replace(re, '<mark class="bg-amber-200 text-amber-950 font-bold px-0.5 rounded">$1</mark>');
+          } catch(e) {
+            return text;
+          }
+        }
+
+        function executeSearch(query) {
+          var q = (query || '').trim().toLowerCase();
+          if (!q) {
+            closeResults();
+            if (clearBtn) clearBtn.classList.add('hidden');
+            return;
+          }
+
+          if (clearBtn) clearBtn.classList.remove('hidden');
+
+          // Filter local portal items
+          var matchedLocal = portalItems.filter(function(item) {
+            return item.name.toLowerCase().includes(q) || 
+                   item.sub.toLowerCase().includes(q) ||
+                   item.badge.toLowerCase().includes(q);
+          });
+
+          // Fetch majors from API
+          fetch('/api/tra-cuu/?q=' + encodeURIComponent(q))
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+              var majors = (data && data.results) ? data.results : [];
+              renderResults(q, matchedLocal, majors);
+            })
+            .catch(function() {
+              renderResults(q, matchedLocal, []);
+            });
+        }
+
+        function renderResults(q, localItems, majors) {
+          if (localItems.length === 0 && majors.length === 0) {
+            contentEl.innerHTML = 
+              '<div class="py-6 px-4 text-center">' +
+                '<span class="material-symbols-outlined text-slate-300 text-[36px] mb-1">search_off</span>' +
+                '<p class="text-xs font-bold text-slate-700">Không tìm thấy kết quả cho "' + q + '"</p>' +
+                '<p class="text-[11px] text-slate-400 mt-1">Thử từ khóa khác như "marketing", "tài chính", "ký túc xá", "học phí"...</p>' +
+              '</div>';
+            resultsEl.classList.remove('hidden');
+            return;
+          }
+
+          var html = '';
+
+          // 1. Khoa & Viện Đào Tạo
+          var khoaItems = localItems.filter(function(x) { return x.type === 'khoa'; });
+          if (khoaItems.length > 0) {
+            html += '<div class="mb-2">' +
+              '<div class="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">' +
+                '<span class="material-symbols-outlined text-[13px]">account_balance</span> Khoa & Viện Đào Tạo' +
+              '</div>';
+            khoaItems.forEach(function(item) {
+              html += 
+                '<a href="' + item.url + '" class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 transition-colors group text-left">' +
+                  '<div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">' +
+                    '<span class="material-symbols-outlined text-[18px]">' + item.icon + '</span>' +
+                  '</div>' +
+                  '<div class="min-w-0 flex-1">' +
+                    '<div class="text-xs font-bold text-slate-800 group-hover:text-[#003366] truncate">' + highlight(item.name, q) + '</div>' +
+                    '<div class="text-[11px] text-slate-500 truncate">' + item.sub + '</div>' +
+                  '</div>' +
+                  '<span class="material-symbols-outlined text-slate-300 group-hover:text-slate-600 text-[16px]">chevron_right</span>' +
+                '</a>';
+            });
+            html += '</div>';
+          }
+
+          // 2. Ngành & Chuyên ngành đào tạo
+          if (majors.length > 0) {
+            html += '<div class="mb-2 pt-2 border-t border-slate-100">' +
+              '<div class="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">' +
+                '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">school</span> Ngành đào tạo 2026</span>' +
+                '<span class="text-blue-600 font-semibold">' + majors.length + ' ngành</span>' +
+              '</div>';
+            majors.slice(0, 5).forEach(function(m) {
+              var diemTHPT = (m.diem_chuan && m.diem_chuan['2025_THPT']) ? m.diem_chuan['2025_THPT'] : '';
+              html += 
+                '<a href="/chi-tieu-tuyen-sinh/" class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-blue-50/60 transition-colors group text-left">' +
+                  '<div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 font-mono text-[11px] font-bold">' +
+                    m.ma_nganh.slice(0, 4) +
+                  '</div>' +
+                  '<div class="min-w-0 flex-1">' +
+                    '<div class="text-xs font-bold text-slate-800 group-hover:text-blue-800 truncate">' + highlight(m.ten_nganh, q) + '</div>' +
+                    '<div class="text-[11px] text-slate-500 flex items-center gap-2">' +
+                      '<span class="font-mono text-slate-400">' + m.ma_nganh + '</span>' +
+                      '<span>•</span>' +
+                      '<span>CT: <strong>' + m.chi_tieu + '</strong></span>' +
+                      (diemTHPT ? '<span>• Điểm: <strong class="text-rose-600">' + diemTHPT + '</strong></span>' : '') +
+                    '</div>' +
+                  '</div>' +
+                  '<span class="px-2 py-0.5 rounded-md bg-slate-100 text-[10px] font-semibold text-slate-600 shrink-0">Chi tiết</span>' +
+                '</a>';
+            });
+            if (majors.length > 5) {
+              html += '<a href="/chi-tieu-tuyen-sinh/" class="block text-center py-1.5 text-xs text-blue-700 font-bold hover:underline">+ Xem thêm ' + (majors.length - 5) + ' ngành khác</a>';
+            }
+            html += '</div>';
+          }
+
+          // 3. Dành cho sinh viên & Tuyển sinh
+          var otherItems = localItems.filter(function(x) { return x.type !== 'khoa'; });
+          if (otherItems.length > 0) {
+            html += '<div class="pt-2 border-t border-slate-100">' +
+              '<div class="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">' +
+                '<span class="material-symbols-outlined text-[13px]">explore</span> Trang dịch vụ & Sinh viên' +
+              '</div>';
+            otherItems.slice(0, 4).forEach(function(item) {
+              html += 
+                '<a href="' + item.url + '" class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 transition-colors group text-left">' +
+                  '<div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">' +
+                    '<span class="material-symbols-outlined text-[18px]">' + item.icon + '</span>' +
+                  '</div>' +
+                  '<div class="min-w-0 flex-1">' +
+                    '<div class="text-xs font-bold text-slate-800 group-hover:text-[#003366] truncate">' + highlight(item.name, q) + '</div>' +
+                    '<div class="text-[11px] text-slate-500 truncate">' + item.sub + '</div>' +
+                  '</div>' +
+                  '<span class="px-2 py-0.5 rounded-full bg-slate-100 text-[10px] font-semibold text-slate-600 shrink-0">' + item.badge + '</span>' +
+                '</a>';
+            });
+            html += '</div>';
+          }
+
+          contentEl.innerHTML = html;
+          resultsEl.classList.remove('hidden');
+        }
+
+        inputEl.addEventListener('input', function() {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(function() {
+            executeSearch(inputEl.value);
+          }, 220);
+        });
+
+        inputEl.addEventListener('focus', function() {
+          if (this.value.trim().length > 0) {
+            executeSearch(this.value);
+          }
+        });
+
+        inputEl.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            var firstLink = contentEl.querySelector('a');
+            if (firstLink) {
+              window.location.href = firstLink.getAttribute('href');
+            } else {
+              executeSearch(this.value);
+            }
+          } else if (e.key === 'Escape') {
+            closeResults();
+          }
+        });
+
+        if (clearBtn) {
+          clearBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            inputEl.value = '';
+            closeResults();
+            this.classList.add('hidden');
+            inputEl.focus();
+          });
+        }
+
+        document.addEventListener('click', function(e) {
+          if (!inputEl.contains(e.target) && !resultsEl.contains(e.target)) {
+            closeResults();
+          }
+        });
+      }
+
+      // Initialize Desktop Search
+      setupSearch(
+        document.getElementById('headerSearchInput'),
+        document.getElementById('headerSearchResults'),
+        document.getElementById('searchResultsContent'),
+        document.getElementById('headerSearchClearBtn')
+      );
+
+      // Desktop search button click
+      var searchIconBtn = document.getElementById('headerSearchBtn');
+      var searchInput = document.getElementById('headerSearchInput');
+      if (searchIconBtn && searchInput) {
+        searchIconBtn.addEventListener('click', function() {
+          searchInput.focus();
+          if (searchInput.value.trim()) {
+            var firstLink = document.getElementById('searchResultsContent').querySelector('a');
+            if (firstLink) window.location.href = firstLink.getAttribute('href');
+          }
+        });
+      }
+
+      // Mobile Search Toggle
+      var mobileToggle = document.getElementById('mobileSearchToggle');
+      var mobileBar = document.getElementById('mobileSearchBar');
+      if (mobileToggle && mobileBar) {
+        mobileToggle.addEventListener('click', function() {
+          var isHidden = mobileBar.classList.contains('hidden');
+          if (isHidden) {
+            mobileBar.classList.remove('hidden');
+            var mobileInput = document.getElementById('mobileSearchInput');
+            if (mobileInput) mobileInput.focus();
+          } else {
+            mobileBar.classList.add('hidden');
+          }
+        });
+      }
+
+      // Initialize Mobile Search
+      setupSearch(
+        document.getElementById('mobileSearchInput'),
+        document.getElementById('mobileSearchResults'),
+        document.getElementById('mobileSearchResultsContent'),
+        document.getElementById('mobileSearchClearBtn')
+      );
+    })();
+
+    // ==========================================
+    // HĐTS NOTIFICATION BELL SCRIPT
+    // ==========================================
+    function toggleHdtsBellPopover(e) {
+      if (e) e.stopPropagation();
+      var pop = document.getElementById('hdtsBellPopover');
+      if (!pop) return;
+      pop.classList.toggle('hidden');
+      if (!pop.classList.contains('hidden')) {
+        loadHdtsBell();
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      var pop = document.getElementById('hdtsBellPopover');
+      var wrapper = document.getElementById('hdtsBellWrapper');
+      if (pop && !pop.classList.contains('hidden') && wrapper && !wrapper.contains(e.target)) {
+        pop.classList.add('hidden');
+      }
+    });
+
+    async function loadHdtsBell() {
+      var badge = document.getElementById('hdtsBellBadge');
+      var icon = document.getElementById('hdtsBellIcon');
+      var list = document.getElementById('hdtsBellList');
+      var headerBadge = document.getElementById('hdtsBellHeaderBadge');
+      if (!badge) return;
+
+      try {
+        // 1. Lấy thông báo cá nhân từ model ThongBao
+        var notifRes = await fetch('/api/thong-bao/');
+        var notifJson = await notifRes.json();
+        var notifications = (notifJson.status === 'success') ? (notifJson.notifications || []) : [];
+        var unreadNotifs = notifications.filter(function(n) { return !n.da_doc; });
+
+        // 2. Nếu là HĐTS hoặc admin, lấy thêm danh sách tài liệu đang chờ duyệt
+        var isHdtsUser = {% if user.username == 'hdts' or user.is_superuser %}true{% else %}false{% endif %};
+        var pendingDocs = [];
+        if (isHdtsUser) {
+          try {
+            var docRes = await fetch('/api/tailieu/');
+            var docJson = await docRes.json();
+            if (docJson.status === 'success') {
+              pendingDocs = (docJson.data || []).filter(function(d) { return d.status === 'pending'; });
+            }
+          } catch(e) {}
+        }
+
+        var totalCount = unreadNotifs.length + pendingDocs.length;
+
+        if (totalCount > 0) {
+          badge.textContent = totalCount;
+          badge.classList.remove('hidden');
+          if (icon) icon.className = 'material-symbols-outlined text-[22px] text-red-600 animate-pulse';
+          if (headerBadge) headerBadge.textContent = totalCount + ' mới';
+        } else {
+          badge.classList.add('hidden');
+          if (icon) icon.className = 'material-symbols-outlined text-[22px] text-slate-700';
+          if (headerBadge) headerBadge.textContent = '0 mới';
+        }
+
+        if (list) {
+          if (totalCount === 0 && notifications.length === 0) {
+            list.innerHTML = '<div class="py-8 text-center text-slate-400 text-xs">' +
+              '<span class="material-symbols-outlined text-[28px] text-slate-300 block mb-1">done_all</span>' +
+              '<span class="font-semibold text-slate-600">Không có thông báo mới</span>' +
+              '<p class="text-[11px] text-slate-400 mt-0.5">Tất cả thông báo và tài liệu đã được xử lý</p>' +
+              '</div>';
+          } else {
+            var html = '';
+
+            // Render tài liệu chờ HĐTS duyệt (ưu tiên hiển thị trên cùng cho HĐTS)
+            if (pendingDocs.length > 0) {
+              html += '<div class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 px-1 py-0.5 flex items-center gap-1">' +
+                '<span class="material-symbols-outlined text-[13px]">pending_actions</span>' +
+                '<span>Tài liệu chờ duyệt (' + pendingDocs.length + ')</span>' +
+                '</div>';
+
+              pendingDocs.forEach(function(d) {
+                html += '<div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200 text-xs space-y-1.5">' +
+                  '<div class="flex items-start justify-between gap-1.5">' +
+                    '<a href="' + (d.edit_url || '/tai-lieu/' + d.id + '/xem/') + '" class="font-bold text-slate-800 hover:text-[#0072BC] hover:underline line-clamp-1 block" title="Nhấn để thẩm định: ' + (d.name || '') + '">' +
+                      (d.name || '') +
+                    '</a>' +
+                    '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-700 border border-amber-300 shrink-0">Chờ duyệt</span>' +
+                  '</div>' +
+                  '<div class="text-[10px] text-slate-500 flex items-center justify-between">' +
+                    '<span>Bởi: <strong class="text-slate-700">' + (d.uploaded_by || 'Cán bộ') + '</strong></span>' +
+                    '<span>' + (d.date || '') + '</span>' +
+                  '</div>' +
+                  '<div class="flex items-center gap-1.5 pt-1 border-t border-amber-200/60">' +
+                    '<a href="' + (d.edit_url || '/hdts/tai-lieu/' + d.id + '/chinh-sua/') + '" class="flex-1 py-1 px-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-[#0072BC] font-bold text-[10px] flex items-center justify-center gap-1 transition-colors" title="Chỉnh sửa nội dung trước khi duyệt">' +
+                      '<span class="material-symbols-outlined text-[13px]">edit_note</span>' +
+                      '<span>Sửa & Thẩm định</span>' +
+                    '</a>' +
+                    '<button type="button" onclick="bellApproveDoc(' + d.id + ')" class="py-1 px-2.5 rounded-lg bg-[#00A859] hover:bg-[#008f4c] text-white font-bold text-[10px] flex items-center justify-center gap-1 transition-colors cursor-pointer" title="HĐTS Phê duyệt">' +
+                      '<span class="material-symbols-outlined text-[13px]">done</span>' +
+                      '<span>Duyệt</span>' +
+                    '</button>' +
+                    '<button type="button" onclick="bellRejectDoc(' + d.id + ')" class="py-1 px-2 rounded-lg bg-slate-200 hover:bg-rose-100 text-slate-700 hover:text-rose-700 font-bold text-[10px] flex items-center justify-center transition-colors cursor-pointer" title="Từ chối">' +
+                      '<span class="material-symbols-outlined text-[13px]">close</span>' +
+                    '</button>' +
+                  '</div>' +
+                '</div>';
+              });
+            }
+
+            // Render các thông báo hệ thống / kết quả duyệt
+            if (notifications.length > 0) {
+              if (pendingDocs.length > 0) {
+                html += '<div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 px-1 pt-2 pb-0.5 flex items-center gap-1">' +
+                  '<span class="material-symbols-outlined text-[13px]">notifications</span>' +
+                  '<span>Thông báo hệ thống</span>' +
+                  '</div>';
+              }
+
+              notifications.forEach(function(n) {
+                var iconType = 'info';
+                var iconColor = 'text-blue-600 bg-blue-50';
+                if (n.loai === 'da_duyet') {
+                  iconType = 'check_circle';
+                  iconColor = 'text-emerald-600 bg-emerald-50';
+                } else if (n.loai === 'tu_choi') {
+                  iconType = 'cancel';
+                  iconColor = 'text-rose-600 bg-rose-50';
+                } else if (n.loai === 'upload_moi') {
+                  iconType = 'upload_file';
+                  iconColor = 'text-amber-600 bg-amber-50';
+                }
+
+                var unreadClass = !n.da_doc ? 'bg-blue-50/50 border-blue-200 font-medium' : 'bg-slate-50 border-slate-200/80 text-slate-600';
+
+                html += '<div onclick="bellMarkRead(' + n.id + ', \'' + (n.duong_dan || '') + '\')" class="p-2.5 rounded-xl border text-xs cursor-pointer hover:bg-slate-100 transition-colors flex items-start gap-2.5 ' + unreadClass + '">' +
+                  '<div class="w-7 h-7 rounded-lg ' + iconColor + ' flex items-center justify-center shrink-0 mt-0.5">' +
+                    '<span class="material-symbols-outlined text-[16px]">' + iconType + '</span>' +
+                  '</div>' +
+                  '<div class="flex-1 min-w-0">' +
+                    '<div class="flex items-center justify-between gap-1">' +
+                      '<h5 class="font-bold text-slate-800 text-[11px] truncate">' + (n.tieu_de || '') + '</h5>' +
+                      (!n.da_doc ? '<span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>' : '') +
+                    '</div>' +
+                    '<p class="text-[11px] text-slate-600 line-clamp-2 mt-0.5">' + (n.noi_dung || '') + '</p>' +
+                    '<span class="text-[10px] text-slate-400 block mt-1 font-mono">' + (n.ngay_tao || '') + '</span>' +
+                  '</div>' +
+                '</div>';
+              });
+            }
+
+            list.innerHTML = html;
+          }
+        }
+      } catch (e) {}
+    }
+
+    async function bellMarkRead(id, targetUrl) {
+      try {
+        await fetch('/api/thong-bao/' + id + '/read/', {
+          method: 'POST',
+          headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+        });
+      } catch(e) {}
+      if (targetUrl && targetUrl !== '#' && targetUrl !== '') {
+        window.location.href = targetUrl;
+      } else {
+        loadHdtsBell();
+      }
+    }
+
+    async function bellMarkAllRead() {
+      try {
+        await fetch('/api/thong-bao/read-all/', {
+          method: 'POST',
+          headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+        });
+        loadHdtsBell();
+      } catch(e) {}
+    }
+
+    async function bellApproveDoc(id) {
+      if (!confirm('Hội đồng Tuyển sinh xác nhận PHÊ DUYỆT tài liệu này và nạp vào AI?')) return;
+      try {
+        var res = await fetch('/api/tailieu/' + id + '/approve/', {
+          method: 'POST',
+          headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+        });
+        var json = await res.json();
+        alert(json.message);
+        loadHdtsBell();
+        if (typeof loadSources === 'function') loadSources();
+        if (typeof loadHdtsStats === 'function') loadHdtsStats();
+      } catch (e) {
+        alert('Lỗi phê duyệt: ' + e.message);
+      }
+    }
+
+    async function bellRejectDoc(id) {
+      var reason = prompt('Nhập lý do Hội đồng từ chối tài liệu này (sẽ thông báo lại cho Cán bộ):', 'Nội dung chưa đầy đủ hoặc không đúng quy định tuyển sinh');
+      if (reason === null) return;
+      try {
+        var res = await fetch('/api/tailieu/' + id + '/reject/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+          body: JSON.stringify({ reason: reason })
+        });
+        var json = await res.json();
+        alert(json.message);
+        loadHdtsBell();
+        if (typeof loadSources === 'function') loadSources();
+        if (typeof loadHdtsStats === 'function') loadHdtsStats();
+      } catch (e) {
+        alert('Lỗi: ' + e.message);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      loadHdtsBell();
+      setInterval(loadHdtsBell, 20000);
+    });
   </script>
 
   <!-- ====================================================
-       FLOATING AI CHATBOT BUBBLE WIDGET
+       FLOATING AI CHATBOT BUBBLE WIDGET (Ẩn cho HĐTS vì HĐTS không tham gia chat)
        ==================================================== -->
+  {% if user.username != 'hdts' and not user.is_superuser %}
   {% block floating_chat %}
   {% include 'partials/chat_widget.html' %}
   {% endblock %}
+  {% endif %}
 
   {% block extra_js %}{% endblock %}
 </body>

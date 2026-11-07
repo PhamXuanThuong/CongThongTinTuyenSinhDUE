@@ -195,3 +195,225 @@ class Department(models.Model):
             'color': self.color or 'bg-blue-600',
             'badge': self.badge
         }
+
+
+class LienChiDoan(models.Model):
+    """
+    Model lưu trữ dữ liệu Liên Chi Đoàn của các Khoa.
+    db_table: portal_lien_chi_doan
+    """
+    faculty_code = models.CharField(max_length=50, unique=True, verbose_name="Mã Khoa trực thuộc")
+    name = models.CharField(max_length=200, verbose_name="Tên Liên Chi Đoàn")
+    faculty_name = models.CharField(max_length=200, verbose_name="Tên Khoa")
+    term = models.CharField(max_length=100, default="Nhiệm kỳ 2024–2027", verbose_name="Nhiệm kỳ")
+    secretary = models.CharField(max_length=150, blank=True, default="", verbose_name="Bí thư Liên Chi Đoàn")
+    deputy_secretary = models.CharField(max_length=150, blank=True, default="", verbose_name="Phó Bí thư")
+    phone = models.CharField(max_length=50, blank=True, default="", verbose_name="Số điện thoại")
+    email = models.CharField(max_length=100, blank=True, default="", verbose_name="Email")
+    facebook = models.CharField(max_length=255, blank=True, default="", verbose_name="Fanpage Facebook")
+    office = models.CharField(max_length=200, blank=True, default="", verbose_name="Văn phòng làm việc")
+    members_count = models.CharField(max_length=50, blank=True, default="1.500+ Đoàn viên", verbose_name="Số lượng đoàn viên")
+    branches_count = models.CharField(max_length=50, blank=True, default="30+ Chi đoàn", verbose_name="Số lượng chi đoàn")
+    slogan = models.CharField(max_length=255, blank=True, default="", verbose_name="Khẩu hiệu hành động")
+    intro = models.TextField(blank=True, default="", verbose_name="Giới thiệu chung")
+    executive_board = models.JSONField(default=list, blank=True, verbose_name="Ban Chấp Hành")
+    featured_activities = models.JSONField(default=list, blank=True, verbose_name="Hoạt động tiêu biểu")
+    images = models.JSONField(default=list, blank=True, verbose_name="Thư viện ảnh phong trào")
+    order = models.PositiveIntegerField(default=0, verbose_name="Thứ tự hiển thị")
+    is_active = models.BooleanField(default=True, verbose_name="Kích hoạt")
+
+    class Meta:
+        db_table = 'portal_lien_chi_doan'
+        verbose_name = "Liên Chi Đoàn Khoa"
+        verbose_name_plural = "Danh sách Liên Chi Đoàn"
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"{self.name} ({self.faculty_code})"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'faculty_code': self.faculty_code,
+            'faculty_id': self.faculty_code,
+            'name': self.name,
+            'faculty_name': self.faculty_name,
+            'term': self.term,
+            'secretary': self.secretary,
+            'deputy_secretary': self.deputy_secretary,
+            'phone': self.phone,
+            'email': self.email,
+            'facebook': self.facebook,
+            'fanpage': self.facebook,
+            'office': self.office,
+            'members_count': self.members_count,
+            'branches_count': self.branches_count,
+            'slogan': self.slogan,
+            'intro': self.intro,
+            'executive_board': self.executive_board or [],
+            'activities': self.featured_activities or [],
+            'images': self.images or [],
+            'detail_url': f'/khoa/{self.faculty_code}/lien-chi-doan/'
+        }
+
+
+class KyTucXa(models.Model):
+    """
+    Model lưu trữ dữ liệu Ký Túc Xá sinh viên DUE.
+    db_table: portal_ky_tuc_xa
+    """
+    code = models.CharField(max_length=50, unique=True, verbose_name="Mã KTX (Slug)")
+    name = models.CharField(max_length=200, verbose_name="Tên Ký túc xá")
+    address = models.CharField(max_length=255, verbose_name="Địa chỉ")
+    phone = models.CharField(max_length=50, blank=True, default="", verbose_name="Hotline liên hệ")
+    email = models.CharField(max_length=100, blank=True, default="", verbose_name="Email hỗ trợ")
+    total_beds = models.CharField(max_length=50, default="2.500+ Chỗ nội trú", verbose_name="Quy mô chỗ ở")
+    intro = models.TextField(blank=True, default="", verbose_name="Giới thiệu KTX")
+    room_types = models.JSONField(default=list, blank=True, verbose_name="Danh sách loại phòng & Bảng giá")
+    facilities = models.JSONField(default=list, blank=True, verbose_name="Tiện ích & Cơ sở vật chất")
+    priority_subjects = models.JSONField(default=list, blank=True, verbose_name="Đối tượng ưu tiên xét duyệt")
+    registration_guide = models.JSONField(default=list, blank=True, verbose_name="Quy trình nộp hồ sơ & Đăng ký")
+    regulations = models.JSONField(default=list, blank=True, verbose_name="Nội quy ký túc xá")
+    faq = models.JSONField(default=list, blank=True, verbose_name="Câu hỏi thường gặp")
+    image_url = models.CharField(max_length=500, blank=True, default="", verbose_name="Ảnh đại diện")
+    order = models.PositiveIntegerField(default=0, verbose_name="Thứ tự hiển thị")
+    is_active = models.BooleanField(default=True, verbose_name="Kích hoạt")
+
+    class Meta:
+        db_table = 'portal_ky_tuc_xa'
+        verbose_name = "Ký Túc Xá Sinh Viên"
+        verbose_name_plural = "Danh sách Ký Túc Xá"
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return self.name
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'code': self.code,
+            'name': self.name,
+            'address': self.address,
+            'phone': self.phone,
+            'email': self.email,
+            'total_beds': self.total_beds,
+            'intro': self.intro,
+            'room_types': self.room_types or [],
+            'facilities': self.facilities or [],
+            'priority_subjects': self.priority_subjects or [],
+            'registration_guide': self.registration_guide or [],
+            'regulations': self.regulations or [],
+            'faq': self.faq or [],
+            'image_url': self.image_url
+        }
+
+
+class HoatDongDoan(models.Model):
+    """
+    Model lưu trữ các Chiến dịch, Phong trào và Hoạt động Đoàn - Hội DUE.
+    db_table: portal_hoat_dong_doan
+    """
+    code = models.CharField(max_length=50, unique=True, verbose_name="Mã hoạt động (Slug)")
+    title = models.CharField(max_length=200, verbose_name="Tên phong trào / Hoạt động")
+    category = models.CharField(max_length=100, verbose_name="Phân loại (Tình nguyện, Kỹ năng, Văn nghệ...)")
+    time_period = models.CharField(max_length=150, blank=True, default="", verbose_name="Thời gian tổ chức")
+    scale = models.CharField(max_length=100, blank=True, default="", verbose_name="Quy mô tham gia")
+    organizer = models.CharField(max_length=150, default="Đoàn Thanh niên - Hội Sinh viên DUE", verbose_name="Đơn vị tổ chức")
+    location = models.CharField(max_length=255, blank=True, default="", verbose_name="Địa điểm")
+    summary = models.TextField(blank=True, default="", verbose_name="Tóm tắt ngắn gọn")
+    description = models.TextField(blank=True, default="", verbose_name="Nội dung chi tiết")
+    highlights = models.JSONField(default=list, blank=True, verbose_name="Điểm nhấn hoạt động")
+    image_url = models.CharField(max_length=500, blank=True, default="", verbose_name="Hình ảnh hoạt động")
+    icon = models.CharField(max_length=50, default="celebration", verbose_name="Icon đại diện")
+    order = models.PositiveIntegerField(default=0, verbose_name="Thứ tự hiển thị")
+    is_active = models.BooleanField(default=True, verbose_name="Kích hoạt")
+
+    class Meta:
+        db_table = 'portal_hoat_dong_doan'
+        verbose_name = "Hoạt Động Đoàn & Phong Trào"
+        verbose_name_plural = "Danh sách Hoạt Động Đoàn"
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"{self.title} ({self.category})"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'code': self.code,
+            'title': self.title,
+            'category': self.category,
+            'time_period': self.time_period,
+            'scale': self.scale,
+            'organizer': self.organizer,
+            'location': self.location,
+            'summary': self.summary,
+            'description': self.description,
+            'highlights': self.highlights or [],
+            'image_url': self.image_url,
+            'icon': self.icon
+        }
+
+
+class LichTrinhTanSinhVien(models.Model):
+    """
+    Model lưu trữ các sự kiện, lịch trình đón Tân sinh viên (theo từng Khoa hoặc toàn trường).
+    Dành cho Cán bộ tạo và quản lý lịch hoạt động cho Tân sinh viên.
+    db_table: portal_lich_trinh_tsv
+    """
+    faculty = models.ForeignKey(
+        Faculty,
+        on_delete=models.CASCADE,
+        related_name='freshman_schedules',
+        null=True,
+        blank=True,
+        verbose_name="Khoa / Viện chủ trì"
+    )
+    day = models.PositiveSmallIntegerField(default=1, verbose_name="Ngày diễn ra (1-31)")
+    month = models.PositiveSmallIntegerField(default=8, verbose_name="Tháng (1-12)")
+    year = models.PositiveIntegerField(default=2026, verbose_name="Năm")
+
+    title = models.CharField(max_length=255, verbose_name="Tên hoạt động / Sự kiện")
+    time_str = models.CharField(max_length=150, verbose_name="Khung giờ / Thời gian")
+    location = models.CharField(max_length=255, verbose_name="Địa điểm tổ chức")
+    category = models.CharField(
+        max_length=50,
+        default="khoa",
+        verbose_name="Phân loại (online, welcome, khoa, shcd, gala, test, study)"
+    )
+    badge = models.CharField(max_length=100, blank=True, default="", verbose_name="Badge hiển thị")
+    badge_color = models.CharField(max_length=100, blank=True, default="bg-emerald-50 text-emerald-700 border-emerald-200")
+    dot_color = models.CharField(max_length=50, blank=True, default="#047857")
+    description = models.TextField(blank=True, default="", verbose_name="Nội dung chi tiết")
+    guide = models.TextField(blank=True, default="", verbose_name="Lưu ý cho Tân sinh viên")
+    image_url = models.CharField(max_length=500, blank=True, default="", verbose_name="Ảnh minh họa")
+
+    created_by = models.CharField(max_length=100, blank=True, default="Cán bộ", verbose_name="Người tạo")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Thời điểm tạo")
+    is_active = models.BooleanField(default=True, verbose_name="Kích hoạt")
+
+    class Meta:
+        db_table = 'portal_lich_trinh_tsv'
+        verbose_name = "Lịch Trình Tân Sinh Viên"
+        verbose_name_plural = "Danh Sách Lịch Trình Tân Sinh Viên"
+        ordering = ['day', 'id']
+
+    def __str__(self):
+        return f"[{self.day:02d}/{self.month:02d}] {self.title}"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'id': self.id,
+            'day': self.day,
+            'month': self.month,
+            'year': self.year,
+            'badge': self.badge or f"Ngày {self.day:02d}/{self.month:02d}",
+            'badge_color': self.badge_color or "bg-blue-50 text-blue-700 border-blue-200",
+            'dot_color': self.dot_color or "#0072BC",
+            'time': self.time_str,
+            'title': self.title,
+            'location': self.location,
+            'desc': self.description,
+            'guide': self.guide,
+            'image': self.image_url or "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
+            'category': self.category,
+            'created_by': self.created_by,
+        }
+

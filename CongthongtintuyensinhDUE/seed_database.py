@@ -97,13 +97,24 @@ for pt in pt_list:
     )
     print(f"PhuongThucXetTuyen: {obj.ma_phuong_thuc} ({'Created' if created else 'Updated'})")
 
-# 3. NGÀNH ĐÀO TẠO & CHỈ TIÊU TỪ chitieutuyensinh.html
+# 3. NGÀNH ĐÀO TẠO & CHỈ TIÊU TỪ admission_quota.html / chitieutuyensinh.html
 lh_tp = LoaiHinhDaoTao.objects.get(ma_loai_hinh='toan_phan')
 lh_bp = LoaiHinhDaoTao.objects.get(ma_loai_hinh='ban_phan')
 lh_tc = LoaiHinhDaoTao.objects.get(ma_loai_hinh='tieu_chuan')
 
-with open('templates/chitieutuyensinh.html', 'r', encoding='utf-8') as f:
-    chitieu_html = f.read()
+base_dir = os.path.dirname(os.path.abspath(__file__))
+quota_candidates = [
+    os.path.join(base_dir, 'templates', 'admissions', 'admission_quota.html'),
+    os.path.join(base_dir, 'templates', 'chitieutuyensinh.html'),
+    'templates/admissions/admission_quota.html',
+    'templates/chitieutuyensinh.html',
+]
+quota_file = next((p for p in quota_candidates if os.path.exists(p)), None)
+if quota_file:
+    with open(quota_file, 'r', encoding='utf-8') as f:
+        chitieu_html = f.read()
+else:
+    chitieu_html = ''
 
 # Parse tbody rows
 tbody_match = re.search(r'<tbody[^>]*>(.*?)</tbody>', chitieu_html, re.DOTALL)
@@ -152,9 +163,19 @@ if tbody_match:
 
 print(f"Seeded/Updated {NganhDaoTao.objects.count()} NganhDaoTao records.")
 
-# 4. ĐIỂM CHUẨN CÁC NĂM TỪ diemchuancacnam.html
-with open('templates/diemchuancacnam.html', 'r', encoding='utf-8') as f:
-    diem_html = f.read()
+# 4. ĐIỂM CHUẨN CÁC NĂM TỪ benchmarks.html / diemchuancacnam.html
+diem_candidates = [
+    os.path.join(base_dir, 'templates', 'admissions', 'benchmarks.html'),
+    os.path.join(base_dir, 'templates', 'diemchuancacnam.html'),
+    'templates/admissions/benchmarks.html',
+    'templates/diemchuancacnam.html',
+]
+diem_file = next((p for p in diem_candidates if os.path.exists(p)), None)
+if diem_file:
+    with open(diem_file, 'r', encoding='utf-8') as f:
+        diem_html = f.read()
+else:
+    diem_html = ''
 
 tbody_d = re.search(r'<tbody[^>]*>(.*?)</tbody>', diem_html, re.DOTALL)
 if tbody_d:
@@ -221,24 +242,38 @@ if tbody_d:
 
 print(f"Seeded/Updated {DiemChuan.objects.count()} DiemChuan records.")
 
-# 5. CÂU HỎI THƯỜNG GẶP / TRI THỨC CHATBOT TỪ due_chatbot_knowledge.csv
-if os.path.exists('due_chatbot_knowledge.csv'):
-    with open('due_chatbot_knowledge.csv', 'r', encoding='utf-8') as f:
+# 5. CÂU HỎI THƯỜNG GẶP / TRI THỨC CHATBOT
+csv_candidates = [
+    os.path.join(base_dir, 'due_chatbot_knowledge.csv'),
+    os.path.join(base_dir, 'data', 'due_knowledge_base_merged.csv'),
+    'due_chatbot_knowledge.csv',
+    'data/due_knowledge_base_merged.csv',
+]
+csv_file = next((p for p in csv_candidates if os.path.exists(p)), None)
+if csv_file:
+    with open(csv_file, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         count_faq = 0
         for row in reader:
-            cau_id = row.get('ID') or row.get('\ufeffID')
+            cau_id = row.get('id') or row.get('ID') or row.get('\ufeffID') or row.get('id_goc')
             if not cau_id:
                 continue
+            chu_de = row.get('chu_de') or row.get('ChuDe', '')
+            phan_loai = row.get('nhom') or row.get('PhanLoai', 'GioiThieuChung')
+            cau_hoi_mau = row.get('cau_hoi_mau') or row.get('CauHoi_User_Variants', '')
+            cau_tra_loi = row.get('noi_dung') or row.get('CauTraLoi_ChiTiet', '')
+            tu_khoa = row.get('tu_khoa') or row.get('TuKhoa_Search', '')
+            nguon_tham_khao = row.get('lien_he_nguon') or row.get('Nguon_ThamKhao', '')
+
             CauHoiThuongGap.objects.update_or_create(
                 ma_cau_hoi=cau_id.strip(),
                 defaults={
-                    'chu_de': row.get('ChuDe', '').strip(),
-                    'phan_loai': row.get('PhanLoai', 'GioiThieuChung').strip(),
-                    'cau_hoi_mau': row.get('CauHoi_User_Variants', '').strip(),
-                    'cau_tra_loi': row.get('CauTraLoi_ChiTiet', '').strip(),
-                    'tu_khoa': row.get('TuKhoa_Search', '').strip(),
-                    'nguon_tham_khao': row.get('Nguon_ThamKhao', '').strip(),
+                    'chu_de': chu_de.strip(),
+                    'phan_loai': phan_loai.strip(),
+                    'cau_hoi_mau': cau_hoi_mau.strip(),
+                    'cau_tra_loi': cau_tra_loi.strip(),
+                    'tu_khoa': tu_khoa.strip(),
+                    'nguon_tham_khao': nguon_tham_khao.strip(),
                     'kich_hoat': True
                 }
             )

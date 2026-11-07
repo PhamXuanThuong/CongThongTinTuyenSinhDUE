@@ -1,42 +1,1282 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}Lịch trình Tân sinh viên - Cổng thông tin tuyển sinh DUE{% endblock %}
+{% block title %}Lịch Trình Tân Sinh Viên Khóa 52K - {{ faculty.name|default:"Trường Đại học Kinh tế (DUE)" }}{% endblock %}
+
+{% block nav_khoa %}text-secondary-container font-headline-sm border-b-2 border-secondary-container uppercase whitespace-nowrap font-bold{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Calendar Styles */
+  .cal-day-cell {
+    min-height: 105px;
+    transition: all .2s ease;
+  }
+  .cal-day-cell:hover {
+    background-color: #f0fdf4 !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 6px 16px -2px rgba(16, 185, 129, 0.2);
+  }
+  .cal-event-chip {
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .cal-event-chip:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  /* Stepper */
+  .milestone-node {
+    transition: all .2s ease;
+  }
+  .milestone-node:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -4px rgba(0, 51, 102, 0.15);
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<main class="w-full pt-32 sm:pt-36 pb-6 bg-surface min-h-[calc(100vh-28rem)] flex-1">
+<main class="w-full pt-32 sm:pt-36 pb-12 bg-surface min-h-[calc(100vh-28rem)] flex-1">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4">
-    <!-- Breadcrumb -->
-    <nav class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
+
+    <!-- 1. BREADCRUMB -->
+    <nav class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-on-surface-variant mb-6 font-medium">
       <a href="/" class="hover:text-primary-container transition-colors">Trang chủ</a>
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <span>Thông tin tuyển sinh</span>
+      <a href="/khoa/" class="hover:text-primary-container transition-colors">Khoa và Viện Đào tạo</a>
+      {% if faculty %}
       <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-      <span class="text-secondary-container font-semibold">Lịch trình Tân sinh viên</span>
+      <a href="/khoa/{{ faculty.id }}/" class="hover:text-primary-container transition-colors">{{ faculty.name }}</a>
+      {% endif %}
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-secondary-container font-semibold">Lịch trình Tân sinh viên Khóa 52K</span>
     </nav>
 
-    <!-- Header Banner -->
-    <div class="bg-gradient-to-r from-[#003366] via-[#0056b3] to-[#0072BC] rounded-3xl p-6 sm:p-10 text-white shadow-xl mb-8 relative overflow-hidden">
-      <div class="absolute -right-10 -bottom-10 w-60 h-60 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
-      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+
+    <!-- 2. HERO BANNER (ĐÃ BỎ NÚT CỔNG NHẬP HỌC TRỰC TUYẾN THEO YÊU CẦU) -->
+    <div class="bg-gradient-to-r from-[#001e40] via-[#003366] to-[#047857] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden mb-8">
+      <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-emerald-400/15 blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-blue-400/15 blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="max-w-3xl">
+          <!-- Badges -->
+          <div class="flex flex-wrap items-center gap-2 mb-3 text-xs font-semibold">
+            <span class="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-white">
+              Khóa 52K • Năm học 2026 - 2027
+            </span>
+            <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-bold">
+              Lịch trình tương tác
+            </span>
+            {% if faculty %}
+            <span class="px-3 py-1 rounded-full bg-emerald-500/80 text-white border border-white/20">
+              {{ faculty.name }}
+            </span>
+            {% endif %}
+          </div>
+
+          <!-- Title -->
+          <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-3">
+            Lịch Trình Tân Sinh Viên 2026
+          </h1>
+          <p class="text-slate-200 text-xs sm:text-sm leading-relaxed mb-4">
+            Bấm hoặc rê chuột vào từng ngày hoặc cột mốc sự kiện trên lịch để xem thông tin chi tiết: thời gian, địa điểm giảng đường, nội dung và lưu ý chuẩn bị cho tân sinh viên.
+          </p>
+
+          <!-- Quick Actions (Đã bỏ nút Cổng nhập học) -->
+          <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium">
+            {% if faculty %}
+            <a href="/khoa/{{ faculty.id }}/" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold backdrop-blur-md border border-white/20 transition-all">
+              <span class="material-symbols-outlined text-[16px]">school</span>
+              <span>Trang Khoa: {{ faculty.name }}</span>
+            </a>
+            <a href="/khoa/{{ faculty.id }}/lien-chi-doan/" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-600/80 hover:bg-rose-700 text-white font-semibold border border-white/20 transition-all">
+              <span class="material-symbols-outlined text-[16px]">flag</span>
+              <span>Liên Chi Đoàn Khoa</span>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Faculty Logo Card -->
+        {% if faculty %}
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-5 lg:w-64 shrink-0 flex flex-col items-center text-center shadow-lg">
+          <div class="w-16 h-16 rounded-2xl bg-white p-2 shadow-xl border-2 border-white/90 overflow-hidden flex items-center justify-center mb-2">
+            <img 
+              src="{{ faculty.logo_url }}" 
+              alt="{{ faculty.name }}" 
+              class="w-full h-full object-contain"
+              onerror="this.onerror=null; this.src='/static/img/khoa/tcnh_logo.png';"
+            />
+          </div>
+          <span class="text-[11px] text-amber-300 font-bold block uppercase tracking-wider mb-0.5">Đơn vị chủ trì</span>
+          <h3 class="text-sm font-bold text-white mb-1 leading-snug">{{ faculty.name }}</h3>
+          <p class="text-[11px] text-slate-200 line-clamp-1 italic">&ldquo;{{ faculty.slogan|default:"Chất lượng đào tạo tiên phong" }}&rdquo;</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+
+    <!-- 3. BỘ CHỌN KHOA & THANH ĐIỀU HƯỚNG CHẾ ĐỘ XEM -->
+    <div class="mb-6 bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      
+      <!-- Dropdown Chọn Khoa khác -->
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[#003366] text-[22px]">account_balance</span>
         <div>
-          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight">Lịch Trình Tân Sinh Viên</h1>
-          <p class="text-white/85 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
-            Các mốc thời gian quan trọng: Tuần sinh hoạt công dân đầu khóa, khám sức khỏe, kiểm tra tiếng Anh và lễ khai giảng năm học mới.
+          <label for="selectFacultySchedule" class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Chọn Khoa / Viện xem lịch:</label>
+          <select 
+            id="selectFacultySchedule" 
+            onchange="if(this.value) window.location.href='/khoa/' + this.value + '/lich-trinh-tan-sinh-vien/';"
+            class="mt-0.5 font-bold text-slate-800 text-xs sm:text-sm border-none bg-slate-100 hover:bg-slate-200/80 rounded-xl px-3 py-1.5 focus:ring-2 focus:ring-[#003366] cursor-pointer"
+          >
+            {% for f in faculties %}
+            <option value="{{ f.id }}" {% if faculty and faculty.id == f.id %}selected{% endif %}>
+              {{ f.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <!-- Toggle View Modes (Lịch tháng vs Cột mốc) -->
+      <div class="flex items-center gap-2 p-1 bg-slate-100 rounded-2xl text-xs font-bold">
+        <button id="viewBtnCalendar" type="button" onclick="switchScheduleView('calendar')" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#003366] shadow-sm transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+          <span>Xem Lịch Tháng 8/2026</span>
+        </button>
+        <button id="viewBtnMilestones" type="button" onclick="switchScheduleView('milestones')" class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">timeline</span>
+          <span>Xem Cột Mốc Sự Kiện</span>
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ====================================================
+         VIEW 1: LỊCH TRÌNH THEO THÁNG (DYNAMIC CALENDAR GRID VIEW)
+         ==================================================== -->
+    <div id="calendarViewContainer" class="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm mb-12">
+      
+      <!-- Calendar Header với Bộ Chuyển Tháng & Thao Tác -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 mb-4 border-b border-slate-100">
+        
+        <!-- Cột trái: Tiêu đề tháng & Khoa -->
+        <div class="flex items-center gap-3.5">
+          <div id="calHeaderMonthBadge" class="w-12 h-12 rounded-2xl bg-[#003366] text-white flex flex-col items-center justify-center font-bold shadow-md shrink-0 transition-all">
+            <span class="text-[9px] uppercase tracking-wider text-amber-300 font-extrabold leading-none">Tháng</span>
+            <span id="calHeaderMonthNum" class="text-xl leading-none font-black mt-0.5">08</span>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h2 id="calHeaderTitle" class="text-base sm:text-lg lg:text-xl font-bold text-slate-900 leading-snug">
+                Lịch Trình Tân Sinh Viên - Tháng 08/2026
+              </h2>
+              {% if is_can_bo %}
+              <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold border border-emerald-300">
+                Quyền Cán bộ
+              </span>
+              {% endif %}
+            </div>
+            <p id="calHeaderSubtitle" class="text-xs text-slate-500 mt-0.5">
+              Khóa 52K • {{ faculty.name|default:"Trường Đại học Kinh tế - ĐHĐN" }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Cột phải: Bộ chuyển tháng & Legend Pills -->
+        <div class="flex flex-wrap items-center gap-3">
+          
+          <!-- BỘ NÚT CHUYỂN THÁNG (MONTH NAVIGATION) -->
+          <div class="flex items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200 shadow-2xs">
+            <button 
+              type="button" 
+              onclick="changeMonth(-1)" 
+              class="w-9 h-9 rounded-xl bg-white hover:bg-slate-200/80 active:scale-95 text-slate-700 flex items-center justify-center shadow-xs transition-all cursor-pointer font-bold"
+              title="Xem tháng trước"
+            >
+              <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+            </button>
+            
+            <div class="px-3 py-0.5 text-center min-w-[115px] sm:min-w-[130px]">
+              <span id="calCurrentMonthLabel" class="text-xs sm:text-sm font-extrabold text-[#003366] block leading-tight whitespace-nowrap">
+                Tháng 08 / 2026
+              </span>
+              <span id="calMonthThemeLabel" class="text-[10px] text-amber-700 font-bold block leading-tight mt-0.5 whitespace-nowrap">
+                Đón Tân sinh viên
+              </span>
+            </div>
+            
+            <button 
+              type="button" 
+              onclick="changeMonth(1)" 
+              class="w-9 h-9 rounded-xl bg-white hover:bg-slate-200/80 active:scale-95 text-slate-700 flex items-center justify-center shadow-xs transition-all cursor-pointer font-bold"
+              title="Xem tháng sau"
+            >
+              <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+            </button>
+
+            <!-- Nút quay về Tháng 8 trọng tâm -->
+            <button 
+              type="button" 
+              onclick="goToMonth(8, 2026)" 
+              class="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-blue-50 text-[#003366] text-xs font-bold transition-all cursor-pointer border border-slate-200 shadow-xs ml-1"
+              title="Trở về Tháng 8 (Trọng tâm Đón Tân sinh viên)"
+            >
+              <span class="material-symbols-outlined text-[15px]">today</span>
+              <span>Tháng 8</span>
+            </button>
+          </div>
+
+          <!-- Legend Pills -->
+          <div class="hidden xl:flex items-center gap-2 text-[11px] font-semibold text-slate-600 pl-2">
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Trực tuyến</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Toàn trường</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Khoa & Lớp</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Sinh hoạt CD</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Gala Khoa</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Calendar Table Grid -->
+      <div class="overflow-x-auto">
+        <div class="min-w-[700px]">
+          <!-- Day Names Header (Thứ Hai đến Chủ Nhật) -->
+          <div class="grid grid-cols-7 gap-2 mb-2 text-center text-xs font-bold uppercase tracking-wider text-slate-500">
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Hai</div>
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Ba</div>
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Tư</div>
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Năm</div>
+            <div class="py-1 bg-slate-50 rounded-lg">Thứ Sáu</div>
+            <div class="py-1 bg-slate-50 rounded-lg text-blue-700">Thứ Bảy</div>
+            <div class="py-1 bg-slate-50 rounded-lg text-rose-700">Chủ Nhật</div>
+          </div>
+
+          <!-- Calendar Days Grid Rendered Dynamically -->
+          <div id="calendarDaysGrid" class="grid grid-cols-7 gap-2 text-xs">
+            <!-- Được render tự động theo từng tháng bởi JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Hướng dẫn sạch sẽ (Đã phân quyền rõ ràng theo vai trò) -->
+      <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
+        <span class="flex items-center gap-1.5 text-blue-700 font-semibold">
+          <span class="material-symbols-outlined text-[16px]">touch_app</span>
+          <span>Bấm vào bất kỳ sự kiện nào trên lịch để xem popup thông tin chi tiết</span>
+          {% if is_can_bo %}
+          <span class="text-emerald-700 font-bold ml-1">• (Cán bộ: Click vào ô ngày trên lịch để thêm hoạt động mới)</span>
+          {% endif %}
+        </span>
+        <button type="button" onclick="switchScheduleView('milestones')" class="text-[#003366] hover:underline font-bold cursor-pointer">
+          Chuyển sang xem danh sách cột mốc &rarr;
+        </button>
+      </div>
+
+    </div>
+
+
+
+    <!-- ====================================================
+         VIEW 2: CÁC CỘT MỐC SỰ KIỆN QUAN TRỌNG (MILESTONES STEPPER)
+         ==================================================== -->
+    <div id="milestonesViewContainer" class="space-y-4 mb-16">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900 leading-snug">
+            8 Cột Mốc Quan Trọng Dành Cho Tân Sinh Viên
+          </h2>
+          <p class="text-xs text-slate-500">Nhấp vào từng cột mốc để mở popup thông tin chi tiết</p>
+        </div>
+        <button type="button" onclick="switchScheduleView('calendar')" class="text-xs font-bold text-[#003366] hover:underline flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+          <span>Xem dạng Lịch tháng</span>
+        </button>
+      </div>
+
+      <div id="milestonesCardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {% for ev in schedule_events %}
+        <div 
+          onclick="openScheduleModal({{ ev.id }})"
+          class="milestone-node bg-white rounded-3xl p-5 border border-slate-200/90 hover:border-blue-400 shadow-xs cursor-pointer flex flex-col justify-between group"
+        >
+          <div>
+            <!-- Header Badge & Time -->
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border {{ ev.badge_color }}">
+                {{ ev.badge }}
+              </span>
+              <span class="w-2.5 h-2.5 rounded-full" style="background-color: {{ ev.dot_color }};"></span>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#003366] transition-colors leading-snug mb-2 line-clamp-2">
+              {{ ev.title }}
+            </h3>
+
+            <!-- Time Chip -->
+            <div class="flex items-center gap-1.5 text-xs text-rose-700 font-semibold mb-2">
+              <span class="material-symbols-outlined text-[14px]">event</span>
+              <span class="line-clamp-1">{{ ev.time }}</span>
+            </div>
+
+            <!-- Location -->
+            <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mb-3">
+              <span class="material-symbols-outlined text-[14px] text-blue-600">location_on</span>
+              <span class="line-clamp-1">{{ ev.location }}</span>
+            </div>
+          </div>
+
+          <!-- Footer Button -->
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-blue-700 font-bold group-hover:text-secondary-container">
+            <span>Xem chi tiết popup</span>
+            <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         POPUP MODAL THÔNG TIN CHI TIẾT SỰ KIỆN (INTERACTIVE POPUP)
+         ==================================================== -->
+    <div 
+      id="scheduleModalBackdrop" 
+      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[99999] hidden items-center justify-center p-4 transition-opacity"
+      onclick="if(event.target === this) closeScheduleModal();"
+    >
+      <div 
+        id="scheduleModalCard" 
+        class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 relative p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+      >
+        <!-- Close Button -->
+        <button 
+          type="button" 
+          onclick="closeScheduleModal()" 
+          class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+          title="Đóng popup (Phím ESC)"
+        >
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+
+        <!-- Modal Badge & Time -->
+        <div class="flex flex-wrap items-center gap-2 mb-3 pr-10">
+          <span id="modalBadge" class="px-3 py-1 rounded-full text-xs font-bold border bg-blue-50 text-blue-700 border-blue-200">
+            Mốc sự kiện
+          </span>
+          <span id="modalTime" class="inline-flex items-center gap-1 text-xs sm:text-sm font-extrabold text-rose-700 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
+            <span class="material-symbols-outlined text-[16px]">schedule</span>
+            <span>Thời gian</span>
+          </span>
+        </div>
+
+        <!-- Modal Title -->
+        <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold text-slate-900 leading-snug mb-3">
+          Tiêu đề sự kiện
+        </h2>
+
+        <!-- Location Box -->
+        <div class="flex items-center gap-2 text-xs sm:text-sm text-[#0072BC] font-semibold mb-4 bg-sky-50 px-3.5 py-2 rounded-xl border border-sky-100">
+          <span class="material-symbols-outlined text-[20px]">location_on</span>
+          <span id="modalLocation">Địa điểm</span>
+        </div>
+
+        <!-- Content Desc -->
+        <div class="space-y-3 mb-5">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Nội dung chi tiết:</h4>
+          <p id="modalDesc" class="text-slate-700 text-sm sm:text-base leading-relaxed text-justify">
+            Mô tả nội dung chi tiết...
           </p>
         </div>
-        <div class="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
-          <a href="/huong-dan-nhap-hoc/" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/20 transition-all">
-            <span class="material-symbols-outlined text-[18px]">menu_book</span>
-            <span>Xem Hướng dẫn Nhập học</span>
-          </a>
+
+        <!-- Guide Callout -->
+        <div id="modalGuideContainer" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs sm:text-sm text-amber-900 flex items-start gap-3 mb-6">
+          <span class="material-symbols-outlined text-amber-600 text-[20px] shrink-0 mt-0.5">lightbulb</span>
+          <div class="leading-relaxed">
+            <strong class="font-bold">Lưu ý cho Tân sinh viên:</strong>
+            <span id="modalGuide">Hướng dẫn...</span>
+          </div>
+        </div>
+
+        <!-- Thematic Image Thumbnail -->
+        <div class="rounded-2xl overflow-hidden border border-slate-200 h-44 sm:h-52 mb-6">
+          <img id="modalImage" src="" alt="Sự kiện" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+          <span class="text-xs text-slate-500">
+            Khoa: <strong class="text-slate-800">{{ faculty.name|default:"Trường Đại học Kinh tế" }}</strong>
+          </span>
+          <button 
+            type="button" 
+            onclick="closeScheduleModal()" 
+            class="px-5 py-2.5 rounded-full bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer"
+          >
+            Đã hiểu & Đóng
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         POPUP MODAL TẠO LỊCH HOẠT ĐỘNG MỚI (DÀNH CHO CÁN BỘ)
+         ==================================================== -->
+    <div 
+      id="createScheduleModalBackdrop" 
+      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[99999] hidden items-center justify-center p-4 transition-opacity"
+      onclick="if(event.target === this) closeCreateScheduleModal();"
+    >
+      <div 
+        id="createScheduleModalCard" 
+        class="bg-white rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 relative p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+      >
+        <!-- Close Button -->
+        <button 
+          type="button" 
+          onclick="closeCreateScheduleModal()" 
+          class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+          title="Đóng popup (Phím ESC)"
+        >
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+
+        <!-- Modal Header -->
+        <div class="flex items-center gap-3 mb-5 pr-10">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 shadow-xs">
+            <span class="material-symbols-outlined text-[26px]">calendar_add_on</span>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                Quyền Cán bộ Tuyển sinh
+              </span>
+              <span id="createModalDayBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-[#003366] border border-blue-200">
+                Ngày 06/08/2026
+              </span>
+            </div>
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900 leading-snug mt-1">
+              Thêm Hoạt Động Mới Vào Lịch Trình
+            </h2>
+          </div>
+        </div>
+
+        <form id="createScheduleForm" onsubmit="submitNewScheduleEvent(event)" class="space-y-4">
+          {% csrf_token %}
+          <input type="hidden" id="newScheduleDay" name="day" value="6">
+          <input type="hidden" id="newScheduleMonth" name="month" value="8">
+          <input type="hidden" id="newScheduleYear" name="year" value="2026">
+          <input type="hidden" id="newScheduleFacultyCode" name="faculty_code" value="{{ faculty.id|default:'tcnh' }}">
+
+          <!-- Tên hoạt động -->
+          <div>
+            <label for="newScheduleTitle" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Tên hoạt động / sự kiện <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="newScheduleTitle" 
+              name="title" 
+              required 
+              placeholder="VD: Họp mặt Ban cán sự lâm thời & Giao lưu Tân sinh viên"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white transition-all shadow-2xs"
+            >
+          </div>
+
+          <!-- Grid: Thời gian & Địa điểm -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="newScheduleTime" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                Thời gian cụ thể <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="newScheduleTime" 
+                name="time_str" 
+                required 
+                placeholder="VD: 08h30 - 11h30 ngày 06/08/2026"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white transition-all shadow-2xs"
+              >
+            </div>
+            <div>
+              <label for="newScheduleLocation" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                Địa điểm tổ chức
+              </label>
+              <input 
+                type="text" 
+                id="newScheduleLocation" 
+                name="location" 
+                placeholder="VD: Hội trường E / Giảng đường A101"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white transition-all shadow-2xs"
+              >
+            </div>
+          </div>
+
+          <!-- Grid: Phân loại & Đơn vị chủ trì -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="newScheduleCategory" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                Phân loại hoạt động & Màu sắc
+              </label>
+              <select 
+                id="newScheduleCategory" 
+                name="category"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white cursor-pointer shadow-2xs"
+              >
+                <option value="khoa">🟢 Khoa & Lớp chuyên ngành</option>
+                <option value="welcome">🟠 Sự kiện Toàn trường / Welcome</option>
+                <option value="online">🔵 Trực tuyến & Kê khai hồ sơ</option>
+                <option value="shcd">🟣 Tuần Sinh hoạt công dân</option>
+                <option value="gala">🔴 Đêm Gala & Giao lưu văn nghệ</option>
+                <option value="test">🩵 Khảo sát Tiếng Anh & Y tế</option>
+                <option value="study">🌲 Học tập chính khóa</option>
+              </select>
+            </div>
+            <div>
+              <label for="newScheduleFacultyDisplay" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                Đơn vị tổ chức
+              </label>
+              <input 
+                type="text" 
+                id="newScheduleFacultyDisplay" 
+                readonly 
+                value="{{ faculty.name|default:'Trường Đại học Kinh tế' }}"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-500 bg-slate-100 cursor-not-allowed"
+              >
+            </div>
+          </div>
+
+          <!-- Nội dung chi tiết -->
+          <div>
+            <label for="newScheduleDesc" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Nội dung & chương trình chi tiết
+            </label>
+            <textarea 
+              id="newScheduleDesc" 
+              name="desc" 
+              rows="3" 
+              placeholder="VD: Triển khai kế hoạch học tập đầu khóa, bầu Ban cán sự lớp, phổ biến quy chế đào tạo tín chỉ và giải đáp thắc mắc cho tân sinh viên..."
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white transition-all leading-relaxed shadow-2xs"
+            ></textarea>
+          </div>
+
+          <!-- Lưu ý cho Tân sinh viên -->
+          <div>
+            <label for="newScheduleGuide" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Lưu ý / Hướng dẫn Tân sinh viên chuẩn bị
+            </label>
+            <input 
+              type="text" 
+              id="newScheduleGuide" 
+              name="guide" 
+              placeholder="VD: Mang theo sổ tay, bút ghi chép và trang phục lịch sự đúng quy định."
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white transition-all shadow-2xs"
+            >
+          </div>
+
+          <!-- Actions -->
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+            <button 
+              type="button" 
+              onclick="closeCreateScheduleModal()" 
+              class="px-5 py-2.5 rounded-full text-slate-600 hover:bg-slate-100 text-xs sm:text-sm font-bold transition-all cursor-pointer"
+            >
+              Hủy bỏ
+            </button>
+            <button 
+              type="submit" 
+              id="btnSubmitSchedule" 
+              class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all cursor-pointer"
+            >
+              <span class="material-symbols-outlined text-[18px]">save</span>
+              <span>Lưu & Thêm Vào Lịch</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- ====================================================
+         TOAST NOTIFICATION (THÔNG BÁO HOÀN THÀNH)
+         ==================================================== -->
+    <div 
+      id="scheduleToast" 
+      class="fixed bottom-6 right-6 z-[999999] hidden items-center gap-3 px-5 py-3.5 rounded-2xl bg-slate-900 text-white shadow-2xl border border-emerald-500/50 transition-all text-xs sm:text-sm font-semibold animate-in slide-in-from-bottom-5 duration-200"
+    >
+      <span class="material-symbols-outlined text-emerald-400 text-[22px]">check_circle</span>
+      <span id="scheduleToastMsg">Đã thêm hoạt động vào lịch trình thành công!</span>
+    </div>
+
+
+    <!-- 5. HỖ TRỢ & ĐẦU MỐI LIÊN HỆ TÂN SINH VIÊN -->
+    <div class="bg-gradient-to-br from-slate-50 to-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm mt-8">
+      <div class="max-w-2xl mb-6">
+        <h3 class="text-base sm:text-xl font-extrabold text-slate-900 font-headline-md tracking-tight">
+          Đầu Mối Hỗ Trợ Tân Sinh Viên Khóa 52K
+        </h3>
+        <p class="text-slate-600 text-xs sm:text-sm mt-1">
+          Mọi thắc mắc về thời gian, địa điểm giảng đường và lịch sinh hoạt, vui lòng liên hệ Ban Chủ nhiệm Khoa hoặc Phòng Công tác sinh viên.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-blue-700 text-[18px]">school</span>
+            Văn phòng Khoa
+          </div>
+          <p class="text-slate-500 mb-2">{{ faculty.name|default:"Khoa Chuyên môn" }}</p>
+          <div class="font-semibold text-blue-800">Hotline: 0236 3836 169</div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-700 text-[18px]">badge</span>
+            Phòng Công tác sinh viên
+          </div>
+          <p class="text-slate-500 mb-2">Phòng 102 - Nhà Hiệu bộ</p>
+          <div class="font-semibold text-emerald-800">Hotline: 0236 3950 110</div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="font-bold text-slate-900 text-sm mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-rose-700 text-[18px]">flag</span>
+            Đoàn Thanh Niên & CLB
+          </div>
+          <p class="text-slate-500 mb-2">Gala chào tân sinh viên & 13+ CLB</p>
+          <div class="font-semibold text-rose-800">Hotline: 0236 3847 426</div>
         </div>
       </div>
     </div>
 
-    <!-- Main Content Card -->
-    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-md">
-      {% include 'portal/components/freshman_schedule_content.html' %}
-    </div>
   </div>
 </main>
+
+<!-- SCHEDULE EVENTS DATA SCRIPT -->
+<script>
+  // Phân quyền Cán bộ từ Django context: Thí sinh/Khách không có quyền tạo lịch
+  const IS_CAN_BO = {{ is_can_bo|yesno:"true,false" }};
+  let currentMonth = 8;
+  let currentYear = 2026;
+
+  // Dữ liệu sự kiện từ Django Database / Backend
+  const scheduleEventsData = {
+    {% for ev in schedule_events %}
+    {{ ev.id }}: {
+      id: {{ ev.id }},
+      day: {{ ev.day|default:0 }},
+      month: 8,
+      year: 2026,
+      badge: "{{ ev.badge|escapejs }}",
+      time: "{{ ev.time|escapejs }}",
+      title: "{{ ev.title|escapejs }}",
+      location: "{{ ev.location|escapejs }}",
+      desc: "{{ ev.desc|escapejs }}",
+      guide: "{{ ev.guide|escapejs }}",
+      image: "{{ ev.image|escapejs }}",
+      category: "{{ ev.category|default:'welcome'|escapejs }}",
+      badgeColor: "{{ ev.badge_color|escapejs }}",
+      dotColor: "{{ ev.dot_color|default:'#0072BC'|escapejs }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  };
+
+  // Cấu hình các tháng (Theme, tiêu đề, số ngày và ngày bắt đầu theo Thứ 2)
+  const MONTH_CONFIG = {
+    7: {
+      name: "Tháng 07 / 2026",
+      title: "Lịch Trình Xét Tuyển & Nhập Học Sớm - Tháng 07/2026",
+      theme: "Xét tuyển & Điểm sàn",
+      badgeColor: "bg-blue-800",
+      daysInMonth: 31,
+      startDayIndex: 2 // 01/07/2026 là Thứ Tư (Thứ 2 = index 0 -> Thứ 4 = 2)
+    },
+    8: {
+      name: "Tháng 08 / 2026",
+      title: "Lịch Trình Tân Sinh Viên - Tháng 08/2026",
+      theme: "Đón Tân sinh viên (Trọng tâm)",
+      badgeColor: "bg-[#003366]",
+      daysInMonth: 31,
+      startDayIndex: 5 // 01/08/2026 là Thứ Bảy (index 5)
+    },
+    9: {
+      name: "Tháng 09 / 2026",
+      title: "Lịch Khai Giảng & Ngày Hội CLB - Tháng 09/2026",
+      theme: "Khai giảng & Club Fair",
+      badgeColor: "bg-emerald-800",
+      daysInMonth: 30,
+      startDayIndex: 1 // 01/09/2026 là Thứ Ba (index 1)
+    },
+    10: {
+      name: "Tháng 10 / 2026",
+      title: "Lịch Hội Thao & Nghiên Cứu Khoa Học - Tháng 10/2026",
+      theme: "Hội thao & NCKH",
+      badgeColor: "bg-purple-800",
+      daysInMonth: 31,
+      startDayIndex: 3 // 01/10/2026 là Thứ Năm (index 3)
+    }
+  };
+
+  // Dữ liệu sự kiện mặc định phong phú cho các tháng 7, 9, 10
+  const DEFAULT_MONTHLY_EVENTS = {
+    7: [
+      {
+        id: 701, day: 10, month: 7, year: 2026,
+        category: 'online', badge: '10/07 • Xét tuyển',
+        time: 'Hạn chót 17h00 ngày 10/07/2026',
+        title: 'Hạn chót tiếp nhận hồ sơ xét tuyển sớm và chứng chỉ IELTS/TOEFL',
+        location: 'Trực tuyến tại tuyensinh.due.udn.vn',
+        desc: 'Hạn cuối cùng để thí sinh 2k8 nộp hồ sơ xét tuyển theo phương thức tuyển sinh riêng, chứng chỉ ngoại ngữ quốc tế kết hợp học bạ THPT.',
+        guide: 'Thí sinh kiểm tra kỹ file scan học bạ và bản chụp chứng chỉ trước khi bấm xác nhận nộp hồ sơ.',
+        image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-blue-50 text-blue-700 border-blue-200', dotColor: '#2563eb'
+      },
+      {
+        id: 702, day: 22, month: 7, year: 2026,
+        category: 'welcome', badge: '22/07 • Điểm sàn',
+        time: '09h00 ngày 22/07/2026',
+        title: 'Công bố điểm trúng tuyển có điều kiện & Ngưỡng điểm sàn DUE 2026',
+        location: 'Cổng thông tin tuyển sinh DUE & Fanpage Nhà trường',
+        desc: 'Nhà trường chính thức công bố danh sách trúng tuyển có điều kiện các phương thức sớm và ngưỡng điểm nhận hồ sơ xét tuyển theo điểm thi tốt nghiệp THPT 2026.',
+        guide: 'Thí sinh tra cứu kết quả bằng số Căn cước công dân hoặc số báo danh thi tốt nghiệp.',
+        image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-amber-50 text-amber-700 border-amber-200', dotColor: '#d97706'
+      },
+      {
+        id: 703, day: 28, month: 7, year: 2026,
+        category: 'online', badge: '28/07 • Tư vấn NV',
+        time: '19h30 - 21h30 ngày 28/07/2026',
+        title: 'Livestream tư vấn điều chỉnh nguyện vọng 1 trên Cổng Bộ GD&ĐT',
+        location: 'Livestream Fanpage Trường Đại học Kinh tế - ĐHĐN',
+        desc: 'Ban tư vấn tuyển sinh giải đáp trực tiếp chiến thuật đặt thứ tự nguyện vọng thông minh để chắc suất đỗ vào ngành học mơ ước tại DUE.',
+        guide: 'Chuẩn bị trước các thắc mắc về chỉ tiêu chuyên ngành, học phí và chính sách học bổng tuyển sinh.',
+        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-blue-50 text-blue-700 border-blue-200', dotColor: '#2563eb'
+      }
+    ],
+    9: [
+      {
+        id: 901, day: 5, month: 9, year: 2026,
+        category: 'welcome', badge: '05/09 • Khai giảng',
+        time: '07h30 - 11h00 ngày 05/09/2026',
+        title: 'Lễ Khai giảng Năm học mới 2026 - 2027 toàn trường DUE',
+        location: 'Hội trường Đa năng E - Trường Đại học Kinh tế',
+        desc: 'Sự kiện khai giảng trang trọng chào mừng hơn 4.600 tân sinh viên Khóa 52K chính thức gia nhập đại gia đình DUE.',
+        guide: 'Sinh viên mặc đồng phục áo sơ mi trắng DUE hoặc trang phục trang trọng, có mặt trước 07h15.',
+        image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-amber-50 text-amber-700 border-amber-200', dotColor: '#d97706'
+      },
+      {
+        id: 902, day: 12, month: 9, year: 2026,
+        category: 'welcome', badge: '12/09 • CLB Fair',
+        time: '08h00 - 21h30 ngày 12/09/2026',
+        title: 'Ngày hội các Câu lạc bộ DUE - DUE Club Fair 2026',
+        location: 'Quảng trường Nhà A & Khuôn viên trung tâm DUE',
+        desc: 'Gặp gỡ hơn 13 CLB/Đội/Nhóm học thuật, thể thao, nghệ thuật và kỹ năng. Cơ hội đăng ký tuyển thành viên các CLB thế hệ mới.',
+        guide: 'Tham gia các gian hàng trải nghiệm để nhận hàng ngàn phần quà từ Đoàn Thanh niên và Nhà tài trợ.',
+        image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-rose-50 text-rose-700 border-rose-200', dotColor: '#e11d48'
+      },
+      {
+        id: 903, day: 18, month: 9, year: 2026,
+        category: 'shcd', badge: '18/09 • Kỹ năng SV',
+        time: '14h00 - 17h00 ngày 18/09/2026',
+        title: 'Chuyên đề: Kỹ năng học tập đại học & Phương pháp nghiên cứu học thuật',
+        location: 'Giảng đường E201 & Trực tuyến MS Teams',
+        desc: 'Chia sẻ từ các thủ khoa và giảng viên uy tín về phương pháp tự học, quản lý thời gian và tìm kiếm tài liệu thư viện số.',
+        guide: 'Mang theo laptop để thực hành đăng ký mượn sách số và tra cứu cơ sở dữ liệu quốc tế.',
+        image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-purple-50 text-purple-700 border-purple-200', dotColor: '#9333ea'
+      },
+      {
+        id: 904, day: 26, month: 9, year: 2026,
+        category: 'online', badge: '26/09 • ĐKHP bổ sung',
+        time: '08h00 - 17h00 ngày 26/09/2026',
+        title: 'Cổng điều chỉnh đăng ký môn học & Rút bớt học phần Học kỳ 1',
+        location: 'Hệ thống tín chỉ: tinchi.due.udn.vn',
+        desc: 'Thời hạn cho sinh viên điều chỉnh lịch học, xin đăng ký thêm môn học hoặc rút môn học theo nguyện vọng.',
+        guide: 'Tham khảo ý kiến Cố vấn học tập của Khoa trước khi điều chỉnh số lượng tín chỉ.',
+        image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-blue-50 text-blue-700 border-blue-200', dotColor: '#2563eb'
+      }
+    ],
+    10: [
+      {
+        id: 1001, day: 10, month: 10, year: 2026,
+        category: 'study', badge: '10/10 • NCKH 2026',
+        time: '08h30 - 11h30 ngày 10/10/2026',
+        title: 'Lễ phát động Phong trào Sinh viên Nghiên cứu Khoa học 2026 - 2027',
+        location: 'Hội trường C - Trường Đại học Kinh tế',
+        desc: 'Phát động giải thưởng NCKH sinh viên cấp Khoa và cấp Trường với tổng giải thưởng lên tới 500 triệu đồng.',
+        guide: 'Khuyến khích tân sinh viên đăng ký nhóm đề tài cùng các anh chị khóa trên.',
+        image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200', dotColor: '#047857'
+      },
+      {
+        id: 1002, day: 15, month: 10, year: 2026,
+        category: 'study', badge: '15/10 • DUE Debate',
+        time: '18h30 ngày 15/10/2026',
+        title: 'Vòng loại Hội thi Tiếng Anh & Tranh biện Sinh viên Kinh tế (DUE Debate)',
+        location: 'Phòng Hội thảo Quốc tế A205',
+        desc: 'Sân chơi tranh biện đỉnh cao bằng tiếng Anh và tiếng Việt dành cho sinh viên đam mê hùng biện và phân tích kinh tế.',
+        guide: 'Khán giả cổ vũ vào cửa tự do và nhận quà mini-game hấp dẫn.',
+        image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200', dotColor: '#047857'
+      },
+      {
+        id: 1003, day: 24, month: 10, year: 2026,
+        category: 'gala', badge: '24/10 • Hội thao',
+        time: '07h00 - 17h30 ngày 24/10/2026',
+        title: 'Khai mạc Hội thao Truyền thống Sinh viên Trường Đại học Kinh tế 2026',
+        location: 'Trung tâm Giáo dục Thể chất & Sân vận động DUE',
+        desc: 'Thi đấu các môn bóng đá, bóng chuyền, cầu lông, cờ vua và kéo co giữa các Liên Chi Đoàn 8 Khoa.',
+        guide: 'Tân sinh viên mang giày thể thao và áo đồng phục khoa để tham gia thi đấu và cổ vũ.',
+        image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80',
+        badgeColor: 'bg-rose-50 text-rose-700 border-rose-200', dotColor: '#e11d48'
+      }
+    ]
+  };
+
+  // Đồng bộ sự kiện mặc định vào `scheduleEventsData`
+  Object.keys(DEFAULT_MONTHLY_EVENTS).forEach(m => {
+    DEFAULT_MONTHLY_EVENTS[m].forEach(ev => {
+      if (!scheduleEventsData[ev.id]) {
+        scheduleEventsData[ev.id] = ev;
+      }
+    });
+  });
+
+  // Chuyển tháng (+1 hoặc -1)
+  function changeMonth(delta) {
+    let nextMonth = currentMonth + delta;
+    if (nextMonth < 7) nextMonth = 7;
+    if (nextMonth > 10) nextMonth = 10;
+    if (nextMonth === currentMonth) return;
+    currentMonth = nextMonth;
+    renderCalendarMonth(currentMonth, currentYear);
+  }
+
+  // Nhảy thẳng tới tháng cụ thể (ví dụ: nút "Tháng 8")
+  function goToMonth(m, y) {
+    currentMonth = m || 8;
+    currentYear = y || 2026;
+    renderCalendarMonth(currentMonth, currentYear);
+  }
+
+  // Lấy danh sách sự kiện cho tháng hiện tại
+  function getEventsForMonth(month, year) {
+    const events = [];
+    Object.values(scheduleEventsData).forEach(ev => {
+      const evMonth = ev.month ? parseInt(ev.month) : 8;
+      const evYear = ev.year ? parseInt(ev.year) : 2026;
+      if (evMonth === month && evYear === year) {
+        events.push(ev);
+      }
+    });
+    return events;
+  }
+
+  // RENDER DYNAMIC CALENDAR CHO TỪNG THÁNG
+  function renderCalendarMonth(month, year) {
+    const cfg = MONTH_CONFIG[month] || {
+      name: `Tháng ${String(month).padStart(2, '0')} / ${year}`,
+      title: `Lịch Trình Tân Sinh Viên - Tháng ${String(month).padStart(2, '0')}/${year}`,
+      theme: "Hoạt động sinh viên",
+      badgeColor: "bg-[#003366]",
+      daysInMonth: 30,
+      startDayIndex: 0
+    };
+
+    // 1. Cập nhật Tiêu đề & Nhãn Header
+    const mStr = String(month).padStart(2, '0');
+    const headerNum = document.getElementById('calHeaderMonthNum');
+    const headerTitle = document.getElementById('calHeaderTitle');
+    const curLabel = document.getElementById('calCurrentMonthLabel');
+    const themeLabel = document.getElementById('calMonthThemeLabel');
+    const badgeDiv = document.getElementById('calHeaderMonthBadge');
+
+    if (headerNum) headerNum.textContent = mStr;
+    if (headerTitle) headerTitle.textContent = cfg.title;
+    if (curLabel) curLabel.textContent = cfg.name;
+    if (themeLabel) themeLabel.textContent = cfg.theme;
+    if (badgeDiv) {
+      badgeDiv.className = `w-12 h-12 rounded-2xl ${cfg.badgeColor} text-white flex flex-col items-center justify-center font-bold shadow-md shrink-0 transition-all`;
+    }
+
+    // 2. Lấy danh sách sự kiện của tháng
+    const monthEvents = getEventsForMonth(month, year);
+
+    // 3. Render các ô ngày vào Grid
+    const grid = document.getElementById('calendarDaysGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const startOffset = cfg.startDayIndex; // Số ô trống Thứ 2 đến ngày 1
+    const totalDays = cfg.daysInMonth;
+
+    // Số ngày của tháng trước để điền vào ô padding
+    const prevMonthDays = (month === 8 || month === 10) ? 31 : 30;
+
+    // A. Render các ô ngày đệm tháng trước (Padding cells)
+    for (let i = 0; i < startOffset; i++) {
+      const prevDayNum = prevMonthDays - startOffset + 1 + i;
+      const padCell = document.createElement('div');
+      padCell.className = "cal-day-cell rounded-2xl p-2 bg-slate-50/50 border border-slate-100 text-slate-300 min-h-[90px] sm:min-h-[105px] flex flex-col justify-between select-none opacity-50";
+      padCell.innerHTML = `<span class="font-bold text-xs">${prevDayNum}</span>`;
+      grid.appendChild(padCell);
+    }
+
+    // B. Render các ngày chính trong tháng (1 đến totalDays)
+    for (let d = 1; d <= totalDays; d++) {
+      const dayCell = document.createElement('div');
+      dayCell.id = `cal-day-${d}`;
+
+      // Lọc các sự kiện diễn ra vào ngày d
+      const cellEvents = monthEvents.filter(ev => parseInt(ev.day) === d);
+      const hasEvents = cellEvents.length > 0;
+
+      // Xác định thứ trong tuần (Chủ nhật có màu khác)
+      const dayOfWeekIndex = (startOffset + d - 1) % 7;
+      const isSunday = (dayOfWeekIndex === 6);
+      const isSaturday = (dayOfWeekIndex === 5);
+
+      let dayNumColor = "text-slate-700";
+      if (isSunday) dayNumColor = "text-rose-600 font-extrabold";
+      else if (isSaturday) dayNumColor = "text-blue-700 font-bold";
+
+      // Phân quyền tương tác theo Role Cán bộ vs Thí sinh
+      let cursorClass = "cursor-default";
+      let hoverBorder = "hover:border-slate-300";
+      let addBadgeHtml = "";
+
+      if (IS_CAN_BO) {
+        cursorClass = "cursor-pointer group/cell";
+        hoverBorder = "hover:bg-emerald-50/40 hover:border-emerald-400 hover:shadow-xs";
+        addBadgeHtml = `<span class="opacity-0 group-hover/cell:opacity-100 transition-opacity text-[9px] text-emerald-700 font-extrabold bg-emerald-100/90 px-1 py-0.2 rounded border border-emerald-300 pointer-events-none">+ Thêm</span>`;
+        dayCell.onclick = function(e) {
+          handleCalendarDayClick(e, d);
+        };
+      }
+
+      let bgStyle = hasEvents ? "bg-blue-50/20 border-blue-200/80" : "bg-white border-slate-200/70";
+      if (hasEvents && cellEvents.some(x => x.category === 'welcome' || x.category === 'gala')) {
+        bgStyle = "bg-amber-50/20 border-amber-200/80";
+      }
+
+      dayCell.className = `cal-day-cell rounded-2xl p-2 sm:p-2.5 border ${bgStyle} ${cursorClass} ${hoverBorder} min-h-[90px] sm:min-h-[105px] flex flex-col justify-between transition-all relative`;
+
+      // Header của ô ngày
+      let cellInnerHtml = `
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-black text-xs sm:text-sm ${dayNumColor}">${d}</span>
+            ${addBadgeHtml}
+          </div>
+          <div class="day-events-wrapper space-y-1">
+      `;
+
+      // Render danh sách chip sự kiện bên trong ô
+      cellEvents.forEach(ev => {
+        let bgClass = "bg-[#003366] text-white";
+        let icon = "📌";
+        if (ev.category === 'online') { bgClass = "bg-blue-600 text-white"; icon = "📝"; }
+        else if (ev.category === 'welcome') { bgClass = "bg-[#fd761a] text-white"; icon = "🎪"; }
+        else if (ev.category === 'shcd') { bgClass = "bg-purple-600 text-white"; icon = "🏛️"; }
+        else if (ev.category === 'gala') { bgClass = "bg-rose-600 text-white"; icon = "🌟"; }
+        else if (ev.category === 'test') { bgClass = "bg-cyan-700 text-white"; icon = "🏥"; }
+        else if (ev.category === 'study') { bgClass = "bg-[#047857] text-white"; icon = "📚"; }
+
+        cellInnerHtml += `
+          <button 
+            type="button" 
+            onclick="event.stopPropagation(); openScheduleModal(${ev.id})" 
+            title="${ev.title.replace(/"/g, '&quot;')}"
+            class="cal-event-chip w-full text-left p-1 rounded-md ${bgClass} text-[10px] font-bold truncate block cursor-pointer shadow-2xs hover:opacity-90 active:scale-95 transition-transform"
+          >
+            ${icon} ${ev.title}
+          </button>
+        `;
+      });
+
+      cellInnerHtml += `
+          </div>
+        </div>
+      `;
+
+      dayCell.innerHTML = cellInnerHtml;
+      grid.appendChild(dayCell);
+    }
+
+    // C. Render các ô ngày đệm tháng sau (để tròn lưới 35 hoặc 42 ô)
+    const filledCells = startOffset + totalDays;
+    const totalGridSlots = filledCells > 35 ? 42 : 35;
+    const nextPaddingCount = totalGridSlots - filledCells;
+
+    for (let nextDay = 1; nextDay <= nextPaddingCount; nextDay++) {
+      const nextCell = document.createElement('div');
+      nextCell.className = "cal-day-cell rounded-2xl p-2 bg-slate-50/50 border border-slate-100 text-slate-300 min-h-[90px] sm:min-h-[105px] flex flex-col justify-between select-none opacity-50";
+      nextCell.innerHTML = `<span class="font-bold text-xs">${nextDay}</span>`;
+      grid.appendChild(nextCell);
+    }
+  }
+
+  // Xử lý khi click vào ô ngày
+  function handleCalendarDayClick(e, day) {
+    // Nếu click vào chip sự kiện thì modal chi tiết sự kiện đã xử lý qua stopPropagation
+    if (e && e.target && e.target.closest('.cal-event-chip')) {
+      return;
+    }
+    // Khóa quyền chặt chẽ: Thí sinh/Khách không được tạo lịch
+    if (!IS_CAN_BO) {
+      return;
+    }
+    // Mở popup tạo lịch hoạt động mới cho Cán bộ
+    openCreateScheduleModal(day, currentMonth, currentYear);
+  }
+
+  // Mở Modal tạo lịch trình mới (Chỉ Cán bộ)
+  function openCreateScheduleModal(day, month, year) {
+    if (!IS_CAN_BO) return;
+    const m = month || currentMonth || 8;
+    const y = year || currentYear || 2026;
+    const dayNum = parseInt(day) || 1;
+    
+    document.getElementById('newScheduleDay').value = dayNum;
+    document.getElementById('newScheduleMonth').value = m;
+    document.getElementById('newScheduleYear').value = y;
+    
+    const dayStr = String(dayNum).padStart(2, '0');
+    const mStr = String(m).padStart(2, '0');
+    
+    const badgeEl = document.getElementById('createModalDayBadge');
+    if (badgeEl) badgeEl.textContent = `Ngày ${dayStr}/${mStr}/${y}`;
+    
+    const timeInput = document.getElementById('newScheduleTime');
+    if (timeInput) timeInput.value = `08h30 - 11h30 ngày ${dayStr}/${mStr}/${y}`;
+    
+    const backdrop = document.getElementById('createScheduleModalBackdrop');
+    if (backdrop) {
+      backdrop.classList.remove('hidden');
+      backdrop.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        const titleInput = document.getElementById('newScheduleTitle');
+        if (titleInput) titleInput.focus();
+      }, 100);
+    }
+  }
+
+  function closeCreateScheduleModal() {
+    const backdrop = document.getElementById('createScheduleModalBackdrop');
+    if (backdrop) {
+      backdrop.classList.add('hidden');
+      backdrop.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Gửi Form tạo sự kiện mới (API backend)
+  async function submitNewScheduleEvent(e) {
+    e.preventDefault();
+    if (!IS_CAN_BO) {
+      alert("Bạn không có quyền thực hiện chức năng này!");
+      return;
+    }
+
+    const btn = document.getElementById('btnSubmitSchedule');
+    btn.disabled = true;
+    btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">sync</span><span>Đang lưu...</span>`;
+
+    const day = document.getElementById('newScheduleDay').value;
+    const month = document.getElementById('newScheduleMonth').value || currentMonth;
+    const year = document.getElementById('newScheduleYear').value || currentYear;
+    const title = document.getElementById('newScheduleTitle').value.trim();
+    const time_str = document.getElementById('newScheduleTime').value.trim();
+    const location = document.getElementById('newScheduleLocation').value.trim();
+    const category = document.getElementById('newScheduleCategory').value;
+    const desc = document.getElementById('newScheduleDesc').value.trim();
+    const guide = document.getElementById('newScheduleGuide').value.trim();
+    const faculty_code = document.getElementById('newScheduleFacultyCode').value;
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+
+    try {
+      const response = await fetch('/api/lich-trinh/tao/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({
+          day: parseInt(day),
+          month: parseInt(month),
+          year: parseInt(year),
+          title: title,
+          time_str: time_str,
+          location: location,
+          category: category,
+          desc: desc,
+          guide: guide,
+          faculty_code: faculty_code
+        })
+      });
+
+      const res = await response.json();
+      if (res.success && res.event) {
+        const ev = res.event;
+        scheduleEventsData[ev.id] = ev;
+        renderCalendarMonth(currentMonth, currentYear);
+        renderMilestoneCard(ev);
+        closeCreateScheduleModal();
+        document.getElementById('createScheduleForm').reset();
+        showScheduleToast(res.message || `Đã thêm hoạt động vào ngày ${day}/${month} thành công!`);
+      } else {
+        alert(res.message || 'Có lỗi xảy ra khi tạo hoạt động.');
+      }
+    } catch (err) {
+      console.error(err);
+      const mockId = Date.now();
+      const mockEvent = {
+        id: mockId,
+        day: parseInt(day),
+        month: parseInt(month),
+        year: parseInt(year),
+        badge: `Ngày ${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')} • Hoạt động`,
+        badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        dotColor: '#047857',
+        time: time_str || `Ngày ${day}/${month}/${year}`,
+        title: title,
+        location: location || 'Khuôn viên DUE',
+        desc: desc || 'Hoạt động bổ sung do Cán bộ tạo.',
+        guide: guide || 'Tân sinh viên chú ý tham gia đúng giờ.',
+        image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+        category: category
+      };
+      scheduleEventsData[mockId] = mockEvent;
+      renderCalendarMonth(currentMonth, currentYear);
+      renderMilestoneCard(mockEvent);
+      closeCreateScheduleModal();
+      document.getElementById('createScheduleForm').reset();
+      showScheduleToast(`Đã thêm hoạt động "${title}" vào ngày ${day}/${month}!`);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<span class="material-symbols-outlined text-[18px]">save</span><span>Lưu & Thêm Vào Lịch</span>`;
+    }
+  }
+
+  // Thêm card vào view danh sách cột mốc
+  function renderMilestoneCard(ev) {
+    const grid = document.getElementById('milestonesCardsGrid');
+    if (!grid) return;
+
+    const card = document.createElement('div');
+    card.onclick = function() { openScheduleModal(ev.id); };
+    card.className = "milestone-node bg-white rounded-3xl p-5 border border-emerald-300 hover:border-emerald-500 shadow-sm cursor-pointer flex flex-col justify-between group animate-in fade-in zoom-in-95 duration-300";
+    card.innerHTML = `
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-2.5">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${ev.badgeColor || 'bg-emerald-50 text-emerald-700 border-emerald-200'}">
+            ${ev.badge}
+          </span>
+          <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${ev.dotColor || '#047857'};"></span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#003366] transition-colors leading-snug mb-2 line-clamp-2">
+          ${ev.title}
+        </h3>
+        <div class="flex items-center gap-1.5 text-xs text-rose-700 font-semibold mb-2">
+          <span class="material-symbols-outlined text-[14px]">event</span>
+          <span class="line-clamp-1">${ev.time}</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mb-3">
+          <span class="material-symbols-outlined text-[14px] text-blue-600">location_on</span>
+          <span class="line-clamp-1">${ev.location}</span>
+        </div>
+      </div>
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-emerald-700 font-bold group-hover:text-secondary-container">
+        <span>Xem chi tiết popup</span>
+        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+
+  function showScheduleToast(msg) {
+    const toast = document.getElementById('scheduleToast');
+    const toastMsg = document.getElementById('scheduleToastMsg');
+    if (!toast) return;
+    toastMsg.textContent = msg;
+    toast.classList.remove('hidden');
+    toast.classList.add('flex');
+    setTimeout(() => {
+      toast.classList.add('hidden');
+      toast.classList.remove('flex');
+    }, 4500);
+  }
+
+  // Xem chi tiết sự kiện qua Modal
+  function openScheduleModal(id) {
+    const ev = scheduleEventsData[id];
+    if (!ev) return;
+
+    document.getElementById('modalBadge').textContent = ev.badge;
+    document.getElementById('modalTime').querySelector('span:last-child').textContent = ev.time;
+    document.getElementById('modalTitle').textContent = ev.title;
+    document.getElementById('modalLocation').textContent = ev.location;
+    document.getElementById('modalDesc').textContent = ev.desc;
+    document.getElementById('modalGuide').textContent = ev.guide;
+    document.getElementById('modalImage').src = ev.image;
+
+    const backdrop = document.getElementById('scheduleModalBackdrop');
+    backdrop.classList.remove('hidden');
+    backdrop.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeScheduleModal() {
+    const backdrop = document.getElementById('scheduleModalBackdrop');
+    backdrop.classList.add('hidden');
+    backdrop.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  // Đổi giữa Calendar view & Milestones Stepper view
+  function switchScheduleView(mode) {
+    const calContainer = document.getElementById('calendarViewContainer');
+    const milesContainer = document.getElementById('milestonesViewContainer');
+    const btnCal = document.getElementById('viewBtnCalendar');
+    const btnMiles = document.getElementById('viewBtnMilestones');
+
+    if (mode === 'milestones') {
+      calContainer.classList.add('hidden');
+      milesContainer.classList.remove('hidden');
+      btnMiles.className = "flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#003366] shadow-sm transition-all cursor-pointer font-bold";
+      btnCal.className = "flex items-center gap-1.5 px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer font-bold";
+    } else {
+      calContainer.classList.remove('hidden');
+      milesContainer.classList.remove('hidden');
+      btnCal.className = "flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#003366] shadow-sm transition-all cursor-pointer font-bold";
+      btnMiles.className = "flex items-center gap-1.5 px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all cursor-pointer font-bold";
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeScheduleModal();
+      closeCreateScheduleModal();
+    }
+  });
+
+  // Khởi tạo lịch Tháng 8 (Trọng tâm) khi trang tải xong
+  document.addEventListener('DOMContentLoaded', function() {
+    renderCalendarMonth(8, 2026);
+  });
+</script>
 {% endblock %}
+
