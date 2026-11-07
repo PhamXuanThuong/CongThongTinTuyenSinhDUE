@@ -104,7 +104,7 @@ Khi hai nguồn mâu thuẫn, chatbot dùng nguồn ưu tiên 1.
 |---|---|
 | Có tài liệu (CSV / database) trả lời **trực tiếp** câu hỏi | Trả lời dựa trên tài liệu, kèm nguồn |
 | Không tìm thấy tài liệu liên quan, hoặc AI đánh giá tài liệu không trả lời được câu hỏi | **Chuyển câu hỏi cho cán bộ tuyển sinh** (người chưa đăng nhập: hướng dẫn đăng nhập hoặc gọi hotline) |
-| Câu chào hỏi, tán gẫu, câu nhạy cảm, không liên quan tới DUE | Trả lời bằng **câu cố định** soạn sẵn (không do AI tự viết), gợi ý hỏi về tuyển sinh |
+| Câu chào hỏi, tán gẫu, câu nhạy cảm, không liên quan tới DUE | **Chuyển cán bộ** (AI không tự trả lời) |
 | AI lỗi / hết hạn mức | Chuyển cho cán bộ, không bao giờ hiển thị tài liệu thô |
 
 Các cột kiểu bật/tắt (`BooleanField`, ví dụ `kich_hoat`) không được đưa vào kho kiến thức vì chỉ tạo nhiễu khi tìm kiếm.

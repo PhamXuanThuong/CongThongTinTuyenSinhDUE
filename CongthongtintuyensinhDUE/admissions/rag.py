@@ -265,7 +265,7 @@ SYSTEM_PROMPT = (
     "chỉ dùng [ƯU TIÊN 2] để bổ sung chi tiết mà [ƯU TIÊN 1] không có. "
     "Nếu NGỮ CẢNH không đủ thông tin để trả lời chính xác câu hỏi thì đặt co_thong_tin = false "
     "(câu hỏi sẽ được chuyển cho cán bộ tuyển sinh). "
-    "Lời chào hỏi xã giao (xin chào, cảm ơn...) được xếp vào NGOÀI PHẠM VI (ngoai_pham_vi = true). "
+    "Lời chào hỏi xã giao (xin chào, cảm ơn...) cũng xếp vào NGOÀI PHẠM VI (ngoai_pham_vi = true). "
     "ĐÁNH GIÁ LIÊN QUAN: hệ thống tìm tài liệu tự động nên NGỮ CẢNH có thể chứa đoạn KHÔNG liên quan. "
     "Chỉ dùng đoạn trả lời TRỰC TIẾP câu hỏi; nếu không đoạn nào trả lời trực tiếp thì co_thong_tin = false, "
     "KHÔNG được lấy đại một đoạn gần giống để trả lời. "
@@ -273,8 +273,8 @@ SYSTEM_PROMPT = (
     "'Nguồn tham khảo chính thức:', 'Kích hoạt...'); hãy diễn đạt lại thành câu trả lời tự nhiên. "
     "NGOÀI PHẠM VI: nếu câu hỏi không liên quan tới tuyển sinh, học tập, đời sống sinh viên tại DUE "
     "(tán gẫu, hỏi chuyện riêng tư/giới tính/chính trị/tôn giáo của người khác, nội dung nhạy cảm, xúc phạm, "
-    "nhờ làm bài, hỏi kiến thức chung) thì đặt ngoai_pham_vi = true, co_thong_tin = true và trả lời 1-2 câu lịch sự "
-    "rằng bạn chỉ hỗ trợ thông tin tuyển sinh DUE, gợi ý một câu hỏi tuyển sinh; không phán xét người hỏi. "
+    "nhờ làm bài, hỏi kiến thức chung) thì đặt ngoai_pham_vi = true, co_thong_tin = false và để tra_loi rỗng "
+    "(câu hỏi sẽ được chuyển cho cán bộ tuyển sinh); TUYỆT ĐỐI không tự trả lời các câu này. "
     "Trả lời bằng tiếng Việt, ngắn gọn, rõ ràng. Khi liệt kê, MỖI Ý PHẢI NẰM TRÊN MỘT DÒNG RIÊNG, "
     "bắt đầu bằng '- ' (dùng ký tự xuống dòng \\n giữa các ý); dùng **chữ đậm** cho con số/từ khóa quan trọng."
 )
@@ -379,20 +379,14 @@ def answer(question, history=None):
         result = json.loads(r.json()["message"]["content"])
 
     reply = (result.get("tra_loi") or "").strip()
-    # Câu ngoài phạm vi / chào hỏi: dùng câu trả lời CỐ ĐỊNH (không để AI tự viết -> không thể trả lời bậy)
+    # Quy tắc của nhóm: KHÔNG có trong kiến thức -> chuyển cán bộ (kể cả câu ngoài phạm vi, chào hỏi).
+    # AI không được tự viết câu trả lời cho câu ngoài phạm vi -> không thể trả lời bậy.
     if result.get("ngoai_pham_vi"):
-        return OUT_OF_SCOPE_REPLY, [], True
-    # Chỉ được trả lời khi THỰC SỰ có tài liệu từ CSV / database; không có tài liệu -> chuyển cán bộ
+        return "", [], False
+    # Chỉ được trả lời khi THỰC SỰ có tài liệu từ CSV / database
     found = bool(result.get("co_thong_tin")) and bool(reply) and bool(hits)
     sources = sorted({h["source"] for h in hits}) if found else []
     return reply, sources, found
-
-
-OUT_OF_SCOPE_REPLY = (
-    "Chào bạn! Mình là trợ lý tuyển sinh của Trường Đại học Kinh tế – ĐH Đà Nẵng nên chỉ hỗ trợ các thông tin về "
-    "tuyển sinh, ngành học, học phí, học bổng và đời sống sinh viên DUE. Bạn có thể hỏi mình, ví dụ: "
-    "“Năm 2026 DUE có những phương thức xét tuyển nào?”"
-)
 
 
 def add_knowledge(question, answer_text, source="Cán bộ tuyển sinh trả lời"):

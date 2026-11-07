@@ -78,9 +78,8 @@ Hàm chính: `rag.answer(question, history)` — gọi từ API `POST /api/chat/
    ```
    Model chính lỗi / treo quá `GEMINI_TIMEOUT` giây → tự thử lần lượt `GEMINI_FALLBACK_MODELS`.
 5. **Quyết định** (trong code, không chỉ dựa vào AI):
-   - `ngoai_pham_vi = true` → trả **câu cố định** `OUT_OF_SCOPE_REPLY`, không gắn nguồn.
-   - `co_thong_tin = true` **và** có câu trả lời **và** có ít nhất 1 đoạn tài liệu → trả lời kèm nguồn.
-   - Các trường hợp còn lại → **chuyển cán bộ** (mục 5).
+   - `co_thong_tin = true` **và** có câu trả lời **và** có ít nhất 1 đoạn tài liệu **và** `ngoai_pham_vi = false` → trả lời kèm nguồn.
+   - **Mọi trường hợp còn lại** (không có tài liệu, AI đánh giá không đủ thông tin, câu ngoài phạm vi / chào hỏi / tán gẫu, AI lỗi) → **chuyển cán bộ** (mục 5). AI không được tự viết câu trả lời cho các câu này.
 
 ---
 
@@ -90,7 +89,7 @@ Hàm chính: `rag.answer(question, history)` — gọi từ API `POST /api/chat/
 |---|---|
 | Có tài liệu trả lời **trực tiếp** câu hỏi | Trả lời dựa trên tài liệu, kèm nguồn |
 | Không có tài liệu liên quan / tài liệu không trả lời được | **Chuyển cán bộ** |
-| Chào hỏi, tán gẫu, câu nhạy cảm, nhờ làm bài, kiến thức chung | **Câu cố định** soạn sẵn (`OUT_OF_SCOPE_REPLY`), AI không tự viết |
+| Chào hỏi, tán gẫu, câu nhạy cảm, nhờ làm bài, kiến thức chung | **Chuyển cán bộ** (AI đánh dấu `ngoai_pham_vi`, không tự trả lời) |
 | AI lỗi / hết hạn mức | Chuyển cán bộ; **không bao giờ** hiển thị tài liệu thô |
 
 Prompt (`SYSTEM_PROMPT` trong `rag.py`) yêu cầu AI:
@@ -210,8 +209,8 @@ Chạy sau mỗi lần sửa logic chatbot:
 |---|---|---|
 | Có trong tài liệu | Học phí Bán phần tiếng Anh 2026? / Mã ngành 7310101 là ngành gì? / Có bao nhiêu liên chi đoàn? | 36,5 triệu / Kinh tế / 8 liên chi đoàn |
 | Không có tài liệu | Căng tin có bán cơm chay không? / Wifi trường mật khẩu gì? | Chuyển cán bộ |
-| Ngoài phạm vi | có ai bê đê k v / xin chào / giải bài toán 2x+3=7 | Câu cố định |
-| Dễ bắt nhầm | k có gì đâu / ngành AI trong kinh doanh học gì? | Câu cố định / trả lời đúng |
+| Ngoài phạm vi | có ai bê đê k v / xin chào / giải bài toán 2x+3=7 | Chuyển cán bộ, không tự trả lời |
+| Dễ bắt nhầm | k có gì đâu / ngành AI trong kinh doanh học gì? | Chuyển cán bộ / trả lời đúng |
 | Nối tiếp | “Học phí bao nhiêu?” → “Còn hệ Toàn phần?” | Hiểu ngữ cảnh: 43 triệu |
 
 Tiêu chí: không câu nào hiển thị dữ liệu thô (“Từ khóa tìm kiếm:”, “Nguồn tham khảo chính thức:”, “Kích hoạt…”) và không có con số ngoài tài liệu.
@@ -224,4 +223,5 @@ Tiêu chí: không câu nào hiển thị dữ liệu thô (“Từ khóa tìm k
 |---|---|
 | 05/11/2026 | Chuyển RAG sang Gemini; kho kiến thức 3 nguồn; chuyển câu hỏi cho cán bộ; khung chat modal (PR #9) |
 | 06/11/2026 | Đổi tên bảng/URL/lệnh sang tiếng Anh; phiên chat; khách chưa đăng nhập không vào hàng chờ (PR #12) |
-| 07/11/2026 | Chặn trả lời bừa: lọc từ phổ biến, bỏ cột Boolean khỏi kiến thức, câu cố định cho câu ngoài phạm vi; đồng bộ thêm Khoa / Phòng ban / Liên chi đoàn (app portal) |
+| 07/11/2026 | Chặn trả lời bừa: lọc từ phổ biến, bỏ cột Boolean khỏi kiến thức; đồng bộ thêm Khoa / Phòng ban / Liên chi đoàn (app portal) |
+| 07/11/2026 | Quy tắc nhóm: mọi câu **không có trong kiến thức** (kể cả ngoài phạm vi, chào hỏi, tán gẫu) đều **chuyển cán bộ**; bỏ câu trả lời cố định `OUT_OF_SCOPE_REPLY` |
