@@ -34,8 +34,10 @@ SYNC_MODELS = [
     ("TinTuc", {}),
 ]
 
-SKIP_FIELDS = {"id", "slug", "thu_tu", "luot_xem"}
-SKIP_TYPES = (models.FileField, models.AutoField, models.BigAutoField, models.JSONField)
+SKIP_FIELDS = {"id", "slug", "thu_tu", "luot_xem", "ngay_tao", "ngay_cap_nhat", "created_at", "updated_at"}
+# BooleanField (kich_hoat, noi_bat...) chỉ là cờ quản trị, không mang thông tin cho thí sinh.
+# Để lại sẽ sinh nhiễu kiểu "Kích hoạt trợ lý AI / Chatbot: Có" ở mọi đoạn -> chatbot bắt nhầm chữ "AI".
+SKIP_TYPES = (models.FileField, models.AutoField, models.BigAutoField, models.JSONField, models.BooleanField)
 
 
 def _model(name):

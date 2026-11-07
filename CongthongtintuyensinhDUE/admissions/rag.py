@@ -175,11 +175,28 @@ def index_csv_rows(path):
 _WORD = re.compile(r"\d+|[a-zà-ỹđ]+", re.IGNORECASE)
 
 
+# Từ phổ biến / từ viết tắt khi chat: không mang nghĩa để tìm tài liệu
+_STOPWORDS = set("""
+a à ạ á ả ã ai anh ạh ba bao bị bởi các cái cần cho chị chứ chưa có của cùng cũng đã đang đây để đến đều
+được em gì hả hay hãy hết hỏi khi không ko k kg khg là làm lại lên lúc mà mình mấy mới một nào này nên nha
+nhé nhỉ như những nó ơi ở ra rằng rồi sao sẽ tại thì thế thôi tôi trên trong từ và vâng vậy vào vì với vs
+v j z ạ dạ uh ừ ok oke okela the of and or is are what how who you me my i to in on for
+""".split())
+
+
+def _query_terms(query):
+    """Từ khóa có nghĩa trong câu hỏi (bỏ từ phổ biến, từ 1 ký tự trừ số)."""
+    return {t for t in _WORD.findall(query.lower()) if t not in _STOPWORDS and (len(t) > 1 or t.isdigit())}
+
+
 def _keyword_retrieve(query, top_k):
-    """Tìm theo từ khóa (BM25 rút gọn) — dùng khi không gọi được embedding (hết hạn mức, mất mạng)."""
-    q_terms = set(_WORD.findall(query.lower()))
+    """Tìm theo từ khóa (BM25 rút gọn): bắt chính xác mã ngành, con số, tên riêng.
+    Chỉ giữ đoạn khớp đủ nhiều từ có nghĩa để câu tán gẫu không kéo theo tài liệu không liên quan."""
+    q_terms = _query_terms(query)
     if not q_terms:
         return []
+    # Câu có 1-2 từ có nghĩa: phải khớp hết; câu dài hơn: khớp ít nhất 2 từ hoặc 1 mã số (>= 4 chữ số)
+    need = len(q_terms) if len(q_terms) <= 2 else 2
     rows = list(DocumentChunk.objects.values_list("source", "content"))
     docs = [_WORD.findall(c.lower()) for _, c in rows]
     n = len(docs) or 1
@@ -194,6 +211,9 @@ def _keyword_retrieve(query, top_k):
             if w in q_terms:
                 tf[w] = tf.get(w, 0) + 1
         if not tf:
+            continue
+        has_code = any(t.isdigit() and len(t) >= 4 for t in tf)
+        if len(tf) < need and not has_code:
             continue
         s = sum(math.log(1 + (n - df[t] + .5) / (df[t] + .5)) * f * 2.2 / (f + 1.2 * (.25 + .75 * len(words) / avg))
                 for t, f in tf.items())
@@ -245,7 +265,16 @@ SYSTEM_PROMPT = (
     "chỉ dùng [ƯU TIÊN 2] để bổ sung chi tiết mà [ƯU TIÊN 1] không có. "
     "Nếu NGỮ CẢNH không đủ thông tin để trả lời chính xác câu hỏi thì đặt co_thong_tin = false "
     "(câu hỏi sẽ được chuyển cho cán bộ tuyển sinh). "
-    "Với lời chào hỏi xã giao (xin chào, cảm ơn...) thì trả lời thân thiện và đặt co_thong_tin = true. "
+    "Lời chào hỏi xã giao (xin chào, cảm ơn...) được xếp vào NGOÀI PHẠM VI (ngoai_pham_vi = true). "
+    "ĐÁNH GIÁ LIÊN QUAN: hệ thống tìm tài liệu tự động nên NGỮ CẢNH có thể chứa đoạn KHÔNG liên quan. "
+    "Chỉ dùng đoạn trả lời TRỰC TIẾP câu hỏi; nếu không đoạn nào trả lời trực tiếp thì co_thong_tin = false, "
+    "KHÔNG được lấy đại một đoạn gần giống để trả lời. "
+    "Không bao giờ chép nguyên văn ngữ cảnh, không liệt kê tên trường dữ liệu (ví dụ 'Từ khóa tìm kiếm:', "
+    "'Nguồn tham khảo chính thức:', 'Kích hoạt...'); hãy diễn đạt lại thành câu trả lời tự nhiên. "
+    "NGOÀI PHẠM VI: nếu câu hỏi không liên quan tới tuyển sinh, học tập, đời sống sinh viên tại DUE "
+    "(tán gẫu, hỏi chuyện riêng tư/giới tính/chính trị/tôn giáo của người khác, nội dung nhạy cảm, xúc phạm, "
+    "nhờ làm bài, hỏi kiến thức chung) thì đặt ngoai_pham_vi = true, co_thong_tin = true và trả lời 1-2 câu lịch sự "
+    "rằng bạn chỉ hỗ trợ thông tin tuyển sinh DUE, gợi ý một câu hỏi tuyển sinh; không phán xét người hỏi. "
     "Trả lời bằng tiếng Việt, ngắn gọn, rõ ràng. Khi liệt kê, MỖI Ý PHẢI NẰM TRÊN MỘT DÒNG RIÊNG, "
     "bắt đầu bằng '- ' (dùng ký tự xuống dòng \\n giữa các ý); dùng **chữ đậm** cho con số/từ khóa quan trọng."
 )
@@ -253,10 +282,11 @@ SYSTEM_PROMPT = (
 ANSWER_SCHEMA = {
     "type": "OBJECT",
     "properties": {
-        "co_thong_tin": {"type": "BOOLEAN", "description": "Ngữ cảnh có đủ thông tin để trả lời không"},
+        "ngoai_pham_vi": {"type": "BOOLEAN", "description": "Câu hỏi không liên quan tới tuyển sinh/học tập/đời sống sinh viên DUE"},
+        "co_thong_tin": {"type": "BOOLEAN", "description": "Ngữ cảnh có đoạn trả lời trực tiếp câu hỏi không"},
         "tra_loi": {"type": "STRING"},
     },
-    "required": ["co_thong_tin", "tra_loi"],
+    "required": ["ngoai_pham_vi", "co_thong_tin", "tra_loi"],
 }
 
 
@@ -337,8 +367,9 @@ def answer(question, history=None):
                 "model": settings.OLLAMA_CHAT_MODEL,
                 "messages": [{"role": "system", "content": SYSTEM_PROMPT}] +
                             [{"role": role, "content": t} for role, t in turns],
-                "format": {"type": "object", "properties": {"co_thong_tin": {"type": "boolean"},
-                           "tra_loi": {"type": "string"}}, "required": ["co_thong_tin", "tra_loi"]},
+                "format": {"type": "object", "properties": {"ngoai_pham_vi": {"type": "boolean"},
+                           "co_thong_tin": {"type": "boolean"}, "tra_loi": {"type": "string"}},
+                           "required": ["ngoai_pham_vi", "co_thong_tin", "tra_loi"]},
                 "stream": False,
                 "options": {"temperature": 0.2, "num_ctx": 8192},
             },
@@ -347,9 +378,21 @@ def answer(question, history=None):
         r.raise_for_status()
         result = json.loads(r.json()["message"]["content"])
 
-    found = bool(result.get("co_thong_tin"))
+    reply = (result.get("tra_loi") or "").strip()
+    # Câu ngoài phạm vi / chào hỏi: dùng câu trả lời CỐ ĐỊNH (không để AI tự viết -> không thể trả lời bậy)
+    if result.get("ngoai_pham_vi"):
+        return OUT_OF_SCOPE_REPLY, [], True
+    # Chỉ được trả lời khi THỰC SỰ có tài liệu từ CSV / database; không có tài liệu -> chuyển cán bộ
+    found = bool(result.get("co_thong_tin")) and bool(reply) and bool(hits)
     sources = sorted({h["source"] for h in hits}) if found else []
-    return result.get("tra_loi", ""), sources, found
+    return reply, sources, found
+
+
+OUT_OF_SCOPE_REPLY = (
+    "Chào bạn! Mình là trợ lý tuyển sinh của Trường Đại học Kinh tế – ĐH Đà Nẵng nên chỉ hỗ trợ các thông tin về "
+    "tuyển sinh, ngành học, học phí, học bổng và đời sống sinh viên DUE. Bạn có thể hỏi mình, ví dụ: "
+    "“Năm 2026 DUE có những phương thức xét tuyển nào?”"
+)
 
 
 def add_knowledge(question, answer_text, source="Cán bộ tuyển sinh trả lời"):
